@@ -61,7 +61,7 @@ def calculate_successful_run_rate():
     """Calculate successful run rate for all Maryland rush attempts"""
     
     # Read the rush attempts data
-    with open('maryland_rush_attempts.json', 'r') as f:
+    with open('maryland_rush_attempts_corrected.json', 'r') as f:
         plays = json.load(f)
     
     total_attempts = len(plays)

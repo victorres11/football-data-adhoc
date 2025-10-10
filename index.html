@@ -389,7 +389,18 @@
             const tbody = document.getElementById('rushTable');
             tbody.innerHTML = '';
 
-            rushAttempts.forEach(attempt => {
+            // Sort attempts chronologically (by period, then by clock time)
+            const sortedAttempts = rushAttempts.sort((a, b) => {
+                if (a.period !== b.period) {
+                    return a.period - b.period;
+                }
+                // Convert clock time to comparable format (e.g., "11:56" -> 1156)
+                const timeA = parseInt(a.clock.replace(':', ''));
+                const timeB = parseInt(b.clock.replace(':', ''));
+                return timeB - timeA; // Descending order (later times first)
+            });
+
+            sortedAttempts.forEach(attempt => {
                 const row = document.createElement('tr');
                 row.className = attempt.success ? 'success-bg' : 'failure-bg';
                 

@@ -47,12 +47,24 @@ This project analyzes college football rushing attempts using a custom success m
    - Your dashboard will be available at: `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
    - It may take a few minutes to deploy
 
-## 📁 Files
+## 📁 Project Structure
 
-- `index.html` - Main dashboard with statistics and rush attempts table
-- `calculate_successful_runs.py` - Python script for analysis (excluded from GitHub)
-- `maryland_rush_attempts.json` - Raw data (excluded from GitHub)
-- `maryland_successful_runs_analysis.json` - Analysis results (excluded from GitHub)
+```
+├── index.html                                    # Main dashboard
+├── scripts/
+│   ├── calculate_successful_runs.py             # Analysis script
+│   └── README.md                                # Script documentation
+├── data/
+│   ├── maryland/                                # Maryland team data
+│   │   ├── game_data.json                       # Raw ESPN API data
+│   │   ├── maryland_rush_attempts.json          # Initial extraction
+│   │   ├── maryland_rush_attempts_corrected.json # Complete data
+│   │   └── maryland_successful_runs_analysis.json # Final analysis
+│   └── README.md                                # Data documentation
+└── README.md                                    # This file
+```
+
+**Note:** Data files are excluded from GitHub via `.gitignore`
 
 ## 🎯 Features
 

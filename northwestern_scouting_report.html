@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Northwestern Wildcats Scouting Report - vs Penn State</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4E2A84, #ffffff);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #4E2A84;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #4E2A84;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #4E2A84;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4E2A84;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .team-comparison {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4E2A84;
+        }
+
+        .team-comparison h3 {
+            color: #4E2A84;
+            margin-bottom: 15px;
+        }
+
+        .play-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .play-type {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .play-type-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4E2A84;
+        }
+
+        .play-type-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .quarter-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quarter-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #4E2A84;
+        }
+
+        .quarter-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4E2A84;
+        }
+
+        .scoring-drive {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
+        .scoring-drive h4 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .key-play {
+            background: #fff3cd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .turnover {
+            background: #f8d7da;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .turnover h4 {
+            color: #dc3545;
+            margin-bottom: 5px;
+        }
+
+        .narrative-section {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .narrative-section h3 {
+            color: #4E2A84;
+            margin-bottom: 15px;
+        }
+
+        .takeaway {
+            background: #d1ecf1;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin-bottom: 15px;
+        }
+
+        .takeaway h4 {
+            color: #17a2b8;
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin-bottom: 15px;
+        }
+
+        .warning h4 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏈 Northwestern Wildcats</h1>
+            <p class="subtitle">Scouting Report: vs Penn State (22-21 Victory)</p>
+        </header>
+
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2>📋 Executive Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">22-21</div>
+                    <div class="stat-label">Final Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">84</div>
+                    <div class="stat-label">Total Plays</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Scoring Drives</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">+0</div>
+                    <div class="stat-label">Turnover Margin</div>
+                </div>
+            </div>
+            
+            <div class="narrative-section">
+                <h3>🎯 How Northwestern Won</h3>
+                <p><strong>Key Victory Factors:</strong></p>
+                <ul>
+                    <li><strong>Balanced Offense:</strong> 3.9 yards per rush, 5.5 yards per pass</li>
+                    <li><strong>Efficient Scoring:</strong> 5 scoring drives with good red zone execution</li>
+                    <li><strong>Clean Game:</strong> No turnovers committed or forced</li>
+                    <li><strong>Clutch Performance:</strong> Executed when it mattered most</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Offensive Analysis -->
+        <div class="section">
+            <h2>⚡ Offensive Analysis</h2>
+            
+            <div class="comparison-grid">
+                <div class="team-comparison">
+                    <h3>Northwestern Offense</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">3.9</div>
+                            <div class="stat-label">Yards/Rush</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">5.5</div>
+                            <div class="stat-label">Yards/Pass</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0%</div>
+                            <div class="stat-label">Successful Run Rate</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-comparison">
+                    <h3>vs Penn State Defense</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">84</div>
+                            <div class="stat-label">Plays Allowed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Turnovers Forced</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0%</div>
+                            <div class="stat-label">3rd Down Stop Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>📊 Play Selection Breakdown</h3>
+            <div class="play-breakdown" id="playBreakdown">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Scoring Drives -->
+        <div class="section">
+            <h2>🏆 Scoring Drives Analysis</h2>
+            <div id="scoringDrives">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Game Narrative -->
+        <div class="section">
+            <h2>📖 Game Narrative</h2>
+            <div class="quarter-analysis" id="quarterAnalysis">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Turnovers -->
+        <div class="section">
+            <h2>🔄 Turnover Analysis</h2>
+            <div id="turnoverAnalysis">
+                <div class="narrative-section">
+                    <h3>Clean Game</h3>
+                    <p><strong>Turnover Margin: 0</strong></p>
+                    <ul>
+                        <li><strong>Northwestern:</strong> 0 turnovers committed</li>
+                        <li><strong>Penn State:</strong> 0 turnovers committed</li>
+                        <li><strong>Impact:</strong> Neither team gave away possessions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scouting Takeaways -->
+        <div class="section">
+            <h2>🎯 Scouting Takeaways</h2>
+            
+            <div class="takeaway">
+                <h4>✅ Northwestern's Strengths</h4>
+                <ul>
+                    <li><strong>Balanced Attack:</strong> Effective both running and passing</li>
+                    <li><strong>Red Zone Efficiency:</strong> 5 scoring drives show good execution</li>
+                    <li><strong>Ball Security:</strong> No turnovers in critical game</li>
+                    <li><strong>Clutch Performance:</strong> Executed game plan under pressure</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h4>⚠️ Areas to Exploit</h4>
+                <ul>
+                    <li><strong>Rush Defense:</strong> 3.9 yards per rush allowed</li>
+                    <li><strong>Pass Defense:</strong> 5.5 yards per pass allowed</li>
+                    <li><strong>Third Down Defense:</strong> 0% stop rate (concerning)</li>
+                    <li><strong>Big Play Prevention:</strong> Need to analyze explosive plays</li>
+                </ul>
+            </div>
+
+            <div class="takeaway">
+                <h4>🎯 Game Plan Recommendations</h4>
+                <ul>
+                    <li><strong>Establish Run Game:</strong> Attack their rush defense early</li>
+                    <li><strong>Third Down Focus:</strong> Exploit their poor third down defense</li>
+                    <li><strong>Ball Security:</strong> Match their clean play - no turnovers</li>
+                    <li><strong>Red Zone:</strong> Prepare for their efficient scoring ability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load and display analysis data
+        async function loadAnalysisData() {
+            try {
+                const response = await fetch('data/northwestern/scouting_report.json');
+                const data = await response.json();
+                
+                displayPlayBreakdown(data.offensive_analysis.play_selection);
+                displayScoringDrives(data.offensive_analysis.scoring_drives);
+                displayQuarterAnalysis(data.game_narrative);
+                
+            } catch (error) {
+                console.error('Error loading analysis data:', error);
+                // Fallback to static content
+                displayStaticContent();
+            }
+        }
+
+        function displayPlayBreakdown(playSelection) {
+            const container = document.getElementById('playBreakdown');
+            const playTypes = playSelection.by_type;
+            
+            for (const [playType, count] of Object.entries(playTypes)) {
+                const playDiv = document.createElement('div');
+                playDiv.className = 'play-type';
+                playDiv.innerHTML = `
+                    <div class="play-type-number">${count}</div>
+                    <div class="play-type-label">${playType}</div>
+                `;
+                container.appendChild(playDiv);
+            }
+        }
+
+        function displayScoringDrives(scoringDrives) {
+            const container = document.getElementById('scoringDrives');
+            
+            scoringDrives.forEach((drive, index) => {
+                const driveDiv = document.createElement('div');
+                driveDiv.className = 'scoring-drive';
+                driveDiv.innerHTML = `
+                    <h4>Drive ${index + 1}: ${drive.result}</h4>
+                    <p><strong>Description:</strong> ${drive.description}</p>
+                    <p><strong>Plays:</strong> ${drive.plays} | <strong>Yards:</strong> ${drive.yards} | <strong>Time:</strong> ${drive.time_elapsed}</p>
+                    ${drive.key_plays.length > 0 ? `
+                        <h5>Key Plays:</h5>
+                        <ul>
+                            ${drive.key_plays.map(play => `<li>${play.text}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                `;
+                container.appendChild(driveDiv);
+            });
+        }
+
+        function displayQuarterAnalysis(narrative) {
+            const container = document.getElementById('quarterAnalysis');
+            const quarters = narrative.quarters;
+            
+            for (let quarter = 1; quarter <= 4; quarter++) {
+                const quarterData = quarters[quarter] || { plays: 0, yards: 0, scores: [] };
+                const quarterDiv = document.createElement('div');
+                quarterDiv.className = 'quarter-card';
+                quarterDiv.innerHTML = `
+                    <div class="quarter-number">Q${quarter}</div>
+                    <div style="margin-top: 10px;">
+                        <div><strong>Plays:</strong> ${quarterData.plays}</div>
+                        <div><strong>Yards:</strong> ${quarterData.yards}</div>
+                        <div><strong>Scores:</strong> ${quarterData.scores.length}</div>
+                    </div>
+                `;
+                container.appendChild(quarterDiv);
+            }
+        }
+
+        function displayStaticContent() {
+            // Fallback content if data loading fails
+            document.getElementById('playBreakdown').innerHTML = `
+                <div class="play-type">
+                    <div class="play-type-number">--</div>
+                    <div class="play-type-label">Data Loading...</div>
+                </div>
+            `;
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadAnalysisData);
+    </script>
+</body>
+</html>

@@ -1101,14 +1101,15 @@
         function displayGroupedPlayBreakdown() {
             const container = document.getElementById('groupedPlayBreakdown');
             const groupedPlays = {
-                'Rush Offense': 43,
-                'Pass Offense': 29,
-                'Special Teams': 10,
-                'Other': 2
+                'Rush': 43,
+                'Pass': 29
             };
             
+            // Calculate percentages based only on Rush + Pass (72 total plays)
+            const totalOffensivePlays = 43 + 29; // 72 plays
+            
             for (const [category, count] of Object.entries(groupedPlays)) {
-                const percentage = (count / 84) * 100;
+                const percentage = (count / totalOffensivePlays) * 100;
                 const playDiv = document.createElement('div');
                 playDiv.className = 'play-type';
                 playDiv.innerHTML = `

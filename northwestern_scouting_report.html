@@ -225,6 +225,62 @@
             color: #dc3545;
             margin-bottom: 10px;
         }
+        
+        /* 4th Down Analysis Styles */
+        .fourth-down-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .team-fourth-down h3 {
+            color: #4E2A84;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .fourth-down-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .fourth-down-table {
+            overflow-x: auto;
+        }
+        
+        .fourth-down-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        
+        .fourth-down-table th {
+            background-color: #4E2A84;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .fourth-down-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .fourth-down-table tr:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .fourth-down-table tr.go-for-it {
+            background-color: #fff3cd;
+        }
+        
+        .fourth-down-table tr.go-for-it:hover {
+            background-color: #ffeaa7;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -233,6 +289,24 @@
             
             .comparison-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .fourth-down-comparison {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .fourth-down-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .fourth-down-table {
+                font-size: 0.8em;
+            }
+            
+            .fourth-down-table th,
+            .fourth-down-table td {
+                padding: 8px 4px;
             }
             
             h1 {
@@ -590,6 +664,213 @@
                     <li><strong>Clean Discipline:</strong> Only 2 penalties for 10 yards total</li>
                     <li><strong>Punt Protection Issue:</strong> Allowed Penn State to block their first punt of the game</li>
                     <li><strong>Game Plan:</strong> Force field goals instead of touchdowns in red zone</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4th Down Analysis -->
+        <div class="section">
+            <h2>📊 4th Down Decision Analysis</h2>
+            
+            <div class="fourth-down-comparison">
+                <div class="team-fourth-down">
+                    <h3>Northwestern 4th Down Decisions</h3>
+                    <div class="fourth-down-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Total 4th Downs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Field Goals</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Punts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Go For It</div>
+                        </div>
+                    </div>
+                    
+                    <div class="fourth-down-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Quarter</th>
+                                    <th>Clock</th>
+                                    <th>Down & Distance</th>
+                                    <th>Field Position</th>
+                                    <th>Decision</th>
+                                    <th>Result</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1st</td>
+                                    <td>12:31</td>
+                                    <td>4th & 6</td>
+                                    <td>NU 40</td>
+                                    <td>Punt</td>
+                                    <td>Blocked (0 yards)</td>
+                                    <td>0-0</td>
+                                </tr>
+                                <tr>
+                                    <td>1st</td>
+                                    <td>2:51</td>
+                                    <td>4th & 9</td>
+                                    <td>PSU 9</td>
+                                    <td>Field Goal</td>
+                                    <td>27 yd FG GOOD</td>
+                                    <td>3-0</td>
+                                </tr>
+                                <tr>
+                                    <td>2nd</td>
+                                    <td>0:03</td>
+                                    <td>4th & 9</td>
+                                    <td>PSU 16</td>
+                                    <td>Field Goal</td>
+                                    <td>34 yd FG GOOD</td>
+                                    <td>13-14</td>
+                                </tr>
+                                <tr>
+                                    <td>3rd</td>
+                                    <td>9:13</td>
+                                    <td>4th & 3</td>
+                                    <td>PSU 21</td>
+                                    <td>Punt</td>
+                                    <td>49 yd punt</td>
+                                    <td>13-14</td>
+                                </tr>
+                                <tr>
+                                    <td>3rd</td>
+                                    <td>6:19</td>
+                                    <td>4th & 3</td>
+                                    <td>NU 44</td>
+                                    <td>Punt</td>
+                                    <td>49 yd punt</td>
+                                    <td>13-14</td>
+                                </tr>
+                                <tr>
+                                    <td>3rd</td>
+                                    <td>0:30</td>
+                                    <td>4th & 8</td>
+                                    <td>NU 39</td>
+                                    <td>Punt</td>
+                                    <td>49 yd punt</td>
+                                    <td>13-14</td>
+                                </tr>
+                                <tr>
+                                    <td>4th</td>
+                                    <td>14:08</td>
+                                    <td>4th & 23</td>
+                                    <td>PSU 23</td>
+                                    <td>Field Goal</td>
+                                    <td>41 yd FG GOOD</td>
+                                    <td>16-14</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="team-fourth-down">
+                    <h3>Penn State 4th Down Decisions</h3>
+                    <div class="fourth-down-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Total 4th Downs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Field Goals</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Punts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Go For It</div>
+                        </div>
+                    </div>
+                    
+                    <div class="fourth-down-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Quarter</th>
+                                    <th>Clock</th>
+                                    <th>Down & Distance</th>
+                                    <th>Field Position</th>
+                                    <th>Decision</th>
+                                    <th>Result</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2nd</td>
+                                    <td>5:39</td>
+                                    <td>4th & 7</td>
+                                    <td>PSU 41</td>
+                                    <td>Punt</td>
+                                    <td>35 yd punt + fumble recovery</td>
+                                    <td>10-7</td>
+                                </tr>
+                                <tr class="go-for-it">
+                                    <td>2nd</td>
+                                    <td>1:19</td>
+                                    <td>4th & 2</td>
+                                    <td>NU 2</td>
+                                    <td>Go For It</td>
+                                    <td>2 yd TD run</td>
+                                    <td>10-14</td>
+                                </tr>
+                                <tr>
+                                    <td>3rd</td>
+                                    <td>12:15</td>
+                                    <td>4th & 8</td>
+                                    <td>PSU 44</td>
+                                    <td>Punt</td>
+                                    <td>54 yd punt</td>
+                                    <td>13-14</td>
+                                </tr>
+                                <tr>
+                                    <td>3rd</td>
+                                    <td>6:19</td>
+                                    <td>4th & 8</td>
+                                    <td>PSU 45</td>
+                                    <td>Punt</td>
+                                    <td>35 yd punt</td>
+                                    <td>13-14</td>
+                                </tr>
+                                <tr class="go-for-it">
+                                    <td>4th</td>
+                                    <td>3:00</td>
+                                    <td>4th & 3</td>
+                                    <td>PSU 32</td>
+                                    <td>Go For It</td>
+                                    <td>0 yards (failed)</td>
+                                    <td>22-21</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="takeaway">
+                <h4>🎯 4th Down Insights</h4>
+                <ul>
+                    <li><strong>Northwestern Conservative:</strong> 0 attempts to go for it, always punted or kicked FGs</li>
+                    <li><strong>Penn State Aggressive:</strong> 2 attempts to go for it (40% of 4th downs)</li>
+                    <li><strong>Northwestern Smart:</strong> Took points when available (3/3 FGs made)</li>
+                    <li><strong>Penn State Mixed Results:</strong> 1 TD conversion, 1 failed attempt</li>
+                    <li><strong>Field Position Matters:</strong> Northwestern punted from midfield, kicked FGs in red zone</li>
+                    <li><strong>Game Situation:</strong> Penn State's failed 4th down in 4th quarter was costly</li>
                 </ul>
             </div>
         </div>

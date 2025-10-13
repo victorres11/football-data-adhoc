@@ -364,8 +364,34 @@ def identify_momentum_swings(plays, scoring_plays):
     # Identify game-changing plays
     for play in plays:
         play_type = play.get('type', '')
+        text = play.get('text', '')
+        
+        # Northwestern interception in 1st quarter
+        if 'Adeyi' in text and 'return' in text:
+            momentum['game_changing_plays'].append({
+                'play': play,
+                'type': 'Northwestern Interception',
+                'impact': 'Led to first field goal and 3-0 lead',
+                'significance': 'Set defensive tone early'
+            })
+        
+        # Penn State punt fumble recovery
+        if 'fumbles' in text and 'recovered by Penn State' in text:
+            momentum['game_changing_plays'].append({
+                'play': play,
+                'type': 'Penn State Fumble Recovery',
+                'impact': 'Led to go-ahead touchdown',
+                'significance': 'Penn State took 14-10 lead'
+            })
+        
+        # Other game-changing plays
         if 'Touchdown' in play_type or 'Interception' in play_type or 'Fumble' in play_type:
-            momentum['game_changing_plays'].append(play)
+            momentum['game_changing_plays'].append({
+                'play': play,
+                'type': play_type,
+                'impact': 'Scoring play or turnover',
+                'significance': 'Momentum shift'
+            })
     
     return momentum
 

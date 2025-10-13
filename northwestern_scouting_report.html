@@ -399,21 +399,107 @@
     </div>
 
     <script>
-        // Load and display analysis data
-        async function loadAnalysisData() {
-            try {
-                const response = await fetch('data/northwestern/scouting_report.json');
-                const data = await response.json();
-                
-                displayPlayBreakdown(data.offensive_analysis.play_selection);
-                displayScoringDrives(data.offensive_analysis.scoring_drives);
-                displayQuarterAnalysis(data.game_narrative);
-                
-            } catch (error) {
-                console.error('Error loading analysis data:', error);
-                // Fallback to static content
-                displayStaticContent();
+        // Embedded analysis data
+        const analysisData = {
+            offensive_analysis: {
+                play_selection: {
+                    by_type: {
+                        "Kickoff": 4,
+                        "Rush": 42,
+                        "Pass Reception": 16,
+                        "Pass Incompletion": 10,
+                        "Punt": 3,
+                        "Sack": 2,
+                        "Field Goal Good": 3,
+                        "Passing Touchdown": 1,
+                        "Penalty": 1,
+                        "End Period": 1,
+                        "Rushing Touchdown": 1
+                    }
+                },
+                scoring_drives: [
+                    {
+                        description: "12 plays, 58 yards, 7:23",
+                        plays: 12,
+                        yards: 58,
+                        time_elapsed: "7:23",
+                        result: "FG",
+                        key_plays: [
+                            { text: "Joseph Himon II run for 6 yds to the NU 48 for a 1ST down", type: "Rush", yards: 6 },
+                            { text: "Jack Olsen 27 yd FG GOOD", type: "Field Goal Good", yards: 27 }
+                        ]
+                    },
+                    {
+                        description: "8 plays, 75 yards, 4:26",
+                        plays: 9,
+                        yards: 75,
+                        time_elapsed: "4:26",
+                        result: "TD",
+                        key_plays: [
+                            { text: "Preston Stone pass complete to Hayden Eligon II for 3 yds to the PSU 43 for a 1ST down Penn State Penalty, personal foul (Dejuan Lane) to the PSU 42 for a 1ST down", type: "Pass Reception", yards: 18 },
+                            { text: "Preston Stone pass complete to Joseph Himon II for 10 yds to the PSU 29 for a 1ST down", type: "Pass Reception", yards: 10 },
+                            { text: "Preston Stone pass complete to Griffin Wilde for 29 yds for a TD (Jack Olsen KICK)", type: "Passing Touchdown", yards: 29 }
+                        ]
+                    },
+                    {
+                        description: "12 plays, 59 yards, 1:16",
+                        plays: 13,
+                        yards: 59,
+                        time_elapsed: "1:16",
+                        result: "FG",
+                        key_plays: [
+                            { text: "Caleb Komolafe run for no gain to the NU 27 for a 1ST down Penn State Penalty, face mask (15 yards) (Zuriah Fisher) to the NU 42 for a 1ST down", type: "Rush", yards: 15 },
+                            { text: "Preston Stone pass complete to Joseph Himon II for 16 yds to the PSU 32 for a 1ST down", type: "Pass Reception", yards: 16 },
+                            { text: "J. Olsen 34 yd FG GOOD", type: "Field Goal Good", yards: 34 }
+                        ]
+                    },
+                    {
+                        description: "4 plays, -14 yards, 1:22",
+                        plays: 5,
+                        yards: -14,
+                        time_elapsed: "1:22",
+                        result: "FG",
+                        key_plays: [
+                            { text: "Jack Olsen 41 yd FG GOOD", type: "Field Goal Good", yards: 41 }
+                        ]
+                    },
+                    {
+                        description: "12 plays, 75 yards, 5:54",
+                        plays: 13,
+                        yards: 75,
+                        time_elapsed: "5:54",
+                        result: "TD",
+                        key_plays: [
+                            { text: "Preston Stone pass complete to Griffin Wilde for 16 yds to the NU 43 for a 1ST down", type: "Pass Reception", yards: 16 },
+                            { text: "Caleb Komolafe 9 Yd Run (Two-Point Run Conversion Failed)", type: "Rushing Touchdown", yards: 9 }
+                        ]
+                    }
+                ]
+            },
+            game_narrative: {
+                quarters: {
+                    1: { plays: 21, yards: 58, scores: [{ team: "Northwestern", play: "Jack Olsen 27 yd FG GOOD", type: "Field Goal Good" }] },
+                    2: { plays: 25, yards: 134, scores: [
+                        { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 2 yds for a TD", type: "Passing Touchdown" },
+                        { team: "Northwestern", play: "Preston Stone pass complete to Griffin Wilde for 29 yds for a TD", type: "Passing Touchdown" },
+                        { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 1 yd for a TD", type: "Passing Touchdown" },
+                        { team: "Northwestern", play: "J. Olsen 34 yd FG GOOD", type: "Field Goal Good" }
+                    ]},
+                    3: { plays: 18, yards: 45, scores: [] },
+                    4: { plays: 20, yards: 61, scores: [
+                        { team: "Northwestern", play: "Jack Olsen 41 yd FG GOOD", type: "Field Goal Good" },
+                        { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 1 yd for a TD", type: "Passing Touchdown" },
+                        { team: "Northwestern", play: "Caleb Komolafe 9 Yd Run", type: "Rushing Touchdown" }
+                    ]}
+                }
             }
+        };
+
+        // Load and display analysis data
+        function loadAnalysisData() {
+            displayPlayBreakdown(analysisData.offensive_analysis.play_selection);
+            displayScoringDrives(analysisData.offensive_analysis.scoring_drives);
+            displayQuarterAnalysis(analysisData.game_narrative);
         }
 
         function displayPlayBreakdown(playSelection) {

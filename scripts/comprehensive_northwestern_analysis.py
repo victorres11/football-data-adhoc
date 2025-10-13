@@ -303,7 +303,7 @@ def analyze_special_teams(plays):
     """Analyze special teams performance"""
     special_teams = {
         'field_goals': {'attempts': 0, 'made': 0, 'yards': []},
-        'punts': {'total': 0, 'inside_20': 0, 'yards': []},
+        'punts': {'total': 0, 'inside_20': 0, 'yards': [], 'blocked': 0},
         'kickoffs': {'total': 0, 'touchbacks': 0},
         'returns': {'punt': [], 'kickoff': []}
     }
@@ -322,6 +322,11 @@ def analyze_special_teams(plays):
         elif 'Punt' in play_type:
             special_teams['punts']['total'] += 1
             special_teams['punts']['yards'].append(yards)
+            
+            # Detect blocked punts (no gain on punt)
+            if yards == 0 and 'punt for no gain' in text:
+                special_teams['punts']['blocked'] += 1
+            
             if 'inside' in text.lower() and '20' in text:
                 special_teams['punts']['inside_20'] += 1
         
@@ -366,13 +371,13 @@ def identify_momentum_swings(plays, scoring_plays):
         play_type = play.get('type', '')
         text = play.get('text', '')
         
-        # Northwestern interception in 1st quarter
+        # Northwestern goal-line stand interception in 1st quarter
         if 'Adeyi' in text and 'return' in text:
             momentum['game_changing_plays'].append({
                 'play': play,
-                'type': 'Northwestern Interception',
-                'impact': 'Led to first field goal and 3-0 lead',
-                'significance': 'Set defensive tone early'
+                'type': 'Northwestern Goal-Line Stand INT',
+                'impact': 'Prevented Penn State score after blocked punt, led to first field goal',
+                'significance': 'Massive goal-line stand - turned potential 7-0 deficit into 3-0 lead'
             })
         
         # Penn State punt fumble recovery

@@ -1073,19 +1073,39 @@
             },
             game_narrative: {
                 quarters: {
-                    1: { plays: 21, yards: 58, scores: [{ team: "Northwestern", play: "Jack Olsen 27 yd FG GOOD", type: "Field Goal Good" }] },
-                    2: { plays: 25, yards: 134, scores: [
-                        { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 2 yds for a TD", type: "Passing Touchdown" },
-                        { team: "Northwestern", play: "Preston Stone pass complete to Griffin Wilde for 29 yds for a TD", type: "Passing Touchdown" },
-                        { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 1 yd for a TD", type: "Passing Touchdown" },
-                        { team: "Northwestern", play: "J. Olsen 34 yd FG GOOD", type: "Field Goal Good" }
-                    ]},
-                    3: { plays: 18, yards: 45, scores: [] },
-                    4: { plays: 20, yards: 61, scores: [
-                        { team: "Northwestern", play: "Jack Olsen 41 yd FG GOOD", type: "Field Goal Good" },
-                        { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 1 yd for a TD", type: "Passing Touchdown" },
-                        { team: "Northwestern", play: "Caleb Komolafe 9 Yd Run", type: "Rushing Touchdown" }
-                    ]}
+                    1: { 
+                        plays: 21, 
+                        yards: 58, 
+                        scores: [{ team: "Northwestern", play: "Jack Olsen 27 yd FG GOOD", type: "Field Goal Good" }],
+                        end_score: { "Northwestern": 3, "Penn State": 0 }
+                    },
+                    2: { 
+                        plays: 25, 
+                        yards: 134, 
+                        scores: [
+                            { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 2 yds for a TD", type: "Passing Touchdown" },
+                            { team: "Northwestern", play: "Preston Stone pass complete to Griffin Wilde for 29 yds for a TD", type: "Passing Touchdown" },
+                            { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 1 yd for a TD", type: "Passing Touchdown" },
+                            { team: "Northwestern", play: "J. Olsen 34 yd FG GOOD", type: "Field Goal Good" }
+                        ],
+                        end_score: { "Northwestern": 13, "Penn State": 14 }
+                    },
+                    3: { 
+                        plays: 18, 
+                        yards: 45, 
+                        scores: [],
+                        end_score: { "Northwestern": 13, "Penn State": 14 }
+                    },
+                    4: { 
+                        plays: 20, 
+                        yards: 61, 
+                        scores: [
+                            { team: "Northwestern", play: "Jack Olsen 41 yd FG GOOD", type: "Field Goal Good" },
+                            { team: "Penn State", play: "Drew Allar pass complete to Liam Clifford for 1 yd for a TD", type: "Passing Touchdown" },
+                            { team: "Northwestern", play: "Caleb Komolafe 9 Yd Run", type: "Rushing Touchdown" }
+                        ],
+                        end_score: { "Northwestern": 22, "Penn State": 21 }
+                    }
                 }
             }
         };
@@ -1162,7 +1182,7 @@
             const quarters = narrative.quarters;
             
             for (let quarter = 1; quarter <= 4; quarter++) {
-                const quarterData = quarters[quarter] || { plays: 0, yards: 0, scores: [] };
+                const quarterData = quarters[quarter] || { plays: 0, yards: 0, scores: [], end_score: { "Northwestern": 0, "Penn State": 0 } };
                 const quarterDiv = document.createElement('div');
                 quarterDiv.className = 'quarter-card';
                 quarterDiv.innerHTML = `
@@ -1171,6 +1191,10 @@
                         <div><strong>Plays:</strong> ${quarterData.plays}</div>
                         <div><strong>Yards:</strong> ${quarterData.yards}</div>
                         <div><strong>Scores:</strong> ${quarterData.scores.length}</div>
+                        <div style="margin-top: 8px; padding: 4px; background-color: #f8f9fa; border-radius: 4px; font-weight: bold; color: #4E2A84;">
+                            <div>End of Q${quarter}:</div>
+                            <div>Northwestern ${quarterData.end_score["Northwestern"]} - Penn State ${quarterData.end_score["Penn State"]}</div>
+                        </div>
                     </div>
                 `;
                 container.appendChild(quarterDiv);

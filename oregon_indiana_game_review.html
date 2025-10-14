@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oregon vs Indiana - Scouting Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #00A651 0%, #004225 50%, #00A651 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .game-info {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .final-score {
+            font-size: 2em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 20px 0;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin: 20px 0 15px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .team-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .oregon { color: #00A651; }
+        .indiana { color: #990000; }
+
+        .team-comparison {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px 120px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+            gap: 15px;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .team-stat {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .team-stat.indiana {
+            background: #990000;
+            color: white;
+        }
+
+        .team-stat.oregon {
+            background: #00A651;
+            color: white;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .conference-avg {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .offensive-comparison, .defensive-comparison {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 1fr 60px 60px 60px 60px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 2px solid #34495e;
+            gap: 15px;
+            background: #34495e;
+            color: white;
+            border-radius: 6px 6px 0 0;
+            margin: -20px -20px 10px -20px;
+            padding: 15px 20px;
+        }
+
+        .header-label {
+            font-size: 0.8em;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .offensive-comparison .comparison-row, .defensive-comparison .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 60px 60px 60px 60px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+            gap: 15px;
+        }
+
+        .offensive-comparison .comparison-row:last-child, .defensive-comparison .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .game-stat {
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            background: #3498db;
+            color: white;
+        }
+
+        .season-stat {
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            padding: 6px;
+            border-radius: 4px;
+            background: #2ecc71;
+            color: white;
+        }
+
+        .opponent-allowed, .opponent-gained {
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            padding: 6px;
+            border-radius: 4px;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .offensive-comparison .stat-label, .defensive-comparison .stat-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .offensive-comparison .conference-avg, .defensive-comparison .conference-avg {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .quarter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .quarter-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .quarter-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .play-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .play-type {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .play-type h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .percentage {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .insight-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .insight-box h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .turnover-highlight {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .explosive-play {
+            background: #f39c12;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .conference-note {
+            background: #95a5a6;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .key-player {
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .key-player h4 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .drive-breakdown {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .drive-result {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .negative-play {
+            color: #e74c3c;
+        }
+
+        .positive-play {
+            color: #27ae60;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .play-breakdown {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏈 Oregon vs Indiana Game Review</h1>
+            <div class="game-info">Game ID: 401752870 | September 14, 2024</div>
+            <p><strong>Result:</strong> Oregon suffered a disappointing 10-point loss to Indiana, falling to 5-1 on the season</p>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2>📊 Executive Summary</h2>
+            <p><strong>❌ Game Result:</strong> Oregon defeat 20-30 vs Indiana Hoosiers</p>
+            
+            <p><strong>Performance Overview:</strong> Oregon ran 64 offensive plays, averaging 2.7 yards per rush and 5.5 yards per pass attempt. 
+            The team generated 3 scoring drives and had a -1 turnover margin.</p>
+            
+            <p><strong>Key Strengths:</strong> efficient passing game, multiple scoring drives</p>
+            
+            <p><strong>Areas for Improvement:</strong> struggled to establish the run, lost the turnover battle</p>
+        </div>
+
+        <!-- Team Stats Comparison -->
+        <div class="section">
+            <h2>📊 Team Stats Comparison</h2>
+            <div class="team-comparison">
+                <div class="comparison-row">
+                    <div class="team-stat indiana">326</div>
+                    <div class="stat-label">Total Yards</div>
+                    <div class="team-stat oregon">267</div>
+                    <div class="conference-avg">Big Ten Avg: 408.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">23</div>
+                    <div class="stat-label">1st Downs</div>
+                    <div class="team-stat oregon">14</div>
+                    <div class="conference-avg">Big Ten Avg: 22.1</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">8-45</div>
+                    <div class="stat-label">Penalties</div>
+                    <div class="team-stat oregon">7-64</div>
+                    <div class="conference-avg">Big Ten Avg: 4.9-42.7</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">5-14</div>
+                    <div class="stat-label">3rd Downs</div>
+                    <div class="team-stat oregon">3-14</div>
+                    <div class="conference-avg">Big Ten Avg: 44.5%</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">0-1</div>
+                    <div class="stat-label">4th Downs</div>
+                    <div class="team-stat oregon">3-4</div>
+                    <div class="conference-avg">Big Ten Avg: 58.3%</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">33:10</div>
+                    <div class="stat-label">Possession</div>
+                    <div class="team-stat oregon">26:50</div>
+                    <div class="conference-avg">Big Ten Avg: N/A</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">111</div>
+                    <div class="stat-label">Rushing Yards</div>
+                    <div class="team-stat oregon">81</div>
+                    <div class="conference-avg">Big Ten Avg: 166.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">3.0</div>
+                    <div class="stat-label">Yards per Rush</div>
+                    <div class="team-stat oregon">2.7</div>
+                    <div class="conference-avg">Big Ten Avg: 4.70</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">215</div>
+                    <div class="stat-label">Passing Yards</div>
+                    <div class="team-stat oregon">186</div>
+                    <div class="conference-avg">Big Ten Avg: 242.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">6.9</div>
+                    <div class="stat-label">Yards per Pass</div>
+                    <div class="team-stat oregon">5.5</div>
+                    <div class="conference-avg">Big Ten Avg: 7.98</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="team-stat indiana">1</div>
+                    <div class="stat-label">Turnovers</div>
+                    <div class="team-stat oregon">2</div>
+                    <div class="conference-avg">Big Ten Avg: 0.9</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offensive Analysis -->
+        <div class="section">
+            <h2>⚡ Oregon Offensive Analysis</h2>
+            <div class="offensive-comparison">
+                <div class="comparison-header">
+                    <div class="stat-label">Stat</div>
+                    <div class="header-label">Game</div>
+                    <div class="header-label">Oregon Season</div>
+                    <div class="header-label">Indiana Allows</div>
+                    <div class="header-label">Big Ten Avg</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Total Yards</div>
+                    <div class="game-stat">267</div>
+                    <div class="season-stat">464.3</div>
+                    <div class="opponent-allowed">229.0</div>
+                    <div class="conference-avg">408.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Rushing Yards</div>
+                    <div class="game-stat">81</div>
+                    <div class="season-stat">213.0</div>
+                    <div class="opponent-allowed">86.8</div>
+                    <div class="conference-avg">166.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Passing Yards</div>
+                    <div class="game-stat">186</div>
+                    <div class="season-stat">251.3</div>
+                    <div class="opponent-allowed">142.2</div>
+                    <div class="conference-avg">242.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">3rd Down Rate</div>
+                    <div class="game-stat">21.4%</div>
+                    <div class="season-stat">45.3%</div>
+                    <div class="opponent-allowed">23.4%</div>
+                    <div class="conference-avg">44.5%</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Yards per Rush</div>
+                    <div class="game-stat">2.7</div>
+                    <div class="season-stat">5.78</div>
+                    <div class="opponent-allowed">3.12</div>
+                    <div class="conference-avg">4.70</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Yards per Pass</div>
+                    <div class="game-stat">5.5</div>
+                    <div class="season-stat">8.38</div>
+                    <div class="opponent-allowed">5.33</div>
+                    <div class="conference-avg">7.98</div>
+                </div>
+            </div>
+            <div class="insight-box">
+                <h3>Performance Analysis</h3>
+                <p><strong>Oregon's Offense:</strong> Significantly below season average (-197 yards, -132 rushing, -65 passing)</p>
+                <p><strong>vs Indiana Defense:</strong> Oregon gained 38 more yards than Indiana usually allows, but struggled in rushing</p>
+                <p><strong>vs Big Ten Average:</strong> Well below conference standards in all categories</p>
+            </div>
+        </div>
+
+        <!-- Defensive Analysis -->
+        <div class="section">
+            <h2>🛡️ Oregon Defensive Analysis</h2>
+            <div class="defensive-comparison">
+                <div class="comparison-header">
+                    <div class="stat-label">Stat</div>
+                    <div class="header-label">Game</div>
+                    <div class="header-label">Oregon Allows</div>
+                    <div class="header-label">Indiana Season</div>
+                    <div class="header-label">Big Ten Avg</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Total Yards Allowed</div>
+                    <div class="game-stat">326</div>
+                    <div class="season-stat">255.7</div>
+                    <div class="opponent-gained">514.3</div>
+                    <div class="conference-avg">408.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Rushing Yards Allowed</div>
+                    <div class="game-stat">111</div>
+                    <div class="season-stat">117.0</div>
+                    <div class="opponent-gained">253.2</div>
+                    <div class="conference-avg">166.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Passing Yards Allowed</div>
+                    <div class="game-stat">215</div>
+                    <div class="season-stat">138.7</div>
+                    <div class="opponent-gained">261.2</div>
+                    <div class="conference-avg">242.0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">3rd Down Rate Allowed</div>
+                    <div class="game-stat">35.7%</div>
+                    <div class="season-stat">31.2%</div>
+                    <div class="opponent-gained">54.1%</div>
+                    <div class="conference-avg">44.5%</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Yards per Rush Allowed</div>
+                    <div class="game-stat">3.0</div>
+                    <div class="season-stat">3.51</div>
+                    <div class="opponent-gained">6.10</div>
+                    <div class="conference-avg">4.70</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="stat-label">Yards per Pass Allowed</div>
+                    <div class="game-stat">6.9</div>
+                    <div class="season-stat">5.55</div>
+                    <div class="opponent-gained">9.38</div>
+                    <div class="conference-avg">7.98</div>
+                </div>
+            </div>
+            <div class="insight-box">
+                <h3>Performance Analysis</h3>
+                <p><strong>Oregon's Defense:</strong> Allowed 70 more yards than season average (+70 total, -6 rushing, +76 passing)</p>
+                <p><strong>vs Indiana Offense:</strong> Held Indiana to 188 yards below their season average</p>
+                <p><strong>vs Big Ten Average:</strong> Oregon defense performed well below conference average in yards allowed</p>
+            </div>
+        </div>
+
+        <!-- Play Selection Breakdown -->
+        <div class="section">
+            <h2>🎯 Play Selection Breakdown</h2>
+            <div class="play-breakdown">
+                <div class="play-type">
+                    <h4>Rush Offense</h4>
+                    <div class="percentage">46.9%</div>
+                    <p>30 attempts, 81 yards</p>
+                </div>
+                <div class="play-type">
+                    <h4>Pass Offense</h4>
+                    <div class="percentage">53.1%</div>
+                    <p>34 attempts, 186 yards</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Teams Notes -->
+        <div class="section">
+            <h2>🏈 Special Teams Notes</h2>
+            <div class="insight-box">
+                <h3>Field Goals</h3>
+                <p><strong>Oregon:</strong> 2/3 (40 yd GOOD, 36 yd MISSED, 33 yd GOOD)</p>
+                <p><strong>Indiana:</strong> 2/2 (42 yd GOOD, 22 yd GOOD)</p>
+            </div>
+            <div class="insight-box">
+                <h3>Punting</h3>
+                <p><strong>Oregon:</strong> 4 punts, 201 total yards (50.3 avg)</p>
+                <p><strong>Indiana:</strong> 6 punts, 233 total yards (38.8 avg)</p>
+            </div>
+            <div class="insight-box">
+                <h3>Returns</h3>
+                <p><strong>Oregon:</strong> 4 punt returns, 8 total yards</p>
+                <p><strong>Indiana:</strong> 1 punt return, 0 yards</p>
+            </div>
+        </div>
+
+        <!-- Game Narrative -->
+        <div class="section">
+            <h2>📈 Game Narrative</h2>
+            <div class="quarter-grid">
+                <div class="quarter-card">
+                    <div class="quarter-number">Q1</div>
+                    <div><strong>Plays:</strong> 16</div>
+                    <div><strong>Yards:</strong> 67</div>
+                    <div><strong>Scores:</strong> 2</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Indiana: 42 yd FG GOOD</div>
+                        <div style="color: #ddd;">Oregon: 44 yd TD pass</div>
+                        <div style="color: #ddd;">Indiana: 3 yd TD run</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>End Score:</strong> 10-7 Indiana</div>
+                </div>
+                <div class="quarter-card">
+                    <div class="quarter-number">Q2</div>
+                    <div><strong>Plays:</strong> 18</div>
+                    <div><strong>Yards:</strong> 89</div>
+                    <div><strong>Scores:</strong> 2</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Oregon: 40 yd FG GOOD</div>
+                        <div style="color: #ddd;">Indiana: 58 yd FG GOOD</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>End Score:</strong> 13-10 Indiana</div>
+                </div>
+                <div class="quarter-card">
+                    <div class="quarter-number">Q3</div>
+                    <div><strong>Plays:</strong> 15</div>
+                    <div><strong>Yards:</strong> 78</div>
+                    <div><strong>Scores:</strong> 2</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Oregon: 33 yd FG GOOD</div>
+                        <div style="color: #ddd;">Indiana: 2 yd TD run</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>End Score:</strong> 20-13 Indiana</div>
+                </div>
+                <div class="quarter-card">
+                    <div class="quarter-number">Q4</div>
+                    <div><strong>Plays:</strong> 15</div>
+                    <div><strong>Yards:</strong> 33</div>
+                    <div><strong>Scores:</strong> 4</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Oregon: 35 yd INT return TD</div>
+                        <div style="color: #ddd;">Indiana: 8 yd TD pass</div>
+                        <div style="color: #ddd;">Indiana: 22 yd FG GOOD</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>Final Score:</strong> 30-20 Indiana</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Players -->
+        <div class="section">
+            <h2>⭐ Key Players & Threats</h2>
+            <div class="key-player">
+                <h4>Dante Moore (QB)</h4>
+                <p><strong>Stats:</strong> 21/34, 186 yards, 1 TD, 2 INT</p>
+                <p><strong>Analysis:</strong> Struggled with accuracy and decision-making, particularly in the 4th quarter</p>
+            </div>
+            <div class="key-player">
+                <h4>Noah Whittington (RB)</h4>
+                <p><strong>Stats:</strong> 6 carries, 6 yards, 0 TDs</p>
+                <p><strong>Analysis:</strong> Limited production in the ground game</p>
+            </div>
+            <div class="key-player">
+                <h4>Malik Benson (WR)</h4>
+                <p><strong>Stats:</strong> 1 reception, 44 yards, 1 TD</p>
+                <p><strong>Analysis:</strong> Made the biggest play of the game with 44-yard TD catch</p>
+            </div>
+        </div>
+
+        <!-- Situational Football -->
+        <div class="section">
+            <h2>🎯 Situational Football Analysis</h2>
+            <div class="insight-box">
+                <h3>3rd Down Efficiency</h3>
+                <p><strong>Overall:</strong> 3/14 (21.4%)</p>
+                <p><strong>Short (1-3 yards):</strong> 1/3 conversions</p>
+                <p><strong>Medium (4-7 yards):</strong> 1/4 conversions</p>
+                <p><strong>Long (8+ yards):</strong> 1/7 conversions</p>
+            </div>
+            <div class="insight-box">
+                <h3>4th Down Decision Making</h3>
+                <p><strong>Oregon "Go For It" Attempts:</strong> 3</p>
+                <p><strong>Oregon Conversions:</strong> 3</p>
+                <p><strong>Oregon Conversion Rate:</strong> 100.0%</p>
+                <p><strong>Indiana "Go For It" Attempts:</strong> 1</p>
+                <p><strong>Indiana Conversions:</strong> 0</p>
+                <p><strong>Indiana Conversion Rate:</strong> 0.0%</p>
+            </div>
+            <div class="insight-box">
+                <h3>Red Zone Efficiency</h3>
+                <p><strong>Total Red Zone Trips:</strong> 3</p>
+                <p><strong>Touchdowns:</strong> 1</p>
+                <p><strong>Field Goals:</strong> 2</p>
+            </div>
+        </div>
+
+        <!-- 4th Down Tables -->
+        <div class="section">
+            <h2>📊 4th Down Analysis</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h3 class="oregon">Oregon 4th Down Attempts</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Q</th>
+                                <th>Clock</th>
+                                <th>Down & Distance</th>
+                                <th>Field Pos</th>
+                                <th>Decision</th>
+                                <th>Result</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td>14:26</td>
+                                <td>4th & 1</td>
+                                <td>ORE 46</td>
+                                <td>Go For It</td>
+                                <td>8 yd run, 1ST down</td>
+                                <td>10-7</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>9:18</td>
+                                <td>4th & 9</td>
+                                <td>IU 22</td>
+                                <td>Field Goal</td>
+                                <td>40 yd FG GOOD</td>
+                                <td>10-10</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>8:58</td>
+                                <td>4th & 9</td>
+                                <td>IU 37</td>
+                                <td>Go For It</td>
+                                <td>13 yd pass, 1ST down</td>
+                                <td>13-10</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>0:11</td>
+                                <td>4th & 1</td>
+                                <td>IU 40</td>
+                                <td>Go For It</td>
+                                <td>8 yd pass, 1ST down</td>
+                                <td>30-20</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3 class="indiana">Indiana 4th Down Attempts</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Q</th>
+                                <th>Clock</th>
+                                <th>Down & Distance</th>
+                                <th>Field Pos</th>
+                                <th>Decision</th>
+                                <th>Result</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>11:09</td>
+                                <td>4th & 1</td>
+                                <td>ORE 46</td>
+                                <td>Go For It</td>
+                                <td>0 yd run, no gain</td>
+                                <td>0-0</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>9:42</td>
+                                <td>4th & 12</td>
+                                <td>ORE 25</td>
+                                <td>Field Goal</td>
+                                <td>42 yd FG GOOD</td>
+                                <td>3-0</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>2:06</td>
+                                <td>4th & 3</td>
+                                <td>ORE 5</td>
+                                <td>Field Goal</td>
+                                <td>22 yd FG GOOD</td>
+                                <td>30-20</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explosive Plays -->
+        <div class="section">
+            <h2>💥 Explosive Plays Analysis</h2>
+            <div class="insight-box">
+                <h3>Big Plays (20+ yards)</h3>
+                <div class="explosive-play">
+                    <strong>Oregon:</strong> Dante Moore 44 yd TD pass to Malik Benson (Q1, 5:15)
+                </div>
+                <div class="explosive-play">
+                    <strong>Indiana:</strong> Fernando Mendoza 24 yd pass to Elijah Sarratt (Q1, 11:09)
+                </div>
+                <div class="explosive-play">
+                    <strong>Indiana:</strong> Jordon Davison 26 yd run (Q2, 14:26)
+                </div>
+                <div class="explosive-play">
+                    <strong>Indiana:</strong> Fernando Mendoza 22 yd pass to Roman Hemby (Q3, 2:16)
+                </div>
+                <div class="explosive-play">
+                    <strong>Indiana:</strong> Fernando Mendoza 29 yd pass to Elijah Sarratt (Q4, 6:23)
+                </div>
+                <div class="explosive-play">
+                    <strong>Oregon:</strong> Brandon Finney Jr. 35 yd INT return TD (Q4, 12:42)
+                </div>
+            </div>
+            <div class="insight-box">
+                <h3>Chunk Plays (10-19 yards)</h3>
+                <p><strong>Oregon:</strong> 8 chunk plays</p>
+                <p><strong>Indiana:</strong> 12 chunk plays</p>
+            </div>
+        </div>
+
+        <!-- Turnover Analysis -->
+        <div class="section">
+            <h2>🔄 Turnover Analysis</h2>
+            <div class="turnover-highlight">
+                <h3>Critical Turnovers</h3>
+                <p><strong>Q3, 5:40:</strong> Kaelon Black fumble recovered by Indiana (13-13 score)</p>
+                <p><strong>Q4, 12:42:</strong> Fernando Mendoza INT returned 35 yds for TD by Brandon Finney Jr. (20-20 score)</p>
+                <p><strong>Q4, 6:03:</strong> Dante Moore INT by Louis Moore (27-20 score)</p>
+                <p><strong>Q4, 2:01:</strong> Dante Moore INT by Isaiah Jones (30-20 score)</p>
+            </div>
+            <div class="insight-box">
+                <h3>Turnover Impact</h3>
+                <p><strong>Turnover Margin:</strong> Oregon -1 (2 giveaways, 1 takeaway)</p>
+                <p><strong>Game-Changing Play:</strong> Brandon Finney Jr.'s pick-6 tied the game at 20-20 in Q4</p>
+                <p><strong>Final Quarter Collapse:</strong> Oregon threw 2 interceptions in the final 6 minutes</p>
+            </div>
+        </div>
+
+        <!-- Game Script Analysis -->
+        <div class="section">
+            <h2>📊 Game Script Analysis</h2>
+            <div class="insight-box">
+                <h3>Time of Possession</h3>
+                <p><strong>Oregon:</strong> 26:50 (45.1%)</p>
+                <p><strong>Indiana:</strong> 33:10 (54.9%)</p>
+            </div>
+            <div class="insight-box">
+                <h3>Play Calling by Situation</h3>
+                <p><strong>When Leading:</strong> Conservative approach, focus on ball control</p>
+                <p><strong>When Trailing:</strong> Increased passing, more aggressive 4th down decisions</p>
+                <p><strong>When Tied:</strong> Balanced approach, situational awareness</p>
+            </div>
+        </div>
+
+        <!-- Season Performance Context -->
+        <div class="section">
+            <h2>📈 Season Performance Context</h2>
+            <div class="insight-box">
+                <h3>Big Ten Conference Averages (2025)</h3>
+                <p><strong>3rd Down Conversion Rate:</strong> 44.5%</p>
+                <p><strong>4th Down Conversion Rate:</strong> 58.3%</p>
+                <p><strong>Yards per Rush:</strong> 4.70</p>
+                <p><strong>Yards per Pass:</strong> 7.98</p>
+                <p><strong>Total Yards per Game:</strong> 408.0</p>
+                <p><strong>Turnover Margin:</strong> -1.8</p>
+            </div>
+            <div class="insight-box">
+                <h3>Game Context</h3>
+                <p><strong>Oregon Record:</strong> 5-1 (after this loss)</p>
+                <p><strong>Indiana Record:</strong> 6-0 (after this win)</p>
+                <p><strong>Season Significance:</strong> First loss for Oregon, first major test for Indiana</p>
+                <p><strong>Conference Impact:</strong> Oregon's offensive struggles significantly below Big Ten averages</p>
+            </div>
+        </div>
+
+        <!-- Comprehensive Game Takeaways -->
+        <div class="section">
+            <h2>🎯 Comprehensive Game Takeaways</h2>
+            <div class="insight-box">
+                <h3>Offensive Weaknesses</h3>
+                <p>• Inconsistent rushing attack (2.7 ypc)</p>
+                <p>• Poor 3rd down conversion rate (21.4%)</p>
+                <p>• Turnover-prone in critical moments</p>
+                <p>• Limited explosive play generation</p>
+            </div>
+            <div class="insight-box">
+                <h3>Defensive Tendencies</h3>
+                <p>• Vulnerable to big plays (6 explosive plays allowed)</p>
+                <p>• Struggled to get off field on 3rd down (35.7% allowed)</p>
+                <p>• Limited pass rush pressure</p>
+                <p>• Time of possession disadvantage</p>
+            </div>
+            <div class="insight-box">
+                <h3>Key Matchups to Exploit</h3>
+                <p>• Target secondary with deep passes</p>
+                <p>• Pressure quarterback in 4th quarter</p>
+                <p>• Control time of possession</p>
+                <p>• Force turnovers in critical situations</p>
+            </div>
+            <div class="insight-box">
+                <h3>Game Plan Recommendations</h3>
+                <p>• Establish run game early to set up play-action</p>
+                <p>• Improve 3rd down efficiency with shorter routes</p>
+                <p>• Protect the football in late-game situations</p>
+                <p>• Generate more pressure on opposing quarterback</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

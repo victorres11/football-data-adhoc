@@ -1583,7 +1583,18 @@
             const container = document.getElementById('playBreakdown');
             const playTypes = playSelection.by_type;
             
-            for (const [playType, count] of Object.entries(playTypes)) {
+            // Only show specific play types
+            const allowedPlayTypes = [
+                'Pass Reception',
+                'Pass Incompletion', 
+                'Sack',
+                'Passing Touchdown',
+                'Rush',
+                'Rushing Touchdown'
+            ];
+            
+            for (const playType of allowedPlayTypes) {
+                const count = playTypes[playType] || 0;
                 const playDiv = document.createElement('div');
                 playDiv.className = 'play-type';
                 playDiv.innerHTML = `

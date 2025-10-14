@@ -3,9 +3,19 @@
 ## Overview
 This document provides detailed instructions for generating comprehensive college football game reviews using the templated system. The goal is to create accurate, detailed, and professional game reviews that match the Oregon template structure with minimal revisions.
 
+## ⚠️ CRITICAL: Always Use 2025 Season Data
+
+**IMPORTANT:** All season statistics, player data, and conference averages must be sourced from the **2025 season**. Never use 2024 or any other year's data. This includes:
+- Player season statistics from CFBD API
+- Team season averages
+- Conference averages (Big Ten, etc.)
+- All comparative data
+
+**API Endpoints:** Always append `&year=2025` to CFBD API calls for season data.
+
 ## Data Sources
 - **Primary**: ESPN API (`https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event={game_id}`)
-- **Secondary**: CFBD API for conference averages and season statistics
+- **Secondary**: CFBD API for conference averages and season statistics (**MUST USE 2025**)
 - **Score Extraction**: `data['header']['competitions'][0]['competitors']`
 - **Play Data**: `data['drives']['previous']`
 - **Player Stats**: `data['boxscore']['teams']`
@@ -175,8 +185,10 @@ This document provides detailed instructions for generating comprehensive colleg
 ```html
 <div class="key-player">
     <h4>[Player Name] ([Position])</h4>
-    <p><strong>Stats:</strong> [detailed stats]</p>
-    <p><strong>Analysis:</strong> [performance analysis]</p>
+    <p><strong>Game Stats:</strong> [actual game statistics]</p>
+    <p><strong>Season Stats:</strong> [season averages from CFBD API - 2025 ONLY]</p>
+    <p><strong>Performance:</strong> <span style="color: #51cf66;">↑ Overperformed</span> / <span style="color: #ff6b6b;">↓ Underperformed</span></p>
+    <p><strong>Analysis:</strong> [detailed performance analysis]</p>
 </div>
 ```
 
@@ -185,6 +197,8 @@ This document provides detailed instructions for generating comprehensive colleg
 - Top rusher
 - Top receiver
 - Defensive standout
+
+**⚠️ CRITICAL:** Always use `&year=2025` in CFBD API calls for player season stats. Double-check that all season data is from 2025, not 2024.
 
 ### 10. Situational Football Analysis
 **Format**: Insight boxes for each situation

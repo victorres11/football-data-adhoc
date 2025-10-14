@@ -39,6 +39,9 @@ This document provides detailed instructions for generating comprehensive colleg
 - [ ] Possession times sum to 15:00 per quarter
 - [ ] Turnover counts match team statistics
 - [ ] 3rd/4th down conversion rates are calculated correctly
+- [ ] **Quarter-by-quarter scores are extracted from drives data**
+- [ ] **Running totals match final score**
+- [ ] **Defensive scores (INT TD, fumble returns) are included**
 - [ ] No placeholder text like "[To be filled from game data]"
 
 **FAILURE TO EXTRACT REAL DATA WILL RESULT IN INCOMPLETE REPORTS**
@@ -77,6 +80,46 @@ for team in teams:
 - **Yards Per Rush**: `rushing_yards / rushing_attempts`
 - **Yards Per Pass**: `passing_yards / pass_attempts`
 - **Possession Time**: Sum drive times by quarter
+- **Quarter-by-Quarter Scores**: Extract from drives data, track running totals
+
+### Step 2.5: Extract Quarter-by-Quarter Scoring (CRITICAL)
+```python
+# Extract quarter-by-quarter scores from drives
+quarter_scores = {1: {'team1': 0, 'team2': 0}, 2: {'team1': 0, 'team2': 0}, 3: {'team1': 0, 'team2': 0}, 4: {'team1': 0, 'team2': 0}}
+
+for drive in drives:
+    if drive.get('isScore', False):
+        team = drive.get('team', {}).get('displayName', '')
+        result = drive.get('result', '')
+        quarter = drive.get('end', {}).get('period', {}).get('number', 0)
+        
+        points = 7 if result == 'TD' else 3 if result == 'FG' else 0
+        if points > 0:
+            quarter_scores[quarter][team] += points
+
+# Calculate running totals
+running_totals = {1: {'team1': 0, 'team2': 0}, 2: {'team1': 0, 'team2': 0}, 3: {'team1': 0, 'team2': 0}, 4: {'team1': 0, 'team2': 0}}
+for q in [1, 2, 3, 4]:
+    running_totals[q]['team1'] = sum(quarter_scores[i]['team1'] for i in range(1, q+1))
+    running_totals[q]['team2'] = sum(quarter_scores[i]['team2'] for i in range(1, q+1))
+```
+
+### Step 2.6: Handle Defensive Scores (CRITICAL)
+```python
+# Check for defensive scores (INT TD, fumble returns, etc.)
+for drive in drives:
+    if drive.get('isScore', False):
+        result = drive.get('result', '')
+        description = drive.get('description', '')
+        
+        # Handle defensive touchdowns
+        if 'INT TD' in description or 'fumble return' in description:
+            # Determine which team scored (opposite of drive team)
+            drive_team = drive.get('team', {}).get('displayName', '')
+            scoring_team = 'Team2' if 'Team1' in drive_team else 'Team1'
+            quarter = drive.get('end', {}).get('period', {}).get('number', 0)
+            quarter_scores[quarter][scoring_team] += 7
+```
 
 ### Step 3: Validate Data Before HTML Generation
 - Verify all numbers are realistic
@@ -93,6 +136,9 @@ for team in teams:
 - Generate HTML before extracting real data
 - Skip data validation steps
 - Use generic analysis without game-specific data
+- **Assume quarter-by-quarter scores without extracting from drives data**
+- **Ignore defensive scores (INT TD, fumble returns)**
+- **Use estimated game flow patterns**
 
 ### ✅ ALWAYS:
 - Extract real data from ESPN API first
@@ -101,6 +147,9 @@ for team in teams:
 - Calculate derived statistics accurately
 - Include specific game details in analysis
 - Validate possession times sum to 15:00 per quarter
+- **Extract quarter-by-quarter scores from drives data**
+- **Include defensive scores in quarter totals**
+- **Validate running totals match final score**
 
 ## Report Structure & Template
 

@@ -20,6 +20,88 @@ This document provides detailed instructions for generating comprehensive colleg
 - **Play Data**: `data['drives']['previous']`
 - **Player Stats**: `data['boxscore']['teams']`
 
+## ⚠️ MANDATORY: Extract Game Data First
+
+**CRITICAL REQUIREMENT:** Before generating any HTML content, you MUST extract and verify all game data from the ESPN API. Never use placeholder text or estimated values.
+
+### Required Data Extraction Steps:
+1. **Fetch Raw Game Data** from ESPN API
+2. **Extract Team Statistics** from `data['boxscore']['teams']`
+3. **Extract Drive Data** from `data['drives']['previous']`
+4. **Extract Player Leaders** from `data['leaders']`
+5. **Calculate Possession Times** from drive data
+6. **Extract Turnover Information** from team stats
+7. **Verify All Numbers** before populating HTML
+
+### Data Validation Checklist:
+- [ ] Final score matches ESPN data
+- [ ] Team stats (yards, downs, turnovers) are accurate
+- [ ] Possession times sum to 15:00 per quarter
+- [ ] Turnover counts match team statistics
+- [ ] 3rd/4th down conversion rates are calculated correctly
+- [ ] No placeholder text like "[To be filled from game data]"
+
+**FAILURE TO EXTRACT REAL DATA WILL RESULT IN INCOMPLETE REPORTS**
+
+## Data Extraction Workflow
+
+### Step 1: Fetch and Parse Game Data
+```python
+# Example data extraction workflow
+import requests
+import json
+
+# Fetch game data
+game_id = "401752864"
+url = f'https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event={game_id}'
+response = requests.get(url)
+data = response.json()
+
+# Extract team stats
+boxscore = data['boxscore']
+teams = boxscore['teams']
+
+for team in teams:
+    team_name = team['team']['displayName']
+    stats = team['statistics']
+    
+    # Extract key statistics
+    for stat in stats:
+        if stat['label'] in ['Total Yards', 'Rushing', 'Passing', '3rd down efficiency', '4th down efficiency', 'Turnovers']:
+            print(f"{team_name} {stat['label']}: {stat['displayValue']}")
+```
+
+### Step 2: Calculate Derived Statistics
+- **3rd Down Rate**: `conversions / attempts * 100`
+- **4th Down Rate**: `conversions / attempts * 100` (Go For It attempts only)
+- **Yards Per Rush**: `rushing_yards / rushing_attempts`
+- **Yards Per Pass**: `passing_yards / pass_attempts`
+- **Possession Time**: Sum drive times by quarter
+
+### Step 3: Validate Data Before HTML Generation
+- Verify all numbers are realistic
+- Check that possession times sum to 15:00 per quarter
+- Ensure turnover counts match team statistics
+- Confirm no placeholder text remains
+
+## Common Mistakes to Avoid
+
+### ❌ DO NOT:
+- Use placeholder text like "[To be filled from game data]"
+- Estimate or guess game statistics
+- Use 2024 data instead of 2025
+- Generate HTML before extracting real data
+- Skip data validation steps
+- Use generic analysis without game-specific data
+
+### ✅ ALWAYS:
+- Extract real data from ESPN API first
+- Verify all numbers before HTML generation
+- Use 2025 season data for comparisons
+- Calculate derived statistics accurately
+- Include specific game details in analysis
+- Validate possession times sum to 15:00 per quarter
+
 ## Report Structure & Template
 
 ### 1. Header Section

@@ -160,9 +160,15 @@ This document provides detailed instructions for generating comprehensive colleg
 - Total plays per quarter
 - Total yards per quarter
 - Number of scores per quarter
-- **Possession time by quarter** (calculate from drive durations)
+- **Possession time by quarter** (normalize drive durations to 15:00 per quarter total)
 - Actual scoring details (team, play description)
 - Score at end of each quarter
+
+**Possession Time Calculation**:
+- Get total game possession from boxscore (should equal 60:00 combined)
+- Calculate each team's percentage of total possession
+- For each quarter, normalize drive durations to ensure total equals 15:00
+- Formula: (team_drive_time / quarter_total_drive_time) × 15:00
 
 ### 9. Key Players & Threats
 **Format**: Individual player cards

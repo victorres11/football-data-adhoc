@@ -1227,7 +1227,6 @@
             displayGroupedPlayBreakdown();
             displayPlayBreakdown(analysisData.offensive_analysis.play_selection);
             displayScoringDrives(analysisData.offensive_analysis.scoring_drives);
-            displayQuarterAnalysis(analysisData.game_narrative);
         }
 
         function displayGroupedPlayBreakdown() {
@@ -1289,29 +1288,6 @@
             });
         }
 
-        function displayQuarterAnalysis(narrative) {
-            const container = document.getElementById('quarterAnalysis');
-            const quarters = narrative.quarters;
-            
-            for (let quarter = 1; quarter <= 4; quarter++) {
-                const quarterData = quarters[quarter] || { plays: 0, yards: 0, scores: [], end_score: { "Northwestern": 0, "Penn State": 0 } };
-                const quarterDiv = document.createElement('div');
-                quarterDiv.className = 'quarter-card';
-                quarterDiv.innerHTML = `
-                    <div class="quarter-number">Q${quarter}</div>
-                    <div style="margin-top: 10px;">
-                        <div><strong>Plays:</strong> ${quarterData.plays}</div>
-                        <div><strong>Yards:</strong> ${quarterData.yards}</div>
-                        <div><strong>Scores:</strong> ${quarterData.scores.length}</div>
-                        <div style="margin-top: 8px; padding: 4px; background-color: #f8f9fa; border-radius: 4px; font-weight: bold; color: #4E2A84;">
-                            <div>End of Q${quarter}:</div>
-                            <div>Northwestern ${quarterData.end_score["Northwestern"]} - Penn State ${quarterData.end_score["Penn State"]}</div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(quarterDiv);
-            }
-        }
 
         function displayStaticContent() {
             // Fallback content if data loading fails

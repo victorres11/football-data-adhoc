@@ -87,6 +87,7 @@ This document provides detailed instructions for generating comprehensive colleg
 - 3rd Down Rate
 - Yards per Rush
 - Yards per Pass
+- **4th Down Rate** (add this row to offensive analysis)
 
 **Color Coding**:
 - Blue: Game performance
@@ -115,23 +116,31 @@ This document provides detailed instructions for generating comprehensive colleg
 - 3rd Down Rate Allowed
 - Yards per Rush Allowed
 - Yards per Pass Allowed
+- **4th Down % Allowed** (add this row to defensive analysis)
 
 ### 6. Play Selection Breakdown
-**Format**: Side-by-side visual breakdown
+**Format**: JavaScript-populated breakdown with filtered play types
 ```html
-<div class="play-breakdown">
-    <div class="play-type">
-        <h4>Rush Offense</h4>
-        <div class="percentage">[percentage]%</div>
-        <p>[attempts] attempts, [yards] yards</p>
-    </div>
-    <div class="play-type">
-        <h4>Pass Offense</h4>
-        <div class="percentage">[percentage]%</div>
-        <p>[attempts] attempts, [yards] yards</p>
-    </div>
+<h3>📊 Play Selection Breakdown (Grouped)</h3>
+<div class="play-breakdown" id="groupedPlayBreakdown">
+    <!-- Will be populated by JavaScript -->
+</div>
+
+<h3>📊 Detailed Play Types</h3>
+<div class="play-breakdown" id="playBreakdown">
+    <!-- Will be populated by JavaScript -->
 </div>
 ```
+
+**JavaScript Filter**: Only show these play types in detailed breakdown:
+- Pass Reception
+- Pass Incompletion
+- Sack
+- Passing Touchdown
+- Rush
+- Rushing Touchdown
+
+**Remove**: Kickoff, Punt, Field Goal Good, Penalty, End Period
 
 ### 7. Special Teams Notes
 **Format**: Insight boxes for each category
@@ -269,25 +278,35 @@ This document provides detailed instructions for generating comprehensive colleg
 ```
 
 ### 14. Game Script Analysis
-**Format**: Insight boxes for analysis
+**Format**: Stats grid with play count captions
 ```html
-<div class="insight-box">
-    <h3>Time of Possession</h3>
-    <p><strong>[Team]:</strong> [time] ([percentage]%)</p>
-    <p><strong>[Opponent]:</strong> [time] ([percentage]%)</p>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">[percentage]%</div>
+        <div class="stat-label">Run When Leading</div>
+        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">[X] plays</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">[percentage]%</div>
+        <div class="stat-label">Run When Trailing</div>
+        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">[X] plays</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">[percentage]%</div>
+        <div class="stat-label">Run When Tied</div>
+        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">[X] plays</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">[time]</div>
+        <div class="stat-label">Time of Possession</div>
+    </div>
 </div>
 ```
 
+**Required**: Add play count captions below each percentage to show sample size
+
 ### 15. Season Performance Context
-**Format**: Conference averages and game context
-```html
-<div class="insight-box">
-    <h3>Big Ten Conference Averages (2025)</h3>
-    <p><strong>3rd Down Conversion Rate:</strong> [percentage]%</p>
-    <p><strong>4th Down Conversion Rate:</strong> [percentage]%</p>
-    <!-- Additional conference stats -->
-</div>
-```
+**⚠️ REMOVED**: This section should be omitted from new game reviews to streamline the page and avoid redundancy with the offensive/defensive analysis sections.
 
 ### 16. Comprehensive Game Takeaways
 **Format**: Multiple insight boxes
@@ -332,11 +351,60 @@ This document provides detailed instructions for generating comprehensive colleg
 4. **Explosive Plays**: Exclude field goals, punts, kickoffs
 5. **Season Averages**: Calculate per-game averages from season totals
 
+### Data Extraction & Calculation Details
+
+#### Game Stats Calculation
+- **Total Plays**: Count all offensive plays (exclude special teams)
+- **Rushing Yards**: Sum all rushing attempts from play-by-play
+- **Passing Yards**: Sum all passing completions from play-by-play
+- **3rd Down Rate**: (3rd down conversions) / (3rd down attempts) × 100
+- **4th Down Rate**: (4th down conversions) / (4th down "Go For It" attempts) × 100
+- **Yards per Rush**: Total rushing yards / total rushing attempts
+- **Yards per Pass**: Total passing yards / total pass attempts (including sacks)
+
+#### Season Stats from CFBD API
+- **Always use `&year=2025`** in API calls
+- **Calculate per-game averages**: Divide season totals by games played
+- **4th Down Stats**: Use `fourthDownConversions` / `fourthDowns` for rate
+- **Defensive Stats**: Use `*Opponent` fields (e.g., `totalYardsOpponent`)
+
+#### Conference Averages
+- **Source**: `big_ten_2025_stats.json` (pre-calculated)
+- **Use for**: All Big Ten Avg columns in comparison tables
+- **Format**: Per-game averages, not season totals
+
+#### Possession Time Calculation
+- **Method**: Analyze drive data from ESPN API
+- **Normalize**: Ensure each quarter totals 15:00 combined
+- **Formula**: Split cross-quarter drives based on clock times
+- **Validation**: Total game possession should equal 60:00
+
 ### Conference Data Integration
 - **Always attempt** to fetch conference averages via CFBD API
 - **Calculate per-game averages** from season totals (divide by games played)
 - **Include all available stats**: yards per rush/pass, 3rd down rates, etc.
 - **Mark clearly** when conference data is unavailable
+
+## Common Issues & Solutions
+
+### Data Issues
+- **"No offensive play data available"**: Check ESPN API response structure, may need to handle `$ref` links
+- **Incorrect team names**: ESPN API sometimes returns team IDs instead of names, map manually
+- **Missing possession times**: Calculate from drive data, normalize to 15:00 per quarter
+- **Wrong year data**: Always verify `&year=2025` in CFBD API calls
+- **Incomplete season stats**: Check if team has played enough games for meaningful averages
+
+### Structural Issues
+- **Duplicate sections**: Ensure only one Game Narrative, one Offensive Analysis, etc.
+- **Broken layouts**: Verify CSS classes match Oregon template exactly
+- **Missing sections**: Check that all required sections are present and in correct order
+- **Incorrect color coding**: Blue=game, Green=season, Red=opponent, Gray=conference
+
+### Content Issues
+- **Weak executive summary**: Include game result, key metrics, balanced analysis
+- **Missing 4th down data**: Extract from play-by-play, count only "Go For It" attempts
+- **Incorrect turnover analysis**: Verify actual turnovers from game data
+- **Generic insights**: Make analysis specific to the actual game performance
 
 ## Quality Checklist
 - [ ] Final score is accurate
@@ -350,6 +418,10 @@ This document provides detailed instructions for generating comprehensive colleg
 - [ ] All sections follow the template structure
 - [ ] No duplicate sections
 - [ ] No "No data available" messages
+- [ ] 4th down rate included in both offensive and defensive analysis
+- [ ] Play count captions added to Game Script Analysis percentages
+- [ ] Detailed play types filtered to only show key offensive plays
+- [ ] Season Performance Context section removed
 
 ## Workflow
 1. **Fetch Game Data**: ESPN API for play-by-play and boxscore

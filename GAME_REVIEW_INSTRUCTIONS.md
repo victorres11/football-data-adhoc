@@ -147,6 +147,7 @@ This document provides detailed instructions for generating comprehensive colleg
         <div><strong>Plays:</strong> [count]</div>
         <div><strong>Yards:</strong> [yards]</div>
         <div><strong>Scores:</strong> [count]</div>
+        <div><strong>Possession:</strong> [Team] [time], [Opponent] [time]</div>
         <div style="margin-top: 8px; font-size: 0.9em;">
             <div style="color: #ddd;">[Team]: [play description]</div>
         </div>
@@ -154,6 +155,14 @@ This document provides detailed instructions for generating comprehensive colleg
     </div>
 </div>
 ```
+
+**Required Data**:
+- Total plays per quarter
+- Total yards per quarter
+- Number of scores per quarter
+- **Possession time by quarter** (calculate from drive durations)
+- Actual scoring details (team, play description)
+- Score at end of each quarter
 
 ### 9. Key Players & Threats
 **Format**: Individual player cards

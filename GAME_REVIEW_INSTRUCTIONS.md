@@ -109,10 +109,75 @@ for play in drive['plays']:
 
 **If 3rd/4th down data is not available after debugging, DO NOT generate the report.**
 
+### Step 7.2: Create 4th Down Analysis Tables (REQUIRED)
+**Every game review MUST include comprehensive 4th down tables showing ALL attempts:**
+
+```python
+# Extract ALL 4th down attempts (including special teams)
+fourth_down_attempts = []
+for drive in drives:
+    if 'plays' in drive:
+        for play in drive['plays']:
+            start = play.get('start', {})
+            if start.get('down') == 4:
+                # Include ALL 4th down plays: Go For It, FGs, Punts, Penalties, Timeouts
+                play_info = {
+                    'quarter': play.get('period', {}).get('number'),
+                    'time': play.get('clock', {}).get('displayValue'),
+                    'down_distance': f"4th & {start.get('distance')}",
+                    'field_position': start.get('possessionText', ''),
+                    'description': play.get('text', ''),
+                    'yards': play.get('statYardage', 0),
+                    'result': determine_play_result(play)  # Conversion, FG, Punt, etc.
+                }
+                fourth_down_attempts.append(play_info)
+```
+
+**Required Table Structure:**
+- **Side-by-side tables** for both teams
+- **Columns**: Quarter, Time, Down & Distance, Field Position, Description, Yards, Result
+- **Color coding**: Green (conversions/FGs), Red (failures), Gray (punts), Yellow (FGs)
+- **Include ALL play types**: Go For It attempts, Field Goals, Punts, Penalties, Timeouts
+- **Summary line**: Breakdown by play type (e.g., "5 Go For It conversions, 2 FGs made, 2 punts")
+
+### Step 7.3: Create Explosive Plays Analysis Tables (REQUIRED)
+**Every game review MUST include explosive plays tables showing ALL 20+ yard plays:**
+
+```python
+# Extract explosive plays (20+ yards) from play-by-play
+explosive_plays = []
+for drive in drives:
+    if 'plays' in drive:
+        for play in drive['plays']:
+            yards = play.get('statYardage', 0)
+            if yards >= 20:
+                # Filter out special teams plays (punts, kickoffs, etc.)
+                play_type = play.get('type', {}).get('text', '')
+                if play_type not in ['Punt', 'Kickoff', 'Field Goal']:
+                    play_info = {
+                        'quarter': play.get('period', {}).get('number'),
+                        'time': play.get('clock', {}).get('displayValue'),
+                        'yards': yards,
+                        'description': play.get('text', '')
+                    }
+                    explosive_plays.append(play_info)
+```
+
+**Required Table Structure:**
+- **Side-by-side tables** for both teams
+- **Columns**: Quarter, Time, Yards, Description
+- **Include ALL 20+ yard plays** (rushing, passing, returns)
+- **Exclude special teams** (punts, kickoffs, field goals)
+- **Summary line**: Total count and percentage of offensive plays
+
 ### Data Validation Checklist:
 - [ ] Final score matches ESPN data
 - [ ] Team stats (yards, downs, turnovers) are accurate
 - [ ] Possession times sum to 15:00 per quarter
+- [ ] **4th Down Analysis Tables** include ALL attempts (Go For It, FGs, Punts, Penalties, Timeouts)
+- [ ] **Explosive Plays Tables** include ALL 20+ yard plays (excluding special teams)
+- [ ] Tables show side-by-side comparison with proper color coding
+- [ ] Summary lines show breakdown by play type
 - [ ] Turnover counts match team statistics
 - [ ] 3rd/4th down conversion rates are calculated correctly
 - [ ] **Quarter-by-quarter scores are extracted from drives data**
@@ -232,6 +297,8 @@ for drive in drives:
 - **Debug play-by-play data structure before switching to other sources**
 - **Check raw JSON structure when data extraction fails**
 - **Filter special teams plays from 4th down "Go For It" attempts**
+- **Create comprehensive 4th down tables showing ALL attempts (Go For It, FGs, Punts, Penalties, Timeouts)**
+- **Create explosive plays tables showing ALL 20+ yard plays (excluding special teams)**
 - Calculate derived statistics accurately
 - Include specific game details in analysis
 - Validate possession times sum to 15:00 per quarter

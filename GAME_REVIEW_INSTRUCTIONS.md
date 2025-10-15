@@ -24,6 +24,26 @@ This document provides detailed instructions for generating comprehensive colleg
 
 **CRITICAL REQUIREMENT:** Before generating any HTML content, you MUST extract and verify all game data from the ESPN API. Never use placeholder text or estimated values.
 
+## 🚫 NEVER USE ESTIMATES - DATA DRIVEN ONLY
+
+**ABSOLUTELY FORBIDDEN:** Never estimate, guess, or approximate any statistics. If data is not available from the API, either:
+1. **Find the correct API endpoint** that provides the data
+2. **Extract from a different data source** (play-by-play, drives, etc.)
+3. **Leave the field blank** with a note that data is unavailable
+4. **Do not generate the report** until all required data is available
+
+**Examples of what is FORBIDDEN:**
+- "Estimated 3rd down rate based on game outcome"
+- "Approximated possession times"
+- "Guessed turnover counts"
+- "Assumed play counts"
+
+**Examples of what is REQUIRED:**
+- Extract 3rd down conversions/attempts from actual play-by-play data
+- Calculate possession times from drive data with actual clock times
+- Count turnovers from actual game statistics
+- Count plays from actual play-by-play data
+
 ### Required Data Extraction Steps:
 1. **Fetch Raw Game Data** from ESPN API
 2. **Extract Team Statistics** from `data['boxscore']['teams']`
@@ -31,7 +51,35 @@ This document provides detailed instructions for generating comprehensive colleg
 4. **Extract Player Leaders** from `data['leaders']`
 5. **Calculate Possession Times** from drive data
 6. **Extract Turnover Information** from team stats
-7. **Verify All Numbers** before populating HTML
+7. **Extract 3rd/4th Down Data** from play-by-play or drives data
+8. **Verify All Numbers** before populating HTML
+
+### Step 7: Extract 3rd/4th Down Data (CRITICAL)
+**NEVER estimate 3rd/4th down rates.** You MUST extract this data from actual game data:
+
+```python
+# Method 1: From drives data
+for drive in drives:
+    if 'plays' in drive:
+        for play in drive['plays']:
+            if play.get('down') == 3:
+                # Count 3rd down attempts and conversions
+                
+# Method 2: From play-by-play data
+pbp_url = f'https://site.api.espn.com/apis/site/v2/sports/football/college-football/playbyplay?event={game_id}'
+pbp_data = requests.get(pbp_url).json()
+# Parse plays to count 3rd/4th down attempts and conversions
+
+# Method 3: From boxscore statistics
+for team in boxscore['teams']:
+    for stat in team['statistics']:
+        if stat['label'] == '3rd Down Conv.':
+            conversions = stat['displayValue']
+        elif stat['label'] == '3rd Downs':
+            attempts = stat['displayValue']
+```
+
+**If 3rd/4th down data is not available, DO NOT generate the report.**
 
 ### Data Validation Checklist:
 - [ ] Final score matches ESPN data
@@ -131,7 +179,7 @@ for drive in drives:
 
 ### ❌ DO NOT:
 - Use placeholder text like "[To be filled from game data]"
-- Estimate or guess game statistics
+- **Estimate or guess game statistics - NEVER USE ESTIMATES**
 - Use 2024 data instead of 2025
 - Generate HTML before extracting real data
 - Skip data validation steps
@@ -139,11 +187,18 @@ for drive in drives:
 - **Assume quarter-by-quarter scores without extracting from drives data**
 - **Ignore defensive scores (INT TD, fumble returns)**
 - **Use estimated game flow patterns**
+- **Estimate 3rd/4th down rates - extract from actual data**
+- **Guess possession times - calculate from drive data**
+- **Approximate any statistics - use real data only**
 
 ### ✅ ALWAYS:
 - Extract real data from ESPN API first
 - Verify all numbers before HTML generation
 - Use 2025 season data for comparisons
+- **Extract 3rd/4th down data from actual play-by-play or drives data**
+- **Calculate possession times from actual drive clock data**
+- **Count turnovers from actual game statistics**
+- **Use only verified, extracted data - NO ESTIMATES EVER**
 - Calculate derived statistics accurately
 - Include specific game details in analysis
 - Validate possession times sum to 15:00 per quarter

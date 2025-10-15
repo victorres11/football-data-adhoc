@@ -23,11 +23,11 @@ Leads to a Northwestern Posession in Low Redzone which leads to another northwes
 ## Drew allar knocked out for season
 
 ## Grunkmeyer forced into action on 4th & 3 with 3 minutes left in game. Gets absolutely smoked by defense
-![grunkmeyer_reaction](./images/northwestern/grunkmeyer_reaction.jpeg)
+<!-- Grunkmeyer image expired - need to re-upload -->
 
 
 ## Komolafe runs through Penn State's last chance to get the ball
-<!-- Komolafe image expired - need to re-upload -->
+![Komolafe_cli](./images/northwestern/komolafe_cli.jpeg)
 
 
 ### Other Miscellaneous game notes

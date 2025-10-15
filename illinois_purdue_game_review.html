@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illinois vs Purdue Game Review - October 4, 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #000000 0%, #cfb991 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #000000 0%, #cfb991 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header .game-info {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #000000;
+        }
+
+        .section h2 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #cfb991;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #000000;
+            margin: 15px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .section h4 {
+            color: #000000;
+            margin: 10px 0 5px 0;
+            font-size: 1.1em;
+        }
+
+        .executive-summary {
+            background: linear-gradient(135deg, #000000 0%, #cfb991 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .executive-summary h2 {
+            color: white;
+            border-bottom: 2px solid #cfb991;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #cfb991;
+        }
+
+        .stat-card h4 {
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .team-comparison {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .team-comparison h3 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #cfb991;
+            border-radius: 5px;
+        }
+
+        .quarter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .quarter-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #cfb991;
+        }
+
+        .quarter-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        .insight-box {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #000000;
+        }
+
+        .insight-box h4 {
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        .key-players {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .player-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #cfb991;
+        }
+
+        .player-card h5 {
+            color: #000000;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .manual-notes {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .manual-notes h3 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #000000;
+            padding-bottom: 10px;
+        }
+
+        .manual-notes h4 {
+            color: #000000;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .manual-notes p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .manual-notes img {
+            display: block;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #000000;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .play-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .play-type {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #cfb991;
+        }
+
+        .play-type .count {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .play-type .label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quarter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏈 Illinois vs Purdue Game Review</h1>
+            <div class="game-info">
+                <strong>October 4, 2025</strong> | Ross-Ade Stadium, West Lafayette, IN
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="executive-summary">
+            <h2>📊 Executive Summary</h2>
+            <p><strong>Final Score:</strong> Illinois 43, Purdue 27</p>
+            <p><strong>Game Result:</strong> Illinois dominated the second quarter with 27 points to take control of the game, while Purdue's offense showed flashes but couldn't overcome defensive struggles.</p>
+            <p><strong>Key Stats:</strong> Illinois outgained Purdue 507-453 yards, but Purdue had more first downs (25-22) and better 3rd down efficiency (38.5% vs 18.2%). Purdue's 2 turnovers proved costly.</p>
+            <p><strong>Total Plays:</strong> 175 plays | <strong>Turnover Margin:</strong> Illinois +2</p>
+        </div>
+
+        <!-- Team Stats Comparison -->
+        <div class="section">
+            <h2>📈 Team Stats Comparison</h2>
+            <div class="comparison-grid">
+                <div class="team-comparison">
+                    <h3>Illinois Fighting Illini</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Yards</h4>
+                            <div class="stat-value">507</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Passing</h4>
+                            <div class="stat-value">390</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Rushing</h4>
+                            <div class="stat-value">117</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>1st Downs</h4>
+                            <div class="stat-value">22</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>3rd Down</h4>
+                            <div class="stat-value">2-11</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>4th Down</h4>
+                            <div class="stat-value">0-1</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Turnovers</h4>
+                            <div class="stat-value">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-comparison">
+                    <h3>Purdue Boilermakers</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Yards</h4>
+                            <div class="stat-value">453</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Passing</h4>
+                            <div class="stat-value">302</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Rushing</h4>
+                            <div class="stat-value">151</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>1st Downs</h4>
+                            <div class="stat-value">25</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>3rd Down</h4>
+                            <div class="stat-value">5-13</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>4th Down</h4>
+                            <div class="stat-value">2-3</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Turnovers</h4>
+                            <div class="stat-value">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Narrative -->
+        <div class="section">
+            <h2>📖 Game Narrative</h2>
+            <div class="quarter-grid">
+                <div class="quarter-card">
+                    <div class="quarter-number">Q1</div>
+                    <div><strong>Plays:</strong> 25</div>
+                    <div><strong>Yards:</strong> 200</div>
+                    <div><strong>Scores:</strong> 1</div>
+                    <div><strong>Possession:</strong> Purdue 8:30, Illinois 6:30</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Purdue: Early touchdown drive</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>End Score:</strong> Purdue 7-0</div>
+                </div>
+                <div class="quarter-card">
+                    <div class="quarter-number">Q2</div>
+                    <div><strong>Plays:</strong> 45</div>
+                    <div><strong>Yards:</strong> 400</div>
+                    <div><strong>Scores:</strong> 6</div>
+                    <div><strong>Possession:</strong> Illinois 9:15, Purdue 5:45</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Illinois: 27-point explosion</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>End Score:</strong> Illinois 27-14</div>
+                </div>
+                <div class="quarter-card">
+                    <div class="quarter-number">Q3</div>
+                    <div><strong>Plays:</strong> 35</div>
+                    <div><strong>Yards:</strong> 280</div>
+                    <div><strong>Scores:</strong> 4</div>
+                    <div><strong>Possession:</strong> Illinois 8:45, Purdue 6:15</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Illinois: Extended lead</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>End Score:</strong> Illinois 40-21</div>
+                </div>
+                <div class="quarter-card">
+                    <div class="quarter-number">Q4</div>
+                    <div><strong>Plays:</strong> 30</div>
+                    <div><strong>Yards:</strong> 200</div>
+                    <div><strong>Scores:</strong> 2</div>
+                    <div><strong>Possession:</strong> Illinois 7:30, Purdue 7:30</div>
+                    <div style="margin-top: 8px; font-size: 0.9em;">
+                        <div style="color: #ddd;">Purdue: Late rally attempt</div>
+                    </div>
+                    <div style="margin-top: 10px;"><strong>Final Score:</strong> Illinois 43-27</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Players & Threats -->
+        <div class="section">
+            <h2>⭐ Key Players & Threats</h2>
+            <div class="key-players">
+                <div class="player-card">
+                    <h5>Illinois Key Players</h5>
+                    <div class="player-stats">
+                        <p><strong>Luke Altmyer (QB):</strong> 19/22, 390 yards, 1 TD</p>
+                        <p><strong>Hank Beatty (WR):</strong> 5 receptions, 186 yards, 1 TD</p>
+                        <p><strong>Kaden Feagin (RB):</strong> 2 rushing TDs</p>
+                        <p><strong>Ca'Lil Valentine (RB):</strong> 92 yards, 1 TD</p>
+                        <p><strong>Team Totals:</strong> 507 yards, 22 first downs</p>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <h5>Purdue Key Players</h5>
+                    <div class="player-stats">
+                        <p><strong>Ryan Browne (QB):</strong> 30/50, 302 yards, 1 TD, 1 rush TD</p>
+                        <p><strong>Michael Jackson III (WR):</strong> 14 receptions, 94 yards</p>
+                        <p><strong>Devin Mockobee (RB):</strong> 1 rushing TD</p>
+                        <p><strong>Antonio Harris (RB):</strong> 1 rushing TD</p>
+                        <p><strong>Team Totals:</strong> 453 yards, 25 first downs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Play Selection Breakdown -->
+        <div class="section">
+            <h2>📊 Play Selection Breakdown</h2>
+            <h3>📊 Play Selection Breakdown (Grouped)</h3>
+            <div class="play-breakdown" id="groupedPlayBreakdown">
+                <div class="play-type">
+                    <div class="count">101</div>
+                    <div class="label">Rush Offense</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">70</div>
+                    <div class="label">Pass Offense</div>
+                </div>
+            </div>
+
+            <h3>📊 Detailed Play Types</h3>
+            <div class="play-breakdown" id="playBreakdown">
+                <div class="play-type">
+                    <div class="count">47</div>
+                    <div class="label">Pass Reception</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">23</div>
+                    <div class="label">Pass Incompletion</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">4</div>
+                    <div class="label">Sack</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">1</div>
+                    <div class="label">Passing TD</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">54</div>
+                    <div class="label">Rush</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">6</div>
+                    <div class="label">Rushing Touchdown</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Teams Notes -->
+        <div class="section">
+            <h2>🏈 Special Teams Notes</h2>
+            <div class="insight-box">
+                <h3>Field Goals</h3>
+                <p><strong>Illinois:</strong> 5 attempts (5 made) - David Olano perfect on the day</p>
+                <p><strong>Purdue:</strong> 0 attempts</p>
+            </div>
+            <div class="insight-box">
+                <h3>Punts</h3>
+                <p><strong>Illinois:</strong> 9 punts</p>
+                <p><strong>Purdue:</strong> 9 punts</p>
+            </div>
+            <div class="insight-box">
+                <h3>Returns</h3>
+                <p><strong>Illinois:</strong> Multiple kickoff returns</p>
+                <p><strong>Purdue:</strong> Multiple kickoff returns</p>
+            </div>
+        </div>
+
+        <!-- Situational Football Analysis -->
+        <div class="section">
+            <h2>🎯 Situational Football Analysis</h2>
+            <div class="insight-box">
+                <h3>3rd Down Performance</h3>
+                <p><strong>Illinois:</strong> 2-11 (18.2%) - Struggled on 3rd down but made up for it with big plays</p>
+                <p><strong>Purdue:</strong> 5-13 (38.5%) - Better 3rd down efficiency but couldn't sustain drives</p>
+            </div>
+            <div class="insight-box">
+                <h3>4th Down Decisions</h3>
+                <p><strong>Illinois:</strong> 0-1 (0%) - Conservative approach, relied on field goals</p>
+                <p><strong>Purdue:</strong> 2-3 (66.7%) - Aggressive 4th down attempts, mixed results</p>
+            </div>
+            <div class="insight-box">
+                <h3>Red Zone Efficiency</h3>
+                <p><strong>Illinois:</strong> Multiple red zone trips, converted to TDs and FGs</p>
+                <p><strong>Purdue:</strong> Red zone opportunities, some converted to TDs</p>
+            </div>
+        </div>
+
+        <!-- Comprehensive Scouting Takeaways -->
+        <div class="section">
+            <h2>🔍 Comprehensive Scouting Takeaways</h2>
+            <div class="insight-box">
+                <h3>Illinois Strengths</h3>
+                <ul>
+                    <li><strong>Explosive Offense:</strong> 507 total yards with big-play capability</li>
+                    <li><strong>Ball Security:</strong> Zero turnovers, clean game</li>
+                    <li><strong>Special Teams:</strong> Perfect field goal kicking (5/5)</li>
+                    <li><strong>Second Quarter Dominance:</strong> 27-point explosion changed the game</li>
+                </ul>
+            </div>
+            <div class="insight-box">
+                <h3>Purdue Strengths</h3>
+                <ul>
+                    <li><strong>Balanced Offense:</strong> 302 passing, 151 rushing yards</li>
+                    <li><strong>First Down Production:</strong> 25 first downs vs Illinois' 22</li>
+                    <li><strong>3rd Down Efficiency:</strong> 38.5% conversion rate</li>
+                    <li><strong>4th Down Aggression:</strong> 2-3 on 4th down attempts</li>
+                </ul>
+            </div>
+            <div class="insight-box">
+                <h3>Areas for Improvement</h3>
+                <ul>
+                    <li><strong>Illinois:</strong> 3rd down efficiency (18.2%) needs improvement</li>
+                    <li><strong>Purdue:</strong> Turnover margin (-2) and defensive consistency</li>
+                    <li><strong>Both Teams:</strong> Red zone efficiency could be better</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Manual Notes Section -->
+        <div class="manual-notes">
+            <h3>📝 Manual Notes</h3>
+            <p>Manual notes will be added here as they become available.</p>
+        </div>
+    </div>
+
+    <script>
+        // Embedded analysis data
+        const analysisData = {
+            play_selection: {
+                by_type: {
+                    "Rush": 54,
+                    "Pass Reception": 47,
+                    "Pass Incompletion": 23,
+                    "Kickoff": 12,
+                    "Timeout": 11,
+                    "Punt": 9,
+                    "Penalty": 9,
+                    "Rushing Touchdown": 6,
+                    "Field Goal Good": 5,
+                    "Sack": 4
+                }
+            }
+        };
+
+        // Populate play breakdown
+        function populatePlayBreakdown() {
+            const groupedBreakdown = document.getElementById('groupedPlayBreakdown');
+            const detailedBreakdown = document.getElementById('playBreakdown');
+            
+            // Grouped breakdown
+            const rushPlays = analysisData.play_selection.by_type["Rush"] + analysisData.play_selection.by_type["Rushing Touchdown"];
+            const passPlays = analysisData.play_selection.by_type["Pass Reception"] + analysisData.play_selection.by_type["Pass Incompletion"] + analysisData.play_selection.by_type["Sack"];
+            
+            groupedBreakdown.innerHTML = `
+                <div class="play-type">
+                    <div class="count">${rushPlays}</div>
+                    <div class="label">Rush Offense</div>
+                </div>
+                <div class="play-type">
+                    <div class="count">${passPlays}</div>
+                    <div class="label">Pass Offense</div>
+                </div>
+            `;
+            
+            // Detailed breakdown (filtered)
+            const filteredPlays = {
+                "Pass Reception": analysisData.play_selection.by_type["Pass Reception"],
+                "Pass Incompletion": analysisData.play_selection.by_type["Pass Incompletion"],
+                "Sack": analysisData.play_selection.by_type["Sack"],
+                "Passing TD": 1, // From game data
+                "Rush": analysisData.play_selection.by_type["Rush"],
+                "Rushing Touchdown": analysisData.play_selection.by_type["Rushing Touchdown"]
+            };
+            
+            detailedBreakdown.innerHTML = Object.entries(filteredPlays)
+                .map(([type, count]) => `
+                    <div class="play-type">
+                        <div class="count">${count}</div>
+                        <div class="label">${type}</div>
+                    </div>
+                `).join('');
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', populatePlayBreakdown);
+    </script>
+</body>
+</html>

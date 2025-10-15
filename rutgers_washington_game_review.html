@@ -208,37 +208,35 @@
             margin-bottom: 10px;
         }
 
-        .play-type-grid {
+        .play-breakdown {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             margin: 20px 0;
         }
 
-        .play-type-card {
+        .play-type {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 8px;
-            text-align: center;
             border-left: 4px solid #CC0000;
         }
 
-        .play-type-percentage {
-            font-size: 1.5em;
+        .play-type h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .percentage {
+            font-size: 2em;
             font-weight: bold;
             color: #CC0000;
             margin-bottom: 5px;
         }
 
-        .play-type-label {
-            font-size: 0.9em;
+        .play-type p {
             color: #666;
-        }
-
-        .play-count-caption {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 5px;
+            margin: 0;
         }
 
         .key-player {
@@ -345,6 +343,10 @@
             
             .analysis-table {
                 font-size: 0.8em;
+            }
+            
+            .play-breakdown {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -627,37 +629,17 @@
 
         <!-- Play Selection Breakdown -->
         <div class="section">
-            <h2>📊 Play Selection Breakdown</h2>
-            <div class="play-type-grid">
-                <div class="play-type-card">
-                    <div class="play-type-percentage">30.4%</div>
-                    <div class="play-type-label">Pass Reception</div>
-                    <div class="play-count-caption">(14 plays)</div>
+            <h2>🎯 Play Selection Breakdown</h2>
+            <div class="play-breakdown">
+                <div class="play-type">
+                    <h4>Rush Offense</h4>
+                    <div class="percentage">35.1%</div>
+                    <p>27 attempts, 107 yards</p>
                 </div>
-                <div class="play-type-card">
-                    <div class="play-type-percentage">21.7%</div>
-                    <div class="play-type-label">Pass Incompletion</div>
-                    <div class="play-count-caption">(10 plays)</div>
-                </div>
-                <div class="play-type-card">
-                    <div class="play-type-percentage">4.3%</div>
-                    <div class="play-type-label">Sack</div>
-                    <div class="play-count-caption">(2 plays)</div>
-                </div>
-                <div class="play-type-card">
-                    <div class="play-type-percentage">2.2%</div>
-                    <div class="play-type-label">Passing TD</div>
-                    <div class="play-count-caption">(1 play)</div>
-                </div>
-                <div class="play-type-card">
-                    <div class="play-type-percentage">32.6%</div>
-                    <div class="play-type-label">Rush</div>
-                    <div class="play-count-caption">(15 plays)</div>
-                </div>
-                <div class="play-type-card">
-                    <div class="play-type-percentage">8.7%</div>
-                    <div class="play-type-label">Rushing Touchdown</div>
-                    <div class="play-count-caption">(4 plays)</div>
+                <div class="play-type">
+                    <h4>Pass Offense</h4>
+                    <div class="percentage">64.9%</div>
+                    <p>50 attempts, 386 yards</p>
                 </div>
             </div>
         </div>

@@ -20,7 +20,6 @@ Leads to a Northwestern Posession in Low Redzone which leads to another northwes
 ## Funky formation for 2 pt conversion (no good)
 ![2pt_attempt](./images/northwestern/2pt_attempt.gif)
 
-## Drew allar knocked out for season
 
 ## Grunkmeyer forced into action on 4th & 3 with 3 minutes left in game. Gets absolutely smoked by defense
 ![grunkmeyer_reaction](./images/northwestern/grunkmeyer_reaction.jpeg)
@@ -31,6 +30,7 @@ Leads to a Northwestern Posession in Low Redzone which leads to another northwes
 
 
 ### Other Miscellaneous game notes
+* Drew allar knocked out for season in a 4th quarter QB run
 * Run heavy northwestern offense. 
 * Love using multiple tight end sets. Use fullbacks and tightends interchangably 
 * Northwestern EDGE #4 Injury, not sure on his status for next game

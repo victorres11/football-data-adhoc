@@ -751,4 +751,59 @@ for drive in drives:
 
 ---
 
+## Step 8: Manual Notes Image Handling (CRITICAL)
+
+### MANDATORY: Permanent Image Storage Process
+
+**NEVER use temporary CleanShot URLs in production!** All images must be permanently stored in the repository to prevent expiration.
+
+### Required Steps for Manual Notes Images:
+
+1. **Create Team Image Directory:**
+   ```bash
+   mkdir -p images/[team_name]
+   ```
+
+2. **Download All Images:**
+   ```bash
+   # For each image URL in the manual notes file:
+   curl -o "images/[team_name]/[image_name].[ext]" "[cleanShot_url]"
+   ```
+
+3. **Update Manual Notes File:**
+   - Replace all CleanShot URLs with relative paths: `./images/[team_name]/[image_name].[ext]`
+   - Use descriptive filenames based on content
+
+4. **Update HTML File:**
+   - If manual notes are embedded in HTML, update image URLs there too
+   - Use relative paths: `./images/[team_name]/[image_name].[ext]`
+
+### Example Process:
+```bash
+# 1. Create directory
+mkdir -p images/purdue
+
+# 2. Download images
+curl -o "images/purdue/malachi_td_run.gif" "https://media.cleanshot.cloud/..."
+curl -o "images/purdue/wr_playing_defense.gif" "https://media.cleanshot.cloud/..."
+
+# 3. Update markdown file
+# Change: ![malachi_td_run](https://media.cleanshot.cloud/...)
+# To: ![malachi_td_run](./images/purdue/malachi_td_run.gif)
+```
+
+### Image Naming Convention:
+- Use descriptive names: `malachi_td_run.gif`, `wr_playing_defense.gif`
+- Keep original file extensions (.gif, .jpeg, .png)
+- Use lowercase with underscores for spaces
+
+### Quality Checklist for Manual Notes:
+- [ ] All images downloaded to `images/[team_name]/` directory
+- [ ] All CleanShot URLs replaced with relative paths
+- [ ] Images display correctly in both markdown and HTML
+- [ ] No expired image URLs remain
+- [ ] All images permanently hosted in repository
+
+---
+
 **Note**: This template structure ensures consistent, professional game reviews that can be easily replicated for any team and game.

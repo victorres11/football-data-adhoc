@@ -58,19 +58,18 @@ This document provides detailed instructions for generating comprehensive colleg
 **NEVER estimate 3rd/4th down rates.** You MUST extract this data from actual game data:
 
 ```python
-# Method 1: From drives data
+# Method 1: From drives data (PREFERRED)
 for drive in drives:
     if 'plays' in drive:
         for play in drive['plays']:
-            if play.get('down') == 3:
-                # Count 3rd down attempts and conversions
+            # Down/distance info is in play['start']['down'] and play['start']['distance']
+            start = play.get('start', {})
+            down = start.get('down')
+            distance = start.get('distance')
+            if down == 3 or down == 4:
+                # Count attempts and conversions
                 
-# Method 2: From play-by-play data
-pbp_url = f'https://site.api.espn.com/apis/site/v2/sports/football/college-football/playbyplay?event={game_id}'
-pbp_data = requests.get(pbp_url).json()
-# Parse plays to count 3rd/4th down attempts and conversions
-
-# Method 3: From boxscore statistics
+# Method 2: From boxscore statistics (BACKUP)
 for team in boxscore['teams']:
     for stat in team['statistics']:
         if stat['label'] == '3rd Down Conv.':
@@ -79,7 +78,36 @@ for team in boxscore['teams']:
             attempts = stat['displayValue']
 ```
 
-**If 3rd/4th down data is not available, DO NOT generate the report.**
+### Step 7.1: Debug Play-by-Play Data Issues (CRITICAL)
+**If you're having trouble extracting play-by-play data, ALWAYS debug first:**
+
+```python
+# DEBUG: Check raw play structure
+import json
+for drive in drives[:2]:  # Check first 2 drives
+    if 'plays' in drive:
+        for play in drive['plays'][:3]:  # Check first 3 plays
+            print("Raw play structure:")
+            print(json.dumps(play, indent=2))
+            print("---")
+            break
+        break
+
+# DEBUG: Check for down/distance in different locations
+for play in drive['plays']:
+    print(f"Play keys: {list(play.keys())}")
+    print(f"Start object: {play.get('start', {})}")
+    print(f"End object: {play.get('end', {})}")
+    # Down/distance is usually in play['start']['down'] and play['start']['distance']
+```
+
+**Common Issues:**
+- Down/distance info is in `play['start']['down']` and `play['start']['distance']`, NOT directly in play object
+- Team identification is in `play['teamParticipants']` with `type: 'offense'`
+- 4th down data includes special teams (punts, FGs) - filter these out for "Go For It" attempts
+- Always debug the raw data structure before assuming data format
+
+**If 3rd/4th down data is not available after debugging, DO NOT generate the report.**
 
 ### Data Validation Checklist:
 - [ ] Final score matches ESPN data
@@ -190,6 +218,8 @@ for drive in drives:
 - **Estimate 3rd/4th down rates - extract from actual data**
 - **Guess possession times - calculate from drive data**
 - **Approximate any statistics - use real data only**
+- **Switch to boxscore data without debugging play-by-play first**
+- **Assume play-by-play data structure without checking raw JSON**
 
 ### ✅ ALWAYS:
 - Extract real data from ESPN API first
@@ -199,6 +229,9 @@ for drive in drives:
 - **Calculate possession times from actual drive clock data**
 - **Count turnovers from actual game statistics**
 - **Use only verified, extracted data - NO ESTIMATES EVER**
+- **Debug play-by-play data structure before switching to other sources**
+- **Check raw JSON structure when data extraction fails**
+- **Filter special teams plays from 4th down "Go For It" attempts**
 - Calculate derived statistics accurately
 - Include specific game details in analysis
 - Validate possession times sum to 15:00 per quarter

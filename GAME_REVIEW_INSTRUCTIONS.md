@@ -563,4 +563,37 @@ for drive in drives:
 
 ---
 
+## Additional Critical Requirements
+
+### Conference Averages Calculation
+- **Big Ten Teams Only**: When calculating conference averages, filter to Big Ten teams only
+- **Teams Included**: Illinois, Indiana, Iowa, Maryland, Michigan, Michigan State, Minnesota, Nebraska, Northwestern, Ohio State, Penn State, Purdue, Rutgers, Wisconsin, Oregon, UCLA, USC, Washington
+- **Turnover Margin**: Always verify calculation - should be positive for Big Ten (+1.8 average)
+- **Data Source**: Use `big_ten_2025_stats.json` filtered to Big Ten teams only
+
+### Data Validation Requirements
+- **Quarter-by-Quarter Scores**: MUST extract from drives data, never estimate
+- **Defensive Scores**: Include INT TD, fumble returns in quarter totals
+- **Possession Times**: Must sum to 15:00 per quarter (account for cross-quarter drives)
+- **Turnover Counts**: Verify against team statistics
+- **Conference Averages**: Double-check calculations against raw data
+
+### Common Data Errors to Avoid
+- ❌ **DO NOT**: Use placeholder text like "[To be filled from game data]"
+- ❌ **DO NOT**: Estimate quarter-by-quarter scores without drives data
+- ❌ **DO NOT**: Include all FBS teams in Big Ten averages (use only 18 Big Ten teams)
+- ❌ **DO NOT**: Show negative turnover margin for Big Ten (+1.8 is correct)
+- ❌ **DO NOT**: Skip defensive scores in quarter totals
+
+### Final Quality Checklist
+- [ ] All quarter scores extracted from drives data
+- [ ] Defensive scores included in quarter totals
+- [ ] Possession times sum to 15:00 per quarter
+- [ ] Big Ten averages calculated from Big Ten teams only
+- [ ] Turnover margin shows +1.8 for Big Ten
+- [ ] No placeholder text remains
+- [ ] All game statistics match ESPN data
+
+---
+
 **Note**: This template structure ensures consistent, professional game reviews that can be easily replicated for any team and game.

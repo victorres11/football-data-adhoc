@@ -13,6 +13,7 @@ from analyze_4th_downs import analyze_4th_downs
 from analyze_post_turnover import analyze_post_turnover
 from analyze_special_teams import analyze_special_teams
 from analyze_red_zone import analyze_red_zone
+from analyze_situational_receiving import load_sis_data, analyze_situational_receiving
 
 
 def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir: str = "advanced_reports_yogi"):
@@ -47,6 +48,26 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     washington_games = get_game_list(washington_data)
     wisconsin_games = get_game_list(wisconsin_data)
     
+    # Load SIS data and analyze situational receiving stats
+    print("Loading SIS data...")
+    try:
+        sis_data = load_sis_data(f"{data_dir}/sis-data/washington_wisconsin_analysis_2025.json")
+        wash_situational = analyze_situational_receiving(sis_data, "Washington", washington_games)
+        wisc_situational = analyze_situational_receiving(sis_data, "Wisconsin", wisconsin_games)
+        print("SIS situational receiving data loaded successfully")
+    except Exception as e:
+        print(f"Warning: Could not load SIS data: {e}")
+        wash_situational = {
+            '3rd_down': {'total': {}, 'by_week': {}, 'last_3_games': {}, 'players': []},
+            'redzone': {'total': {}, 'by_week': {}, 'last_3_games': {}, 'players': []},
+            'game_mapping': {}
+        }
+        wisc_situational = {
+            '3rd_down': {'total': {}, 'by_week': {}, 'last_3_games': {}, 'players': []},
+            'redzone': {'total': {}, 'by_week': {}, 'last_3_games': {}, 'players': []},
+            'game_mapping': {}
+        }
+    
     # Serialize all analysis data for JavaScript
     all_data_json = json.dumps({
         'washington': {
@@ -57,6 +78,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             'turnover': wash_turnover,
             'specialteams': wash_st,
             'redzone': wash_redzone,
+            'situational': wash_situational,
             'games': washington_games,
             'all_plays': washington_data['all_plays']
         },
@@ -68,6 +90,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             'turnover': wisc_turnover,
             'specialteams': wisc_st,
             'redzone': wisc_redzone,
+            'situational': wisc_situational,
             'games': wisconsin_games,
             'all_plays': wisconsin_data['all_plays']
         }
@@ -86,7 +109,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Team Analysis - Washington vs Wisconsin</title>
-    <link rel="icon" href="https://bigten.org/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23002d72'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>B10</text></svg>" type="image/svg+xml">
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -435,7 +459,6 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             margin: 5px 0;
             line-height: 1.5;
         }}
-        }}
         
         .definition-box strong {{
             font-weight: 600;
@@ -446,6 +469,106 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             position: relative;
             height: 300px;
             margin-bottom: 30px;
+        }}
+        
+        /* SIS Data Section Styling - Option 4 Combination Approach */
+        .section.sis-section {{
+            background: #f8f9fa;
+            border: 2px dashed #6c757d;
+            border-radius: 8px;
+        }}
+        
+        .section.sis-section h2 {{
+            position: relative;
+            padding-right: 120px;
+        }}
+        
+        .sis-badge {{
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.6em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }}
+        
+        .section.sis-section .summary-card {{
+            border-color: #6c757d;
+            background: white;
+        }}
+        
+        .section.sis-section .summary-card:hover {{
+            border-color: #495057;
+            box-shadow: 0 2px 8px rgba(108, 117, 125, 0.15);
+        }}
+        
+        .sis-info-box {{
+            background: #e9ecef;
+            border-left: 4px solid #6c757d;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #495057;
+        }}
+        
+        .sis-info-box strong {{
+            color: #343a40;
+        }}
+        
+        /* Navigation Menu */
+        .nav-menu {{
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        
+        .nav-menu h2 {{
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }}
+        
+        .nav-links {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }}
+        
+        .nav-links a {{
+            display: block;
+            padding: 10px 15px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+            font-size: 0.95em;
+        }}
+        
+        .nav-links a:hover {{
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }}
         
         .dataTables_wrapper {{
@@ -502,6 +625,16 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         
         table tr.team-row:hover {{
             background-color: #f5f5f5;
+        }}
+        
+        /* Top 25 Big Ten Rank Highlighting */
+        table tr.top-25-rank {{
+            background-color: #e8f5e9 !important;
+            border-left: 3px solid #4caf50;
+        }}
+        
+        table tr.top-25-rank:hover {{
+            background-color: #c8e6c9 !important;
         }}
         
         /* Hide DataTables search and pagination */
@@ -588,6 +721,22 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         
         <div class="notice-banner">
             This analysis is best viewed on a computer or tablet. Mobile viewing may have limited functionality.
+        </div>
+        
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <h2>Quick Navigation</h2>
+            <ul class="nav-links">
+                <li><a href="#middleEightSection">Middle 8 Analysis</a></li>
+                <li><a href="#explosivePlaysSection">Explosive Plays</a></li>
+                <li><a href="#penaltySection">Penalty Analysis</a></li>
+                <li><a href="#fourthDownSection">4th Down Decisions</a></li>
+                <li><a href="#postTurnoverSection">Post Turnover</a></li>
+                <li><a href="#specialTeamsSection">Special Teams</a></li>
+                <li><a href="#redZoneSection">Red Zone / Green Zone</a></li>
+                <li><a href="#situationalReceivingSection">Situational Receiving</a></li>
+                <li><a href="#allPlaysSection">All Plays Browser</a></li>
+            </ul>
         </div>
         
         <!--
@@ -994,6 +1143,109 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
+        
+        <!-- Situational Receiving Analysis (SIS Data) -->
+        <div class="section sis-section" id="situationalReceivingSection">
+            <h2>Situational Receiving Analysis <span class="sis-badge">SIS</span></h2>
+            
+            <!-- 3rd Down Receiving -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.4em;">3rd Down Receiving</h3>
+                <div id="thirdDownSummary"></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div class="chart-container">
+                        <canvas id="thirdDownChartWash"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="thirdDownChartWisc"></canvas>
+                    </div>
+                </div>
+                <h3 style="margin-top: 30px; color: #4a90e2;">Washington</h3>
+                <table id="thirdDownTableWash" class="display">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Opponent</th>
+                            <th>Player</th>
+                            <th>Targets</th>
+                            <th>Receptions</th>
+                            <th>Reception %</th>
+                            <th>First Downs</th>
+                            <th>TDs</th>
+                            <th>Yards</th>
+                            <th>Big Ten Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <h3 style="margin-top: 30px; color: #c41e3a;">Wisconsin</h3>
+                <table id="thirdDownTableWisc" class="display">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Opponent</th>
+                            <th>Player</th>
+                            <th>Targets</th>
+                            <th>Receptions</th>
+                            <th>Reception %</th>
+                            <th>First Downs</th>
+                            <th>TDs</th>
+                            <th>Yards</th>
+                            <th>Big Ten Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            
+            <!-- Red Zone Receiving -->
+            <div style="margin-top: 50px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.4em;">Red Zone Receiving</h3>
+                <div id="redZoneReceivingSummary"></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div class="chart-container">
+                        <canvas id="redZoneReceivingChartWash"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="redZoneReceivingChartWisc"></canvas>
+                    </div>
+                </div>
+                <h3 style="margin-top: 30px; color: #4a90e2;">Washington</h3>
+                <table id="redZoneReceivingTableWash" class="display">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Opponent</th>
+                            <th>Player</th>
+                            <th>Targets</th>
+                            <th>Receptions</th>
+                            <th>Reception %</th>
+                            <th>TDs</th>
+                            <th>Yards</th>
+                            <th>Big Ten Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <h3 style="margin-top: 30px; color: #c41e3a;">Wisconsin</h3>
+                <table id="redZoneReceivingTableWisc" class="display">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Opponent</th>
+                            <th>Player</th>
+                            <th>Targets</th>
+                            <th>Receptions</th>
+                            <th>Reception %</th>
+                            <th>TDs</th>
+                            <th>Yards</th>
+                            <th>Big Ten Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
         
         <!-- All Plays Browser -->
@@ -2855,6 +3107,640 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }});
         }}
         
+        function populateSituationalReceiving() {{
+            const wash = allData.washington.situational;
+            const wisc = allData.wisconsin.situational;
+            
+            if (!wash || !wisc) {{
+                console.warn('Situational receiving data not available');
+                return;
+            }}
+            
+            // 3rd Down Summary
+            const wash3rd = wash['3rd_down'];
+            const wisc3rd = wisc['3rd_down'];
+            const thirdDownSummary = `
+                <div class="team-comparison">
+                    <div class="team-section washington">
+                        <h3>Washington</h3>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Total Targets</h3><div class="value">${{wash3rd.total.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Receptions</h3><div class="value">${{wash3rd.total.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Reception %</h3><div class="value">${{wash3rd.total.targets > 0 ? (wash3rd.total.receptions / wash3rd.total.targets * 100).toFixed(1) : 0}}%</div></div>
+                            <div class="summary-card"><h3>First Downs</h3><div class="value">${{wash3rd.total.first_downs || 0}}</div></div>
+                            <div class="summary-card"><h3>TDs</h3><div class="value">${{wash3rd.total.touchdowns || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Targets</h3><div class="value">${{wash3rd.last_3_games.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Receptions</h3><div class="value">${{wash3rd.last_3_games.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 First Downs</h3><div class="value">${{wash3rd.last_3_games.first_downs || 0}}</div></div>
+                        </div>
+                    </div>
+                    <div class="team-section wisconsin">
+                        <h3>Wisconsin</h3>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Total Targets</h3><div class="value">${{wisc3rd.total.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Receptions</h3><div class="value">${{wisc3rd.total.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Reception %</h3><div class="value">${{wisc3rd.total.targets > 0 ? (wisc3rd.total.receptions / wisc3rd.total.targets * 100).toFixed(1) : 0}}%</div></div>
+                            <div class="summary-card"><h3>First Downs</h3><div class="value">${{wisc3rd.total.first_downs || 0}}</div></div>
+                            <div class="summary-card"><h3>TDs</h3><div class="value">${{wisc3rd.total.touchdowns || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Targets</h3><div class="value">${{wisc3rd.last_3_games.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Receptions</h3><div class="value">${{wisc3rd.last_3_games.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 First Downs</h3><div class="value">${{wisc3rd.last_3_games.first_downs || 0}}</div></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('thirdDownSummary').innerHTML = thirdDownSummary;
+            
+            // 3rd Down Pie Charts - Target Distribution by Player
+            // Aggregate player targets across all games, including rankings
+            const washPlayerTargets = {{}};
+            const wiscPlayerTargets = {{}};
+            
+            // Also aggregate from players list to get rankings
+            const washPlayerRankings = {{}};
+            const wiscPlayerRankings = {{}};
+            for (const player of wash3rd.players || []) {{
+                const name = player.player || 'Unknown';
+                washPlayerRankings[name] = player.big_ten_rank;
+            }}
+            for (const player of wisc3rd.players || []) {{
+                const name = player.player || 'Unknown';
+                wiscPlayerRankings[name] = player.big_ten_rank;
+            }}
+            
+            for (const weekData of Object.values(wash3rd.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const name = player.player || 'Unknown';
+                    if (!washPlayerTargets[name]) {{
+                        washPlayerTargets[name] = {{ targets: 0, rank: washPlayerRankings[name] || null }};
+                    }}
+                    washPlayerTargets[name].targets += (player.targets || 0);
+                }}
+            }}
+            
+            for (const weekData of Object.values(wisc3rd.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const name = player.player || 'Unknown';
+                    if (!wiscPlayerTargets[name]) {{
+                        wiscPlayerTargets[name] = {{ targets: 0, rank: wiscPlayerRankings[name] || null }};
+                    }}
+                    wiscPlayerTargets[name].targets += (player.targets || 0);
+                }}
+            }}
+            
+            // Sort by targets and take top players (limit to top 8 for readability)
+            const washTopPlayers = Object.entries(washPlayerTargets)
+                .map(([name, data]) => [name, data.targets, data.rank])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            const wiscTopPlayers = Object.entries(wiscPlayerTargets)
+                .map(([name, data]) => [name, data.targets, data.rank])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            
+            // Washington pie chart
+            const ctx3rdWash = document.getElementById('thirdDownChartWash').getContext('2d');
+            if (charts.thirdDownWash) charts.thirdDownWash.destroy();
+            
+            const washColors = [
+                'rgba(74, 144, 226, 0.8)', 'rgba(74, 144, 226, 0.6)', 'rgba(74, 144, 226, 0.4)',
+                'rgba(54, 162, 235, 0.8)', 'rgba(54, 162, 235, 0.6)', 'rgba(54, 162, 235, 0.4)',
+                'rgba(153, 102, 255, 0.8)', 'rgba(153, 102, 255, 0.6)'
+            ];
+            
+            charts.thirdDownWash = new Chart(ctx3rdWash, {{
+                type: 'pie',
+                data: {{
+                    labels: washTopPlayers.map(p => p[0]),
+                    datasets: [{{
+                        data: washTopPlayers.map(p => p[1]),
+                        backgroundColor: washColors.slice(0, washTopPlayers.length),
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Washington - 3rd Down Target Distribution', font: {{ size: 14 }} }},
+                        legend: {{ 
+                            display: true,
+                            position: 'right',
+                            labels: {{
+                                font: {{ size: 11 }},
+                                padding: 12,
+                                generateLabels: function(chart) {{
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {{
+                                        return data.labels.map((label, i) => {{
+                                            const value = data.datasets[0].data[i];
+                                            const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            const rank = washTopPlayers[i][2];
+                                            const rankText = rank ? ` (Rank #${{rank}})` : '';
+                                            return {{
+                                                text: `${{label}}: ${{value}} (${{percentage}}%)${{rankText}}`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: data.datasets[0].borderColor,
+                                                lineWidth: data.datasets[0].borderWidth,
+                                                hidden: false,
+                                                index: i
+                                            }};
+                                        }});
+                                    }}
+                                    return [];
+                                }}
+                            }}
+                        }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+            
+            // Wisconsin pie chart
+            const ctx3rdWisc = document.getElementById('thirdDownChartWisc').getContext('2d');
+            if (charts.thirdDownWisc) charts.thirdDownWisc.destroy();
+            
+            const wiscColors = [
+                'rgba(196, 30, 58, 0.8)', 'rgba(196, 30, 58, 0.6)', 'rgba(196, 30, 58, 0.4)',
+                'rgba(220, 53, 69, 0.8)', 'rgba(220, 53, 69, 0.6)', 'rgba(220, 53, 69, 0.4)',
+                'rgba(255, 99, 132, 0.8)', 'rgba(255, 99, 132, 0.6)'
+            ];
+            
+            charts.thirdDownWisc = new Chart(ctx3rdWisc, {{
+                type: 'pie',
+                data: {{
+                    labels: wiscTopPlayers.map(p => p[0]),
+                    datasets: [{{
+                        data: wiscTopPlayers.map(p => p[1]),
+                        backgroundColor: wiscColors.slice(0, wiscTopPlayers.length),
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Wisconsin - 3rd Down Target Distribution', font: {{ size: 14 }} }},
+                        legend: {{ 
+                            display: true,
+                            position: 'right',
+                            labels: {{
+                                font: {{ size: 11 }},
+                                padding: 12,
+                                generateLabels: function(chart) {{
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {{
+                                        return data.labels.map((label, i) => {{
+                                            const value = data.datasets[0].data[i];
+                                            const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            const rank = wiscTopPlayers[i][2];
+                                            const rankText = rank ? ` (Rank #${{rank}})` : '';
+                                            return {{
+                                                text: `${{label}}: ${{value}} (${{percentage}}%)${{rankText}}`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: data.datasets[0].borderColor,
+                                                lineWidth: data.datasets[0].borderWidth,
+                                                hidden: false,
+                                                index: i
+                                            }};
+                                        }});
+                                    }}
+                                    return [];
+                                }}
+                            }}
+                        }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+            
+            // Create player ranking lookup from aggregated players
+            const wash3rdPlayerRankings = {{}};
+            for (const player of wash3rd.players || []) {{
+                wash3rdPlayerRankings[player.player || 'Unknown'] = {{ rank: player.big_ten_rank, isTop25: player.is_top_25 }};
+            }}
+            const wisc3rdPlayerRankings = {{}};
+            for (const player of wisc3rd.players || []) {{
+                wisc3rdPlayerRankings[player.player || 'Unknown'] = {{ rank: player.big_ten_rank, isTop25: player.is_top_25 }};
+            }}
+            
+            // 3rd Down Tables
+            const wash3rdTableData = [];
+            for (const [weekStr, weekData] of Object.entries(wash3rd.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
+                    const playerName = player.player || 'Unknown';
+                    const rankInfo = wash3rdPlayerRankings[playerName] || {{ rank: null, isTop25: false }};
+                    wash3rdTableData.push([
+                        parseInt(weekStr), weekData.opponent || '', playerName,
+                        player.targets || 0, player.receptions || 0, recPct + '%',
+                        player.first_downs || 0, player.touchdowns || 0, player.yards || 0,
+                        rankInfo.rank || ''
+                    ]);
+                }}
+            }}
+            wash3rdTableData.sort((a, b) => {{
+                if (a[0] !== b[0]) return a[0] - b[0];
+                return (b[3] || 0) - (a[3] || 0); // Sort by targets descending within week
+            }});
+            
+            const wisc3rdTableData = [];
+            for (const [weekStr, weekData] of Object.entries(wisc3rd.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
+                    const playerName = player.player || 'Unknown';
+                    const rankInfo = wisc3rdPlayerRankings[playerName] || {{ rank: null, isTop25: false }};
+                    wisc3rdTableData.push([
+                        parseInt(weekStr), weekData.opponent || '', playerName,
+                        player.targets || 0, player.receptions || 0, recPct + '%',
+                        player.first_downs || 0, player.touchdowns || 0, player.yards || 0,
+                        rankInfo.rank || ''
+                    ]);
+                }}
+            }}
+            wisc3rdTableData.sort((a, b) => {{
+                if (a[0] !== b[0]) return a[0] - b[0];
+                return (b[3] || 0) - (a[3] || 0);
+            }});
+            
+            // Get top 25 players for banner
+            const washTop25_3rd = wash3rd.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
+            const wiscTop25_3rd = wisc3rd.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
+            
+            if ($('#thirdDownTableWash').length) {{
+                if ($.fn.DataTable.isDataTable('#thirdDownTableWash')) $('#thirdDownTableWash').DataTable().destroy();
+                $('#thirdDownTableWash').DataTable({{
+                    data: wash3rdTableData,
+                    paging: false,
+                    searching: false,
+                    scrollY: '400px',
+                    scrollCollapse: true,
+                    columns: [
+                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                        {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                        {{ title: 'Big Ten Rank' }}
+                    ]
+                }});
+            }}
+            
+            if ($('#thirdDownTableWisc').length) {{
+                if ($.fn.DataTable.isDataTable('#thirdDownTableWisc')) $('#thirdDownTableWisc').DataTable().destroy();
+                $('#thirdDownTableWisc').DataTable({{
+                    data: wisc3rdTableData,
+                    paging: false,
+                    searching: false,
+                    scrollY: '400px',
+                    scrollCollapse: true,
+                    columns: [
+                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                        {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                        {{ title: 'Big Ten Rank' }}
+                    ]
+                }});
+            }}
+            
+            // Add top 25 banner for 3rd down
+            if (washTop25_3rd || wiscTop25_3rd) {{
+                let bannerHTML = '<div class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
+                const parts = [];
+                if (washTop25_3rd) parts.push(`Washington: ${{washTop25_3rd}}`);
+                if (wiscTop25_3rd) parts.push(`Wisconsin: ${{wiscTop25_3rd}}`);
+                bannerHTML += parts.join(' | ') + '</div>';
+                document.getElementById('thirdDownSummary').insertAdjacentHTML('afterend', bannerHTML);
+            }}
+            
+            // Red Zone Summary
+            const washRZ = wash.redzone;
+            const wiscRZ = wisc.redzone;
+            const redZoneSummary = `
+                <div class="team-comparison">
+                    <div class="team-section washington">
+                        <h3>Washington</h3>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Total Targets</h3><div class="value">${{washRZ.total.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Receptions</h3><div class="value">${{washRZ.total.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Reception %</h3><div class="value">${{washRZ.total.targets > 0 ? (washRZ.total.receptions / washRZ.total.targets * 100).toFixed(1) : 0}}%</div></div>
+                            <div class="summary-card"><h3>TDs</h3><div class="value">${{washRZ.total.touchdowns || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Targets</h3><div class="value">${{washRZ.last_3_games.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Receptions</h3><div class="value">${{washRZ.last_3_games.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 TDs</h3><div class="value">${{washRZ.last_3_games.touchdowns || 0}}</div></div>
+                        </div>
+                    </div>
+                    <div class="team-section wisconsin">
+                        <h3>Wisconsin</h3>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Total Targets</h3><div class="value">${{wiscRZ.total.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Receptions</h3><div class="value">${{wiscRZ.total.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Reception %</h3><div class="value">${{wiscRZ.total.targets > 0 ? (wiscRZ.total.receptions / wiscRZ.total.targets * 100).toFixed(1) : 0}}%</div></div>
+                            <div class="summary-card"><h3>TDs</h3><div class="value">${{wiscRZ.total.touchdowns || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Targets</h3><div class="value">${{wiscRZ.last_3_games.targets || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Receptions</h3><div class="value">${{wiscRZ.last_3_games.receptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 TDs</h3><div class="value">${{wiscRZ.last_3_games.touchdowns || 0}}</div></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('redZoneReceivingSummary').innerHTML = redZoneSummary;
+            
+            // Red Zone Pie Charts - Target Distribution by Player
+            // Aggregate player targets across all games, including rankings
+            const washRZPlayerTargets = {{}};
+            const wiscRZPlayerTargets = {{}};
+            
+            // Also aggregate from players list to get rankings
+            const washRZPlayerRankings = {{}};
+            const wiscRZPlayerRankings = {{}};
+            for (const player of washRZ.players || []) {{
+                const name = player.player || 'Unknown';
+                washRZPlayerRankings[name] = player.big_ten_rank;
+            }}
+            for (const player of wiscRZ.players || []) {{
+                const name = player.player || 'Unknown';
+                wiscRZPlayerRankings[name] = player.big_ten_rank;
+            }}
+            
+            for (const weekData of Object.values(washRZ.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const name = player.player || 'Unknown';
+                    if (!washRZPlayerTargets[name]) {{
+                        washRZPlayerTargets[name] = {{ targets: 0, rank: washRZPlayerRankings[name] || null }};
+                    }}
+                    washRZPlayerTargets[name].targets += (player.targets || 0);
+                }}
+            }}
+            
+            for (const weekData of Object.values(wiscRZ.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const name = player.player || 'Unknown';
+                    if (!wiscRZPlayerTargets[name]) {{
+                        wiscRZPlayerTargets[name] = {{ targets: 0, rank: wiscRZPlayerRankings[name] || null }};
+                    }}
+                    wiscRZPlayerTargets[name].targets += (player.targets || 0);
+                }}
+            }}
+            
+            // Sort by targets and take top players
+            const washRZTopPlayers = Object.entries(washRZPlayerTargets)
+                .map(([name, data]) => [name, data.targets, data.rank])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            const wiscRZTopPlayers = Object.entries(wiscRZPlayerTargets)
+                .map(([name, data]) => [name, data.targets, data.rank])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            
+            // Washington Red Zone pie chart
+            const ctxRZWash = document.getElementById('redZoneReceivingChartWash').getContext('2d');
+            if (charts.redZoneReceivingWash) charts.redZoneReceivingWash.destroy();
+            
+            charts.redZoneReceivingWash = new Chart(ctxRZWash, {{
+                type: 'pie',
+                data: {{
+                    labels: washRZTopPlayers.map(p => p[0]),
+                    datasets: [{{
+                        data: washRZTopPlayers.map(p => p[1]),
+                        backgroundColor: washColors.slice(0, washRZTopPlayers.length),
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Washington - Red Zone Target Distribution', font: {{ size: 14 }} }},
+                        legend: {{ 
+                            display: true,
+                            position: 'right',
+                            labels: {{
+                                font: {{ size: 11 }},
+                                padding: 12,
+                                generateLabels: function(chart) {{
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {{
+                                        return data.labels.map((label, i) => {{
+                                            const value = data.datasets[0].data[i];
+                                            const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            const rank = washRZTopPlayers[i][2];
+                                            const rankText = rank ? ` (Rank #${{rank}})` : '';
+                                            return {{
+                                                text: `${{label}}: ${{value}} (${{percentage}}%)${{rankText}}`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: data.datasets[0].borderColor,
+                                                lineWidth: data.datasets[0].borderWidth,
+                                                hidden: false,
+                                                index: i
+                                            }};
+                                        }});
+                                    }}
+                                    return [];
+                                }}
+                            }}
+                        }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+            
+            // Wisconsin Red Zone pie chart
+            const ctxRZWisc = document.getElementById('redZoneReceivingChartWisc').getContext('2d');
+            if (charts.redZoneReceivingWisc) charts.redZoneReceivingWisc.destroy();
+            
+            charts.redZoneReceivingWisc = new Chart(ctxRZWisc, {{
+                type: 'pie',
+                data: {{
+                    labels: wiscRZTopPlayers.map(p => p[0]),
+                    datasets: [{{
+                        data: wiscRZTopPlayers.map(p => p[1]),
+                        backgroundColor: wiscColors.slice(0, wiscRZTopPlayers.length),
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Wisconsin - Red Zone Target Distribution', font: {{ size: 14 }} }},
+                        legend: {{ 
+                            display: true,
+                            position: 'right',
+                            labels: {{
+                                font: {{ size: 11 }},
+                                padding: 12,
+                                generateLabels: function(chart) {{
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {{
+                                        return data.labels.map((label, i) => {{
+                                            const value = data.datasets[0].data[i];
+                                            const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            const rank = wiscRZTopPlayers[i][2];
+                                            const rankText = rank ? ` (Rank #${{rank}})` : '';
+                                            return {{
+                                                text: `${{label}}: ${{value}} (${{percentage}}%)${{rankText}}`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: data.datasets[0].borderColor,
+                                                lineWidth: data.datasets[0].borderWidth,
+                                                hidden: false,
+                                                index: i
+                                            }};
+                                        }});
+                                    }}
+                                    return [];
+                                }}
+                            }}
+                        }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+            
+            // Create player ranking lookup from aggregated players for Red Zone
+            const washRZPlayerRankingsTable = {{}};
+            for (const player of washRZ.players || []) {{
+                washRZPlayerRankingsTable[player.player || 'Unknown'] = {{ rank: player.big_ten_rank, isTop25: player.is_top_25 }};
+            }}
+            const wiscRZPlayerRankingsTable = {{}};
+            for (const player of wiscRZ.players || []) {{
+                wiscRZPlayerRankingsTable[player.player || 'Unknown'] = {{ rank: player.big_ten_rank, isTop25: player.is_top_25 }};
+            }}
+            
+            // Red Zone Tables
+            const washRZTableData = [];
+            for (const [weekStr, weekData] of Object.entries(washRZ.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
+                    const playerName = player.player || 'Unknown';
+                    const rankInfo = washRZPlayerRankingsTable[playerName] || {{ rank: null, isTop25: false }};
+                    washRZTableData.push([
+                        parseInt(weekStr), weekData.opponent || '', playerName,
+                        player.targets || 0, player.receptions || 0, recPct + '%',
+                        player.touchdowns || 0, player.yards || 0,
+                        rankInfo.rank || ''
+                    ]);
+                }}
+            }}
+            washRZTableData.sort((a, b) => {{
+                if (a[0] !== b[0]) return a[0] - b[0];
+                return (b[3] || 0) - (a[3] || 0);
+            }});
+            
+            const wiscRZTableData = [];
+            for (const [weekStr, weekData] of Object.entries(wiscRZ.by_week || {{}})) {{
+                for (const player of weekData.players || []) {{
+                    const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
+                    const playerName = player.player || 'Unknown';
+                    const rankInfo = wiscRZPlayerRankingsTable[playerName] || {{ rank: null, isTop25: false }};
+                    wiscRZTableData.push([
+                        parseInt(weekStr), weekData.opponent || '', playerName,
+                        player.targets || 0, player.receptions || 0, recPct + '%',
+                        player.touchdowns || 0, player.yards || 0,
+                        rankInfo.rank || ''
+                    ]);
+                }}
+            }}
+            wiscRZTableData.sort((a, b) => {{
+                if (a[0] !== b[0]) return a[0] - b[0];
+                return (b[3] || 0) - (a[3] || 0);
+            }});
+            
+            // Get top 25 players for banner
+            const washTop25_RZ = washRZ.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
+            const wiscTop25_RZ = wiscRZ.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
+            
+            if ($('#redZoneReceivingTableWash').length) {{
+                if ($.fn.DataTable.isDataTable('#redZoneReceivingTableWash')) $('#redZoneReceivingTableWash').DataTable().destroy();
+                $('#redZoneReceivingTableWash').DataTable({{
+                    data: washRZTableData,
+                    paging: false,
+                    searching: false,
+                    scrollY: '400px',
+                    scrollCollapse: true,
+                    columns: [
+                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                        {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                        {{ title: 'Big Ten Rank' }}
+                    ]
+                }});
+            }}
+            
+            if ($('#redZoneReceivingTableWisc').length) {{
+                if ($.fn.DataTable.isDataTable('#redZoneReceivingTableWisc')) $('#redZoneReceivingTableWisc').DataTable().destroy();
+                $('#redZoneReceivingTableWisc').DataTable({{
+                    data: wiscRZTableData,
+                    paging: false,
+                    searching: false,
+                    scrollY: '400px',
+                    scrollCollapse: true,
+                    columns: [
+                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                        {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                        {{ title: 'Big Ten Rank' }}
+                    ]
+                }});
+            }}
+            
+            // Add top 25 banner for red zone
+            if (washTop25_RZ || wiscTop25_RZ) {{
+                let bannerHTML = '<div class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
+                const parts = [];
+                if (washTop25_RZ) parts.push(`Washington: ${{washTop25_RZ}}`);
+                if (wiscTop25_RZ) parts.push(`Wisconsin: ${{wiscTop25_RZ}}`);
+                bannerHTML += parts.join(' | ') + '</div>';
+                document.getElementById('redZoneReceivingSummary').insertAdjacentHTML('afterend', bannerHTML);
+            }}
+        }}
+        
         function populateAllSections() {{
             populateMiddleEight();
             populateExplosivePlays();
@@ -2863,6 +3749,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             populatePostTurnover();
             populateSpecialTeams();
             populateRedZone();
+            populateSituationalReceiving();
             populateAllPlaysBrowser();
         }}
         

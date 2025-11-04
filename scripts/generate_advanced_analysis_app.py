@@ -894,6 +894,9 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             <div class="definition-box">
                 <p><strong>Definition:</strong> Special teams encompasses kickoffs, punts, field goals, and returns. This analysis focuses on explosive special teams plays (35+ yard kick returns, 20+ yard punt returns) and explosive returns allowed by opponents. Special teams can swing field position and momentum, making it a critical phase of the game that often determines close contests.</p>
             </div>
+            <div class="notice-banner">
+                Note: Add blocks
+            </div>
             <div class="insight-box">
                 <h4>Key Insights:</h4>
                 <ul>

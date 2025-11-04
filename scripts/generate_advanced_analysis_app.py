@@ -898,6 +898,26 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             <div class="chart-container">
                 <canvas id="penaltyTrendChart"></canvas>
             </div>
+            
+            <!-- Additional Penalty Visualizations -->
+            <h3 style="margin-top: 40px; color: #667eea; font-size: 1.3em;">Penalty Breakdowns</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                <div class="chart-container">
+                    <canvas id="penaltyByQuarterChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="penaltyTypeChart"></canvas>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                <div class="chart-container">
+                    <canvas id="penaltyByDownChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="penaltyByHalfChart"></canvas>
+                </div>
+            </div>
+            
             <h3 style="margin-top: 30px; color: #4a90e2;">Washington</h3>
             <table id="penaltyTableWash" class="display">
                 <thead>
@@ -2364,6 +2384,160 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             }}
                         }}
                     }} 
+                }}
+            }});
+            
+            // Penalties by Quarter Chart
+            const washByQuarter = {{1: 0, 2: 0, 3: 0, 4: 0}};
+            const wiscByQuarter = {{1: 0, 2: 0, 3: 0, 4: 0}};
+            wash.plays.forEach(p => {{
+                const qtr = p.period || 0;
+                if (qtr >= 1 && qtr <= 4) washByQuarter[qtr]++;
+            }});
+            wisc.plays.forEach(p => {{
+                const qtr = p.period || 0;
+                if (qtr >= 1 && qtr <= 4) wiscByQuarter[qtr]++;
+            }});
+            
+            const ctxByQuarter = document.getElementById('penaltyByQuarterChart').getContext('2d');
+            if (charts.penaltyByQuarter) charts.penaltyByQuarter.destroy();
+            charts.penaltyByQuarter = new Chart(ctxByQuarter, {{
+                type: 'bar',
+                data: {{
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [
+                        {{ label: 'Washington', data: [washByQuarter[1], washByQuarter[2], washByQuarter[3], washByQuarter[4]], backgroundColor: 'rgba(74, 144, 226, 0.6)' }},
+                        {{ label: 'Wisconsin', data: [wiscByQuarter[1], wiscByQuarter[2], wiscByQuarter[3], wiscByQuarter[4]], backgroundColor: 'rgba(196, 30, 58, 0.6)' }}
+                    ]
+                }},
+                options: {{ 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Penalties by Quarter', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }}
+                    }},
+                    scales: {{ y: {{ beginAtZero: true }} }}
+                }}
+            }});
+            
+            // Penalty Type Breakdown
+            const washPenaltyTypes = {{}};
+            const wiscPenaltyTypes = {{}};
+            wash.plays.forEach(p => {{
+                const type = p.penalty_type || 'Unknown';
+                washPenaltyTypes[type] = (washPenaltyTypes[type] || 0) + 1;
+            }});
+            wisc.plays.forEach(p => {{
+                const type = p.penalty_type || 'Unknown';
+                wiscPenaltyTypes[type] = (wiscPenaltyTypes[type] || 0) + 1;
+            }});
+            
+            // Get top penalty types (combine both teams)
+            const allTypes = new Set([...Object.keys(washPenaltyTypes), ...Object.keys(wiscPenaltyTypes)]);
+            const topTypes = Array.from(allTypes)
+                .map(type => ({{
+                    type: type,
+                    wash: washPenaltyTypes[type] || 0,
+                    wisc: wiscPenaltyTypes[type] || 0,
+                    total: (washPenaltyTypes[type] || 0) + (wiscPenaltyTypes[type] || 0)
+                }}))
+                .sort((a, b) => b.total - a.total)
+                .slice(0, 8)
+                .map(t => t.type);
+            
+            const ctxType = document.getElementById('penaltyTypeChart').getContext('2d');
+            if (charts.penaltyType) charts.penaltyType.destroy();
+            charts.penaltyType = new Chart(ctxType, {{
+                type: 'bar',
+                data: {{
+                    labels: topTypes,
+                    datasets: [
+                        {{ label: 'Washington', data: topTypes.map(t => washPenaltyTypes[t] || 0), backgroundColor: 'rgba(74, 144, 226, 0.6)' }},
+                        {{ label: 'Wisconsin', data: topTypes.map(t => wiscPenaltyTypes[t] || 0), backgroundColor: 'rgba(196, 30, 58, 0.6)' }}
+                    ]
+                }},
+                options: {{ 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Penalties by Type (Top 8)', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }}
+                    }},
+                    scales: {{ 
+                        y: {{ beginAtZero: true }},
+                        x: {{ ticks: {{ maxRotation: 45, minRotation: 45 }} }}
+                    }}
+                }}
+            }});
+            
+            // Penalties by Down
+            const washByDown = {{1: 0, 2: 0, 3: 0, 4: 0}};
+            const wiscByDown = {{1: 0, 2: 0, 3: 0, 4: 0}};
+            wash.plays.forEach(p => {{
+                const down = p.down || 0;
+                if (down >= 1 && down <= 4) washByDown[down]++;
+            }});
+            wisc.plays.forEach(p => {{
+                const down = p.down || 0;
+                if (down >= 1 && down <= 4) wiscByDown[down]++;
+            }});
+            
+            const ctxByDown = document.getElementById('penaltyByDownChart').getContext('2d');
+            if (charts.penaltyByDown) charts.penaltyByDown.destroy();
+            charts.penaltyByDown = new Chart(ctxByDown, {{
+                type: 'bar',
+                data: {{
+                    labels: ['1st Down', '2nd Down', '3rd Down', '4th Down'],
+                    datasets: [
+                        {{ label: 'Washington', data: [washByDown[1], washByDown[2], washByDown[3], washByDown[4]], backgroundColor: 'rgba(74, 144, 226, 0.6)' }},
+                        {{ label: 'Wisconsin', data: [wiscByDown[1], wiscByDown[2], wiscByDown[3], wiscByDown[4]], backgroundColor: 'rgba(196, 30, 58, 0.6)' }}
+                    ]
+                }},
+                options: {{ 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Penalties by Down', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }}
+                    }},
+                    scales: {{ y: {{ beginAtZero: true }} }}
+                }}
+            }});
+            
+            // Penalties by Half
+            const washByHalf = {{first: 0, second: 0}};
+            const wiscByHalf = {{first: 0, second: 0}};
+            wash.plays.forEach(p => {{
+                const qtr = p.period || 0;
+                if (qtr <= 2) washByHalf.first++;
+                else if (qtr >= 3) washByHalf.second++;
+            }});
+            wisc.plays.forEach(p => {{
+                const qtr = p.period || 0;
+                if (qtr <= 2) wiscByHalf.first++;
+                else if (qtr >= 3) wiscByHalf.second++;
+            }});
+            
+            const ctxByHalf = document.getElementById('penaltyByHalfChart').getContext('2d');
+            if (charts.penaltyByHalf) charts.penaltyByHalf.destroy();
+            charts.penaltyByHalf = new Chart(ctxByHalf, {{
+                type: 'bar',
+                data: {{
+                    labels: ['First Half', 'Second Half'],
+                    datasets: [
+                        {{ label: 'Washington', data: [washByHalf.first, washByHalf.second], backgroundColor: 'rgba(74, 144, 226, 0.6)' }},
+                        {{ label: 'Wisconsin', data: [wiscByHalf.first, wiscByHalf.second], backgroundColor: 'rgba(196, 30, 58, 0.6)' }}
+                    ]
+                }},
+                options: {{ 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Penalties by Half', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }}
+                    }},
+                    scales: {{ y: {{ beginAtZero: true }} }}
                 }}
             }});
             

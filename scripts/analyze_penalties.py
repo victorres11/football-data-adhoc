@@ -61,6 +61,33 @@ def analyze_penalties(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         penalty_types[penalty_type] += 1
         penalty_decisions[decision] += 1
         
+        # Determine which team committed the penalty
+        offense_team = play.get('offense', '')
+        defense_team = play.get('defense', '')
+        team_committed = offense_team if play.get('offense', '').lower() == team_name.lower() else defense_team
+        
+        # Extract yard line
+        yard_line = play.get('yard_line', '')
+        yards_to_goal = play.get('yards_to_goal', '')
+        if yard_line and yard_line != 0:
+            # Convert to signed format (+ for opponent territory, - for own territory)
+            if yards_to_goal and yards_to_goal <= 50:
+                yard_line_display = f"+{yards_to_goal}" if yards_to_goal <= 50 else f"-{100 - yards_to_goal}"
+            else:
+                yard_line_display = str(yard_line)
+        else:
+            yard_line_display = ''
+        
+        # Get down and distance
+        down = play.get('down', '')
+        distance = play.get('distance', '')
+        down_distance = f"{down} & {distance}" if down and distance else ''
+        
+        # Get score if available
+        offense_score = play.get('offenseScore', 0)
+        defense_score = play.get('defenseScore', 0)
+        score_display = f"{offense_score}-{defense_score}" if offense_score is not None and defense_score is not None else ''
+        
         game_stats[game_id]['plays'].append({
             'game_id': play.get('game_id'),
             'game_week': play.get('game_week'),
@@ -70,8 +97,16 @@ def analyze_penalties(plays: List[Dict], team_name: str) -> Dict[str, Any]:
             'penalty_type': penalty_type,
             'penalty_decision': decision,
             'penalty_yards': penalty_yards,
+            'yards_gained': play.get('yards_gained', 0),  # Include for extraction
             'is_offense': play.get('offense', '').lower() == team_name.lower(),
-            'play_text': play.get('play_text', '')[:200]
+            'team_committed': team_committed,
+            'down': play.get('down', ''),  # Include down field
+            'distance': distance,
+            'down_distance': down_distance,
+            'yard_line': yard_line_display,
+            'score': score_display,
+            'offense': play.get('offense', ''),  # Include for table row highlighting
+            'play_text': play.get('play_text', '')
         })
     
     total_penalties = len(penalty_plays)

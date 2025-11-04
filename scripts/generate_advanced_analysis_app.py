@@ -3424,18 +3424,57 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const explosiveReturnsAllowed = opponentSTPlays.filter(p => isSpecialTeamsExplosive(p));
             
             // Count touchdowns on special teams
-            const tdsScored = ourSTPlays.filter(p => {{
+            // Important: For return TDs, the "offense" field is the team that punted/kicked,
+            // not the team that scored. We need to check all ST plays and determine who scored.
+            const tdsScored = stPlays.filter(p => {{
                 const scoring = p.scoring === true;
+                if (!scoring) return false;
+                
                 const playType = (p.play_type || '').toLowerCase();
                 const playText = (p.play_text || '').toLowerCase();
-                return scoring && (playType.includes('touchdown') || playText.includes('touchdown'));
+                const hasTD = playType.includes('touchdown') || playText.includes('touchdown') || playText.includes(' for a td');
+                
+                if (!hasTD) return false;
+                
+                // Check if this is a return TD (punt return or kickoff return)
+                const isReturnTD = (playType.includes('return') || playText.includes('return')) &&
+                                  (playType.includes('kickoff') || playText.includes('kickoff') ||
+                                   playType.includes('punt') || playText.includes('punt'));
+                
+                if (isReturnTD) {{
+                    // For return TDs: if opponent is on offense (they punted/kicked), 
+                    // then Washington scored on the return
+                    const isOpponentOffense = p.offense?.toLowerCase() !== teamName.toLowerCase();
+                    return isOpponentOffense;  // Opponent kicked, Washington returned for TD
+                }} else {{
+                    // For non-return TDs (like blocked punts run back), Washington on offense = their TD
+                    return p.offense?.toLowerCase() === teamName.toLowerCase();
+                }}
             }}).length;
             
-            const tdsAllowed = opponentSTPlays.filter(p => {{
+            const tdsAllowed = stPlays.filter(p => {{
                 const scoring = p.scoring === true;
+                if (!scoring) return false;
+                
                 const playType = (p.play_type || '').toLowerCase();
                 const playText = (p.play_text || '').toLowerCase();
-                return scoring && (playType.includes('touchdown') || playText.includes('touchdown'));
+                const hasTD = playType.includes('touchdown') || playText.includes('touchdown') || playText.includes(' for a td');
+                
+                if (!hasTD) return false;
+                
+                // Check if this is a return TD
+                const isReturnTD = (playType.includes('return') || playText.includes('return')) &&
+                                  (playType.includes('kickoff') || playText.includes('kickoff') ||
+                                   playType.includes('punt') || playText.includes('punt'));
+                
+                if (isReturnTD) {{
+                    // For return TDs: if Washington is on offense (they punted/kicked),
+                    // then opponent scored on the return (Washington allowed it)
+                    return p.offense?.toLowerCase() === teamName.toLowerCase();
+                }} else {{
+                    // For non-return TDs, opponent on offense = their TD
+                    return p.offense?.toLowerCase() !== teamName.toLowerCase();
+                }}
             }}).length;
             
             return {{

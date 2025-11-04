@@ -80,16 +80,60 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     explosive_returns_allowed = [p for p in opponent_st_plays if is_special_teams_explosive(p)]
     
     # Count touchdowns on special teams
-    tds_scored = [
-        p for p in our_st_plays
-        if p.get('scoring', False) and 
-        ('touchdown' in p.get('play_type', '').lower() or 'touchdown' in p.get('play_text', '').lower())
-    ]
-    tds_allowed = [
-        p for p in opponent_st_plays
-        if p.get('scoring', False) and 
-        ('touchdown' in p.get('play_type', '').lower() or 'touchdown' in p.get('play_text', '').lower())
-    ]
+    # Important: For return TDs, the "offense" field is the team that punted/kicked,
+    # not the team that scored. We need to check all ST plays and determine who scored.
+    tds_scored = []
+    for p in special_teams_plays:
+        if not p.get('scoring', False):
+            continue
+        play_type = p.get('play_type', '').lower()
+        play_text = p.get('play_text', '').lower()
+        has_td = 'touchdown' in play_type or 'touchdown' in play_text or ' for a td' in play_text
+        
+        if not has_td:
+            continue
+        
+        # Check if this is a return TD (punt return or kickoff return)
+        is_return_td = (('return' in play_type or 'return' in play_text) and
+                       ('kickoff' in play_type or 'kickoff' in play_text or
+                        'punt' in play_type or 'punt' in play_text))
+        
+        if is_return_td:
+            # For return TDs: if opponent is on offense (they punted/kicked),
+            # then our team scored on the return
+            is_opponent_offense = p.get('offense', '').lower() != team_name.lower()
+            if is_opponent_offense:
+                tds_scored.append(p)
+        else:
+            # For non-return TDs (like blocked punts run back), our team on offense = their TD
+            if p.get('offense', '').lower() == team_name.lower():
+                tds_scored.append(p)
+    
+    tds_allowed = []
+    for p in special_teams_plays:
+        if not p.get('scoring', False):
+            continue
+        play_type = p.get('play_type', '').lower()
+        play_text = p.get('play_text', '').lower()
+        has_td = 'touchdown' in play_type or 'touchdown' in play_text or ' for a td' in play_text
+        
+        if not has_td:
+            continue
+        
+        # Check if this is a return TD
+        is_return_td = (('return' in play_type or 'return' in play_text) and
+                       ('kickoff' in play_type or 'kickoff' in play_text or
+                        'punt' in play_type or 'punt' in play_text))
+        
+        if is_return_td:
+            # For return TDs: if our team is on offense (they punted/kicked),
+            # then opponent scored on the return (our team allowed it)
+            if p.get('offense', '').lower() == team_name.lower():
+                tds_allowed.append(p)
+        else:
+            # For non-return TDs, opponent on offense = their TD
+            if p.get('offense', '').lower() != team_name.lower():
+                tds_allowed.append(p)
     
     # Find bad results (Turnover OR Explosive Allowed)
     # For our plays: check if we had a turnover OR if opponent had explosive return

@@ -86,6 +86,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Team Analysis - Washington vs Wisconsin</title>
+    <link rel="icon" href="https://bigten.org/favicon.ico" type="image/x-icon">
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -584,6 +585,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             <h1>Advanced Team Analysis</h1>
             <p>Washington vs Wisconsin - Comprehensive Play-by-Play Analysis</p>
         </header>
+        
+        <div class="notice-banner">
+            This analysis is best viewed on a computer or tablet. Mobile viewing may have limited functionality.
+        </div>
         
         <!--
         <div class="filters">

@@ -523,52 +523,133 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             color: #343a40;
         }}
         
-        /* Navigation Menu */
+        /* Main Container with Sidebar */
+        body {{
+            margin: 0;
+            padding: 0;
+        }}
+        
+        .main-wrapper {{
+            display: flex;
+            min-height: 100vh;
+        }}
+        
+        /* Smooth Scrolling */
+        html {{
+            scroll-behavior: smooth;
+        }}
+        
+        /* Navigation Menu - Fixed Left Sidebar */
         .nav-menu {{
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: rgba(248, 249, 250, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #e0e0e0;
+            padding: 20px 15px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+        }}
+        
+        .nav-menu::-webkit-scrollbar {{
+            width: 6px;
+        }}
+        
+        .nav-menu::-webkit-scrollbar-track {{
+            background: transparent;
+        }}
+        
+        .nav-menu::-webkit-scrollbar-thumb {{
+            background: #ccc;
+            border-radius: 3px;
+        }}
+        
+        .nav-menu::-webkit-scrollbar-thumb:hover {{
+            background: #999;
         }}
         
         .nav-menu h2 {{
             margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-size: 1.1em;
             color: #667eea;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 8px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
         }}
         
         .nav-links {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
             list-style: none;
             padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }}
+        
+        .nav-links li {{
             margin: 0;
         }}
         
         .nav-links a {{
             display: block;
-            padding: 10px 15px;
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
+            padding: 10px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
             text-decoration: none;
-            color: #333;
+            color: #555;
             transition: all 0.2s ease;
-            font-size: 0.95em;
+            font-size: 0.9em;
+            font-weight: 400;
         }}
         
         .nav-links a:hover {{
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }}
+        
+        .nav-links a:active {{
+            background: rgba(102, 126, 234, 0.15);
+        }}
+        
+        .nav-links a.active {{
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+            font-weight: 500;
+        }}
+        
+        /* Content Area */
+        .content-area {{
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 20px 40px;
+        }}
+        
+        @media (max-width: 1024px) {{
+            .nav-menu {{
+                width: 200px;
+            }}
+            .content-area {{
+                margin-left: 200px;
+                width: calc(100% - 200px);
+                padding: 20px 30px;
+            }}
+        }}
+        
+        @media (max-width: 768px) {{
+            .nav-menu {{
+                display: none;
+            }}
+            .content-area {{
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }}
         }}
         
         .dataTables_wrapper {{
@@ -713,19 +794,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Advanced Team Analysis</h1>
-            <p>Washington vs Wisconsin - Comprehensive Play-by-Play Analysis</p>
-        </header>
-        
-        <div class="notice-banner">
-            This analysis is best viewed on a computer or tablet. Mobile viewing may have limited functionality.
-        </div>
-        
-        <!-- Navigation Menu -->
-        <div class="nav-menu">
-            <h2>Quick Navigation</h2>
+    <div class="main-wrapper">
+        <!-- Navigation Menu - Fixed Left Sidebar -->
+        <nav class="nav-menu">
+            <h2>Navigation</h2>
             <ul class="nav-links">
                 <li><a href="#middleEightSection">Middle 8 Analysis</a></li>
                 <li><a href="#explosivePlaysSection">Explosive Plays</a></li>
@@ -737,7 +809,19 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 <li><a href="#situationalReceivingSection">Situational Receiving</a></li>
                 <li><a href="#allPlaysSection">All Plays Browser</a></li>
             </ul>
-        </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <div class="container">
+                <header>
+                    <h1>Advanced Team Analysis</h1>
+                    <p>Washington vs Wisconsin - Comprehensive Play-by-Play Analysis</p>
+                </header>
+                
+                <div class="notice-banner">
+                    This analysis is best viewed on a computer or tablet. Mobile viewing may have limited functionality.
+                </div>
         
         <!--
         <div class="filters">
@@ -4630,12 +4714,62 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             populateAllSections();
         }}
         
+        // Update active navigation link on scroll
+        function updateActiveNavLink() {{
+            const sections = document.querySelectorAll('.section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let currentSection = '';
+            const scrollPosition = window.scrollY + 100;
+            
+            sections.forEach(section => {{
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {{
+                    currentSection = section.getAttribute('id');
+                }}
+            }});
+            
+            navLinks.forEach(link => {{
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === `#${{currentSection}}`) {{
+                    link.classList.add('active');
+                }}
+            }});
+        }}
+        
         // Initialize on load
         window.addEventListener('DOMContentLoaded', function() {{
             initializeFilters();
             populateAllSections();
+            updateActiveNavLink();
+            
+            // Smooth scroll for navigation links
+            document.querySelectorAll('.nav-links a').forEach(link => {{
+                link.addEventListener('click', function(e) {{
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {{
+                        const offset = 80;
+                        const targetPosition = targetElement.offsetTop - offset;
+                        window.scrollTo({{
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        }});
+                    }}
+                }});
+            }});
+            
+            // Update active link on scroll
+            window.addEventListener('scroll', updateActiveNavLink);
         }});
     </script>
+            </div> <!-- End container -->
+        </div> <!-- End content-area -->
+    </div> <!-- End main-wrapper -->
 </body>
 </html>"""
     

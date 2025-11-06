@@ -161,6 +161,47 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             margin-bottom: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }}
+        
+        .header-badge {{
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: right;
+        }}
+        
+        .header-badge .made-by {{
+            font-size: 0.7em;
+            font-weight: 400;
+            text-transform: lowercase;
+            display: block;
+            margin-bottom: 2px;
+            opacity: 0.9;
+        }}
+        
+        .header-badge .company {{
+            text-transform: uppercase;
+            display: block;
+        }}
+        
+        @media (max-width: 768px) {{
+            .header-badge {{
+                position: static;
+                display: inline-block;
+                margin-top: 10px;
+                font-size: 0.75em;
+                padding: 6px 12px;
+                text-align: center;
+            }}
         }}
         
         h1 {{
@@ -964,6 +1005,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 <header>
                     <h1>Advanced Team Analysis</h1>
                     <p>Washington vs Wisconsin - Comprehensive Play-by-Play Analysis</p>
+                    <div class="header-badge">
+                        <span class="made-by">made by</span>
+                        <span class="company">VT Sports Solutions</span>
+                    </div>
                 </header>
                 
                 <div class="notice-banner">

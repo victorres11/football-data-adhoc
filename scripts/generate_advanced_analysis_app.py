@@ -1498,6 +1498,9 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         <!-- Situational Receiving Analysis (SIS Data) -->
         <div class="section sis-section" id="situationalReceivingSection">
             <h2>Situational Receiving Analysis <span class="sis-badge">SIS</span></h2>
+            <div class="notice-banner" style="background-color: #fff3cd; border-left-color: #ffc107; color: #856404;">
+                <strong>Note:</strong> Filters do not currently work for this section. This section displays data for all games regardless of filter settings.
+            </div>
             
             <!-- 3rd Down Receiving -->
             <div style="margin-bottom: 40px;">
@@ -1610,7 +1613,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     
     <script>
         // Data from Python - All pre-computed analyses
-        const allData = {all_data_json};
+        const allData = JSON.parse({all_data_json!r});
         const washingtonPlays = {washington_plays_json};
         const wisconsinPlays = {wisconsin_plays_json};
         const washingtonGames = {washington_games_json};
@@ -4039,9 +4042,173 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             safeUpdateDataTable('#greenZoneTableWisc', wiscGreenTableData, wiscGreenZoneConfig);
         }}
         
+        function filterSituationalReceiving(situationalData, filters) {{
+            // Filter SIS situational receiving data based on filters
+            // Returns filtered copy of the data structure
+            if (!situationalData) return null;
+            
+            // Check if any filters are actually applied
+            const hasFilters = filters.conference_only || filters.non_conference_only || 
+                              filters.power4_only || filters.last_3_games;
+            
+            // If no filters, return original data (no need to recalculate)
+            if (!hasFilters) {{
+                return situationalData;
+            }}
+            
+            const filtered = JSON.parse(JSON.stringify(situationalData)); // Deep copy
+            
+            // Helper function to filter a situation (3rd_down or redzone)
+            function filterSituation(situation) {{
+                if (!situation || !situation.by_week) return situation;
+                
+                const filteredByWeek = {{}};
+                let filteredTotal = {{ targets: 0, receptions: 0, yards: 0, first_downs: 0, touchdowns: 0 }};
+                const filteredPlayers = {{}};
+                const filteredLast3Weeks = [];
+                
+                // Get last 3 game IDs if needed
+                let last3GameIds = [];
+                if (filters.last_3_games) {{
+                    // Get all unique game_ids from by_week, sorted by week
+                    const allWeeks = Object.keys(situation.by_week)
+                        .map(w => ({{
+                            week: parseInt(w),
+                            game_id: situation.by_week[w].game_id,
+                            week_str: w
+                        }}))
+                        .filter(w => w.game_id)
+                        .sort((a, b) => a.week - b.week);
+                    last3GameIds = allWeeks.slice(-3).map(w => w.game_id);
+                }}
+                
+                // Filter by_week entries
+                for (const [weekStr, weekData] of Object.entries(situation.by_week)) {{
+                    let include = true;
+                    
+                    // Filter by conference/non-conference/power4
+                    if (filters.conference_only) {{
+                        include = include && weekData.is_conference === true;
+                    }} else if (filters.non_conference_only) {{
+                        include = include && weekData.is_conference === false;
+                    }} else if (filters.power4_only) {{
+                        include = include && weekData.is_power4_opponent === true;
+                    }}
+                    
+                    // Filter by last 3 games
+                    if (filters.last_3_games) {{
+                        include = include && last3GameIds.includes(weekData.game_id);
+                    }}
+                    
+                    if (include) {{
+                        filteredByWeek[weekStr] = weekData;
+                        filteredLast3Weeks.push(parseInt(weekStr));
+                        
+                        // Aggregate totals
+                        const stats = weekData.stats || {{}};
+                        filteredTotal.targets += stats.targets || 0;
+                        filteredTotal.receptions += stats.receptions || 0;
+                        filteredTotal.yards += stats.yards || 0;
+                        if (situation === filtered['3rd_down']) {{
+                            filteredTotal.first_downs += stats.first_downs || 0;
+                            // Also add touchdowns from stats (may not be in player-level data)
+                            filteredTotal.touchdowns += stats.touchdowns || 0;
+                        }} else {{
+                            // For redzone, also add touchdowns from stats
+                            filteredTotal.touchdowns += stats.touchdowns || 0;
+                        }}
+                        
+                        // Aggregate player stats
+                        for (const player of weekData.players || []) {{
+                            const playerId = player.playerId;
+                            if (!filteredPlayers[playerId]) {{
+                                filteredPlayers[playerId] = {{
+                                    playerId: playerId,
+                                    player: player.player,
+                                    targets: 0,
+                                    receptions: 0,
+                                    yards: 0,
+                                    first_downs: 0,
+                                    touchdowns: 0,
+                                    big_ten_rank: player.big_ten_rank,
+                                    is_top_25: player.is_top_25
+                                }};
+                            }}
+                            filteredPlayers[playerId].targets += player.targets || 0;
+                            filteredPlayers[playerId].receptions += player.receptions || 0;
+                            filteredPlayers[playerId].yards += player.yards || 0;
+                            if (situation === filtered['3rd_down']) {{
+                                filteredPlayers[playerId].first_downs += player.first_downs || 0;
+                            }}
+                            filteredPlayers[playerId].touchdowns += player.touchdowns || 0;
+                        }}
+                    }}
+                }}
+                
+                // Calculate last 3 games stats
+                filteredLast3Weeks.sort((a, b) => a - b);
+                const last3 = filteredLast3Weeks.slice(-3);
+                const last3Targets = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.targets || 0), 0);
+                const last3Receptions = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.receptions || 0), 0);
+                const last3Yards = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.yards || 0), 0);
+                
+                let last3Extra = {{}};
+                if (situation === filtered['3rd_down']) {{
+                    const last3FirstDowns = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.first_downs || 0), 0);
+                    const last3Touchdowns = last3.reduce((sum, w) => 
+                        sum + (filteredByWeek[w.toString()]?.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0);
+                    last3Extra = {{ first_downs: last3FirstDowns, touchdowns: last3Touchdowns }};
+                }} else {{
+                    const last3Touchdowns = last3.reduce((sum, w) => 
+                        sum + (filteredByWeek[w.toString()]?.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0);
+                    last3Extra = {{ touchdowns: last3Touchdowns }};
+                }}
+                
+                // Sum player first downs for total (use player-level aggregation for accuracy)
+                if (situation === filtered['3rd_down']) {{
+                    filteredTotal.first_downs = Object.values(filteredPlayers).reduce((sum, p) => sum + p.first_downs, 0);
+                }}
+                // For touchdowns: 
+                // 1. First try stats.touchdowns sum (already calculated above)
+                // 2. If that's 0, try player-level sum
+                // 3. If both are 0 but original total had TDs, the weekly breakdown may be missing
+                //    In that case, we keep the stats sum (0) as it's the filtered subset
+                const playerTdSum = Object.values(filteredPlayers).reduce((sum, p) => sum + p.touchdowns, 0);
+                // Only use player-level sum if stats sum is 0 and player sum is > 0
+                if (filteredTotal.touchdowns === 0 && playerTdSum > 0) {{
+                    filteredTotal.touchdowns = playerTdSum;
+                }}
+                // Note: If both are 0, it means the filtered weeks genuinely have 0 TDs
+                // (even if the original total had TDs, those TDs were in weeks not included in the filter)
+                
+                return {{
+                    total: filteredTotal,
+                    by_week: filteredByWeek,
+                    last_3_games: {{
+                        targets: last3Targets,
+                        receptions: last3Receptions,
+                        yards: last3Yards,
+                        ...last3Extra
+                    }},
+                    players: Object.values(filteredPlayers).sort((a, b) => b.targets - a.targets)
+                }};
+            }}
+            
+            // Filter both situations
+            if (filtered['3rd_down']) {{
+                filtered['3rd_down'] = filterSituation(filtered['3rd_down']);
+            }}
+            if (filtered.redzone) {{
+                filtered.redzone = filterSituation(filtered.redzone);
+            }}
+            
+            return filtered;
+        }}
+        
         function populateSituationalReceiving() {{
-            const wash = allData.washington.situational;
-            const wisc = allData.wisconsin.situational;
+            // Use filtered data if available, otherwise use original
+            const wash = allData.washington.situational_filtered || allData.washington.situational;
+            const wisc = allData.wisconsin.situational_filtered || allData.wisconsin.situational;
             
             if (!wash || !wisc) {{
                 console.warn('Situational receiving data not available');
@@ -5430,10 +5597,27 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             wiscFilteredData.specialteams._filtered_plays = wiscFiltered;
             wiscFilteredData.redzone._filtered_plays = wiscFiltered;
             
+            // Store original data before replacing (deep copy to avoid reference issues)
+            const originalAllData = {{
+                washington: JSON.parse(JSON.stringify(allData.washington)),
+                wisconsin: JSON.parse(JSON.stringify(allData.wisconsin))
+            }};
+            
+            // Filter SIS situational receiving data
+            const washSituationalFiltered = filterSituationalReceiving(originalAllData.washington.situational, filters);
+            const wiscSituationalFiltered = filterSituationalReceiving(originalAllData.wisconsin.situational, filters);
+            
             // Temporarily replace allData with filtered data
-            const originalAllData = allData;
             allData.washington = washFilteredData;
             allData.wisconsin = wiscFilteredData;
+            
+            // Add filtered SIS data
+            if (washSituationalFiltered) {{
+                allData.washington.situational_filtered = washSituationalFiltered;
+            }}
+            if (wiscSituationalFiltered) {{
+                allData.wisconsin.situational_filtered = wiscSituationalFiltered;
+            }}
             
             // Re-populate all sections with filtered data
             populateAllSections();

@@ -177,14 +177,21 @@ def analyze_situational_receiving(sis_data: Dict, team_name: str, team_games: Li
         players_list = sorted(player_stats.values(), key=lambda x: x['targets'], reverse=True)
         
         # Format by_week data with game_id mapping
+        # Use game_id, is_conference, is_power4_opponent from enriched SIS data if available
         by_week_formatted = {}
         for week_str, week_data in by_week.items():
             week = int(week_str)
-            game_id = game_mapping.get(week)
+            # Prefer enriched fields from SIS data, fall back to mapping
+            game_id = week_data.get('game_id') or game_mapping.get(week)
+            is_conference = week_data.get('is_conference')
+            is_power4_opponent = week_data.get('is_power4_opponent')
+            
             by_week_formatted[week_str] = {
                 'week': week,
                 'game_id': game_id,
                 'opponent': week_data.get('opponent', ''),
+                'is_conference': is_conference,
+                'is_power4_opponent': is_power4_opponent,
                 'stats': week_data.get('stats', {}),
                 'players': week_data.get('players', [])
             }

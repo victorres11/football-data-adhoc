@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Analyze Red Zone and Green Zone performance
+Analyze Tight Red Zone (10 yards), Red Zone (20 yards), and Green Zone (30 yards) performance
 """
 
 from typing import Dict, List, Any
@@ -9,7 +9,7 @@ from collections import defaultdict, Counter
 
 def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     """
-    Analyze Red Zone (20 yards to goal and in) and Green Zone (30 yards to goal and in) performance
+    Analyze Tight Red Zone (10 yards), Red Zone (20 yards), and Green Zone (30 yards) performance
     
     Args:
         plays: List of play dictionaries
@@ -29,6 +29,12 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     
     # Double-check: ensure no opponent plays slip through
     offensive_plays = [p for p in offensive_plays if p.get('offense', '').lower() == team_name.lower()]
+    
+    # Tight Red Zone: 10 yards to goal and in
+    tight_red_zone_plays = [
+        p for p in offensive_plays
+        if p.get('yards_to_goal', 100) <= 10
+    ]
     
     # Red Zone: 20 yards to goal and in
     red_zone_plays = [
@@ -132,12 +138,22 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
             'plays': zone_plays_list
         }
     
+    tight_red_zone_stats = analyze_zone(tight_red_zone_plays, 'Tight Red Zone')
     red_zone_stats = analyze_zone(red_zone_plays, 'Red Zone')
     green_zone_stats = analyze_zone(green_zone_plays, 'Green Zone')
     
     # Group by game for trend analysis
+    tight_red_zone_by_game = defaultdict(lambda: {'plays': 0, 'scores': 0, 'touchdowns': 0})
     red_zone_by_game = defaultdict(lambda: {'plays': 0, 'scores': 0, 'touchdowns': 0})
     green_zone_by_game = defaultdict(lambda: {'plays': 0, 'scores': 0, 'touchdowns': 0})
+    
+    for play in tight_red_zone_plays:
+        game_id = play.get('game_id')
+        tight_red_zone_by_game[game_id]['plays'] += 1
+        if play.get('scoring'):
+            tight_red_zone_by_game[game_id]['scores'] += 1
+            if 'touchdown' in play.get('play_type', '').lower():
+                tight_red_zone_by_game[game_id]['touchdowns'] += 1
     
     for play in red_zone_plays:
         game_id = play.get('game_id')
@@ -156,8 +172,10 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
                 green_zone_by_game[game_id]['touchdowns'] += 1
     
     return {
+        'tight_red_zone': tight_red_zone_stats,
         'red_zone': red_zone_stats,
         'green_zone': green_zone_stats,
+        'tight_red_zone_by_game': dict(tight_red_zone_by_game),
         'red_zone_by_game': dict(red_zone_by_game),
         'green_zone_by_game': dict(green_zone_by_game),
         'total_games': len(set(p.get('game_id') for p in offensive_plays))

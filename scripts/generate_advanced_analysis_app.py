@@ -545,7 +545,61 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         
         .main-wrapper {{
             display: flex;
+            flex-direction: row;
             min-height: 100vh;
+        }}
+        
+        @media (max-width: 768px) {{
+            .main-wrapper {{
+                flex-direction: column;
+            }}
+        }}
+        
+        /* Wrapper for content and footer */
+        .content-wrapper {{
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 100vh;
+        }}
+        
+        /* Footer Styles */
+        .footer {{
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+            border-top: 2px solid #34495e;
+            width: 100%;
+        }}
+        
+        .footer-content {{
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.9em;
+        }}
+        
+        .footer-content p {{
+            margin: 5px 0;
+        }}
+        
+        .footer-content a {{
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }}
+        
+        .footer-content a:hover {{
+            color: #5dade2;
+            text-decoration: underline;
+        }}
+        
+        @media (max-width: 768px) {{
+            .footer {{
+                padding: 15px;
+                font-size: 0.85em;
+            }}
         }}
         
         /* Smooth Scrolling */
@@ -950,6 +1004,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             </div>
         </nav>
         
+        <!-- Content Wrapper (content + footer) -->
+        <div class="content-wrapper">
         <!-- Main Content Area -->
         <div class="content-area">
             <div class="container">
@@ -1348,14 +1404,35 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         <div class="section" id="redZoneSection">
             <h2>Red Zone / Green Zone Analysis</h2>
             <div class="definition-box">
-                <p><strong>Definition:</strong> The Red Zone (20 yards to goal and in) and Green Zone (30 yards to goal and in) are critical scoring areas. Success in these zones is measured by scoring rate (TDs and FGs), conversion rates on 3rd/4th down, and PPA. Teams that consistently score in the red zone win more games, while teams that struggle often settle for field goals or turn the ball over.</p>
+                <p><strong>Definition:</strong> The Tight Red Zone (10 yards to goal and in), Red Zone (20 yards to goal and in), and Green Zone (30 yards to goal and in) are critical scoring areas. Success in these zones is measured by scoring rate (TDs and FGs), conversion rates on 3rd/4th down, and PPA. Teams that consistently score in the red zone win more games, while teams that struggle often settle for field goals or turn the ball over.</p>
             </div>
             <div id="redZoneSummary"></div>
             <div class="chart-container">
                 <canvas id="redZoneChart"></canvas>
             </div>
             <h3 style="margin-top: 30px; color: #4a90e2;">Washington</h3>
-            <h4 style="color: #4a90e2; margin-top: 20px;">Green Zone Plays</h4>
+            <h4 style="color: #b71c1c; margin-top: 20px;">Tight Red Zone Plays (10 & In)</h4>
+            <table id="tightRedZoneTableWash" class="display">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Opponent</th>
+                        <th>Period</th>
+                        <th>Clock</th>
+                        <th>Down</th>
+                        <th>Dist</th>
+                        <th>YTG</th>
+                        <th>Play Type</th>
+                        <th>Yards</th>
+                        <th>Scoring</th>
+                        <th>Explosive</th>
+                        <th>PPA</th>
+                        <th>Play Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h4 style="color: #4a90e2; margin-top: 20px;">Green Zone Plays (30 & In)</h4>
             <table id="greenZoneTableWash" class="display">
                 <thead>
                     <tr>
@@ -1377,7 +1454,28 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 <tbody></tbody>
             </table>
             <h3 style="margin-top: 30px; color: #c41e3a;">Wisconsin</h3>
-            <h4 style="color: #c41e3a; margin-top: 20px;">Green Zone Plays</h4>
+            <h4 style="color: #b71c1c; margin-top: 20px;">Tight Red Zone Plays (10 & In)</h4>
+            <table id="tightRedZoneTableWisc" class="display">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Opponent</th>
+                        <th>Period</th>
+                        <th>Clock</th>
+                        <th>Down</th>
+                        <th>Dist</th>
+                        <th>YTG</th>
+                        <th>Play Type</th>
+                        <th>Yards</th>
+                        <th>Scoring</th>
+                        <th>Explosive</th>
+                        <th>PPA</th>
+                        <th>Play Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h4 style="color: #c41e3a; margin-top: 20px;">Green Zone Plays (30 & In)</h4>
             <table id="greenZoneTableWisc" class="display">
                 <thead>
                     <tr>
@@ -3000,6 +3098,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }});
             
             // Penalty Type Breakdown
+            // Note: The penalty_type in plays already uses penalty_category for holding penalties
+            // (handled in analyzePenalties function), so we just need to use it directly
             const washPenaltyTypes = {{}};
             const wiscPenaltyTypes = {{}};
             wash.plays.forEach(p => {{
@@ -3742,6 +3842,17 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     <div class="team-section washington">
                         <h3>Washington</h3>
                         <div style="margin-bottom: 20px;">
+                            <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
+                            <div class="summary-cards">
+                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wash.tight_red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wash.tight_red_zone.touchdowns}}</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wash.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wash.tight_red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wash.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wash.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
                             <h4 style="color: #d32f2f; margin-bottom: 10px;">Red Zone (20 & In)</h4>
                             <div class="summary-cards">
                                 <div class="summary-card"><h3>Plays</h3><div class="value">${{wash.red_zone.total_plays}}</div></div>
@@ -3766,6 +3877,17 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     </div>
                     <div class="team-section wisconsin">
                         <h3>Wisconsin</h3>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
+                            <div class="summary-cards">
+                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wisc.tight_red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wisc.tight_red_zone.touchdowns}}</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wisc.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wisc.tight_red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wisc.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wisc.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
+                            </div>
+                        </div>
                         <div style="margin-bottom: 20px;">
                             <h4 style="color: #d32f2f; margin-bottom: 10px;">Red Zone (20 & In)</h4>
                             <div class="summary-cards">
@@ -3793,23 +3915,39 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             `;
             document.getElementById('redZoneSummary').innerHTML = summaryHtml;
             
-            // Bar chart comparing Red Zone and Green Zone scoring rates
+            // Bar chart comparing Tight Red Zone, Red Zone and Green Zone scoring rates
             const ctx = document.getElementById('redZoneChart').getContext('2d');
             if (charts.redZone) charts.redZone.destroy();
             charts.redZone = new Chart(ctx, {{
                 type: 'bar',
                 data: {{
-                    labels: ['Red Zone TD %', 'Green Zone TD %', 'Red Zone PPA', 'Green Zone PPA'],
+                    labels: ['Tight Red Zone TD %', 'Red Zone TD %', 'Green Zone TD %', 'Tight Red Zone PPA', 'Red Zone PPA', 'Green Zone PPA'],
                     datasets: [
-                        {{ label: 'Washington', data: [wash.red_zone.td_scoring_rate, wash.green_zone.td_scoring_rate, wash.red_zone.avg_ppa, wash.green_zone.avg_ppa], backgroundColor: 'rgba(74, 144, 226, 0.6)' }},
-                        {{ label: 'Wisconsin', data: [wisc.red_zone.td_scoring_rate, wisc.green_zone.td_scoring_rate, wisc.red_zone.avg_ppa, wisc.green_zone.avg_ppa], backgroundColor: 'rgba(196, 30, 58, 0.6)' }}
+                        {{ label: 'Washington', data: [wash.tight_red_zone.td_scoring_rate, wash.red_zone.td_scoring_rate, wash.green_zone.td_scoring_rate, wash.tight_red_zone.avg_ppa, wash.red_zone.avg_ppa, wash.green_zone.avg_ppa], backgroundColor: 'rgba(74, 144, 226, 0.6)' }},
+                        {{ label: 'Wisconsin', data: [wisc.tight_red_zone.td_scoring_rate, wisc.red_zone.td_scoring_rate, wisc.green_zone.td_scoring_rate, wisc.tight_red_zone.avg_ppa, wisc.red_zone.avg_ppa, wisc.green_zone.avg_ppa], backgroundColor: 'rgba(196, 30, 58, 0.6)' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
             }});
             
-            // Tables - only Green Zone
+            // Tables - Tight Red Zone and Green Zone
             // Sort chronologically
+            const washTightRedSorted = sortPlaysChronologically(wash.tight_red_zone.plays);
+            const washTightRedTableData = washTightRedSorted.map(p => [
+                p.game_week || '', p.opponent || '', p.period || '', formatClock(p.clock || ''),
+                p.down || '', p.distance || '', p.yards_to_goal || '',
+                p.play_type || '', p.yards_gained || 0, p.scoring ? 'Yes' : 'No',
+                p.explosive ? 'Yes' : 'No', p.ppa ? p.ppa.toFixed(3) : '', p.play_text || ''
+            ]);
+            
+            const wiscTightRedSorted = sortPlaysChronologically(wisc.tight_red_zone.plays);
+            const wiscTightRedTableData = wiscTightRedSorted.map(p => [
+                p.game_week || '', p.opponent || '', p.period || '', formatClock(p.clock || ''),
+                p.down || '', p.distance || '', p.yards_to_goal || '',
+                p.play_type || '', p.yards_gained || 0, p.scoring ? 'Yes' : 'No',
+                p.explosive ? 'Yes' : 'No', p.ppa ? p.ppa.toFixed(3) : '', p.play_text || ''
+            ]);
+            
             const washGreenSorted = sortPlaysChronologically(wash.green_zone.plays);
             const washGreenTableData = washGreenSorted.map(p => [
                 p.game_week || '', p.opponent || '', p.period || '', formatClock(p.clock || ''),
@@ -3825,6 +3963,45 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 p.play_type || '', p.yards_gained || 0, p.scoring ? 'Yes' : 'No',
                 p.explosive ? 'Yes' : 'No', p.ppa ? p.ppa.toFixed(3) : '', p.play_text || ''
             ]);
+            
+            // Tight Red Zone tables
+            const washTightRedZoneConfig = {{
+                data: washTightRedTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Period' }}, {{ title: 'Clock' }},
+                    {{ title: 'Down' }}, {{ title: 'Dist' }}, {{ title: 'YTG' }},
+                    {{ title: 'Play Type' }}, {{ title: 'Yards' }}, {{ title: 'Scoring' }},
+                    {{ title: 'Explosive' }}, {{ title: 'PPA' }}, {{ title: 'Play Description' }}
+                ],
+                createdRow: function(row, data) {{
+                    const weekValue = data[0]; // Week is first column
+                    addWeekClass(row, weekValue);
+                }}
+            }};
+            safeUpdateDataTable('#tightRedZoneTableWash', washTightRedTableData, washTightRedZoneConfig);
+            
+            const wiscTightRedZoneConfig = {{
+                data: wiscTightRedTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Period' }}, {{ title: 'Clock' }},
+                    {{ title: 'Down' }}, {{ title: 'Dist' }}, {{ title: 'YTG' }},
+                    {{ title: 'Play Type' }}, {{ title: 'Yards' }}, {{ title: 'Scoring' }},
+                    {{ title: 'Explosive' }}, {{ title: 'PPA' }}, {{ title: 'Play Description' }}
+                ],
+                createdRow: function(row, data) {{
+                    const weekValue = data[0]; // Week is first column
+                    addWeekClass(row, weekValue);
+                }}
+            }};
+            safeUpdateDataTable('#tightRedZoneTableWisc', wiscTightRedTableData, wiscTightRedZoneConfig);
             
             const washGreenZoneConfig = {{
                 data: washGreenTableData,
@@ -4856,16 +5033,25 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 declined: declined,
                 total_penalty_yards: totalYards,
                 avg_per_game: uniqueGames > 0 ? penaltyPlays.length / uniqueGames : 0,
-                plays: penaltyPlays.map(p => ({{
-                    game_week: p.game_week,
-                    opponent: p.opponent,
-                    period: p.period,
-                    clock: p.clock,
-                    penalty_type: p.penalty_type,
-                    penalty_decision: p.penalty_decision,
-                    down: p.down || 0,
-                    play_text: p.play_text?.substring(0, 200) || ''
-                }}))
+                plays: penaltyPlays.map(p => {{
+                    // Use penalty_category for holding penalties, otherwise use penalty_type
+                    // This breaks out holding into: offensive_holding, defensive_holding, special_teams_holding
+                    let displayPenaltyType = p.penalty_type;
+                    if (p.penalty_category && ['offensive_holding', 'defensive_holding', 'special_teams_holding'].includes(p.penalty_category)) {{
+                        // Convert snake_case to Title Case: "Offensive Holding", "Defensive Holding", "Special Teams Holding"
+                        displayPenaltyType = p.penalty_category.replace(/_/g, ' ').replace(/\\b\\w/g, function(l) {{ return l.toUpperCase(); }});
+                    }}
+                    return {{
+                        game_week: p.game_week,
+                        opponent: p.opponent,
+                        period: p.period,
+                        clock: p.clock,
+                        penalty_type: displayPenaltyType,
+                        penalty_decision: p.penalty_decision,
+                        down: p.down || 0,
+                        play_text: p.play_text?.substring(0, 200) || ''
+                    }};
+                }})
             }};
         }}
         
@@ -5029,6 +5215,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             // Double-check: ensure no opponent plays slip through
             offensivePlays = offensivePlays.filter(p => p.offense?.toLowerCase() === teamName.toLowerCase());
             
+            const tightRedZonePlays = offensivePlays.filter(p => (p.yards_to_goal || 100) <= 10);
             const redZonePlays = offensivePlays.filter(p => (p.yards_to_goal || 100) <= 20);
             const greenZonePlays = offensivePlays.filter(p => (p.yards_to_goal || 100) <= 30);
             
@@ -5090,6 +5277,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }}
             
             return {{
+                tight_red_zone: analyzeZone(tightRedZonePlays),
                 red_zone: analyzeZone(redZonePlays),
                 green_zone: analyzeZone(greenZonePlays)
             }};
@@ -5322,6 +5510,15 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     </script>
             </div> <!-- End container -->
         </div> <!-- End content-area -->
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Made by <strong>VT Sports Data Solutions</strong></p>
+                <p><a href="mailto:victorres11@gmail.com">victorres11@gmail.com</a></p>
+            </div>
+        </footer>
+        </div> <!-- End content-wrapper -->
     </div> <!-- End main-wrapper -->
 </body>
 </html>"""

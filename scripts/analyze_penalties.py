@@ -38,8 +38,16 @@ def analyze_penalties(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     for play in penalty_plays:
         game_id = play.get('game_id')
         penalty_type = play.get('penalty_type', 'Unknown')
+        penalty_category = play.get('penalty_category')  # For holding penalties
         decision = play.get('penalty_decision', 'Unknown')
         play_text = play.get('play_text', '')
+        
+        # Use penalty_category for holding penalties, otherwise use penalty_type
+        # This breaks out holding into: offensive_holding, defensive_holding, special_teams_holding
+        if penalty_category and penalty_category in ['offensive_holding', 'defensive_holding', 'special_teams_holding']:
+            display_penalty_type = penalty_category.replace('_', ' ').title()  # "Offensive Holding", "Defensive Holding", "Special Teams Holding"
+        else:
+            display_penalty_type = penalty_type
         
         # Extract penalty yards (only for accepted penalties)
         # Use yards_gained field directly (should be negative or absolute value)
@@ -58,7 +66,7 @@ def analyze_penalties(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         elif decision == 'declined':
             game_stats[game_id]['declined'] += 1
         
-        penalty_types[penalty_type] += 1
+        penalty_types[display_penalty_type] += 1
         penalty_decisions[decision] += 1
         
         # Determine which team committed the penalty
@@ -94,7 +102,7 @@ def analyze_penalties(plays: List[Dict], team_name: str) -> Dict[str, Any]:
             'opponent': play.get('opponent'),
             'period': play.get('period'),
             'clock': play.get('clock', ''),
-            'penalty_type': penalty_type,
+            'penalty_type': display_penalty_type,  # Use the categorized type
             'penalty_decision': decision,
             'penalty_yards': penalty_yards,
             'yards_gained': play.get('yards_gained', 0),  # Include for extraction

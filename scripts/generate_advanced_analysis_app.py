@@ -1458,45 +1458,90 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }}
         }}
         
-        // Helper function to calculate trends by week
-        function calculateTrendsByWeek(plays, teamName, metricFn) {{
-            const byWeek = {{}};
-            plays.forEach(play => {{
-                const week = play.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = {{ plays: [] }};
-                }}
-                byWeek[week].plays.push(play);
+        // Create master game mapping from ALL games (both teams) - ensures consistent Game 1-9
+        const masterGameMapping = (function() {{
+            const allGameIds = new Set();
+            washingtonPlays.forEach(p => {{ if (p.game_id) allGameIds.add(p.game_id); }});
+            wisconsinPlays.forEach(p => {{ if (p.game_id) allGameIds.add(p.game_id); }});
+            
+            // Get week for each game and sort by week
+            const allGames = Array.from(allGameIds).map(gameId => {{
+                const play = [...washingtonPlays, ...wisconsinPlays].find(p => p.game_id === gameId);
+                return {{ gameId, week: play?.game_week || 0 }};
+            }}).sort((a, b) => a.week - b.week);
+            
+            // Create mapping: gameId -> sequential game number (1-9)
+            const gameIdToGameNum = {{}};
+            const gameLabels = [];
+            allGames.forEach((game, idx) => {{
+                gameIdToGameNum[game.gameId] = idx + 1;
+                gameLabels.push(`Game ${{idx + 1}}`);
             }});
             
-            const weeks = Object.keys(byWeek).map(w => parseInt(w)).sort((a, b) => a - b);
-            const values = weeks.map(week => metricFn(byWeek[week].plays, teamName));
+            return {{ gameIdToGameNum, allGames, gameLabels }};
+        }})();
+        
+        // Helper function to get master game mapping (for backward compatibility)
+        function createGameIdToGameNumberMapping(plays) {{
+            // Always return the master mapping, ignoring the plays parameter
+            return masterGameMapping.gameIdToGameNum;
+        }}
+        
+        // Helper function to calculate trends by game (sequential game numbers)
+        // Always includes all games (1-9) even if they have 0 values
+        function calculateTrendsByWeek(plays, teamName, metricFn) {{
+            const byGame = {{}};
+            plays.forEach(play => {{
+                const gameId = play.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = {{ plays: [] }};
+                }}
+                byGame[gameId].plays.push(play);
+            }});
             
-            return {{ weeks: weeks.map(w => `Week ${{w}}`), values: values }};
+            // Use master mapping to ensure all games are included
+            const gameIdToGameNum = masterGameMapping.gameIdToGameNum;
+            
+            // Create array with all games (1-9), filling in 0 for games with no data
+            const values = masterGameMapping.allGames.map(game => {{
+                const gamePlays = byGame[game.gameId]?.plays || [];
+                return metricFn(gamePlays, teamName);
+            }});
+            
+            return {{ weeks: masterGameMapping.gameLabels, values: values }};
         }}
         
         function calculateTurnoverTrends(plays, teamName) {{
-            const byWeek = {{}};
+            const byGame = {{}};
             plays.forEach(play => {{
                 if (play.turnover === true) {{
-                    const week = play.game_week || 0;
-                    if (!byWeek[week]) {{
-                        byWeek[week] = {{ ourTO: 0, oppTO: 0 }};
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    if (!byGame[gameId]) {{
+                        byGame[gameId] = {{ ourTO: 0, oppTO: 0 }};
                     }}
                     const isOur = play.offense?.toLowerCase() === teamName.toLowerCase();
                     if (isOur) {{
-                        byWeek[week].ourTO++;
+                        byGame[gameId].ourTO++;
                     }} else {{
-                        byWeek[week].oppTO++;
+                        byGame[gameId].oppTO++;
                     }}
                 }}
             }});
             
-            const weeks = Object.keys(byWeek).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const ourTurnovers = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.ourTO || 0
+            );
+            const oppTurnovers = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.oppTO || 0
+            );
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                ourTurnovers: weeks.map(w => byWeek[w].ourTO),
-                oppTurnovers: weeks.map(w => byWeek[w].oppTO)
+                weeks: masterGameMapping.gameLabels,
+                ourTurnovers: ourTurnovers,
+                oppTurnovers: oppTurnovers
             }};
         }}
         
@@ -1504,12 +1549,13 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const turnovers = plays.filter(p => p.turnover === true);
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
             
-            const byWeek = {{}};
+            const byGame = {{}};
             
             turnovers.forEach(turnover => {{
-                const week = turnover.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = {{ pointsScored: 0, pointsAllowed: 0 }};
+                const gameId = turnover.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = {{ pointsScored: 0, pointsAllowed: 0 }};
                 }}
                 
                 const isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
@@ -1531,87 +1577,98 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 }});
                 
                 if (isOurTurnover) {{
-                    byWeek[week].pointsAllowed += drivePoints;
+                    byGame[gameId].pointsAllowed += drivePoints;
                 }} else {{
-                    byWeek[week].pointsScored += drivePoints;
+                    byGame[gameId].pointsScored += drivePoints;
                 }}
             }});
             
-            const weeks = Object.keys(byWeek).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const netPoints = masterGameMapping.allGames.map(game => {{
+                const gameData = byGame[game.gameId] || {{ pointsScored: 0, pointsAllowed: 0 }};
+                return gameData.pointsScored - gameData.pointsAllowed;
+            }});
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                netPoints: weeks.map(w => byWeek[w].pointsScored - byWeek[w].pointsAllowed)
+                weeks: masterGameMapping.gameLabels,
+                netPoints: netPoints
             }};
         }}
         
         function calculateMiddle8Trends(plays, teamName) {{
-            const byWeek = {{}};
+            const byGame = {{}};
             plays.filter(p => p.middle_eight === true).forEach(play => {{
-                const week = play.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = {{ scored: 0, allowed: 0 }};
+                const gameId = play.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = {{ scored: 0, allowed: 0 }};
                 }}
                 if (play.scoring === true) {{
                     const points = play.play_type?.includes('Touchdown') ? 7 : (play.play_type?.includes('Field Goal') ? 3 : 0);
                     const isOur = play.offense?.toLowerCase() === teamName.toLowerCase();
                     if (isOur) {{
-                        byWeek[week].scored += points;
+                        byGame[gameId].scored += points;
                     }} else {{
-                        byWeek[week].allowed += points;
+                        byGame[gameId].allowed += points;
                     }}
                 }}
             }});
             
-            const weeks = Object.keys(byWeek).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const scored = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.scored || 0
+            );
+            const allowed = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.allowed || 0
+            );
+            const net = masterGameMapping.allGames.map(game => {{
+                const gameData = byGame[game.gameId] || {{ scored: 0, allowed: 0 }};
+                return gameData.scored - gameData.allowed;
+            }});
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                scored: weeks.map(w => byWeek[w].scored),
-                allowed: weeks.map(w => byWeek[w].allowed),
-                net: weeks.map(w => byWeek[w].scored - byWeek[w].allowed)
+                weeks: masterGameMapping.gameLabels,
+                scored: scored,
+                allowed: allowed,
+                net: net
             }};
         }}
         
         function calculateExplosiveTrends(plays, teamName) {{
-            // Get all unique weeks from all plays
-            const allWeeks = new Set();
-            plays.forEach(play => {{
-                const week = play.game_week || 0;
-                if (week > 0) allWeeks.add(week);
-            }});
-            
-            const byWeek = {{}};
+            const byGame = {{}};
             plays.filter(p => 
                 p.explosive_play === true && 
                 p.play_classification !== 'special_teams'
             ).forEach(play => {{
-                const week = play.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = {{ ours: 0, allowed: 0 }};
+                const gameId = play.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = {{ ours: 0, allowed: 0 }};
                 }}
                 const isOurs = play.offense?.toLowerCase() === teamName.toLowerCase();
                 if (isOurs) {{
-                    byWeek[week].ours++;
+                    byGame[gameId].ours++;
                 }} else {{
-                    byWeek[week].allowed++;
+                    byGame[gameId].allowed++;
                 }}
             }});
             
-            const weeks = Array.from(allWeeks).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const ours = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.ours || 0
+            );
+            const allowed = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.allowed || 0
+            );
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                ours: weeks.map(w => (byWeek[w]?.ours || 0)),
-                allowed: weeks.map(w => (byWeek[w]?.allowed || 0))
+                weeks: masterGameMapping.gameLabels,
+                ours: ours,
+                allowed: allowed
             }};
         }}
         
         function calculateSpecialTeamsExplosiveTrends(plays, teamName) {{
-            // Get all unique weeks from all plays (not just explosive ones)
-            const allWeeks = new Set();
-            plays.forEach(play => {{
-                const week = play.game_week || 0;
-                if (week > 0) allWeeks.add(week);
-            }});
-            
             // Check if special teams play is explosive: 35+ kick return, 20+ punt return
             function isSpecialTeamsExplosive(play) {{
                 if (play.play_classification !== 'special_teams') return false;
@@ -1634,44 +1691,55 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 return false;
             }}
             
-            // Count explosive special teams plays by week
-            const byWeek = {{}};
+            const byGame = {{}};
             plays.filter(p => isSpecialTeamsExplosive(p)).forEach(play => {{
-                const week = play.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = {{ ours: 0, allowed: 0 }};
+                const gameId = play.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = {{ ours: 0, allowed: 0 }};
                 }}
                 const isOurs = play.offense?.toLowerCase() === teamName.toLowerCase();
                 if (isOurs) {{
-                    byWeek[week].ours++;
+                    byGame[gameId].ours++;
                 }} else {{
-                    byWeek[week].allowed++;
+                    byGame[gameId].allowed++;
                 }}
             }});
             
-            // Create array with all weeks, including zeros
-            const weeks = Array.from(allWeeks).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const ours = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.ours || 0
+            );
+            const allowed = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.allowed || 0
+            );
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                ours: weeks.map(w => (byWeek[w]?.ours || 0)),
-                allowed: weeks.map(w => (byWeek[w]?.allowed || 0))
+                weeks: masterGameMapping.gameLabels,
+                ours: ours,
+                allowed: allowed
             }};
         }}
         
         function calculatePenaltyTrends(plays, teamName) {{
-            const byWeek = {{}};
+            const byGame = {{}};
             plays.filter(p => p.penalty_type != null && (p.offense?.toLowerCase() === teamName.toLowerCase() || p.defense?.toLowerCase() === teamName.toLowerCase())).forEach(play => {{
-                const week = play.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = 0;
+                const gameId = play.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = 0;
                 }}
-                byWeek[week]++;
+                byGame[gameId]++;
             }});
             
-            const weeks = Object.keys(byWeek).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const values = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId] || 0
+            );
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                values: weeks.map(w => byWeek[w] || 0)
+                weeks: masterGameMapping.gameLabels,
+                values: values
             }};
         }}
         
@@ -1794,32 +1862,52 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 return oppYards - teamYards; // Positive = opponent had more (good), negative = team had more (bad)
             }});
             
+            // Use master mapping to ensure all games are included
+            const values = masterGameMapping.allGames.map(game => {{
+                const teamYards = teamYardsByWeek[game.gameId] || 0;
+                const oppYards = opponentYardsByWeek[game.gameId] || 0;
+                return oppYards - teamYards; // Positive = opponent had more (good), negative = team had more (bad)
+            }});
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                values: netYards
+                weeks: masterGameMapping.gameLabels,
+                values: values
             }};
         }}
         
         function calculate4thDownTrends(plays, teamName) {{
-            const byWeek = {{}};
+            const byGame = {{}};
             plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal')).forEach(play => {{
-                const week = play.game_week || 0;
-                if (!byWeek[week]) {{
-                    byWeek[week] = {{ attempts: 0, conversions: 0 }};
+                const gameId = play.game_id;
+                if (!gameId) return;
+                if (!byGame[gameId]) {{
+                    byGame[gameId] = {{ attempts: 0, conversions: 0 }};
                 }}
-                byWeek[week].attempts++;
+                byGame[gameId].attempts++;
                 const playText = play.play_text?.toLowerCase() || '';
                 if (playText.includes('1st down') || playText.includes('first down') || playText.includes('touchdown') || (play.yards_gained >= play.distance)) {{
-                    byWeek[week].conversions++;
+                    byGame[gameId].conversions++;
                 }}
             }});
             
-            const weeks = Object.keys(byWeek).map(w => parseInt(w)).sort((a, b) => a - b);
+            // Use master mapping to ensure all games are included
+            const attempts = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.attempts || 0
+            );
+            const conversions = masterGameMapping.allGames.map(game => 
+                byGame[game.gameId]?.conversions || 0
+            );
+            const rates = masterGameMapping.allGames.map(game => {{
+                const gameData = byGame[game.gameId];
+                const att = gameData?.attempts || 0;
+                return att > 0 ? (gameData.conversions / att * 100) : 0;
+            }});
+            
             return {{
-                weeks: weeks.map(w => `Week ${{w}}`),
-                attempts: weeks.map(w => byWeek[w].attempts || 0),
-                conversions: weeks.map(w => byWeek[w].conversions || 0),
-                rates: weeks.map(w => byWeek[w].attempts > 0 ? (byWeek[w].conversions / byWeek[w].attempts * 100) : 0)
+                weeks: masterGameMapping.gameLabels,
+                attempts: attempts,
+                conversions: conversions,
+                rates: rates
             }};
         }}
         
@@ -1960,21 +2048,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTrends = calculateMiddle8Trends(washPlaysForTrend, 'Washington');
             const wiscTrends = calculateMiddle8Trends(wiscPlaysForTrend, 'Wisconsin');
             
-            // Get all unique weeks from both teams and merge
-            const allWeekNumbers = [...new Set([
-                ...washTrends.weeks.map(w => parseInt(w.replace('Week ', ''))),
-                ...wiscTrends.weeks.map(w => parseInt(w.replace('Week ', '')))
-            ])].sort((a, b) => a - b);
-            const allWeeks = allWeekNumbers.map(w => `Week ${{w}}`);
+            // Use master mapping to ensure all games (1-9) are included
+            const allWeeks = masterGameMapping.gameLabels;
             
-            // Map net points to all weeks, defaulting to 0 for weeks without data
-            const washNetPointsAllWeeks = allWeeks.map(week => {{
-                const index = washTrends.weeks.indexOf(week);
+            // Map data using master game mapping
+            const washNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = washTrends.weeks.indexOf(gameLabel);
                 return index >= 0 ? washTrends.net[index] : 0;
             }});
             
-            const wiscNetPointsAllWeeks = allWeeks.map(week => {{
-                const index = wiscTrends.weeks.indexOf(week);
+            const wiscNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = wiscTrends.weeks.indexOf(gameLabel);
                 return index >= 0 ? wiscTrends.net[index] : 0;
             }});
             
@@ -2003,7 +2091,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Middle 8 Net Points by Week' }},
+                        title: {{ display: true, text: 'Middle 8 Net Points by Game' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -2244,7 +2332,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Explosive Plays by Week (Allowed shown as negative)' }},
+                        title: {{ display: true, text: 'Explosive Plays by Game (Allowed shown as negative)' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -2414,21 +2502,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washNetYards = calculateNetPenaltyYardsByWeek(washPlaysForTrend, 'Washington');
             const wiscNetYards = calculateNetPenaltyYardsByWeek(wiscPlaysForTrend, 'Wisconsin');
             
-            // Get all unique weeks and sort
-            const allWeekNumbers = [...new Set([
-                ...washNetYards.weeks.map(w => parseInt(w.replace('Week ', ''))),
-                ...wiscNetYards.weeks.map(w => parseInt(w.replace('Week ', '')))
-            ])].sort((a, b) => a - b);
-            const allWeeks = allWeekNumbers.map(w => `Week ${{w}}`);
+            // Use master mapping to ensure all games (1-9) are included
+            const allWeeks = masterGameMapping.gameLabels;
             
-            // Map data to all weeks, defaulting to 0 for weeks without data
-            const washNetYardsAllWeeks = allWeeks.map(week => {{
-                const index = washNetYards.weeks.indexOf(week);
+            // Map data using master game mapping
+            const washNetYardsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = washNetYards.weeks.indexOf(gameLabel);
                 return index >= 0 ? washNetYards.values[index] : 0;
             }});
             
-            const wiscNetYardsAllWeeks = allWeeks.map(week => {{
-                const index = wiscNetYards.weeks.indexOf(week);
+            const wiscNetYardsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = wiscNetYards.weeks.indexOf(gameLabel);
                 return index >= 0 ? wiscNetYards.values[index] : 0;
             }});
             
@@ -2457,7 +2545,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Net Penalty Yards per Week (Positive = Opponent had more, Negative = Team had more)' }},
+                        title: {{ display: true, text: 'Net Penalty Yards per Game (Positive = Opponent had more, Negative = Team had more)' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -2747,21 +2835,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTrends = calculate4thDownTrends(washPlaysForTrend, 'Washington');
             const wiscTrends = calculate4thDownTrends(wiscPlaysForTrend, 'Wisconsin');
             
-            // Get all unique weeks from both teams and merge (similar to penalty chart)
-            const allWeekNumbers = [...new Set([
-                ...washTrends.weeks.map(w => parseInt(w.replace('Week ', ''))),
-                ...wiscTrends.weeks.map(w => parseInt(w.replace('Week ', '')))
-            ])].sort((a, b) => a - b);
-            const allWeeks = allWeekNumbers.map(w => `Week ${{w}}`);
+            // Use master mapping to ensure all games (1-9) are included
+            const allWeeks = masterGameMapping.gameLabels;
             
-            // Map data to all weeks, defaulting to 0 for weeks without data
-            const washConversionsAllWeeks = allWeeks.map(week => {{
-                const index = washTrends.weeks.indexOf(week);
+            // Map data using master game mapping
+            const washConversionsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = washTrends.weeks.indexOf(gameLabel);
                 return index >= 0 ? washTrends.conversions[index] : 0;
             }});
             
-            const wiscConversionsAllWeeks = allWeeks.map(week => {{
-                const index = wiscTrends.weeks.indexOf(week);
+            const wiscConversionsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = wiscTrends.weeks.indexOf(gameLabel);
                 return index >= 0 ? wiscTrends.conversions[index] : 0;
             }});
             
@@ -2793,7 +2881,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     maintainAspectRatio: false, 
                     scales: {{ y: {{ beginAtZero: true }} }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: '4th Down Conversions by Week' }},
+                        title: {{ display: true, text: '4th Down Conversions by Game' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -2955,21 +3043,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washNetPoints = calculateNetPointsByWeek(washPlaysForTrend, 'Washington');
             const wiscNetPoints = calculateNetPointsByWeek(wiscPlaysForTrend, 'Wisconsin');
             
-            // Get all unique weeks and sort numerically
-            const allWeekNumbers = [...new Set([
-                ...washNetPoints.weeks.map(w => parseInt(w.replace('Week ', ''))),
-                ...wiscNetPoints.weeks.map(w => parseInt(w.replace('Week ', '')))
-            ])].sort((a, b) => a - b);
-            const allWeeks = allWeekNumbers.map(w => `Week ${{w}}`);
+            // Use master mapping to ensure all games (1-9) are included
+            const allWeeks = masterGameMapping.gameLabels;
             
-            // Map data to all weeks, defaulting to 0 for weeks without data
-            const washNetPointsAllWeeks = allWeeks.map(week => {{
-                const index = washNetPoints.weeks.indexOf(week);
+            // Map data using master game mapping
+            const washNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = washNetPoints.weeks.indexOf(gameLabel);
                 return index >= 0 ? washNetPoints.netPoints[index] : 0;
             }});
             
-            const wiscNetPointsAllWeeks = allWeeks.map(week => {{
-                const index = wiscNetPoints.weeks.indexOf(week);
+            const wiscNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
+                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
+                const gameLabel = `Game ${{gameNum}}`;
+                const index = wiscNetPoints.weeks.indexOf(gameLabel);
                 return index >= 0 ? wiscNetPoints.netPoints[index] : 0;
             }});
             
@@ -2998,7 +3086,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Net Points After Turnovers by Week' }},
+                        title: {{ display: true, text: 'Net Points After Turnovers by Game' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -3142,7 +3230,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Explosive Special Teams Plays by Week (Allowed shown as negative)' }},
+                        title: {{ display: true, text: 'Explosive Special Teams Plays by Game (Allowed shown as negative)' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{

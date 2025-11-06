@@ -569,9 +569,12 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             color: #ecf0f1;
             padding: 20px;
             text-align: center;
-            margin-top: auto;
+            margin-top: 40px;
             border-top: 2px solid #34495e;
             width: 100%;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }}
         
         .footer-content {{
@@ -775,6 +778,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             margin-left: 240px;
             width: calc(100% - 240px);
             padding: 20px 40px;
+            flex-grow: 1;
         }}
         
         @media (max-width: 1024px) {{

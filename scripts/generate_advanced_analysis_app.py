@@ -555,56 +555,6 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }}
         }}
         
-        /* Wrapper for content and footer */
-        .content-wrapper {{
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 100vh;
-        }}
-        
-        /* Footer Styles */
-        .footer {{
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 20px;
-            text-align: center;
-            margin-top: 40px;
-            border-top: 2px solid #34495e;
-            width: 100%;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 10;
-        }}
-        
-        .footer-content {{
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 0.9em;
-        }}
-        
-        .footer-content p {{
-            margin: 5px 0;
-        }}
-        
-        .footer-content a {{
-            color: #3498db;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }}
-        
-        .footer-content a:hover {{
-            color: #5dade2;
-            text-decoration: underline;
-        }}
-        
-        @media (max-width: 768px) {{
-            .footer {{
-                padding: 15px;
-                font-size: 0.85em;
-            }}
-        }}
-        
         /* Smooth Scrolling */
         html {{
             scroll-behavior: smooth;
@@ -1008,8 +958,6 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             </div>
         </nav>
         
-        <!-- Content Wrapper (content + footer) -->
-        <div class="content-wrapper">
         <!-- Main Content Area -->
         <div class="content-area">
             <div class="container">
@@ -5514,15 +5462,6 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     </script>
             </div> <!-- End container -->
         </div> <!-- End content-area -->
-        
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <p>Made by <strong>VT Sports Data Solutions</strong></p>
-                <p><a href="mailto:victorres11@gmail.com">victorres11@gmail.com</a></p>
-            </div>
-        </footer>
-        </div> <!-- End content-wrapper -->
     </div> <!-- End main-wrapper -->
 </body>
 </html>"""

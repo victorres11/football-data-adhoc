@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penalty Chart Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Penalty Chart Test</h1>
+    <p>Washington penalties: 4</p>
+    <p>Michigan penalties: 5</p>
+    <p>Washington coords: [(12, 62.6), (45, 76.25999999999999), (48, 77.62), (103, 57.38999999999999)]</p>
+    <p>Michigan coords: [(21, 66.02), (59, 81.21000000000001), (90, 60.760000000000005), (145, 99.85000000000001), (153, 99.9)]</p>
+    
+    <canvas id="testChart" width="800" height="400"></canvas>
+    
+    <script>
+        const ctx = document.getElementById('testChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Play 1", "Play 11", "Play 21", "Play 31", "Play 41", "Play 51", "Play 61", "Play 71", "Play 81", "Play 91", "Play 101", "Play 111", "Play 121", "Play 131", "Play 141", "Play 151"], // Every 10th label
+                datasets: [{
+                    label: 'Michigan Win %',
+                    data: [66.81, 59.47, 70.30999999999999, 65.02, 77.59, 78.2, 80.56, 73.74000000000001, 57.48, 60.760000000000005, 55.730000000000004, 59.650000000000006, 75.06, 93.73, 99.68, 99.9],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                }, {
+                    label: 'Washington Win %',
+                    data: [33.19, 40.53, 29.690000000000005, 34.98, 22.409999999999997, 21.799999999999997, 19.44, 26.259999999999994, 42.52, 39.239999999999995, 44.269999999999996, 40.349999999999994, 24.939999999999994, 6.269999999999998, 0.31999999999999806, 0.10000000000000009],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                }, {
+                    label: 'Washington Penalties',
+                    data: [{"x": 12, "y": 62.6}, {"x": 45, "y": 76.25999999999999}, {"x": 48, "y": 77.62}, {"x": 103, "y": 57.38999999999999}],
+                    type: 'scatter',
+                    backgroundColor: '#ff6b6b',
+                    borderColor: '#ff6b6b',
+                    pointRadius: 12,
+                    pointHoverRadius: 15,
+                    showLine: false
+                }, {
+                    label: 'Michigan Penalties',
+                    data: [{"x": 21, "y": 66.02}, {"x": 59, "y": 81.21000000000001}, {"x": 90, "y": 60.760000000000005}, {"x": 145, "y": 99.85000000000001}, {"x": 153, "y": 99.9}],
+                    type: 'scatter',
+                    backgroundColor: '#4ecdc4',
+                    borderColor: '#4ecdc4',
+                    pointRadius: 12,
+                    pointHoverRadius: 15,
+                    showLine: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

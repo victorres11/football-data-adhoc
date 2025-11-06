@@ -1,22 +1,36 @@
-# Maryland Football - Successful Run Rate Analysis
+# College Football Analysis Suite
 
-A web dashboard analyzing Maryland's rushing performance using the "Successful Run Rate" metric.
+A comprehensive analysis platform for college football games, featuring enhanced play-by-play analysis with win probability, interactive charts, and advanced metrics.
 
 ## 🏈 About
 
-This project analyzes college football rushing attempts using a custom success metric:
+This project provides comprehensive analysis of college football games with advanced features:
 
-- **1st Down**: Need ≥40% of yards to go (rounded: 0.4 down, 0.5+ up)
-- **2nd Down**: Need ≥60% of yards to go (rounded: 0.4 down, 0.5+ up)  
-- **3rd/4th Down**: Need 100% of yards to go (convert) OR touchdown
-- **Any Down**: Touchdown = always successful
+- **Enhanced Play-by-Play**: Complete game analysis with win probability
+- **Interactive Charts**: Win probability visualization with quarter shading
+- **Penalty Analysis**: Impact analysis with win probability deltas
+- **Inflection Points**: Major momentum changes (5%+ WP swings)
+- **Precise Timing**: Game clock analysis using raw seconds data
 
-## 📊 Results
+## 📁 Project Structure
 
-- **Overall Success Rate**: 47.4% (9/19 attempts)
-- **1st Down**: 60% success rate
-- **2nd Down**: 20% success rate  
-- **3rd Down**: 50% success rate
+- **`enhanced_analysis/`** - Enhanced play-by-play analysis with win probability, charts, and advanced features
+- **`game_reviews/`** - Traditional game review analysis with strategic insights and visual breakdowns
+- **`scripts/`** - Python scripts for data fetching and analysis
+- **`data/`** - Raw game data and analysis results
+- **`images/`** - Game screenshots and visualizations
+
+## 🚀 Quick Start
+
+### Enhanced Play-by-Play Analysis
+1. Navigate to `enhanced_analysis/` directory
+2. Open any HTML file in your browser
+3. Features include: win probability charts, penalty analysis, quarter shading, inflection points
+
+### Creating New Analysis
+1. Follow the guide in `FUTURE_GAME_ANALYSIS_GUIDE.md`
+2. Use scripts in `scripts/` directory
+3. Generate enhanced analysis files
 
 ## 🚀 Deploy to GitHub Pages
 

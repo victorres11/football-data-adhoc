@@ -43,3 +43,4 @@ In Purdue's reubttle drive after the pick six, they drive down the field and fin
 * Watchout for malachi Singelton packages
 * Burhenn (arm) is expected to return at some point during the 2025 season
 * In Malachi Singleton's six snaps - he had 5 carries (73 yds) and 1 pass attempt.
+can y

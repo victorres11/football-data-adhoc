@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESPN vs CFBD Data Comparison Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            margin-top: 10px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .api-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .api-section.cfbd {
+            border-left-color: #28a745;
+        }
+        
+        .api-section.espn {
+            border-left-color: #dc3545;
+        }
+        
+        .api-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .api-title.cfbd {
+            color: #28a745;
+        }
+        
+        .api-title.espn {
+            color: #dc3545;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .play-comparison {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .play-side {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .play-side.espn {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .play-side.cfbd {
+            background: #f0fff4;
+            border-left: 4px solid #28a745;
+        }
+        
+        .play-field {
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .field-name {
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .field-value {
+            color: #333;
+        }
+        
+        .advantages {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .advantages h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+        
+        .advantage-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #28a745;
+        }
+        
+        .disadvantages {
+            background: #fff5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .disadvantages h3 {
+            color: #dc3545;
+            margin-top: 0;
+        }
+        
+        .disadvantage-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ESPN vs CFBD Data Comparison</h1>
+            <div class="subtitle">Play-by-Play Data Analysis Report</div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Data Overview</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-number">160</div>
+                    <div class="stat-label">ESPN Plays</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100</div>
+                    <div class="stat-label">CFBD Plays</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">60</div>
+                    <div class="stat-label">Play Count Difference</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔍 Detailed Play Comparison</h2>
+            <div class="play-comparison">
+                <h3>Sample Play Analysis</h3>
+
+                <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4>Play 1 Comparison</h4>
+                    <div class="comparison-grid">
+                        <div class="play-side espn">
+                            <div class="api-title espn">ESPN Data</div>
+                            <div class="play-field"><span class="field-name">ID:</span><span class="field-value">401752873101849901</span></div>
+                            <div class="play-field"><span class="field-name">Text:</span><span class="field-value">Washington wins toss and defers; UOM will receive;...</span></div>
+                            <div class="play-field"><span class="field-name">Type:</span><span class="field-value">Coin Toss</span></div>
+                            <div class="play-field"><span class="field-name">Period:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">Clock:</span><span class="field-value">15:00</span></div>
+                            <div class="play-field"><span class="field-name">Down/Distance:</span><span class="field-value">1 & 10</span></div>
+                            <div class="play-field"><span class="field-name">Yards Gained:</span><span class="field-value">0</span></div>
+                        </div>
+                        <div class="play-side cfbd">
+                            <div class="api-title cfbd">CFBD Data</div>
+                            <div class="play-field"><span class="field-name">ID:</span><span class="field-value">401677189101858700</span></div>
+                            <div class="play-field"><span class="field-name">Text:</span><span class="field-value">Drew Allar pass complete to Nicholas Singleton for...</span></div>
+                            <div class="play-field"><span class="field-name">Type:</span><span class="field-value">Pass Reception</span></div>
+                            <div class="play-field"><span class="field-name">Period:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">Clock:</span><span class="field-value">14:12</span></div>
+                            <div class="play-field"><span class="field-name">Down/Distance:</span><span class="field-value">2 & 4</span></div>
+                            <div class="play-field"><span class="field-name">Yards Gained:</span><span class="field-value">23</span></div>
+                            <div class="play-field"><span class="field-name">PPA:</span><span class="field-value">2.201092910534289</span></div>
+                            <div class="play-field"><span class="field-name">Offense:</span><span class="field-value">Penn State</span></div>
+                            <div class="play-field"><span class="field-name">Defense:</span><span class="field-value">Notre Dame</span></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4>Play 2 Comparison</h4>
+                    <div class="comparison-grid">
+                        <div class="play-side espn">
+                            <div class="api-title espn">ESPN Data</div>
+                            <div class="play-field"><span class="field-name">ID:</span><span class="field-value">401752873101849903</span></div>
+                            <div class="play-field"><span class="field-name">Text:</span><span class="field-value">Ethan Moczulski kickoff for 65 yds for a touchback...</span></div>
+                            <div class="play-field"><span class="field-name">Type:</span><span class="field-value">Kickoff</span></div>
+                            <div class="play-field"><span class="field-name">Period:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">Clock:</span><span class="field-value">15:00</span></div>
+                            <div class="play-field"><span class="field-name">Down/Distance:</span><span class="field-value">1 & 10</span></div>
+                            <div class="play-field"><span class="field-name">Yards Gained:</span><span class="field-value">0</span></div>
+                        </div>
+                        <div class="play-side cfbd">
+                            <div class="api-title cfbd">CFBD Data</div>
+                            <div class="play-field"><span class="field-name">ID:</span><span class="field-value">401677189101866000</span></div>
+                            <div class="play-field"><span class="field-name">Text:</span><span class="field-value">Nicholas Singleton run for 1 yd to the ND 45...</span></div>
+                            <div class="play-field"><span class="field-name">Type:</span><span class="field-value">Rush</span></div>
+                            <div class="play-field"><span class="field-name">Period:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">Clock:</span><span class="field-value">13:39</span></div>
+                            <div class="play-field"><span class="field-name">Down/Distance:</span><span class="field-value">1 & 10</span></div>
+                            <div class="play-field"><span class="field-name">Yards Gained:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">PPA:</span><span class="field-value">-0.7942209074247197</span></div>
+                            <div class="play-field"><span class="field-name">Offense:</span><span class="field-value">Penn State</span></div>
+                            <div class="play-field"><span class="field-name">Defense:</span><span class="field-value">Notre Dame</span></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4>Play 3 Comparison</h4>
+                    <div class="comparison-grid">
+                        <div class="play-side espn">
+                            <div class="api-title espn">ESPN Data</div>
+                            <div class="play-field"><span class="field-name">ID:</span><span class="field-value">401752873101854301</span></div>
+                            <div class="play-field"><span class="field-name">Text:</span><span class="field-value">Bryce Underwood pass incomplete to Donaven McCulle...</span></div>
+                            <div class="play-field"><span class="field-name">Type:</span><span class="field-value">Pass Incompletion</span></div>
+                            <div class="play-field"><span class="field-name">Period:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">Clock:</span><span class="field-value">14:56</span></div>
+                            <div class="play-field"><span class="field-name">Down/Distance:</span><span class="field-value">1 & 10</span></div>
+                            <div class="play-field"><span class="field-name">Yards Gained:</span><span class="field-value">0</span></div>
+                        </div>
+                        <div class="play-side cfbd">
+                            <div class="api-title cfbd">CFBD Data</div>
+                            <div class="play-field"><span class="field-name">ID:</span><span class="field-value">401677189101869000</span></div>
+                            <div class="play-field"><span class="field-name">Text:</span><span class="field-value">Drew Allar pass incomplete to Omari Evans...</span></div>
+                            <div class="play-field"><span class="field-name">Type:</span><span class="field-value">Pass Incompletion</span></div>
+                            <div class="play-field"><span class="field-name">Period:</span><span class="field-value">1</span></div>
+                            <div class="play-field"><span class="field-name">Clock:</span><span class="field-value">13:9</span></div>
+                            <div class="play-field"><span class="field-name">Down/Distance:</span><span class="field-value">2 & 9</span></div>
+                            <div class="play-field"><span class="field-name">Yards Gained:</span><span class="field-value">0</span></div>
+                            <div class="play-field"><span class="field-name">PPA:</span><span class="field-value">-1.082436343843854</span></div>
+                            <div class="play-field"><span class="field-name">Offense:</span><span class="field-value">Penn State</span></div>
+                            <div class="play-field"><span class="field-name">Defense:</span><span class="field-value">Notre Dame</span></div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✅ CFBD Advantages</h2>
+            <div class="advantages">
+                <h3>What CFBD Does Better</h3>
+                <div class="advantage-item">
+                    <strong>🎯 Structured Data:</strong> Clean, consistent JSON responses with standardized field names
+                </div>
+                <div class="advantage-item">
+                    <strong>📊 Advanced Analytics:</strong> Built-in PPA (Predicted Points Added), EPA, success rate metrics
+                </div>
+                <div class="advantage-item">
+                    <strong>🔍 Rich Context:</strong> Offense/defense clearly identified, conference information included
+                </div>
+                <div class="advantage-item">
+                    <strong>⚡ Better Performance:</strong> Optimized API with good rate limits and fast responses
+                </div>
+                <div class="advantage-item">
+                    <strong>📈 Historical Data:</strong> Comprehensive access to historical datasets
+                </div>
+                <div class="advantage-item">
+                    <strong>🛠️ Developer Experience:</strong> Well-documented, consistent endpoints, type hints
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>❌ CFBD Disadvantages</h2>
+            <div class="disadvantages">
+                <h3>What ESPN Does Better</h3>
+                <div class="disadvantage-item">
+                    <strong>🔓 No Authentication:</strong> ESPN requires no API key, CFBD requires free registration
+                </div>
+                <div class="disadvantage-item">
+                    <strong>⏱️ Real-time Access:</strong> ESPN provides immediate access to live games
+                </div>
+                <div class="disadvantage-item">
+                    <strong>📺 Media Integration:</strong> ESPN includes video highlights and media content
+                </div>
+                <div class="disadvantage-item">
+                    <strong>🏆 Win Probability:</strong> ESPN has dedicated win probability endpoints
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 Recommendations</h2>
+            <div style="background: #e3f2fd; padding: 20px; border-radius: 10px;">
+                <h3>For Enhanced Analysis Projects:</h3>
+                <ul>
+                    <li><strong>Use CFBD for:</strong> Historical analysis, advanced metrics, consistent data processing</li>
+                    <li><strong>Use ESPN for:</strong> Real-time data, win probability, media integration</li>
+                    <li><strong>Hybrid Approach:</strong> Use CFBD for play-by-play data and ESPN for win probability</li>
+                </ul>
+                
+                <h3>Migration Benefits:</h3>
+                <ul>
+                    <li>Eliminate data structure inconsistencies</li>
+                    <li>Access to advanced analytics (PPA, EPA)</li>
+                    <li>Better historical data access</li>
+                    <li>Improved developer experience</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Debug Chart - Penalty Positioning</h1>
+    
+    <div style="margin: 20px; padding: 20px; background: #f0f0f0;">
+        <h3>Debug Info:</h3>
+        <p><strong>Total plays:</strong> 160</p>
+        <p><strong>Total win prob entries:</strong> 160</p>
+        <p><strong>Chart labels:</strong> 16 (every 10th)</p>
+        <p><strong>Washington penalties:</strong> 4</p>
+        <p><strong>Michigan penalties:</strong> 5</p>
+        
+        <h4>Washington Penalty Coordinates:</h4>
+        <ul>
+<li>Play 13: x=1.2, y=62.6% - Washington penalty, False Start (G. Hatchett)</li><li>Play 46: x=4.5, y=76.3% - Washington penalty, False Start (D. DeGraaf)</li><li>Play 49: x=4.8, y=77.6% - Washington penalty, False Start (D. Azzopardi)</li><li>Play 104: x=10.3, y=57.4% - Washington penalty, Offensive Holding (D. DeGraaf)</li>
+        </ul>
+        
+        <h4>Michigan Penalty Coordinates:</h4>
+        <ul>
+<li>Play 22: x=2.1, y=66.0% - Michigan penalty, Offensive Holding (M. Bredeson)</li><li>Play 60: x=5.9, y=81.2% - Michigan penalty, False Start (G. Crippen)</li><li>Play 91: x=9.0, y=60.8% - Michigan penalty, Ineligible Downfield on Pass (-5 Yards)</li><li>Play 146: x=14.5, y=99.9% - Michigan penalty, Delay Of Game (-5 Yards)</li><li>Play 154: x=15.3, y=99.9% - Michigan penalty, Offensive Holding (-10 Yards)</li>
+        </ul>
+    </div>
+    
+    <canvas id="debugChart" width="800" height="400"></canvas>
+    
+    <script>
+        const ctx = document.getElementById('debugChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Play 1", "Play 11", "Play 21", "Play 31", "Play 41", "Play 51", "Play 61", "Play 71", "Play 81", "Play 91", "Play 101", "Play 111", "Play 121", "Play 131", "Play 141", "Play 151"],
+                datasets: [{
+                    label: 'Michigan Win %',
+                    data: [66.81, 59.47, 70.30999999999999, 65.02, 77.59, 78.2, 80.56, 73.74000000000001, 57.48, 60.760000000000005, 55.730000000000004, 59.650000000000006, 75.06, 93.73, 99.68, 99.9],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                }, {
+                    label: 'Washington Win %',
+                    data: [33.19, 40.53, 29.690000000000005, 34.98, 22.409999999999997, 21.799999999999997, 19.44, 26.259999999999994, 42.52, 39.239999999999995, 44.269999999999996, 40.349999999999994, 24.939999999999994, 6.269999999999998, 0.31999999999999806, 0.10000000000000009],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                }, {
+                    label: 'Washington Penalties',
+                    data: [{"x": 1.2, "y": 62.6}, {"x": 4.5, "y": 76.25999999999999}, {"x": 4.8, "y": 77.62}, {"x": 10.3, "y": 57.38999999999999}],
+                    type: 'scatter',
+                    backgroundColor: '#ff6b6b',
+                    borderColor: '#ff6b6b',
+                    pointRadius: 15,
+                    pointHoverRadius: 20,
+                    showLine: false
+                }, {
+                    label: 'Michigan Penalties',
+                    data: [{"x": 2.1, "y": 66.02}, {"x": 5.9, "y": 81.21000000000001}, {"x": 9.0, "y": 60.760000000000005}, {"x": 14.5, "y": 99.85000000000001}, {"x": 15.3, "y": 99.9}],
+                    type: 'scatter',
+                    backgroundColor: '#4ecdc4',
+                    borderColor: '#4ecdc4',
+                    pointRadius: 15,
+                    pointHoverRadius: 20,
+                    showLine: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Chart Index (every 10th play)'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Win Probability %'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Debug Chart - Penalty Positioning'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                return 'Play ' + (context[0].dataIndex * 10 + 1);
+                            },
+                            label: function(context) {
+                                if (context.datasetIndex >= 2) {
+                                    const penaltyData = [{"x": 1.2, "y": 62.6, "play_number": 13, "description": "Washington penalty, False Start (G. Hatchett)"}, {"x": 4.5, "y": 76.25999999999999, "play_number": 46, "description": "Washington penalty, False Start (D. DeGraaf)"}, {"x": 4.8, "y": 77.62, "play_number": 49, "description": "Washington penalty, False Start (D. Azzopardi)"}, {"x": 10.3, "y": 57.38999999999999, "play_number": 104, "description": "Washington penalty, Offensive Holding (D. DeGraaf)"}, {"x": 2.1, "y": 66.02, "play_number": 22, "description": "Michigan penalty, Offensive Holding (M. Bredeson)"}, {"x": 5.9, "y": 81.21000000000001, "play_number": 60, "description": "Michigan penalty, False Start (G. Crippen)"}, {"x": 9.0, "y": 60.760000000000005, "play_number": 91, "description": "Michigan penalty, Ineligible Downfield on Pass (-5 Yards)"}, {"x": 14.5, "y": 99.85000000000001, "play_number": 146, "description": "Michigan penalty, Delay Of Game (-5 Yards)"}, {"x": 15.3, "y": 99.9, "play_number": 154, "description": "Michigan penalty, Offensive Holding (-10 Yards)"}];
+                                    const penalty = penaltyData[context.dataIndex];
+                                    return [
+                                        'Penalty: ' + penalty.description,
+                                        'Play: ' + penalty.play_number,
+                                        'Win Prob: ' + penalty.y.toFixed(1) + '%'
+                                    ];
+                                }
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

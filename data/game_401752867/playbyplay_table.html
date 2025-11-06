@@ -1,0 +1,2312 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebraska Cornhuskers at Maryland Terrapins - Play by Play with Win Probability</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background-color: #374151;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        tr:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .play-number {
+            text-align: center;
+            font-weight: bold;
+            color: #6b7280;
+        }
+        
+        .quarter {
+            text-align: center;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .time {
+            font-family: monospace;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        .win-prob {
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .win-prob-increase-high {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .win-prob-increase {
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+        
+        .win-prob-decrease-high {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .win-prob-decrease {
+            background-color: #fef7f7;
+            color: #dc2626;
+        }
+        
+        .win-prob-neutral {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .change {
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .change.positive {
+            color: #166534;
+        }
+        
+        .change.negative {
+            color: #dc2626;
+        }
+        
+        .play-description {
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+        
+        .scoring-play {
+            background-color: #fef3c7;
+            font-weight: bold;
+        }
+        
+        .penalty {
+            background-color: #fef2f2;
+        }
+        
+        .touchdown {
+            background-color: #dcfce7;
+            font-weight: bold;
+        }
+        
+        .interception {
+            background-color: #fef2f2;
+            font-weight: bold;
+        }
+        
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+        }
+        
+        .stats h3 {
+            margin-top: 0;
+            color: #374151;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Nebraska Cornhuskers at Maryland Terrapins</h1>
+        <p>Play-by-Play with Win Probability | 2025-10-11T19:30Z | Game ID: 401752867</p>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">#</th>
+                    <th style="width: 50px;">Qtr</th>
+                    <th style="width: 80px;">Time</th>
+                    <th style="width: 100px;">Win Prob</th>
+                    <th style="width: 80px;">Change</th>
+                    <th style="width: 100px;">Down/Dist</th>
+                    <th style="width: 120px;">Yard Line</th>
+                    <th>Play Description</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr class="">
+                    <td class="play-number">1</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">15:00</td>
+                    <td class="win-prob win-prob-neutral">34.0%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">Maryland wins toss and defers; NEB will receive; UMD will defend East end-zone.</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">2</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">15:00</td>
+                    <td class="win-prob win-prob-decrease">32.6%</td>
+                    <td class="change negative">-1.4%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">S. O'Haire kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">3</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">14:51</td>
+                    <td class="win-prob win-prob-decrease">31.3%</td>
+                    <td class="change negative">-1.3%</td>
+                    <td>1st & 10 at NEB 25</td>
+                    <td>NEB 25</td>
+                    <td class="play-description">E. Johnson run for 13 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">4</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">14:31</td>
+                    <td class="win-prob win-prob-decrease">30.1%</td>
+                    <td class="change negative">-1.2%</td>
+                    <td>1st & 10 at NEB 38</td>
+                    <td>NEB 38</td>
+                    <td class="play-description">E. Johnson run for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">5</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">13:59</td>
+                    <td class="win-prob win-prob-decrease">28.6%</td>
+                    <td class="change negative">-1.5%</td>
+                    <td>1st & 10 at NEB 49</td>
+                    <td>NEB 49</td>
+                    <td class="play-description">E. Johnson run for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">6</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">13:15</td>
+                    <td class="win-prob win-prob-neutral">28.9%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>2nd & 2 at MD 43</td>
+                    <td>MD 43</td>
+                    <td class="play-description">D. Raiola pass to J. Barney Jr. for 4 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">7</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">12:49</td>
+                    <td class="win-prob win-prob-increase">31.1%</td>
+                    <td class="change positive">+2.2%</td>
+                    <td>1st & 10 at MD 39</td>
+                    <td>MD 39</td>
+                    <td class="play-description">D. Raiola pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">8</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">12:43</td>
+                    <td class="win-prob win-prob-neutral">31.3%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>2nd & 10 at MD 39</td>
+                    <td>MD 39</td>
+                    <td class="play-description">I. Mozee run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">9</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">12:04</td>
+                    <td class="win-prob win-prob-increase">33.6%</td>
+                    <td class="change positive">+2.3%</td>
+                    <td>3rd & 7 at MD 36</td>
+                    <td>MD 36</td>
+                    <td class="play-description">D. Raiola pass to J. Barney Jr. for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">10</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">11:25</td>
+                    <td class="win-prob win-prob-increase">36.8%</td>
+                    <td class="change positive">+3.2%</td>
+                    <td>2nd & 12 at MD 29</td>
+                    <td>MD 29</td>
+                    <td class="play-description">Timeout Maryland, clock 11:25</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">11</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">11:25</td>
+                    <td class="win-prob win-prob-neutral">37.1%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>4th & 2 at MD 31</td>
+                    <td>MD 31</td>
+                    <td class="play-description">E. Johnson run for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">12</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">11:13</td>
+                    <td class="win-prob win-prob-decrease">34.4%</td>
+                    <td class="change negative">-2.7%</td>
+                    <td>1st & 10 at MD 31</td>
+                    <td>MD 31</td>
+                    <td class="play-description">M. Washington run for -2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">13</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:36</td>
+                    <td class="win-prob win-prob-increase">35.9%</td>
+                    <td class="change positive">+1.5%</td>
+                    <td>2nd & 12 at MD 29</td>
+                    <td>MD 29</td>
+                    <td class="play-description">M. Washington pass to J. Farooq for 7 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">14</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">9:59</td>
+                    <td class="win-prob win-prob-increase">40.4%</td>
+                    <td class="change positive">+4.5%</td>
+                    <td>3rd & 5 at MD 36</td>
+                    <td>MD 36</td>
+                    <td class="play-description">M. Washington pass to O. Smith Jr. for 19 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">15</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">9:16</td>
+                    <td class="win-prob win-prob-decrease">38.5%</td>
+                    <td class="change negative">-2.0%</td>
+                    <td>1st & 10 at NEB 45</td>
+                    <td>NEB 45</td>
+                    <td class="play-description">M. Washington pass to S. Knotts for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">16</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">8:50</td>
+                    <td class="win-prob win-prob-neutral">37.7%</td>
+                    <td class="change negative">-0.8%</td>
+                    <td>2nd & 10 at NEB 45</td>
+                    <td>NEB 45</td>
+                    <td class="play-description">D. Williams run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">17</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">8:00</td>
+                    <td class="win-prob win-prob-decrease">35.7%</td>
+                    <td class="change negative">-2.0%</td>
+                    <td>3rd & 9 at NEB 44</td>
+                    <td>NEB 44</td>
+                    <td class="play-description">M. Washington pass to D. Fleming for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">18</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:27</td>
+                    <td class="win-prob win-prob-neutral">36.1%</td>
+                    <td class="change positive">+0.4%</td>
+                    <td>1st & 10 at MD 3</td>
+                    <td>MD 3</td>
+                    <td class="play-description">Timeout Maryland, clock 07:27</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">19</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:27</td>
+                    <td class="win-prob win-prob-decrease">32.5%</td>
+                    <td class="change negative">-3.6%</td>
+                    <td>4th & 5 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">M. Washington run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">20</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:27</td>
+                    <td class="win-prob win-prob-neutral">32.5%</td>
+                    <td class="change ">0.0%</td>
+                    <td>4th & 5 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">M. Washington run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">21</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:15</td>
+                    <td class="win-prob win-prob-decrease-high">0.0%</td>
+                    <td class="change negative">-32.5%</td>
+                    <td>1st & 10 at MD 23</td>
+                    <td>MD 23</td>
+                    <td class="play-description">Timeout Maryland, clock 07:15</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">22</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:15</td>
+                    <td class="win-prob win-prob-increase-high">21.4%</td>
+                    <td class="change positive">+21.4%</td>
+                    <td>1st & 10 at NEB 36</td>
+                    <td>NEB 36</td>
+                    <td class="play-description">Nyziah Hunter 64 Yd pass from Dylan Raiola (Kyle Cunanan Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">23</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:09</td>
+                    <td class="win-prob win-prob-increase">22.5%</td>
+                    <td class="change positive">+1.1%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 63 yds,R. Cooper Jr. return for 21 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">24</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">6:59</td>
+                    <td class="win-prob win-prob-neutral">22.1%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td>1st & 10 at MD 23</td>
+                    <td>MD 23</td>
+                    <td class="play-description">D. Williams run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">25</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">6:19</td>
+                    <td class="win-prob win-prob-decrease">19.8%</td>
+                    <td class="change negative">-2.3%</td>
+                    <td>2nd & 6 at MD 27</td>
+                    <td>MD 27</td>
+                    <td class="play-description">M. Washington sacked by K. Pietrzak for -6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">26</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:50</td>
+                    <td class="win-prob win-prob-neutral">19.0%</td>
+                    <td class="change negative">-0.8%</td>
+                    <td>3rd & 12 at MD 21</td>
+                    <td>MD 21</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">27</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:38</td>
+                    <td class="win-prob win-prob-neutral">19.7%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>2nd & 5 at NEB 33</td>
+                    <td>NEB 33</td>
+                    <td class="play-description">Timeout Maryland, clock 05:38</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">28</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:38</td>
+                    <td class="win-prob win-prob-neutral">19.7%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>4th & 12 at MD 21</td>
+                    <td>MD 21</td>
+                    <td class="play-description">B. McFerson punt for 49 yds,J. Barney Jr. returns for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">29</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:33</td>
+                    <td class="win-prob win-prob-neutral">19.9%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>1st & 10 at NEB 28</td>
+                    <td>NEB 28</td>
+                    <td class="play-description">E. Johnson run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">30</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">4:56</td>
+                    <td class="win-prob win-prob-neutral">20.1%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>2nd & 5 at NEB 33</td>
+                    <td>NEB 33</td>
+                    <td class="play-description">E. Johnson run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">31</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">4:13</td>
+                    <td class="win-prob win-prob-decrease">18.1%</td>
+                    <td class="change negative">-1.9%</td>
+                    <td>3rd & 3 at NEB 35</td>
+                    <td>NEB 35</td>
+                    <td class="play-description">E. Johnson run for 12 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">32</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">3:48</td>
+                    <td class="win-prob win-prob-decrease">16.8%</td>
+                    <td class="change negative">-1.3%</td>
+                    <td>1st & 10 at NEB 47</td>
+                    <td>NEB 47</td>
+                    <td class="play-description">Maryland penalty, Defensive Pass Interference (L. Roland) for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">33</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">3:35</td>
+                    <td class="win-prob win-prob-neutral">15.8%</td>
+                    <td class="change negative">-1.0%</td>
+                    <td>1st & 10 at MD 38</td>
+                    <td>MD 38</td>
+                    <td class="play-description">D. Raiola pass to J. Barney Jr. for 7 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">34</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">2:58</td>
+                    <td class="win-prob win-prob-neutral">15.4%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td>2nd & 3 at MD 31</td>
+                    <td>MD 31</td>
+                    <td class="play-description">E. Johnson run for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">35</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">2:26</td>
+                    <td class="win-prob win-prob-neutral">16.1%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">E. Johnson run for 2 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">36</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">1:58</td>
+                    <td class="win-prob win-prob-decrease">13.8%</td>
+                    <td class="change negative">-2.3%</td>
+                    <td>2nd & 8 at MD 23</td>
+                    <td>MD 23</td>
+                    <td class="play-description">Maryland penalty, Defensive Pass Interference (J. Glasker) for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">37</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">1:46</td>
+                    <td class="win-prob win-prob-increase">16.1%</td>
+                    <td class="change positive">+2.3%</td>
+                    <td>1st & 10 at MD 13</td>
+                    <td>MD 13</td>
+                    <td class="play-description">H. Haarberg run for -2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">38</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">1:12</td>
+                    <td class="win-prob win-prob-neutral">16.4%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>2nd & 12 at MD 15</td>
+                    <td>MD 15</td>
+                    <td class="play-description">Timeout Nebraska, clock 01:12</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">39</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">1:05</td>
+                    <td class="win-prob win-prob-increase">19.3%</td>
+                    <td class="change positive">+2.9%</td>
+                    <td>2nd & 12 at MD 15</td>
+                    <td>MD 15</td>
+                    <td class="play-description">Nebraska penalty, Offensive Pass Interference (E. Johnson)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">40</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:49</td>
+                    <td class="win-prob win-prob-decrease">18.2%</td>
+                    <td class="change negative">-1.1%</td>
+                    <td>2nd & 27 at MD 30</td>
+                    <td>MD 30</td>
+                    <td class="play-description">D. Raiola pass to E. Johnson for 10 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">41</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:15</td>
+                    <td class="win-prob win-prob-neutral">18.9%</td>
+                    <td class="change positive">+0.8%</td>
+                    <td>3rd & 17 at MD 20</td>
+                    <td>MD 20</td>
+                    <td class="play-description">Nebraska penalty, False Start (G. Gottula)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">42</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">19.4%</td>
+                    <td class="change positive">+0.4%</td>
+                    <td>3rd & 22 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">D. Raiola pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">43</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">19.4%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 1st Quarter</td>
+                </tr>
+
+                <tr class="scoring-play">
+                    <td class="play-number">44</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">14:55</td>
+                    <td class="win-prob win-prob-decrease">17.3%</td>
+                    <td class="change negative">-2.1%</td>
+                    <td>4th & 22 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">Kyle Cunanan 43 Yd Field Goal  </td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">45</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">14:55</td>
+                    <td class="win-prob win-prob-neutral">17.0%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">46</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">14:46</td>
+                    <td class="win-prob win-prob-increase">18.0%</td>
+                    <td class="change positive">+1.0%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">M. Washington run for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">47</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">14:22</td>
+                    <td class="win-prob win-prob-neutral">17.2%</td>
+                    <td class="change negative">-0.8%</td>
+                    <td>2nd & 2 at MD 33</td>
+                    <td>MD 33</td>
+                    <td class="play-description">M. Washington pass to K. Webb for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">48</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">13:54</td>
+                    <td class="win-prob win-prob-neutral">17.8%</td>
+                    <td class="change positive">+0.6%</td>
+                    <td>3rd & 2 at MD 33</td>
+                    <td>MD 33</td>
+                    <td class="play-description">N. Ray run for 3 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">49</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">13:30</td>
+                    <td class="win-prob win-prob-decrease">16.4%</td>
+                    <td class="change negative">-1.3%</td>
+                    <td>1st & 10 at MD 36</td>
+                    <td>MD 36</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">50</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">13:20</td>
+                    <td class="win-prob win-prob-neutral">17.0%</td>
+                    <td class="change positive">+0.5%</td>
+                    <td>2nd & 10 at MD 36</td>
+                    <td>MD 36</td>
+                    <td class="play-description">M. Washington pass to N. Ray for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">51</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">12:31</td>
+                    <td class="win-prob win-prob-increase">20.8%</td>
+                    <td class="change positive">+3.8%</td>
+                    <td>3rd & 5 at MD 41</td>
+                    <td>MD 41</td>
+                    <td class="play-description">M. Washington pass to K. Webb for 25 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">52</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">12:03</td>
+                    <td class="win-prob win-prob-increase">21.9%</td>
+                    <td class="change positive">+1.1%</td>
+                    <td>1st & 10 at NEB 34</td>
+                    <td>NEB 34</td>
+                    <td class="play-description">M. Washington pass to N. Ray for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">53</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:32</td>
+                    <td class="win-prob win-prob-decrease-high">0.0%</td>
+                    <td class="change negative">-21.9%</td>
+                    <td>1st & 10 at NEB 29</td>
+                    <td>NEB 29</td>
+                    <td class="play-description">Timeout Maryland, clock 11:32</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">54</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:32</td>
+                    <td class="win-prob win-prob-increase-high">29.4%</td>
+                    <td class="change positive">+29.4%</td>
+                    <td>2nd & 4 at NEB 28</td>
+                    <td>NEB 28</td>
+                    <td class="play-description">Nolan Ray 28 Yd Run (Sean O'Haire Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">55</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:25</td>
+                    <td class="win-prob win-prob-neutral">29.4%</td>
+                    <td class="change negative">-0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">S. O'Haire kick for 65 yds,I. Mozee return for 29 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">56</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:18</td>
+                    <td class="win-prob win-prob-increase">30.8%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td>1st & 10 at NEB 29</td>
+                    <td>NEB 29</td>
+                    <td class="play-description">I. Mozee run for 2 yds</td>
+                </tr>
+
+                <tr class="interception">
+                    <td class="play-number">57</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">10:45</td>
+                    <td class="win-prob win-prob-increase-high">38.3%</td>
+                    <td class="change positive">+7.5%</td>
+                    <td>2nd & 8 at NEB 31</td>
+                    <td>NEB 31</td>
+                    <td class="play-description">D. Raiola pass intercepted,M. Delhomme return for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">58</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">10:39</td>
+                    <td class="win-prob win-prob-neutral">38.2%</td>
+                    <td class="change negative">-0.1%</td>
+                    <td>1st & 10 at NEB 33</td>
+                    <td>NEB 33</td>
+                    <td class="play-description">D. Williams run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">59</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">9:51</td>
+                    <td class="win-prob win-prob-neutral">38.4%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>2nd & 6 at NEB 29</td>
+                    <td>NEB 29</td>
+                    <td class="play-description">J. Farooq run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">60</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:54</td>
+                    <td class="win-prob win-prob-increase">41.2%</td>
+                    <td class="change positive">+2.8%</td>
+                    <td>3rd & 4 at NEB 27</td>
+                    <td>NEB 27</td>
+                    <td class="play-description">M. Washington pass to D. Williams for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">61</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:25</td>
+                    <td class="win-prob win-prob-decrease-high">0.0%</td>
+                    <td class="change negative">-41.2%</td>
+                    <td>1st & Goal at MD 10</td>
+                    <td>MD 10</td>
+                    <td class="play-description">Timeout Maryland, clock 08:25</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">62</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:25</td>
+                    <td class="win-prob win-prob-increase-high">49.7%</td>
+                    <td class="change positive">+49.7%</td>
+                    <td>1st & 10 at NEB 21</td>
+                    <td>NEB 21</td>
+                    <td class="play-description">Leon Haughton Jr. 21 Yd pass from Malik Washington (Sean O'Haire Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">63</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:13</td>
+                    <td class="win-prob win-prob-decrease-high">37.8%</td>
+                    <td class="change negative">-12.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">S. O'Haire kick for 60 yds,K. Williams return for 85 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">64</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:06</td>
+                    <td class="win-prob win-prob-increase">38.9%</td>
+                    <td class="change positive">+1.1%</td>
+                    <td>1st & Goal at MD 10</td>
+                    <td>MD 10</td>
+                    <td class="play-description">E. Johnson run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">65</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">7:27</td>
+                    <td class="win-prob win-prob-increase-high">49.1%</td>
+                    <td class="change positive">+10.2%</td>
+                    <td>1st & 10 at MD 13</td>
+                    <td>MD 13</td>
+                    <td class="play-description">Timeout Maryland, clock 07:27</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">66</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">7:27</td>
+                    <td class="win-prob win-prob-decrease-high">33.3%</td>
+                    <td class="change negative">-15.8%</td>
+                    <td>2nd & Goal at MD 7</td>
+                    <td>MD 7</td>
+                    <td class="play-description">Luke Lindenmeyer 7 Yd pass from Dylan Raiola (Kyle Cunanan Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">67</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">7:27</td>
+                    <td class="win-prob win-prob-increase-high">52.0%</td>
+                    <td class="change positive">+18.7%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 65 yds for a touchback,Maryland penalty, UNS: Unsportsmanlike Conduct (N. Taylor)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">68</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">7:19</td>
+                    <td class="win-prob win-prob-decrease-high">29.3%</td>
+                    <td class="change negative">-22.7%</td>
+                    <td>1st & 10 at MD 13</td>
+                    <td>MD 13</td>
+                    <td class="play-description">I. Howard run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">69</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:43</td>
+                    <td class="win-prob win-prob-decrease">28.1%</td>
+                    <td class="change negative">-1.2%</td>
+                    <td>2nd & 9 at MD 14</td>
+                    <td>MD 14</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">70</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:38</td>
+                    <td class="win-prob win-prob-decrease">26.5%</td>
+                    <td class="change negative">-1.6%</td>
+                    <td>3rd & 9 at MD 14</td>
+                    <td>MD 14</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">71</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:30</td>
+                    <td class="win-prob win-prob-increase">28.7%</td>
+                    <td class="change positive">+2.2%</td>
+                    <td>4th & 9 at MD 14</td>
+                    <td>MD 14</td>
+                    <td class="play-description">B. McFerson punt for 47 yds, fair catch by B. Webber</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">72</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:30</td>
+                    <td class="win-prob win-prob-decrease">26.8%</td>
+                    <td class="change negative">-2.0%</td>
+                    <td>4th & 9 at MD 14</td>
+                    <td>MD 14</td>
+                    <td class="play-description">B. McFerson punt for 47 yds, fair catch by J. Barney Jr.</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">73</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:24</td>
+                    <td class="win-prob win-prob-decrease">24.0%</td>
+                    <td class="change negative">-2.7%</td>
+                    <td>1st & 10 at MD 46</td>
+                    <td>MD 46</td>
+                    <td class="play-description">D. Raiola pass to D. Key for 19 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">74</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:02</td>
+                    <td class="win-prob win-prob-decrease">21.1%</td>
+                    <td class="change negative">-2.9%</td>
+                    <td>1st & 10 at MD 27</td>
+                    <td>MD 27</td>
+                    <td class="play-description">E. Johnson run for 15 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">75</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:37</td>
+                    <td class="win-prob win-prob-decrease">16.9%</td>
+                    <td class="change negative">-4.2%</td>
+                    <td>1st & 10 at MD 12</td>
+                    <td>MD 12</td>
+                    <td class="play-description">Nyziah Hunter 12 Yd pass from Dylan Raiola (Kyle Cunanan Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">76</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:37</td>
+                    <td class="win-prob win-prob-neutral">16.7%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">77</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:20</td>
+                    <td class="win-prob win-prob-decrease">15.7%</td>
+                    <td class="change negative">-1.0%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">M. Washington pass to D. Williams for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">78</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:56</td>
+                    <td class="win-prob win-prob-increase">17.7%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>2nd & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">M. Washington pass to D. Williams for 9 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">79</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:32</td>
+                    <td class="win-prob win-prob-decrease">15.1%</td>
+                    <td class="change negative">-2.6%</td>
+                    <td>3rd & 1 at MD 34</td>
+                    <td>MD 34</td>
+                    <td class="play-description">Maryland penalty, Ineligible Downfield on Pass declined</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">80</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:26</td>
+                    <td class="win-prob win-prob-neutral">14.7%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td>4th & 1 at MD 34</td>
+                    <td>MD 34</td>
+                    <td class="play-description">B. McFerson punt for 37 yds, fair catch by J. Barney Jr.</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">81</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:17</td>
+                    <td class="win-prob win-prob-decrease">13.0%</td>
+                    <td class="change negative">-1.7%</td>
+                    <td>1st & 10 at NEB 29</td>
+                    <td>NEB 29</td>
+                    <td class="play-description">Maryland penalty, UNS: Unsportsmanlike Conduct (J. Glasker) for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">82</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:03</td>
+                    <td class="win-prob win-prob-neutral">12.7%</td>
+                    <td class="change negative">-0.3%</td>
+                    <td>1st & 10 at 50</td>
+                    <td>50</td>
+                    <td class="play-description">I. Mozee run for 5 yds</td>
+                </tr>
+
+                <tr class="interception">
+                    <td class="play-number">83</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:24</td>
+                    <td class="win-prob win-prob-increase">16.8%</td>
+                    <td class="change positive">+4.2%</td>
+                    <td>2nd & 5 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">D. Raiola pass intercepted,J. Glasker return for 6 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">84</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:24</td>
+                    <td class="win-prob win-prob-neutral">16.8%</td>
+                    <td class="change ">0.0%</td>
+                    <td>2nd & 5 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">Maryland penalty, UNS: Unsportsmanlike Conduct (C. Rice)</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">85</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:24</td>
+                    <td class="win-prob win-prob-decrease">15.6%</td>
+                    <td class="change negative">-1.2%</td>
+                    <td>2nd & 5 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">Maryland penalty, UNS: Unsportsmanlike Conduct (14 Yards)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">86</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:09</td>
+                    <td class="win-prob win-prob-neutral">15.7%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>1st & 10 at MD 15</td>
+                    <td>MD 15</td>
+                    <td class="play-description">M. Washington pass to N. Ray for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">87</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">2:39</td>
+                    <td class="win-prob win-prob-increase">16.9%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>2nd & 6 at MD 19</td>
+                    <td>MD 19</td>
+                    <td class="play-description">M. Washington pass to O. Smith Jr. for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">88</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:59</td>
+                    <td class="win-prob win-prob-increase">18.6%</td>
+                    <td class="change positive">+1.8%</td>
+                    <td>2nd & 2 at MD 38</td>
+                    <td>MD 38</td>
+                    <td class="play-description">Timeout Maryland, clock 01:59</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">89</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:59</td>
+                    <td class="win-prob win-prob-neutral">18.4%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td>1st & 10 at MD 30</td>
+                    <td>MD 30</td>
+                    <td class="play-description">M. Washington pass to J. Farooq for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">90</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:53</td>
+                    <td class="win-prob win-prob-neutral">19.1%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>2nd & 2 at MD 38</td>
+                    <td>MD 38</td>
+                    <td class="play-description">N. Ray run for 13 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">91</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:43</td>
+                    <td class="win-prob win-prob-neutral">18.2%</td>
+                    <td class="change negative">-0.9%</td>
+                    <td>1st & 10 at NEB 49</td>
+                    <td>NEB 49</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">92</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:30</td>
+                    <td class="win-prob win-prob-increase">21.3%</td>
+                    <td class="change positive">+3.1%</td>
+                    <td>2nd & 10 at NEB 49</td>
+                    <td>NEB 49</td>
+                    <td class="play-description">M. Washington pass to D. Fleming for 9 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">93</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:12</td>
+                    <td class="win-prob win-prob-neutral">20.9%</td>
+                    <td class="change negative">-0.5%</td>
+                    <td>3rd & 1 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">N. Ray run for 3 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">94</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:53</td>
+                    <td class="win-prob win-prob-increase">23.6%</td>
+                    <td class="change positive">+2.7%</td>
+                    <td>2nd & 2 at NEB 29</td>
+                    <td>NEB 29</td>
+                    <td class="play-description">Timeout Maryland, clock 00:53</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">95</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:53</td>
+                    <td class="win-prob win-prob-neutral">23.4%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td>1st & 10 at NEB 37</td>
+                    <td>NEB 37</td>
+                    <td class="play-description">M. Washington pass to N. Ray for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">96</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:45</td>
+                    <td class="win-prob win-prob-decrease">22.0%</td>
+                    <td class="change negative">-1.3%</td>
+                    <td>2nd & 2 at NEB 29</td>
+                    <td>NEB 29</td>
+                    <td class="play-description">M. Washington pass to D. Fleming for 5 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">97</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:38</td>
+                    <td class="win-prob win-prob-neutral">22.9%</td>
+                    <td class="change positive">+0.8%</td>
+                    <td>1st & 10 at NEB 24</td>
+                    <td>NEB 24</td>
+                    <td class="play-description">M. Washington pass to O. Smith Jr. for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">98</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:34</td>
+                    <td class="win-prob win-prob-neutral">21.9%</td>
+                    <td class="change negative">-1.0%</td>
+                    <td>2nd & 5 at NEB 19</td>
+                    <td>NEB 19</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">99</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:28</td>
+                    <td class="win-prob win-prob-decrease">20.1%</td>
+                    <td class="change negative">-1.8%</td>
+                    <td>3rd & 5 at NEB 19</td>
+                    <td>NEB 19</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="scoring-play">
+                    <td class="play-number">100</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:24</td>
+                    <td class="win-prob win-prob-neutral">20.9%</td>
+                    <td class="change positive">+0.8%</td>
+                    <td>4th & 5 at NEB 19</td>
+                    <td>NEB 19</td>
+                    <td class="play-description">Sean O'Haire 37 Yd Field Goal  </td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">101</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:19</td>
+                    <td class="win-prob win-prob-neutral">20.4%</td>
+                    <td class="change negative">-0.5%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">S. O'Haire kick for 40 yds,C. Benning return for 25 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">102</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">20.3%</td>
+                    <td class="change negative">-0.1%</td>
+                    <td>1st & 10 at 50</td>
+                    <td>50</td>
+                    <td class="play-description">D. Raiola sacked by Z. Mathis for -10 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">103</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">20.9%</td>
+                    <td class="change positive">+0.6%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 2nd Quarter</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">104</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:56</td>
+                    <td class="win-prob win-prob-increase">22.3%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 54 yds,I. Howard return for 14 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">105</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:48</td>
+                    <td class="win-prob win-prob-neutral">21.8%</td>
+                    <td class="change negative">-0.5%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">D. Williams run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">106</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:10</td>
+                    <td class="win-prob win-prob-decrease">19.9%</td>
+                    <td class="change negative">-1.9%</td>
+                    <td>2nd & 7 at MD 28</td>
+                    <td>MD 28</td>
+                    <td class="play-description">N. Ray run for -2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">107</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">13:39</td>
+                    <td class="win-prob win-prob-increase-high">25.9%</td>
+                    <td class="change positive">+6.0%</td>
+                    <td>3rd & 9 at MD 26</td>
+                    <td>MD 26</td>
+                    <td class="play-description">M. Washington pass to S. Knotts for 22 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">108</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">13:12</td>
+                    <td class="win-prob win-prob-neutral">25.4%</td>
+                    <td class="change negative">-0.5%</td>
+                    <td>1st & 10 at MD 48</td>
+                    <td>MD 48</td>
+                    <td class="play-description">M. Washington pass to S. Knotts for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">109</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">12:48</td>
+                    <td class="win-prob win-prob-neutral">25.0%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td>2nd & 6 at NEB 48</td>
+                    <td>NEB 48</td>
+                    <td class="play-description">N. Ray run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">110</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">11:59</td>
+                    <td class="win-prob win-prob-increase">27.4%</td>
+                    <td class="change positive">+2.3%</td>
+                    <td>1st & 10 at NEB 35</td>
+                    <td>NEB 35</td>
+                    <td class="play-description">Timeout Maryland, clock 11:59</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">111</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">11:59</td>
+                    <td class="win-prob win-prob-increase">28.4%</td>
+                    <td class="change positive">+1.0%</td>
+                    <td>3rd & 4 at NEB 46</td>
+                    <td>NEB 46</td>
+                    <td class="play-description">M. Washington pass to D. Fleming for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">112</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">11:41</td>
+                    <td class="win-prob win-prob-increase">31.0%</td>
+                    <td class="change positive">+2.6%</td>
+                    <td>1st & 10 at NEB 35</td>
+                    <td>NEB 35</td>
+                    <td class="play-description">M. Washington pass to D. Williams for 18 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">113</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">11:02</td>
+                    <td class="win-prob win-prob-neutral">30.3%</td>
+                    <td class="change negative">-0.7%</td>
+                    <td>1st & 10 at NEB 17</td>
+                    <td>NEB 17</td>
+                    <td class="play-description">D. Williams run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">114</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:58</td>
+                    <td class="win-prob win-prob-decrease-high">0.0%</td>
+                    <td class="change negative">-30.3%</td>
+                    <td>1st & 10 at NEB 25</td>
+                    <td>NEB 25</td>
+                    <td class="play-description">Timeout Maryland, clock 09:58</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">115</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:58</td>
+                    <td class="win-prob win-prob-increase-high">39.8%</td>
+                    <td class="change positive">+39.8%</td>
+                    <td>1st & Goal at NEB 1</td>
+                    <td>NEB 1</td>
+                    <td class="play-description">DeJuan Williams 1 Yd Run (Sean O'Haire Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">116</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:58</td>
+                    <td class="win-prob win-prob-neutral">39.4%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">S. O'Haire kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">117</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:52</td>
+                    <td class="win-prob win-prob-neutral">39.2%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td>1st & 10 at NEB 25</td>
+                    <td>NEB 25</td>
+                    <td class="play-description">E. Johnson run for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">118</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:15</td>
+                    <td class="win-prob win-prob-decrease">36.9%</td>
+                    <td class="change negative">-2.3%</td>
+                    <td>2nd & 4 at NEB 31</td>
+                    <td>NEB 31</td>
+                    <td class="play-description">D. Raiola pass to N. Hunter for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">119</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">8:58</td>
+                    <td class="win-prob win-prob-increase">41.2%</td>
+                    <td class="change positive">+4.3%</td>
+                    <td>1st & 10 at NEB 42</td>
+                    <td>NEB 42</td>
+                    <td class="play-description">Nebraska penalty, False Start (H. Lutovsky)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">120</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">8:39</td>
+                    <td class="win-prob win-prob-neutral">42.1%</td>
+                    <td class="change positive">+0.9%</td>
+                    <td>1st & 15 at NEB 37</td>
+                    <td>NEB 37</td>
+                    <td class="play-description">D. Raiola pass to I. Mozee for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">121</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">8:21</td>
+                    <td class="win-prob win-prob-decrease">39.7%</td>
+                    <td class="change negative">-2.4%</td>
+                    <td>2nd & 14 at NEB 38</td>
+                    <td>NEB 38</td>
+                    <td class="play-description">I. Mozee run for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">122</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">7:45</td>
+                    <td class="win-prob win-prob-decrease-high">34.5%</td>
+                    <td class="change negative">-5.1%</td>
+                    <td>3rd & 6 at NEB 46</td>
+                    <td>NEB 46</td>
+                    <td class="play-description">D. Raiola pass to I. Mozee for 9 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">123</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">7:08</td>
+                    <td class="win-prob win-prob-increase">36.4%</td>
+                    <td class="change positive">+1.8%</td>
+                    <td>1st & 10 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">D. Raiola pass to K. Smith for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">124</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:40</td>
+                    <td class="win-prob win-prob-decrease-high">0.0%</td>
+                    <td class="change negative">-36.4%</td>
+                    <td>1st & 10 at NEB 23</td>
+                    <td>NEB 23</td>
+                    <td class="play-description">Timeout Maryland, clock 06:40</td>
+                </tr>
+
+                <tr class="scoring-play touchdown interception">
+                    <td class="play-number">125</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:40</td>
+                    <td class="win-prob win-prob-increase-high">68.2%</td>
+                    <td class="change positive">+68.2%</td>
+                    <td>2nd & 7 at MD 42</td>
+                    <td>MD 42</td>
+                    <td class="play-description">Dontay Joyner 67 Yd Interception Return (Sean O'Haire Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">126</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:32</td>
+                    <td class="win-prob win-prob-neutral">69.0%</td>
+                    <td class="change positive">+0.8%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">S. O'Haire kick for 65 yds,K. Williams return for 23 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">127</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:24</td>
+                    <td class="win-prob win-prob-decrease">67.0%</td>
+                    <td class="change negative">-1.9%</td>
+                    <td>1st & 10 at NEB 23</td>
+                    <td>NEB 23</td>
+                    <td class="play-description">E. Johnson run for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">128</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">5:49</td>
+                    <td class="win-prob win-prob-neutral">66.1%</td>
+                    <td class="change negative">-0.9%</td>
+                    <td>1st & 10 at NEB 34</td>
+                    <td>NEB 34</td>
+                    <td class="play-description">E. Johnson run for 7 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">129</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">5:18</td>
+                    <td class="win-prob win-prob-neutral">66.5%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>2nd & 3 at NEB 41</td>
+                    <td>NEB 41</td>
+                    <td class="play-description">E. Johnson run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">130</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">4:44</td>
+                    <td class="win-prob win-prob-increase-high">74.1%</td>
+                    <td class="change positive">+7.6%</td>
+                    <td>3rd & 1 at NEB 43</td>
+                    <td>NEB 43</td>
+                    <td class="play-description">E. Johnson run for -1 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">131</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">4:09</td>
+                    <td class="win-prob win-prob-increase">77.3%</td>
+                    <td class="change positive">+3.2%</td>
+                    <td>2nd & 4 at MD 44</td>
+                    <td>MD 44</td>
+                    <td class="play-description">Timeout Maryland, clock 04:09</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">132</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">4:09</td>
+                    <td class="win-prob win-prob-neutral">77.5%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>4th & 2 at NEB 42</td>
+                    <td>NEB 42</td>
+                    <td class="play-description">A. Wilson punt for 20 yds, punt out-of-bounds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">133</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">4:03</td>
+                    <td class="win-prob win-prob-neutral">77.9%</td>
+                    <td class="change positive">+0.4%</td>
+                    <td>1st & 10 at MD 38</td>
+                    <td>MD 38</td>
+                    <td class="play-description">N. Ray run for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">134</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">3:19</td>
+                    <td class="win-prob win-prob-increase">80.0%</td>
+                    <td class="change positive">+2.1%</td>
+                    <td>2nd & 4 at MD 44</td>
+                    <td>MD 44</td>
+                    <td class="play-description">N. Ray run for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">135</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">2:38</td>
+                    <td class="win-prob win-prob-neutral">80.4%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>1st & 10 at 50</td>
+                    <td>50</td>
+                    <td class="play-description">N. Ray run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">136</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:53</td>
+                    <td class="win-prob win-prob-increase">83.0%</td>
+                    <td class="change positive">+2.6%</td>
+                    <td>2nd & 5 at NEB 45</td>
+                    <td>NEB 45</td>
+                    <td class="play-description">I. Howard run for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">137</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:09</td>
+                    <td class="win-prob win-prob-neutral">83.8%</td>
+                    <td class="change positive">+0.8%</td>
+                    <td>1st & 10 at NEB 39</td>
+                    <td>NEB 39</td>
+                    <td class="play-description">M. Washington run for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">138</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-increase">85.0%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>2nd & 4 at NEB 33</td>
+                    <td>NEB 33</td>
+                    <td class="play-description">N. Ray run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">139</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">85.0%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 3rd Quarter</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">140</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">14:51</td>
+                    <td class="win-prob win-prob-decrease-high">77.2%</td>
+                    <td class="change negative">-7.8%</td>
+                    <td>3rd & 2 at NEB 31</td>
+                    <td>NEB 31</td>
+                    <td class="play-description">N. Ray run for -4 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">141</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">14:13</td>
+                    <td class="win-prob win-prob-neutral">77.6%</td>
+                    <td class="change positive">+0.4%</td>
+                    <td>4th & 6 at NEB 35</td>
+                    <td>NEB 35</td>
+                    <td class="play-description">Maryland penalty, Delay Of Game (M. Washington)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">142</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">14:02</td>
+                    <td class="win-prob win-prob-neutral">78.3%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>4th & 11 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">B. McFerson punt for 32 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">143</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">13:55</td>
+                    <td class="win-prob win-prob-decrease">76.4%</td>
+                    <td class="change negative">-1.8%</td>
+                    <td>1st & 10 at NEB 8</td>
+                    <td>NEB 8</td>
+                    <td class="play-description">E. Johnson run for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">144</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">13:25</td>
+                    <td class="win-prob win-prob-increase">78.7%</td>
+                    <td class="change positive">+2.2%</td>
+                    <td>1st & 10 at NEB 19</td>
+                    <td>NEB 19</td>
+                    <td class="play-description">Nebraska penalty, Offensive Holding (-9 Yards)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">145</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">13:06</td>
+                    <td class="win-prob win-prob-increase">82.2%</td>
+                    <td class="change positive">+3.6%</td>
+                    <td>1st & 19 at NEB 10</td>
+                    <td>NEB 10</td>
+                    <td class="play-description">D. Raiola pass to N. Hunter for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">146</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">12:30</td>
+                    <td class="win-prob win-prob-decrease">79.1%</td>
+                    <td class="change negative">-3.1%</td>
+                    <td>2nd & 14 at NEB 15</td>
+                    <td>NEB 15</td>
+                    <td class="play-description">D. Raiola pass to E. Johnson for 10 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">147</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">11:45</td>
+                    <td class="win-prob win-prob-decrease">76.8%</td>
+                    <td class="change negative">-2.3%</td>
+                    <td>3rd & 4 at NEB 25</td>
+                    <td>NEB 25</td>
+                    <td class="play-description">D. Raiola pass to D. Key for 5 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">148</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">11:23</td>
+                    <td class="win-prob win-prob-neutral">77.7%</td>
+                    <td class="change positive">+0.9%</td>
+                    <td>1st & 10 at NEB 30</td>
+                    <td>NEB 30</td>
+                    <td class="play-description">E. Johnson run for 4 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">149</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">10:47</td>
+                    <td class="win-prob win-prob-increase-high">83.7%</td>
+                    <td class="change positive">+6.0%</td>
+                    <td>2nd & 6 at NEB 34</td>
+                    <td>NEB 34</td>
+                    <td class="play-description">Nebraska penalty, Offensive Holding (-10 Yards)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">150</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">10:22</td>
+                    <td class="win-prob win-prob-decrease-high">76.2%</td>
+                    <td class="change negative">-7.5%</td>
+                    <td>2nd & 16 at NEB 24</td>
+                    <td>NEB 24</td>
+                    <td class="play-description">D. Raiola pass to D. Key for 16 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">151</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:56</td>
+                    <td class="win-prob win-prob-increase">79.8%</td>
+                    <td class="change positive">+3.6%</td>
+                    <td>2nd & 10 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">Timeout Maryland, clock 09:56</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">152</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:56</td>
+                    <td class="win-prob win-prob-neutral">80.1%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>1st & 10 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">D. Raiola pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">153</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:42</td>
+                    <td class="win-prob win-prob-decrease-high">60.4%</td>
+                    <td class="change negative">-19.7%</td>
+                    <td>2nd & 10 at NEB 40</td>
+                    <td>NEB 40</td>
+                    <td class="play-description">E. Johnson run for 50 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">154</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:00</td>
+                    <td class="win-prob win-prob-increase-high">67.5%</td>
+                    <td class="change positive">+7.2%</td>
+                    <td>1st & Goal at MD 10</td>
+                    <td>MD 10</td>
+                    <td class="play-description">D. Raiola pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">155</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">8:51</td>
+                    <td class="win-prob win-prob-increase">71.4%</td>
+                    <td class="change positive">+3.9%</td>
+                    <td>2nd & Goal at MD 10</td>
+                    <td>MD 10</td>
+                    <td class="play-description">D. Raiola pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">156</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">8:41</td>
+                    <td class="win-prob win-prob-increase">75.2%</td>
+                    <td class="change positive">+3.8%</td>
+                    <td>3rd & Goal at MD 10</td>
+                    <td>MD 10</td>
+                    <td class="play-description">D. Raiola run for 6 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">157</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">8:03</td>
+                    <td class="win-prob win-prob-increase">76.9%</td>
+                    <td class="change positive">+1.6%</td>
+                    <td>4th & Goal at MD 4</td>
+                    <td>MD 4</td>
+                    <td class="play-description">Nebraska penalty, Delay Of Game (D. Raiola)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">158</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">7:47</td>
+                    <td class="win-prob win-prob-decrease-high">0.0%</td>
+                    <td class="change negative">-76.9%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">Timeout Maryland, clock 07:47</td>
+                </tr>
+
+                <tr class="scoring-play">
+                    <td class="play-number">159</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">7:47</td>
+                    <td class="win-prob win-prob-increase-high">74.4%</td>
+                    <td class="change positive">+74.4%</td>
+                    <td>4th & Goal at MD 9</td>
+                    <td>MD 9</td>
+                    <td class="play-description">Kyle Cunanan 27 Yd Field Goal  </td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">160</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">7:47</td>
+                    <td class="win-prob win-prob-increase">77.0%</td>
+                    <td class="change positive">+2.6%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">161</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">7:40</td>
+                    <td class="win-prob win-prob-decrease">73.9%</td>
+                    <td class="change negative">-3.1%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">D. Williams run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">162</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">6:55</td>
+                    <td class="win-prob win-prob-increase-high">81.8%</td>
+                    <td class="change positive">+7.9%</td>
+                    <td>2nd & 8 at MD 27</td>
+                    <td>MD 27</td>
+                    <td class="play-description">D. Williams run for 14 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">163</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">6:09</td>
+                    <td class="win-prob win-prob-decrease">79.7%</td>
+                    <td class="change negative">-2.1%</td>
+                    <td>1st & 10 at MD 41</td>
+                    <td>MD 41</td>
+                    <td class="play-description">D. Williams run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">164</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">5:26</td>
+                    <td class="win-prob win-prob-increase">81.0%</td>
+                    <td class="change positive">+1.3%</td>
+                    <td>3rd & 6 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">Timeout Maryland, clock 05:26</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">165</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">5:26</td>
+                    <td class="win-prob win-prob-neutral">81.1%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>2nd & 9 at MD 42</td>
+                    <td>MD 42</td>
+                    <td class="play-description">D. Williams run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">166</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">4:31</td>
+                    <td class="win-prob win-prob-decrease">79.4%</td>
+                    <td class="change negative">-1.7%</td>
+                    <td>3rd & 6 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">M. Washington pass to D. Williams for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">167</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">3:42</td>
+                    <td class="win-prob win-prob-increase">82.1%</td>
+                    <td class="change positive">+2.7%</td>
+                    <td>4th & 4 at MD 47</td>
+                    <td>MD 47</td>
+                    <td class="play-description">B. McFerson punt for 39 yds,J. Barney Jr. returns for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">168</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">3:27</td>
+                    <td class="win-prob win-prob-decrease-high">74.0%</td>
+                    <td class="change negative">-8.1%</td>
+                    <td>1st & 10 at NEB 19</td>
+                    <td>NEB 19</td>
+                    <td class="play-description">D. Raiola pass to L. Lindenmeyer for 23 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">169</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">2:52</td>
+                    <td class="win-prob win-prob-neutral">73.7%</td>
+                    <td class="change negative">-0.3%</td>
+                    <td>1st & 10 at NEB 42</td>
+                    <td>NEB 42</td>
+                    <td class="play-description">E. Johnson run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">170</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">2:17</td>
+                    <td class="win-prob win-prob-decrease-high">57.3%</td>
+                    <td class="change negative">-16.4%</td>
+                    <td>1st & 10 at MD 20</td>
+                    <td>MD 20</td>
+                    <td class="play-description">Timeout Maryland, clock 02:17</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">171</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">2:17</td>
+                    <td class="win-prob win-prob-neutral">57.3%</td>
+                    <td class="change negative">-0.0%</td>
+                    <td>2nd & 5 at NEB 47</td>
+                    <td>NEB 47</td>
+                    <td class="play-description">D. Raiola pass to N. Hunter for 33 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">172</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:54</td>
+                    <td class="win-prob win-prob-decrease-high">49.6%</td>
+                    <td class="change negative">-7.7%</td>
+                    <td>1st & 10 at MD 20</td>
+                    <td>MD 20</td>
+                    <td class="play-description">E. Johnson run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">173</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:17</td>
+                    <td class="win-prob win-prob-decrease-high">24.9%</td>
+                    <td class="change negative">-24.7%</td>
+                    <td>2nd & 6 at MD 16</td>
+                    <td>MD 16</td>
+                    <td class="play-description">D. Raiola pass to H. Haarberg for 13 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">174</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:12</td>
+                    <td class="win-prob win-prob-neutral">25.2%</td>
+                    <td class="change positive">+0.4%</td>
+                    <td>1st & Goal at MD 3</td>
+                    <td>MD 3</td>
+                    <td class="play-description">D. Raiola pass incomplete</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">175</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:08</td>
+                    <td class="win-prob win-prob-decrease-high">10.6%</td>
+                    <td class="change negative">-14.6%</td>
+                    <td>2nd & Goal at MD 3</td>
+                    <td>MD 3</td>
+                    <td class="play-description">Dane Key 3 Yd pass from Dylan Raiola (Kyle Cunanan Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">176</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:08</td>
+                    <td class="win-prob win-prob-decrease">9.1%</td>
+                    <td class="change negative">-1.6%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">J. Hohl kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">177</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:55</td>
+                    <td class="win-prob win-prob-neutral">9.1%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>1st & 10 at MD 25</td>
+                    <td>MD 25</td>
+                    <td class="play-description">M. Washington pass to D. Fleming for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">178</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:45</td>
+                    <td class="win-prob win-prob-increase-high">14.3%</td>
+                    <td class="change positive">+5.2%</td>
+                    <td>2nd & 6 at MD 29</td>
+                    <td>MD 29</td>
+                    <td class="play-description">M. Washington pass to S. Knotts for 16 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">179</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:37</td>
+                    <td class="win-prob win-prob-decrease-high">0.1%</td>
+                    <td class="change negative">-14.2%</td>
+                    <td>2nd & 24 at MD 31</td>
+                    <td>MD 31</td>
+                    <td class="play-description">Timeout Maryland, clock 00:37</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">180</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:37</td>
+                    <td class="win-prob win-prob-neutral">1.0%</td>
+                    <td class="change positive">+0.9%</td>
+                    <td>1st & 10 at MD 45</td>
+                    <td>MD 45</td>
+                    <td class="play-description">Maryland penalty, Intentional Grounding (M. Washington)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">181</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:31</td>
+                    <td class="win-prob win-prob-neutral">0.2%</td>
+                    <td class="change negative">-0.8%</td>
+                    <td>2nd & 24 at MD 31</td>
+                    <td>MD 31</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">182</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:22</td>
+                    <td class="win-prob win-prob-increase-high">7.2%</td>
+                    <td class="change positive">+7.0%</td>
+                    <td>4th & 4 at NEB 49</td>
+                    <td>NEB 49</td>
+                    <td class="play-description">Timeout Nebraska, clock 00:22</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">183</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:22</td>
+                    <td class="win-prob win-prob-neutral">7.2%</td>
+                    <td class="change ">0.0%</td>
+                    <td>3rd & 24 at MD 31</td>
+                    <td>MD 31</td>
+                    <td class="play-description">M. Washington pass to S. Knotts for 20 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">184</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:21</td>
+                    <td class="win-prob win-prob-decrease-high">0.1%</td>
+                    <td class="change negative">-7.1%</td>
+                    <td>4th & 4 at NEB 49</td>
+                    <td>NEB 49</td>
+                    <td class="play-description">M. Washington pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">185</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">0.0%</td>
+                    <td class="change negative">-0.1%</td>
+                    <td>1st & 10 at NEB 49</td>
+                    <td>NEB 49</td>
+                    <td class="play-description">D. Raiola takes a knee</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">186</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">0.0%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 4th Quarter</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="stats">
+        <h3>Game Statistics</h3>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-label">Total Plays</div>
+                <div class="stat-value">186</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Scoring Plays</div>
+                <div class="stat-value">11</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Penalties</div>
+                <div class="stat-value">14</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Touchdowns</div>
+                <div class="stat-value">8</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Interceptions</div>
+                <div class="stat-value">3</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight rows with significant win probability changes
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const changeCell = row.querySelector('.change');
+                if (changeCell) {
+                    const changeText = changeCell.textContent;
+                    if (changeText.includes('+') && parseFloat(changeText) > 5) {
+                        row.style.borderLeft = '4px solid #10b981';
+                    } else if (changeText.includes('-') && parseFloat(changeText) < -5) {
+                        row.style.borderLeft = '4px solid #ef4444';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

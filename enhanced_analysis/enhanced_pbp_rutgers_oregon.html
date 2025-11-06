@@ -1,0 +1,2280 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Enhanced Play-by-Play Analysis - Rutgers vs Oregon</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                color: #333;
+            }
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 2.5em;
+                font-weight: 300;
+            }
+            .header p {
+                margin: 10px 0 0 0;
+                font-size: 1.2em;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .play-by-play-table {
+                margin: 30px 0;
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            th {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 10px;
+                text-align: left;
+                font-weight: 600;
+                font-size: 14px;
+            }
+            td {
+                padding: 12px 10px;
+                border-bottom: 1px solid #eee;
+                font-size: 14px;
+            }
+            tr:hover {
+                background-color: #f8f9fa;
+            }
+            .play-number {
+                font-weight: bold;
+                color: #667eea;
+            }
+            .quarter {
+                font-weight: bold;
+                color: #666;
+            }
+            .time {
+                font-family: monospace;
+                color: #666;
+            }
+            .win-prob {
+                font-weight: bold;
+            }
+            .win-prob.high {
+                color: #28a745;
+            }
+            .win-prob.medium {
+                color: #ffc107;
+            }
+            .win-prob.low {
+                color: #dc3545;
+            }
+            .change {
+                font-weight: bold;
+            }
+            .change.positive {
+                color: #28a745;
+            }
+            .change.negative {
+                color: #dc3545;
+            }
+            .play-description {
+                max-width: 300px;
+                word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Enhanced Play-by-Play Analysis</h1>
+                <p>Rutgers vs Oregon | October 18, 2025 | Game ID: 401752876</p>
+            </div>
+            
+            <div class="content">
+                <div class="play-by-play-table">
+                    <h3>Complete Play-by-Play with Win Probability</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th style="width: 50px;">Qtr</th>
+                                <th style="width: 80px;">Time</th>
+                                <th style="width: 80px;">Drive</th>
+                                <th style="width: 100px;">Win Prob</th>
+                                <th style="width: 80px;">Change</th>
+                                <th style="width: 100px;">Down/Dist</th>
+                                <th style="width: 120px;">Yard Line</th>
+                                <th>Play Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+                            <tr>
+                                <td class="play-number">1</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 1</td>
+                                <td class="win-prob low">15.8%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Jack Scullion kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">2</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">14:50</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 1</td>
+                                <td class="win-prob low">16.3%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 25</td>
+                                <td class="play-description">Noah Whittington run for 3 yds to the ORE 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">3</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">14:12</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 1</td>
+                                <td class="win-prob low">18.0%</td>
+                                <td class="change positive">+1.7%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">ORE 28</td>
+                                <td class="play-description">Noah Whittington run for a loss of 4 yards to the ORE 24</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">4</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">13:35</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 1</td>
+                                <td class="win-prob low">21.8%</td>
+                                <td class="change positive">+3.8%</td>
+                                <td class="down-dist">3 & 11</td>
+                                <td class="yard-line">ORE 24</td>
+                                <td class="play-description">Dante Moore pass complete to Gary Bryant Jr. for 8 yds Gary Bryant Jr. fumbled, recovered by RUTG Jordan Walker</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">5</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">13:32</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 2</td>
+                                <td class="win-prob low">20.2%</td>
+                                <td class="change negative">-1.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to KJ Duff</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">6</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">13:28</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 2</td>
+                                <td class="win-prob low">19.2%</td>
+                                <td class="change negative">-0.9%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to KJ Duff</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">7</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">13:22</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 2</td>
+                                <td class="win-prob low">17.7%</td>
+                                <td class="change negative">-1.5%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to KJ Duff</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">8</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">13:18</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 2</td>
+                                <td class="win-prob low">20.9%</td>
+                                <td class="change positive">+3.2%</td>
+                                <td class="down-dist">4 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Jai Patel 51 yd FG GOOD</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">9</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">13:18</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 3</td>
+                                <td class="win-prob low">20.6%</td>
+                                <td class="change negative">-0.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Jack Scullion kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">10</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:54</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 3</td>
+                                <td class="win-prob low">21.2%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 25</td>
+                                <td class="play-description">Dante Moore pass complete to Noah Whittington for 4 yds to the ORE 29</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">11</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:38</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 3</td>
+                                <td class="win-prob low">21.2%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">2 & 6</td>
+                                <td class="yard-line">ORE 29</td>
+                                <td class="play-description">Noah Whittington run for 3 yds to the ORE 32</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">12</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">11:52</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 3</td>
+                                <td class="win-prob low">13.2%</td>
+                                <td class="change negative">-8.0%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">ORE 32</td>
+                                <td class="play-description">Noah Whittington run for 68 yds for a TD (Atticus Sappington KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">13</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">11:52</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 4</td>
+                                <td class="win-prob low">13.5%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Atticus Sappington kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">14</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">11:42</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 4</td>
+                                <td class="win-prob low">12.4%</td>
+                                <td class="change negative">-1.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Antwan Raymond run for a loss of 1 yard to the RUTG 24</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">15</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">11:13</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 4</td>
+                                <td class="win-prob low">12.1%</td>
+                                <td class="change negative">-0.3%</td>
+                                <td class="down-dist">2 & 11</td>
+                                <td class="yard-line">RUTG 24</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to KJ Duff</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">16</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:54</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 4</td>
+                                <td class="win-prob low">11.9%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">3 & 11</td>
+                                <td class="yard-line">RUTG 24</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to DT Sheffield for 7 yds to the RUTG 31</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">17</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:30</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 4</td>
+                                <td class="win-prob low">12.9%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">4 & 4</td>
+                                <td class="yard-line">RUTG 31</td>
+                                <td class="play-description">Jakob Anderson punt for 56 yds, fair catch by Gary Bryant Jr. at the ORE 13</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">18</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:20</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">13.1%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 13</td>
+                                <td class="play-description">Noah Whittington run for 5 yds to the ORE 18</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">19</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">9:45</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">13.4%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">ORE 18</td>
+                                <td class="play-description">Noah Whittington run for 2 yds to the ORE 20</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">20</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">9:10</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">12.1%</td>
+                                <td class="change negative">-1.4%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">ORE 20</td>
+                                <td class="play-description">Dante Moore pass complete to Jeremiah McClellan for 16 yds to the ORE 36 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">21</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">9:01</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">13.1%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 36</td>
+                                <td class="play-description">Dante Moore pass incomplete to Dakorien Moore</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">22</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">8:50</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">13.7%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">ORE 36</td>
+                                <td class="play-description">Noah Whittington run for no gain to the ORE 36</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">23</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">7:24</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">11.1%</td>
+                                <td class="change negative">-2.6%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">ORE 36</td>
+                                <td class="play-description">Dante Moore pass complete to Kenyon Sadiq for 24 yds to the RUTG 40 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">24</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:49</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">11.9%</td>
+                                <td class="change positive">+0.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 40</td>
+                                <td class="play-description">Dante Moore pass complete to Cooper Perry for 2 yds to the RUTG 38</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">25</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:41</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">11.2%</td>
+                                <td class="change negative">-0.7%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">RUTG 38</td>
+                                <td class="play-description">Dante Moore pass complete to Kenyon Sadiq for 5 yds to the RUTG 33</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">26</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:36</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">10.7%</td>
+                                <td class="change negative">-0.6%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">RUTG 33</td>
+                                <td class="play-description">Dante Moore run for 13 yds to the RUTG 20 for a 1ST down Oregon Penalty, (-10 Yards) to the RUTG 30 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">27</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:25</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">7.8%</td>
+                                <td class="change negative">-2.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 30</td>
+                                <td class="play-description">Dante Moore pass complete to Kenyon Sadiq for 30 yds for a TD (Atticus Sappington KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">28</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:25</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 5</td>
+                                <td class="win-prob low">3.9%</td>
+                                <td class="change negative">-3.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 3</td>
+                                <td class="play-description">Saleapaga,Roger rush attempt Successful PENALTY RU Offside offsetting OU Illegal Formation offsetting. NO PLAY.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">29</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:25</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">7.7%</td>
+                                <td class="change positive">+3.7%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Atticus Sappington kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">30</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">6:06</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">7.8%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to Kenny Fletcher Jr. for 6 yds to the RUTG 31</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">31</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">5:42</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">8.1%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">RUTG 31</td>
+                                <td class="play-description">Antwan Raymond run for 4 yds to the RUTG 35 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">32</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">5:05</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">7.6%</td>
+                                <td class="change negative">-0.5%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 35</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">33</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">4:50</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">8.4%</td>
+                                <td class="change positive">+0.8%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">RUTG 35</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to DT Sheffield for 8 yds to the RUTG 43</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">34</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">4:16</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">8.8%</td>
+                                <td class="change positive">+0.4%</td>
+                                <td class="down-dist">3 & 2</td>
+                                <td class="yard-line">RUTG 43</td>
+                                <td class="play-description">Antwan Raymond run for 4 yds to the RUTG 47 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">35</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">3:03</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">7.6%</td>
+                                <td class="change negative">-1.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 47</td>
+                                <td class="play-description">Athan Kaliakmanis sacked by Teitum Tuioti for a loss of 7 yards to the RUTG 40 Athan Kaliakmanis fumbled, recovered by RUTG Kwabena Asamoah , return for 0 yards</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">36</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:41</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">8.3%</td>
+                                <td class="change positive">+0.7%</td>
+                                <td class="down-dist">2 & 17</td>
+                                <td class="yard-line">RUTG 40</td>
+                                <td class="play-description">Antwan Raymond run for 10 yds to the 50 yard line</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">37</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:10</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">8.5%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">50</td>
+                                <td class="play-description">Timeout Rutgers, clock 02:10</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">38</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">1:53</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">7.7%</td>
+                                <td class="change negative">-0.7%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">50</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to Ian Strong for 6 yds to the ORE 44</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">39</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">1:23</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">10.1%</td>
+                                <td class="change positive">+2.4%</td>
+                                <td class="down-dist">4 & 1</td>
+                                <td class="yard-line">ORE 44</td>
+                                <td class="play-description">Antwan Raymond run for 6 yds to the ORE 38 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">40</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">0:41</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">6.5%</td>
+                                <td class="change negative">-3.7%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 38</td>
+                                <td class="play-description">Oregon Penalty, (3 Yards) to the ORE 36</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">41</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">0:41</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 6</td>
+                                <td class="win-prob low">7.0%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 38</td>
+                                <td class="play-description">Oregon Penalty, (15 Yards) to the ORE 21</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">42</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 7</td>
+                                <td class="win-prob low">6.2%</td>
+                                <td class="change negative">-0.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 21</td>
+                                <td class="play-description">Dante Moore pass complete to Gary Bryant Jr. for 24 yds to the ORE 45 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">43</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 7</td>
+                                <td class="win-prob low">6.2%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 1st Quarter</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">44</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">14:45</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 7</td>
+                                <td class="win-prob low">5.7%</td>
+                                <td class="change negative">-0.5%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 45</td>
+                                <td class="play-description">Jordon Davison run for 13 yds to the RUTG 42 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">45</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">14:17</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 7</td>
+                                <td class="win-prob low">4.8%</td>
+                                <td class="change negative">-0.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 42</td>
+                                <td class="play-description">Dante Moore pass complete to Malik Benson for 21 yds to the RUTG 21 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">46</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">14:02</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 7</td>
+                                <td class="win-prob low">3.4%</td>
+                                <td class="change negative">-1.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 21</td>
+                                <td class="play-description">Dante Moore pass complete to Kenyon Sadiq for 21 yds for a TD (Gage Hurych KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">47</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">14:02</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 8</td>
+                                <td class="win-prob low">3.4%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gage Hurych kickoff for 59 yds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">48</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">13:55</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 8</td>
+                                <td class="win-prob low">3.0%</td>
+                                <td class="change negative">-0.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Antwan Raymond run for a loss of 2 yards to the RUTG 23</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">49</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">13:11</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 8</td>
+                                <td class="win-prob low">3.7%</td>
+                                <td class="change positive">+0.8%</td>
+                                <td class="down-dist">2 & 12</td>
+                                <td class="yard-line">RUTG 23</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to KJ Duff for 18 yds to the RUTG 41 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">50</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">12:38</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 8</td>
+                                <td class="win-prob low">2.6%</td>
+                                <td class="change negative">-1.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 41</td>
+                                <td class="play-description">Antwan Raymond run for 8 yds to the RUTG 49 Antwan Raymond fumbled, recovered by ORE Theran Johnson</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">51</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">12:14</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 9</td>
+                                <td class="win-prob low">2.4%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 49</td>
+                                <td class="play-description">Dierre Hill Jr. run for 10 yds to the RUTG 39 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">52</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">12:02</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 9</td>
+                                <td class="win-prob low">2.4%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 39</td>
+                                <td class="play-description">Dierre Hill Jr. run for 5 yds to the RUTG 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">53</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:34</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 9</td>
+                                <td class="win-prob low">1.3%</td>
+                                <td class="change negative">-1.1%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">RUTG 34</td>
+                                <td class="play-description">Dante Moore pass complete to Dakorien Moore for 34 yds for a TD (Atticus Sappington KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">54</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:34</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 10</td>
+                                <td class="win-prob low">1.1%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Atticus Sappington kickoff for 63 yds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">55</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:29</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 10</td>
+                                <td class="win-prob low">1.0%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to DT Sheffield</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">56</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:24</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 10</td>
+                                <td class="win-prob low">1.0%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to Kenny Fletcher Jr.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">57</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:10</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 10</td>
+                                <td class="win-prob low">0.9%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Athan Kaliakmanis run for 1 yd to the RUTG 26</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">58</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">10:38</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 10</td>
+                                <td class="win-prob low">0.9%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">4 & 9</td>
+                                <td class="yard-line">RUTG 26</td>
+                                <td class="play-description">Jakob Anderson punt for 46 yds , Gary Bryant Jr. returns for no gain to the ORE 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">59</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">10:19</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 11</td>
+                                <td class="win-prob low">0.9%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 28</td>
+                                <td class="play-description">Noah Whittington run for 6 yds to the ORE 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">60</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">10:05</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 11</td>
+                                <td class="win-prob low">0.8%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">ORE 34</td>
+                                <td class="play-description">Noah Whittington run for 9 yds to the ORE 43 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">61</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">9:29</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 11</td>
+                                <td class="win-prob low">0.6%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 43</td>
+                                <td class="play-description">Dante Moore pass complete to Dakorien Moore for 29 yds to the RUTG 28 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">62</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">8:54</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 11</td>
+                                <td class="win-prob low">0.7%</td>
+                                <td class="change positive">+0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 28</td>
+                                <td class="play-description">Noah Whittington run for 28 yds for a TD (Atticus Sappington KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">63</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">8:54</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gage Hurych kickoff for 64 yds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">64</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">8:47</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Ja'shon Benjamin run for 3 yds to the RUTG 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">65</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">8:34</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">RUTG 28</td>
+                                <td class="play-description">Timeout Rutgers, clock 08:34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">66</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">8:24</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">RUTG 28</td>
+                                <td class="play-description">Antwan Raymond run for 4 yds to the RUTG 32</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">67</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">7:29</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.6%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">RUTG 32</td>
+                                <td class="play-description">Antwan Raymond run for 5 yds to the RUTG 37 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">68</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">6:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.7%</td>
+                                <td class="change positive">+0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 37</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to KJ Duff for 9 yds to the RUTG 46</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">69</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">6:09</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.6%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">RUTG 46</td>
+                                <td class="play-description">Antwan Raymond run for a loss of 1 yard to the RUTG 45</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">70</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:41</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.6%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 2</td>
+                                <td class="yard-line">RUTG 45</td>
+                                <td class="play-description">Antwan Raymond run for 4 yds to the RUTG 49 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">71</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:07</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 49</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to DT Sheffield</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">72</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">4:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">RUTG 49</td>
+                                <td class="play-description">Ja'shon Benjamin run for 4 yds to the ORE 47</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">73</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">3:56</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">3 & 6</td>
+                                <td class="yard-line">ORE 47</td>
+                                <td class="play-description">Ja'shon Benjamin run for 3 yds to the ORE 44</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">74</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">3:27</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.7%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">4 & 3</td>
+                                <td class="yard-line">ORE 44</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to DT Sheffield for 11 yds to the ORE 33 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">75</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">3:01</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.6%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to Ben Black</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">76</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">2:51</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Antwan Raymond run for no gain to the ORE 33</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">77</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">2:03</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Athan Kaliakmanis run for 5 yds to the ORE 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">78</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">2:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">4 & 5</td>
+                                <td class="yard-line">ORE 28</td>
+                                <td class="play-description">Timeout Rutgers, clock 02:00</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">79</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:57</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 12</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">4 & 5</td>
+                                <td class="yard-line">ORE 28</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to DT Sheffield</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">80</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:50</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 28</td>
+                                <td class="play-description">Dante Moore run for 1 yd to the ORE 29</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">81</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:45</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">ORE 29</td>
+                                <td class="play-description">Dante Moore pass incomplete to Malik Benson</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">82</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:30</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">3 & 9</td>
+                                <td class="yard-line">ORE 29</td>
+                                <td class="play-description">Dante Moore pass complete to Jamari Johnson for 56 yds to the RUTG 15 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">83</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:14</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 15</td>
+                                <td class="play-description">(01:19) No Huddle-Shotgun Davison,Jordon rush middle for 0 yards to the RU15 (O'Neill,Eric) PENALTY RU Offside (Weaver,Bradley) 5 yards from RU15 to RU10. NO PLAY.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">84</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:55</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 5</td>
+                                <td class="yard-line">RUTG 10</td>
+                                <td class="play-description">PENALTY RU Offside (O'Neill,Eric) 5 yards from RU10 to RU05, 1ST DOWN. NO PLAY.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">85</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:50</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 5</td>
+                                <td class="yard-line">RUTG 5</td>
+                                <td class="play-description">Dante Moore pass incomplete</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">86</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:46</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">RUTG 5</td>
+                                <td class="play-description">Dante Moore pass incomplete to Jamari Johnson</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">87</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 13</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">3 & 5</td>
+                                <td class="yard-line">RUTG 5</td>
+                                <td class="play-description">Dante Moore pass complete to Noah Whittington for 5 yds for a TD (Gage Hurych KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">88</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Atticus Sappington kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">89</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:29</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Antwan Raymond run for 2 yds to the RUTG 27</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">90</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:17</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">RUTG 27</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to KJ Duff</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">91</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:12</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 8</td>
+                                <td class="yard-line">RUTG 27</td>
+                                <td class="play-description">Antwan Raymond run for no gain to the RUTG 27</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">92</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:12</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">4 & 8</td>
+                                <td class="yard-line">RUTG 27</td>
+                                <td class="play-description">Timeout Oregon, clock 00:12</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">93</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 2nd Quarter</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">94</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:05</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 14</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">4 & 8</td>
+                                <td class="yard-line">RUTG 27</td>
+                                <td class="play-description">Jakob Anderson punt for 39 yds, fair catch by Gary Bryant Jr. at the ORE 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">95</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:05</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 15</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 34</td>
+                                <td class="play-description">Noah Whittington run for 5 yds to the ORE 39</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">96</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change positive">+0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Atticus Sappington kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">97</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">14:51</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Antwan Raymond run for 3 yds to the RUTG 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">98</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">13:57</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.5%</td>
+                                <td class="change positive">+0.1%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">RUTG 28</td>
+                                <td class="play-description">Athan Kaliakmanis pass complete to KJ Duff for 14 yds to the RUTG 42 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">99</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">13:25</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 42</td>
+                                <td class="play-description">Antwan Raymond run for 3 yds to the RUTG 45</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">100</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:49</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">RUTG 45</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">101</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:46</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">RUTG 45</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to DT Sheffield</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">102</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:40</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 16</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">4 & 7</td>
+                                <td class="yard-line">RUTG 45</td>
+                                <td class="play-description">Jakob Anderson punt for 42 yds, fair catch by Gary Bryant Jr. at the ORE 13</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">103</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:23</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 17</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 13</td>
+                                <td class="play-description">Jordon Davison run for 67 yds to the RUTG 20 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">104</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">11:44</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 17</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 20</td>
+                                <td class="play-description">Jordon Davison run for 20 yds for a TD (Gage Hurych KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">105</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">11:44</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.3%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gage Hurych kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">106</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">11:33</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change positive">+0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Ja'shon Benjamin run for 19 yds to the RUTG 44 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">107</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">10:55</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 44</td>
+                                <td class="play-description">Ja'shon Benjamin run for 6 yds to the 50 yard line</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">108</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">10:21</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">50</td>
+                                <td class="play-description">Ja'shon Benjamin run for 2 yds to the ORE 48</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">109</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:59</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.4%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 2</td>
+                                <td class="yard-line">ORE 48</td>
+                                <td class="play-description">Athan Kaliakmanis run for 5 yds to the ORE 43 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">110</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:21</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.2%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 43</td>
+                                <td class="play-description">Athan Kaliakmanis sacked by Blake Purchase for a loss of 4 yards to the ORE 47</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">111</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">8:41</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.2%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">2 & 14</td>
+                                <td class="yard-line">ORE 47</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to KJ Duff</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">112</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">8:37</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 18</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">3 & 14</td>
+                                <td class="yard-line">ORE 47</td>
+                                <td class="play-description">Athan Kaliakmanis pass intercepted Aaron Flowers return for no gain to the ORE 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">113</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">8:15</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 19</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 34</td>
+                                <td class="play-description">Dante Moore run for 35 yds to the RUTG 31 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">114</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">7:39</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 19</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 31</td>
+                                <td class="play-description">Dierre Hill Jr. run for 6 yds to the RUTG 25</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">115</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">7:05</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 19</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">RUTG 25</td>
+                                <td class="play-description">Dierre Hill Jr. run for 6 yds to the RUTG 19 for a 1ST down Rutgers Penalty, Face Mask (10 yards) (Jesse Ofurie) to the RUTG 9 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">116</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:48</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 19</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 9</td>
+                                <td class="yard-line">RUTG 9</td>
+                                <td class="play-description">(06:48) No Huddle-Shotgun Harris,Jay rush middle for 9 yards gain to the RU00 TOUCHDOWN nullified by penalty, clock 06:48 PENALTY OU Holding (Iuli,Dave) 10 yards from RU09 to RU19. NO PLAY.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">117</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 19</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">1 & 19</td>
+                                <td class="yard-line">RUTG 19</td>
+                                <td class="play-description">Dante Moore pass intercepted Cam Miller return for no gain to the RUTG 15</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">118</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:34</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 20</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 15</td>
+                                <td class="play-description">Ja'shon Benjamin run for 3 yds to the RUTG 18</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">119</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">5:59</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 20</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">RUTG 18</td>
+                                <td class="play-description">Ja'shon Benjamin run for 2 yds to the RUTG 20</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">120</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">5:24</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 20</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">3 & 5</td>
+                                <td class="yard-line">RUTG 20</td>
+                                <td class="play-description">Athan Kaliakmanis pass incomplete to Kenny Fletcher Jr.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">121</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">5:18</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 20</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">4 & 5</td>
+                                <td class="yard-line">RUTG 20</td>
+                                <td class="play-description">Jakob Anderson punt for 38 yds, fair catch by Dakorien Moore at the ORE 42</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">122</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">5:08</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 21</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 42</td>
+                                <td class="play-description">Jay Harris run for 12 yds to the RUTG 46 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">123</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">3:54</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 21</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 46</td>
+                                <td class="play-description">Dante Moore pass complete to Dierre Hill Jr. for 11 yds to the RUTG 35 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">124</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">3:42</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 21</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 35</td>
+                                <td class="play-description">Dierre Hill Jr. run for 35 yds for a TD (Gage Hurych KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">125</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">3:42</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 21</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 35</td>
+                                <td class="play-description">PENALTY OU UNS: Unsportsmanlike Conduct (Harkey,Alex) 15 yards from OU35 to OU20. NO PLAY.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">126</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">3:35</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 22</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Atticus Sappington kickoff for 63 yds , Ben Black return for 25 yds to the RUTG 42</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">127</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">3:06</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 22</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 42</td>
+                                <td class="play-description">Antwan Raymond run for 5 yds to the RUTG 47</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">128</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">2:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 22</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">RUTG 47</td>
+                                <td class="play-description">Antwan Raymond run for 1 yd to the RUTG 48</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">129</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">2:26</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 22</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">3 & 4</td>
+                                <td class="yard-line">RUTG 48</td>
+                                <td class="play-description">Athan Kaliakmanis sacked for a loss of 1 yard to the RUTG 47</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">130</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">1:48</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 22</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">4 & 5</td>
+                                <td class="yard-line">RUTG 47</td>
+                                <td class="play-description">Jakob Anderson punt for 39 yds, fair catch by Dakorien Moore at the ORE 14</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">131</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">1:16</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 14</td>
+                                <td class="play-description">Jay Harris run for 6 yds to the ORE 20</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">132</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">1:10</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">ORE 20</td>
+                                <td class="play-description">(01:10) PENALTY RU Offside (Angoy,Zaire) 5 yards from OU20 to OU25, 1ST DOWN. NO PLAY.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">133</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">0:13</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 25</td>
+                                <td class="play-description">Jay Harris run for 3 yds to the ORE 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">134</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">ORE 28</td>
+                                <td class="play-description">Brock Thomas pass complete to Jay Harris for 6 yds to the ORE 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">135</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 3rd Quarter</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">136</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:25</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 1</td>
+                                <td class="yard-line">ORE 34</td>
+                                <td class="play-description">Brock Thomas pass complete to Jeremiah McClellan for 35 yds to the RUTG 31 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">137</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:06</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 31</td>
+                                <td class="play-description">Jay Harris run for 1 yd to the RUTG 30</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">138</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">13:32</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">RUTG 30</td>
+                                <td class="play-description">Brock Thomas pass incomplete to Cooper Perry</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">139</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">13:18</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 9</td>
+                                <td class="yard-line">RUTG 30</td>
+                                <td class="play-description">Brock Thomas pass complete to Cooper Perry for 4 yds to the RUTG 26</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">140</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">12:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 23</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">4 & 5</td>
+                                <td class="yard-line">RUTG 26</td>
+                                <td class="play-description">Gage Hurych 44 yd FG MISSED</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">141</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">12:34</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 24</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 26</td>
+                                <td class="play-description">Ja'shon Benjamin run for 2 yds to the RUTG 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">142</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">11:47</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 24</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">RUTG 28</td>
+                                <td class="play-description">Ja'shon Benjamin run for a loss of 2 yards to the RUTG 26</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">143</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">11:18</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 24</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">RUTG 26</td>
+                                <td class="play-description">Ja'shon Benjamin run for a loss of 3 yards to the RUTG 23</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">144</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:47</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 24</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">4 & 13</td>
+                                <td class="yard-line">RUTG 23</td>
+                                <td class="play-description">Jakob Anderson punt for 47 yds , Dakorien Moore returns for no gain to the ORE 30 Dakorien Moore fumbled, recovered by RUTG Ben Black</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">145</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:38</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change positive">+0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 30</td>
+                                <td class="play-description">Ja'shon Benjamin run for 8 yds to the ORE 22</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">146</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:04</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">2 & 2</td>
+                                <td class="yard-line">ORE 22</td>
+                                <td class="play-description">Ja'shon Benjamin run for 4 yds to the ORE 18 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">147</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">9:27</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 18</td>
+                                <td class="play-description">Ja'shon Benjamin run for 3 yds to the ORE 15</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">148</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">8:43</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">ORE 15</td>
+                                <td class="play-description">Ja'shon Benjamin run for 3 yds to the ORE 12</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">149</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">8:01</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 4</td>
+                                <td class="yard-line">ORE 12</td>
+                                <td class="play-description">Ja'shon Benjamin run for 3 yds to the ORE 9</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">150</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">7:30</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">4 & 1</td>
+                                <td class="yard-line">ORE 9</td>
+                                <td class="play-description">Ja'shon Benjamin run for 2 yds to the ORE 7 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">151</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">6:48</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 7</td>
+                                <td class="yard-line">ORE 7</td>
+                                <td class="play-description">AJ Surace pass incomplete to Sah'nye Degraffenreidt</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">152</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">6:44</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">ORE 7</td>
+                                <td class="play-description">AJ Surace pass incomplete to Ben Black</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">153</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">6:44</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">ORE 7</td>
+                                <td class="play-description">Timeout Oregon, clock 06:44</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">154</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">6:40</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 25</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">ORE 7</td>
+                                <td class="play-description">Ja'shon Benjamin run for 7 yds for a TD (Jai Patel KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">155</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">6:40</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Jack Scullion kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">156</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">6:18</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 25</td>
+                                <td class="play-description">Da'Jaun Riggs run for a loss of 3 yards to the ORE 22</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">157</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">5:30</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 13</td>
+                                <td class="yard-line">ORE 22</td>
+                                <td class="play-description">Da'Jaun Riggs run for 11 yds to the ORE 33</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">158</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">5:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">3 & 2</td>
+                                <td class="yard-line">ORE 33</td>
+                                <td class="play-description">Brock Thomas run for 15 yds to the ORE 48 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">159</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:17</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">ORE 48</td>
+                                <td class="play-description">Da'Jaun Riggs run for 5 yds to the RUTG 47</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">160</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">3:35</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">RUTG 47</td>
+                                <td class="play-description">Da'Jaun Riggs run for 9 yds to the RUTG 38 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">161</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">2:49</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 38</td>
+                                <td class="play-description">Jay Harris run for 9 yds to the RUTG 29</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">162</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">2:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">RUTG 29</td>
+                                <td class="play-description">Da'Jaun Riggs run for 13 yds to the RUTG 16 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">163</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">2:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 16</td>
+                                <td class="play-description">Timeout Rutgers, clock 02:00</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">164</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">1:52</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">RUTG 16</td>
+                                <td class="play-description">Jay Harris run for 2 yds to the RUTG 14</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">165</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">1:02</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.1%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">RUTG 14</td>
+                                <td class="play-description">B. Thomas takes a knee</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">166</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.0%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">RUTG 16</td>
+                                <td class="play-description">B. Thomas takes a knee</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">167</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">0:00</td>
+                                <td class="drive" style="font-weight: bold; color: #666;">Drive 26</td>
+                                <td class="win-prob low">0.0%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 4th Quarter</td>
+                            </tr>
+        
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="win-probability-chart">
+                    <h3>Win Probability Chart</h3>
+                    <div class="chart-container" style="position: relative; width: 100%; height: 400px;">
+                        <!-- Quarter background shading -->
+                        <div class="quarter-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+                            <div class="quarter-section" style="position: absolute; top: 0; left: 0%; width: 25%; height: 100%; background-color: rgba(240, 248, 255, 0.3); border-right: 2px solid rgba(0, 0, 0, 0.1);">
+                                <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q1</div>
+                            </div>
+                            <div class="quarter-section" style="position: absolute; top: 0; left: 25%; width: 25%; height: 100%; background-color: rgba(255, 248, 240, 0.3); border-right: 2px solid rgba(0, 0, 0, 0.1);">
+                                <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q2</div>
+                            </div>
+                            <div class="quarter-section" style="position: absolute; top: 0; left: 50%; width: 25%; height: 100%; background-color: rgba(240, 255, 240, 0.3); border-right: 2px solid rgba(0, 0, 0, 0.1);">
+                                <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q3</div>
+                            </div>
+                            <div class="quarter-section" style="position: absolute; top: 0; left: 75%; width: 25%; height: 100%; background-color: rgba(255, 240, 255, 0.3);">
+                                <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q4</div>
+                            </div>
+                        </div>
+                        <canvas id="winProbabilityChart" width="800" height="400" style="position: relative; z-index: 2;"></canvas>
+                    </div>
+                    <div class="chart-legend" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; justify-content: center;">
+                        <div class="legend-item" style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <div class="legend-color" style="width: 16px; height: 16px; border-radius: 3px; background-color: rgb(75, 192, 192);"></div>
+                            <span>Oregon Win %</span>
+                        </div>
+                        <div class="legend-item" style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <div class="legend-color" style="width: 16px; height: 16px; border-radius: 3px; background-color: rgb(255, 99, 132);"></div>
+                            <span>Rutgers Win %</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="penalty-analysis">
+                    <h3>Penalty Impact Analysis</h3>
+                    <p>Total penalties detected: 4</p>
+                    <ul>
+    
+                        <li>
+                            <strong>Play 26</strong>: Dante Moore run for 13 yds to the RUTG 20 for a 1ST down Oregon Penalty, (-10 Yards) to the RUTG 30 for a 1ST down 
+                            <span class="change negative">(-0.6%)</span>
+                        </li>
+        
+                        <li>
+                            <strong>Play 40</strong>: Oregon Penalty, (3 Yards) to the ORE 36 
+                            <span class="change negative">(-3.7%)</span>
+                        </li>
+        
+                        <li>
+                            <strong>Play 41</strong>: Oregon Penalty, (15 Yards) to the ORE 21 
+                            <span class="change positive">(+0.6%)</span>
+                        </li>
+        
+                        <li>
+                            <strong>Play 115</strong>: Dierre Hill Jr. run for 6 yds to the RUTG 19 for a 1ST down Rutgers Penalty, Face Mask (10 yards) (Jesse Ofurie) to the RUTG 9 for a 1ST down 
+                            <span class="change negative">(0.0%)</span>
+                        </li>
+        
+                    </ul>
+                </div>
+                
+                <div class="inflection-analysis">
+                    <h3>Major Inflection Points Analysis</h3>
+                    <p>Plays that caused significant win probability changes (5% or more): 1</p>
+                    <ul>
+    
+                        <li>
+                            <strong>Play 12</strong>: 💥 Explosive Play 
+                            <span class="change negative">(-8.0%)</span>
+                            <br><small>Oregon WP: 13.2% → Rutgers WP: 86.8%</small>
+                            <br><em>"Noah Whittington run for 68 yds for a TD (Atticus Sappington KICK)"</em>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('winProbabilityChart').getContext('2d');
+            
+            // Prepare data for chart
+            const chartData = {json.dumps([item['wp_data'] for item in aligned_data])};
+            const homeData = chartData.map(entry => entry.homeWinPercentage * 100);
+            const awayData = chartData.map(entry => (1 - entry.homeWinPercentage) * 100);
+            const labels = {json.dumps([f"Play {i+1}" for i in range(len(aligned_data))])};
+            
+            const winProbabilityChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{
+                    labels: labels,
+                    datasets: [{{
+                        label: 'Oregon Win %',
+                        data: homeData,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        fill: false
+                    }}, {{
+                        label: 'Rutgers Win %',
+                        data: awayData,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        fill: false
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    plugins: {{
+                        title: {{
+                            display: true,
+                            text: 'Win Probability Throughout Game'
+                        }}
+                    }},
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            max: 100,
+                            title: {{
+                                display: true,
+                                text: 'Win Probability (%)'
+                            }}
+                        }},
+                        x: {{
+                            title: {{
+                                display: true,
+                                text: 'Play Number'
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+        </script>
+    </body>
+    </html>
+    

@@ -1,4 +1,15 @@
-# Rutgers vs Washington Manual Notes
+# Rutgers vs Oregon Manual Notes
 
-*Add your manual notes here*
+*This file is for manual notes about the Rutgers vs Oregon game. Add your observations, key plays, and analysis here.*
 
+## Game Notes
+
+*Add your notes here...*
+
+## Key Plays
+
+*Add key plays here...*
+
+## Analysis
+
+*Add your analysis here...*

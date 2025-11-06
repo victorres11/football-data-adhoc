@@ -48,20 +48,29 @@ def load_team_data(team_name: str, data_dir: str = "advanced_reports_yogi") -> D
         plays = game_data.get('plays', [])
         
         # Add game context to each play
+        home_team = game_info.get('home_team', '')
+        away_team = game_info.get('away_team', '')
+        team_is_home = (team_name.lower() == home_team.lower())
+        
         for play in plays:
             play['game_id'] = game_info.get('game_id')
             play['game_week'] = game_info.get('week')
             play['game_date'] = game_info.get('date')
-            play['home_team'] = game_info.get('home_team')
-            play['away_team'] = game_info.get('away_team')
+            play['home_team'] = home_team
+            play['away_team'] = away_team
             play['is_conference'] = game_info.get('conference', False)
-            play['is_home'] = (play.get('offense', '').lower() == team_name.lower())
+            play['is_home'] = team_is_home
             
-            # Determine opponent
-            if play['is_home']:
-                play['opponent'] = game_info.get('away_team', 'Unknown')
+            # Determine opponent and Power 4 status
+            # Opponent is always the other team, regardless of offense/defense
+            if team_is_home:
+                play['opponent'] = away_team if away_team else 'Unknown'
+                # If team is home, opponent is away - check away_power4
+                play['is_power4_opponent'] = game_info.get('away_power4', False)
             else:
-                play['opponent'] = game_info.get('home_team', 'Unknown')
+                play['opponent'] = home_team if home_team else 'Unknown'
+                # If team is away, opponent is home - check home_power4
+                play['is_power4_opponent'] = game_info.get('home_power4', False)
         
         games.append({
             'game_info': game_info,
@@ -118,11 +127,13 @@ def filter_plays(plays: List[Dict], filters: Dict[str, Any]) -> List[Dict]:
     if filters.get('periods'):
         filtered = [p for p in filtered if p.get('period') in filters['periods']]
     
-    # Filter by conference/non-conference
+    # Filter by conference/non-conference/power4
     if filters.get('conference_only'):
         filtered = [p for p in filtered if p.get('is_conference') == True]
     elif filters.get('non_conference_only'):
         filtered = [p for p in filtered if p.get('is_conference') == False]
+    elif filters.get('power4_only'):
+        filtered = [p for p in filtered if p.get('is_power4_opponent') == True]
     
     # Filter by last 3 games
     if filters.get('last_3_games'):
@@ -145,6 +156,13 @@ def get_game_list(team_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     games = []
     for game in team_data['games']:
         game_info = game['game_info']
+        is_home = team_data['team_name'] == game_info.get('home_team')
+        # Determine if opponent is Power 4
+        if is_home:
+            is_power4_opponent = game_info.get('away_power4', False)
+        else:
+            is_power4_opponent = game_info.get('home_power4', False)
+        
         games.append({
             'game_id': game_info.get('game_id'),
             'week': game_info.get('week'),
@@ -152,7 +170,8 @@ def get_game_list(team_data: Dict[str, Any]) -> List[Dict[str, Any]]:
             'away_team': game_info.get('away_team'),
             'date': game_info.get('date'),
             'conference': game_info.get('conference', False),
-            'opponent': game_info.get('away_team') if team_data['team_name'] == game_info.get('home_team') else game_info.get('home_team')
+            'opponent': game_info.get('away_team') if is_home else game_info.get('home_team'),
+            'is_power4_opponent': is_power4_opponent
         })
     return games
 

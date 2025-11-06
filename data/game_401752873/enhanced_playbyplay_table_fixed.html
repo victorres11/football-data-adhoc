@@ -1,0 +1,2381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Washington Huskies at Michigan Wolverines - Enhanced Play by Play Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background-color: #374151;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        tr:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .play-number {
+            text-align: center;
+            font-weight: bold;
+            color: #6b7280;
+        }
+        
+        .quarter {
+            text-align: center;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .time {
+            font-family: monospace;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        .win-prob {
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .win-prob-increase-high {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .win-prob-increase {
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+        
+        .win-prob-decrease-high {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .win-prob-decrease {
+            background-color: #fef7f7;
+            color: #dc2626;
+        }
+        
+        .win-prob-neutral {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .change {
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .change.positive {
+            color: #166534;
+        }
+        
+        .change.negative {
+            color: #dc2626;
+        }
+        
+        .play-description {
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+        
+        .scoring-play {
+            background-color: #fef3c7;
+            font-weight: bold;
+        }
+        
+        .penalty {
+            background-color: #fef2f2;
+        }
+        
+        .touchdown {
+            background-color: #dcfce7;
+            font-weight: bold;
+        }
+        
+        .interception {
+            background-color: #fef2f2;
+            font-weight: bold;
+        }
+        
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+        }
+        
+        .stats h3 {
+            margin-top: 0;
+            color: #374151;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        /* Penalty Analysis Styles */
+        .penalty-analysis {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .penalty-analysis h3 {
+            margin-top: 0;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        
+        .penalty-stats {
+            margin-bottom: 20px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stat-card h4 {
+            margin: 0 0 10px 0;
+            color: #374151;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .stat-detail {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        
+        .penalty-table {
+            margin-top: 20px;
+        }
+        
+        .penalty-details {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        .penalty-details th {
+            background-color: #374151;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .penalty-details td {
+            padding: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .penalty-details tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        /* Win Probability Chart Styles */
+        .win-probability-chart {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .win-probability-chart h3 {
+            margin-top: 0;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        
+        #winProbabilityChart {
+            max-height: 400px;
+        }
+        
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Washington Huskies at Michigan Wolverines</h1>
+        <p>Enhanced Play-by-Play Analysis with Penalty Impact & Win Probability Chart | 2025-10-18T16:00Z | Game ID: 401752873</p>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">#</th>
+                    <th style="width: 50px;">Qtr</th>
+                    <th style="width: 80px;">Time</th>
+                    <th style="width: 100px;">Win Prob</th>
+                    <th style="width: 80px;">Change</th>
+                    <th style="width: 100px;">Down/Dist</th>
+                    <th style="width: 120px;">Yard Line</th>
+                    <th>Play Description</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr class="">
+                    <td class="play-number">1</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">15:00</td>
+                    <td class="win-prob win-prob-neutral">66.8%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">Washington wins toss and defers; UOM will receive; WAS will defend North end-zone.</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">2</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">15:00</td>
+                    <td class="win-prob win-prob-increase">68.2%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">E. Moczulski kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">3</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">14:56</td>
+                    <td class="win-prob win-prob-decrease">66.4%</td>
+                    <td class="change negative">-1.9%</td>
+                    <td>1st & 10 at MICH 25</td>
+                    <td>MICH 25</td>
+                    <td class="play-description">B. Underwood pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">4</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">14:48</td>
+                    <td class="win-prob win-prob-neutral">65.6%</td>
+                    <td class="change negative">-0.7%</td>
+                    <td>2nd & 10 at MICH 25</td>
+                    <td>MICH 25</td>
+                    <td class="play-description">J. Marshall run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">5</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">14:00</td>
+                    <td class="win-prob win-prob-decrease">64.5%</td>
+                    <td class="change negative">-1.2%</td>
+                    <td>3rd & 9 at MICH 26</td>
+                    <td>MICH 26</td>
+                    <td class="play-description">B. Underwood pass to D. Tonielli for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">6</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">13:26</td>
+                    <td class="win-prob win-prob-neutral">63.5%</td>
+                    <td class="change negative">-0.9%</td>
+                    <td>4th & 4 at MICH 31</td>
+                    <td>MICH 31</td>
+                    <td class="play-description">H. Hollenbeck punt for 35 yds,D. Boston returns for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">7</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">13:21</td>
+                    <td class="win-prob win-prob-increase">64.7%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>1st & 10 at WASH 38</td>
+                    <td>WASH 38</td>
+                    <td class="play-description">J. Coleman run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">8</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">12:40</td>
+                    <td class="win-prob win-prob-neutral">64.5%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td>2nd & 8 at WASH 40</td>
+                    <td>WASH 40</td>
+                    <td class="play-description">D. Williams Jr. pass to D. DeGraaf for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">9</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">12:16</td>
+                    <td class="win-prob win-prob-decrease">61.8%</td>
+                    <td class="change negative">-2.7%</td>
+                    <td>3rd & 5 at WASH 43</td>
+                    <td>WASH 43</td>
+                    <td class="play-description">D. Williams Jr. run for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">10</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">11:46</td>
+                    <td class="win-prob win-prob-neutral">62.0%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>1st & 10 at WASH 49</td>
+                    <td>WASH 49</td>
+                    <td class="play-description">J. Coleman run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">11</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">11:16</td>
+                    <td class="win-prob win-prob-decrease">59.5%</td>
+                    <td class="change negative">-2.5%</td>
+                    <td>2nd & 6 at MICH 47</td>
+                    <td>MICH 47</td>
+                    <td class="play-description">D. Williams Jr. pass to D. DeGraaf for 10 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">12</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:55</td>
+                    <td class="win-prob win-prob-increase">60.5%</td>
+                    <td class="change positive">+1.0%</td>
+                    <td>1st & 10 at MICH 37</td>
+                    <td>MICH 37</td>
+                    <td class="play-description">J. Coleman run for 3 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">13</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:41</td>
+                    <td class="win-prob win-prob-increase">62.6%</td>
+                    <td class="change positive">+2.1%</td>
+                    <td>2nd & 7 at MICH 34</td>
+                    <td>MICH 34</td>
+                    <td class="play-description">Washington penalty, False Start (G. Hatchett)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">14</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:26</td>
+                    <td class="win-prob win-prob-increase">63.8%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>2nd & 12 at MICH 39</td>
+                    <td>MICH 39</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">15</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:22</td>
+                    <td class="win-prob win-prob-increase">65.8%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>3rd & 12 at MICH 39</td>
+                    <td>MICH 39</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">16</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:13</td>
+                    <td class="win-prob win-prob-neutral">66.5%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>4th & 12 at MICH 39</td>
+                    <td>MICH 39</td>
+                    <td class="play-description">L. Dunne punt for 39 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">17</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">10:06</td>
+                    <td class="win-prob win-prob-increase">67.8%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>1st & 10 at MICH 20</td>
+                    <td>MICH 20</td>
+                    <td class="play-description">J. Marshall run for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">18</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">9:31</td>
+                    <td class="win-prob win-prob-neutral">68.0%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>2nd & 2 at MICH 28</td>
+                    <td>MICH 28</td>
+                    <td class="play-description">B. Underwood pass to S. Morgan for 7 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">19</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">9:01</td>
+                    <td class="win-prob win-prob-neutral">67.1%</td>
+                    <td class="change negative">-0.9%</td>
+                    <td>1st & 10 at MICH 35</td>
+                    <td>MICH 35</td>
+                    <td class="play-description">J. Marshall run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">20</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">8:19</td>
+                    <td class="win-prob win-prob-increase">69.1%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>2nd & 7 at MICH 38</td>
+                    <td>MICH 38</td>
+                    <td class="play-description">B. Underwood pass to J. Marshall for 9 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">21</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:40</td>
+                    <td class="win-prob win-prob-increase">70.3%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>1st & 10 at MICH 47</td>
+                    <td>MICH 47</td>
+                    <td class="play-description">D. McCulley run for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">22</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">7:03</td>
+                    <td class="win-prob win-prob-decrease">66.0%</td>
+                    <td class="change negative">-4.3%</td>
+                    <td>1st & 10 at WASH 42</td>
+                    <td>WASH 42</td>
+                    <td class="play-description">Michigan penalty, Offensive Holding (M. Bredeson)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">23</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">6:55</td>
+                    <td class="win-prob win-prob-neutral">66.2%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>1st & 20 at MICH 48</td>
+                    <td>MICH 48</td>
+                    <td class="play-description">B. Underwood pass to J. Marshall for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">24</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">6:22</td>
+                    <td class="win-prob win-prob-decrease">65.2%</td>
+                    <td class="change negative">-1.0%</td>
+                    <td>2nd & 16 at WASH 48</td>
+                    <td>WASH 48</td>
+                    <td class="play-description">B. Underwood pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">25</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">6:08</td>
+                    <td class="win-prob win-prob-neutral">65.3%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>3rd & 16 at WASH 48</td>
+                    <td>WASH 48</td>
+                    <td class="play-description">B. Underwood pass to Z. Marshall for 15 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">26</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:56</td>
+                    <td class="win-prob win-prob-decrease">61.8%</td>
+                    <td class="change negative">-3.5%</td>
+                    <td>4th & 1 at WASH 33</td>
+                    <td>WASH 33</td>
+                    <td class="play-description">B. Underwood pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">27</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:40</td>
+                    <td class="win-prob win-prob-decrease-high">54.4%</td>
+                    <td class="change negative">-7.4%</td>
+                    <td>1st & 10 at WASH 33</td>
+                    <td>WASH 33</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Boston for 48 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">28</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:20</td>
+                    <td class="win-prob win-prob-increase">55.8%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td>1st & 10 at MICH 19</td>
+                    <td>MICH 19</td>
+                    <td class="play-description">J. Coleman run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">29</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">5:01</td>
+                    <td class="win-prob win-prob-increase">57.9%</td>
+                    <td class="change positive">+2.1%</td>
+                    <td>2nd & 8 at MICH 17</td>
+                    <td>MICH 17</td>
+                    <td class="play-description">D. Williams Jr. pass to R. Vines-Bright for -1 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">30</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">4:25</td>
+                    <td class="win-prob win-prob-increase">60.3%</td>
+                    <td class="change positive">+2.4%</td>
+                    <td>3rd & 9 at MICH 18</td>
+                    <td>MICH 18</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">31</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">4:20</td>
+                    <td class="win-prob win-prob-increase">65.0%</td>
+                    <td class="change positive">+4.7%</td>
+                    <td>4th & 9 at MICH 18</td>
+                    <td>MICH 18</td>
+                    <td class="play-description">G. Gross 36 yd FG MISSED</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">32</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">4:10</td>
+                    <td class="win-prob win-prob-neutral">64.9%</td>
+                    <td class="change negative">-0.1%</td>
+                    <td>1st & 10 at MICH 20</td>
+                    <td>MICH 20</td>
+                    <td class="play-description">B. Underwood pass to D. Tonielli for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">33</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">3:29</td>
+                    <td class="win-prob win-prob-increase">66.0%</td>
+                    <td class="change positive">+1.1%</td>
+                    <td>2nd & 5 at MICH 25</td>
+                    <td>MICH 25</td>
+                    <td class="play-description">J. Marshall run for 5 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">34</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">2:46</td>
+                    <td class="win-prob win-prob-neutral">66.8%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>1st & 10 at MICH 30</td>
+                    <td>MICH 30</td>
+                    <td class="play-description">J. Marshall run for 7 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">35</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">2:06</td>
+                    <td class="win-prob win-prob-neutral">67.4%</td>
+                    <td class="change positive">+0.6%</td>
+                    <td>2nd & 3 at MICH 37</td>
+                    <td>MICH 37</td>
+                    <td class="play-description">B. Underwood pass to J. Marshall for 7 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">36</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">1:22</td>
+                    <td class="win-prob win-prob-increase">69.1%</td>
+                    <td class="change positive">+1.7%</td>
+                    <td>1st & 10 at MICH 44</td>
+                    <td>MICH 44</td>
+                    <td class="play-description">B. Underwood pass to D. McCulley for 15 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">37</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">1:03</td>
+                    <td class="win-prob win-prob-increase">71.8%</td>
+                    <td class="change positive">+2.7%</td>
+                    <td>1st & 10 at WASH 41</td>
+                    <td>WASH 41</td>
+                    <td class="play-description">B. Underwood pass to Z. Marshall for 19 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">38</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:33</td>
+                    <td class="win-prob win-prob-increase-high">77.8%</td>
+                    <td class="change positive">+5.9%</td>
+                    <td>1st & 10 at WASH 22</td>
+                    <td>WASH 22</td>
+                    <td class="play-description">Andrew Marsh 22 Yd pass from Bryce Underwood (Dominic Zvada Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">39</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:33</td>
+                    <td class="win-prob win-prob-neutral">77.6%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">B. Sunderland kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">40</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">77.6%</td>
+                    <td class="change negative">-0.0%</td>
+                    <td>1st & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">D. Williams Jr. pass to J. Coleman for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">41</td>
+                    <td class="quarter">Q1</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">77.6%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 1st Quarter</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">42</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">14:51</td>
+                    <td class="win-prob win-prob-increase">80.1%</td>
+                    <td class="change positive">+2.5%</td>
+                    <td>2nd & 5 at WASH 30</td>
+                    <td>WASH 30</td>
+                    <td class="play-description">D. Williams Jr. run for -5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">43</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">14:13</td>
+                    <td class="win-prob win-prob-decrease-high">74.7%</td>
+                    <td class="change negative">-5.4%</td>
+                    <td>3rd & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">D. Williams Jr. pass to J. Coleman for 27 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">44</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">13:38</td>
+                    <td class="win-prob win-prob-neutral">74.1%</td>
+                    <td class="change negative">-0.6%</td>
+                    <td>1st & 10 at MICH 48</td>
+                    <td>MICH 48</td>
+                    <td class="play-description">A. Mohammed run for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">45</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">12:57</td>
+                    <td class="win-prob win-prob-neutral">73.4%</td>
+                    <td class="change negative">-0.7%</td>
+                    <td>2nd & 4 at MICH 42</td>
+                    <td>MICH 42</td>
+                    <td class="play-description">D. Williams Jr. run for 4 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">46</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">12:13</td>
+                    <td class="win-prob win-prob-increase">76.3%</td>
+                    <td class="change positive">+2.9%</td>
+                    <td>1st & 10 at MICH 38</td>
+                    <td>MICH 38</td>
+                    <td class="play-description">Washington penalty, False Start (D. DeGraaf)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">47</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">12:04</td>
+                    <td class="win-prob win-prob-neutral">77.0%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>1st & 15 at MICH 43</td>
+                    <td>MICH 43</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">48</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:53</td>
+                    <td class="win-prob win-prob-neutral">76.4%</td>
+                    <td class="change negative">-0.6%</td>
+                    <td>2nd & 15 at MICH 43</td>
+                    <td>MICH 43</td>
+                    <td class="play-description">D. Williams Jr. pass to A. Mohammed for 6 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">49</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:34</td>
+                    <td class="win-prob win-prob-increase">77.6%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>3rd & 9 at MICH 37</td>
+                    <td>MICH 37</td>
+                    <td class="play-description">Washington penalty, False Start (D. Azzopardi)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">50</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">11:05</td>
+                    <td class="win-prob win-prob-increase">79.1%</td>
+                    <td class="change positive">+1.5%</td>
+                    <td>3rd & 14 at MICH 42</td>
+                    <td>MICH 42</td>
+                    <td class="play-description">D. Williams Jr. pass to A. Mohammed for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">51</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">10:31</td>
+                    <td class="win-prob win-prob-neutral">78.2%</td>
+                    <td class="change negative">-0.9%</td>
+                    <td>4th & 17 at MICH 45</td>
+                    <td>MICH 45</td>
+                    <td class="play-description">L. Dunne punt for 38 yds, punt out-of-bounds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">52</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">10:25</td>
+                    <td class="win-prob win-prob-decrease">76.4%</td>
+                    <td class="change negative">-1.8%</td>
+                    <td>1st & 10 at MICH 7</td>
+                    <td>MICH 7</td>
+                    <td class="play-description">J. Marshall run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">53</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">9:41</td>
+                    <td class="win-prob win-prob-increase">79.6%</td>
+                    <td class="change positive">+3.2%</td>
+                    <td>2nd & 9 at MICH 8</td>
+                    <td>MICH 8</td>
+                    <td class="play-description">B. Underwood pass to Z. Marshall for 13 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">54</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">9:04</td>
+                    <td class="win-prob win-prob-increase">80.7%</td>
+                    <td class="change positive">+1.0%</td>
+                    <td>1st & 10 at MICH 21</td>
+                    <td>MICH 21</td>
+                    <td class="play-description">B. Underwood run for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">55</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:42</td>
+                    <td class="win-prob win-prob-increase">82.6%</td>
+                    <td class="change positive">+1.9%</td>
+                    <td>1st & 10 at MICH 32</td>
+                    <td>MICH 32</td>
+                    <td class="play-description">B. Underwood pass to A. Marsh for 20 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">56</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">8:05</td>
+                    <td class="win-prob win-prob-decrease">81.0%</td>
+                    <td class="change negative">-1.5%</td>
+                    <td>1st & 10 at WASH 48</td>
+                    <td>WASH 48</td>
+                    <td class="play-description">D. McCulley pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">57</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">7:57</td>
+                    <td class="win-prob win-prob-increase">83.0%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>2nd & 10 at WASH 48</td>
+                    <td>WASH 48</td>
+                    <td class="play-description">J. Marshall run for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">58</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">7:14</td>
+                    <td class="win-prob win-prob-increase">84.4%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td>3rd & 2 at WASH 40</td>
+                    <td>WASH 40</td>
+                    <td class="play-description">J. Marshall run for 10 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">59</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:41</td>
+                    <td class="win-prob win-prob-decrease">82.9%</td>
+                    <td class="change negative">-1.5%</td>
+                    <td>1st & 10 at WASH 30</td>
+                    <td>WASH 30</td>
+                    <td class="play-description">B. Underwood pass incomplete</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">60</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:41</td>
+                    <td class="win-prob win-prob-decrease">81.2%</td>
+                    <td class="change negative">-1.7%</td>
+                    <td>2nd & 10 at WASH 30</td>
+                    <td>WASH 30</td>
+                    <td class="play-description">Michigan penalty, False Start (G. Crippen)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">61</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">6:32</td>
+                    <td class="win-prob win-prob-neutral">80.6%</td>
+                    <td class="change negative">-0.7%</td>
+                    <td>2nd & 15 at WASH 35</td>
+                    <td>WASH 35</td>
+                    <td class="play-description">B. Underwood pass to A. Marsh for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">62</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:54</td>
+                    <td class="win-prob win-prob-neutral">80.5%</td>
+                    <td class="change negative">-0.0%</td>
+                    <td>3rd & 14 at WASH 34</td>
+                    <td>WASH 34</td>
+                    <td class="play-description">J. Marshall run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">63</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:11</td>
+                    <td class="win-prob win-prob-decrease">78.2%</td>
+                    <td class="change negative">-2.3%</td>
+                    <td>2nd & 4 at WASH 36</td>
+                    <td>WASH 36</td>
+                    <td class="play-description">Timeout Washington, clock 05:11</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">64</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:11</td>
+                    <td class="win-prob win-prob-neutral">77.4%</td>
+                    <td class="change negative">-0.8%</td>
+                    <td>4th & 10 at WASH 30</td>
+                    <td>WASH 30</td>
+                    <td class="play-description">D. Zvada 48 yd FG MISSED</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">65</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">5:04</td>
+                    <td class="win-prob win-prob-neutral">77.3%</td>
+                    <td class="change negative">-0.1%</td>
+                    <td>1st & 10 at WASH 30</td>
+                    <td>WASH 30</td>
+                    <td class="play-description">J. Coleman run for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">66</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:28</td>
+                    <td class="win-prob win-prob-neutral">76.8%</td>
+                    <td class="change negative">-0.6%</td>
+                    <td>2nd & 4 at WASH 36</td>
+                    <td>WASH 36</td>
+                    <td class="play-description">D. Williams Jr. pass to K. Eldridge for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">67</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">4:02</td>
+                    <td class="win-prob win-prob-increase">78.2%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td>1st & 10 at WASH 42</td>
+                    <td>WASH 42</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">68</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:57</td>
+                    <td class="win-prob win-prob-decrease">75.1%</td>
+                    <td class="change negative">-3.1%</td>
+                    <td>2nd & 10 at WASH 42</td>
+                    <td>WASH 42</td>
+                    <td class="play-description">D. Williams Jr. pass to J. Coleman for 9 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">69</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:35</td>
+                    <td class="win-prob win-prob-neutral">75.1%</td>
+                    <td class="change positive">+0.0%</td>
+                    <td>3rd & 1 at MICH 49</td>
+                    <td>MICH 49</td>
+                    <td class="play-description">J. Coleman run for 4 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">70</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">3:01</td>
+                    <td class="win-prob win-prob-neutral">74.5%</td>
+                    <td class="change negative">-0.6%</td>
+                    <td>1st & 10 at MICH 45</td>
+                    <td>MICH 45</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Roebuck for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">71</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">2:45</td>
+                    <td class="win-prob win-prob-neutral">73.7%</td>
+                    <td class="change negative">-0.7%</td>
+                    <td>2nd & 5 at MICH 40</td>
+                    <td>MICH 40</td>
+                    <td class="play-description">A. Mohammed run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">72</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">2:04</td>
+                    <td class="win-prob win-prob-neutral">73.2%</td>
+                    <td class="change negative">-0.6%</td>
+                    <td>3rd & 2 at MICH 37</td>
+                    <td>MICH 37</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Boston for 4 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">73</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">2:00</td>
+                    <td class="win-prob win-prob-neutral">73.4%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>1st & 10 at MICH 33</td>
+                    <td>MICH 33</td>
+                    <td class="play-description">Timeout Michigan, clock 02:00</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">74</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:55</td>
+                    <td class="win-prob win-prob-increase-high">78.4%</td>
+                    <td class="change positive">+5.0%</td>
+                    <td>1st & 10 at MICH 33</td>
+                    <td>MICH 33</td>
+                    <td class="play-description">D. Williams Jr. sacked by D. Moore for -9 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">75</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">1:24</td>
+                    <td class="win-prob win-prob-decrease-high">67.8%</td>
+                    <td class="change negative">-10.6%</td>
+                    <td>2nd & 19 at MICH 42</td>
+                    <td>MICH 42</td>
+                    <td class="play-description">D. Williams Jr. pass to R. Vines-Bright for 31 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">76</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:50</td>
+                    <td class="win-prob win-prob-neutral">68.4%</td>
+                    <td class="change positive">+0.6%</td>
+                    <td>2nd & 5 at MICH 6</td>
+                    <td>MICH 6</td>
+                    <td class="play-description">Timeout Washington, clock 00:50</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">77</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:50</td>
+                    <td class="win-prob win-prob-neutral">68.2%</td>
+                    <td class="change negative">-0.3%</td>
+                    <td>1st & 10 at MICH 11</td>
+                    <td>MICH 11</td>
+                    <td class="play-description">J. Coleman run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">78</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:44</td>
+                    <td class="win-prob win-prob-decrease">66.4%</td>
+                    <td class="change negative">-1.7%</td>
+                    <td>2nd & 5 at MICH 6</td>
+                    <td>MICH 6</td>
+                    <td class="play-description">D. Williams Jr. pass to R. Vines-Bright for 5 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">79</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:40</td>
+                    <td class="win-prob win-prob-decrease-high">58.6%</td>
+                    <td class="change negative">-7.9%</td>
+                    <td>1st & Goal at MICH 1</td>
+                    <td>MICH 1</td>
+                    <td class="play-description">Jonah Coleman 1 Yd Run (Grady Gross Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">80</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:40</td>
+                    <td class="win-prob win-prob-neutral">58.0%</td>
+                    <td class="change negative">-0.5%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">E. Moczulski kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">81</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:30</td>
+                    <td class="win-prob win-prob-neutral">57.5%</td>
+                    <td class="change negative">-0.5%</td>
+                    <td>1st & 10 at MICH 25</td>
+                    <td>MICH 25</td>
+                    <td class="play-description">B. Underwood pass to A. Marsh for -1 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">82</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:14</td>
+                    <td class="win-prob win-prob-neutral">58.1%</td>
+                    <td class="change positive">+0.7%</td>
+                    <td>2nd & 11 at MICH 24</td>
+                    <td>MICH 24</td>
+                    <td class="play-description">B. Underwood pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">83</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-decrease">56.2%</td>
+                    <td class="change negative">-2.0%</td>
+                    <td>3rd & 11 at MICH 24</td>
+                    <td>MICH 24</td>
+                    <td class="play-description">B. Underwood pass to C. Goodwin for 10 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">84</td>
+                    <td class="quarter">Q2</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-increase">58.7%</td>
+                    <td class="change positive">+2.5%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 2nd Quarter</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">85</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">15:00</td>
+                    <td class="win-prob win-prob-decrease">56.2%</td>
+                    <td class="change negative">-2.4%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">B. Sunderland kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">86</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:54</td>
+                    <td class="win-prob win-prob-increase">58.2%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>1st & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">J. Coleman run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">87</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:24</td>
+                    <td class="win-prob win-prob-increase">59.7%</td>
+                    <td class="change positive">+1.5%</td>
+                    <td>2nd & 8 at WASH 27</td>
+                    <td>WASH 27</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">88</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:15</td>
+                    <td class="win-prob win-prob-increase">62.2%</td>
+                    <td class="change positive">+2.4%</td>
+                    <td>3rd & 8 at WASH 27</td>
+                    <td>WASH 27</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">89</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:09</td>
+                    <td class="win-prob win-prob-neutral">62.8%</td>
+                    <td class="change positive">+0.6%</td>
+                    <td>4th & 8 at WASH 27</td>
+                    <td>WASH 27</td>
+                    <td class="play-description">L. Dunne punt for 33 yds, punt out-of-bounds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">90</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">14:00</td>
+                    <td class="win-prob win-prob-neutral">63.8%</td>
+                    <td class="change positive">+1.0%</td>
+                    <td>1st & 10 at MICH 40</td>
+                    <td>MICH 40</td>
+                    <td class="play-description">B. Underwood pass to A. Marsh for 7 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">91</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">13:17</td>
+                    <td class="win-prob win-prob-decrease">60.8%</td>
+                    <td class="change negative">-3.0%</td>
+                    <td>2nd & 3 at MICH 47</td>
+                    <td>MICH 47</td>
+                    <td class="play-description">Michigan penalty, Ineligible Downfield on Pass (-5 Yards)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">92</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">13:01</td>
+                    <td class="win-prob win-prob-increase">64.4%</td>
+                    <td class="change positive">+3.6%</td>
+                    <td>2nd & 8 at MICH 42</td>
+                    <td>MICH 42</td>
+                    <td class="play-description">J. Marshall run for 12 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">93</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">12:18</td>
+                    <td class="win-prob win-prob-decrease">61.7%</td>
+                    <td class="change negative">-2.6%</td>
+                    <td>1st & 10 at WASH 46</td>
+                    <td>WASH 46</td>
+                    <td class="play-description">B. Underwood run for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">94</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">11:41</td>
+                    <td class="win-prob win-prob-neutral">62.1%</td>
+                    <td class="change positive">+0.4%</td>
+                    <td>2nd & 10 at WASH 46</td>
+                    <td>WASH 46</td>
+                    <td class="play-description">J. Marshall run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">95</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">10:58</td>
+                    <td class="win-prob win-prob-increase-high">68.0%</td>
+                    <td class="change positive">+5.8%</td>
+                    <td>3rd & 6 at WASH 42</td>
+                    <td>WASH 42</td>
+                    <td class="play-description">B. Underwood pass to Z. Marshall for 15 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">96</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">10:24</td>
+                    <td class="win-prob win-prob-increase">71.3%</td>
+                    <td class="change positive">+3.3%</td>
+                    <td>1st & 10 at WASH 27</td>
+                    <td>WASH 27</td>
+                    <td class="play-description">B. Underwood pass to S. Morgan for 13 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">97</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:47</td>
+                    <td class="win-prob win-prob-decrease">69.5%</td>
+                    <td class="change negative">-1.8%</td>
+                    <td>1st & 10 at WASH 14</td>
+                    <td>WASH 14</td>
+                    <td class="play-description">J. Parker run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">98</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">9:11</td>
+                    <td class="win-prob win-prob-decrease">67.2%</td>
+                    <td class="change negative">-2.3%</td>
+                    <td>2nd & 8 at WASH 12</td>
+                    <td>WASH 12</td>
+                    <td class="play-description">B. Underwood pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">99</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">8:58</td>
+                    <td class="win-prob win-prob-decrease">64.1%</td>
+                    <td class="change negative">-3.1%</td>
+                    <td>3rd & 8 at WASH 12</td>
+                    <td>WASH 12</td>
+                    <td class="play-description">B. Underwood pass to D. McCulley for 6 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">100</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">8:22</td>
+                    <td class="win-prob win-prob-decrease-high">58.6%</td>
+                    <td class="change negative">-5.5%</td>
+                    <td>4th & 2 at WASH 6</td>
+                    <td>WASH 6</td>
+                    <td class="play-description">J. Marshall run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">101</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">8:15</td>
+                    <td class="win-prob win-prob-decrease">55.7%</td>
+                    <td class="change negative">-2.8%</td>
+                    <td>1st & 10 at WASH 5</td>
+                    <td>WASH 5</td>
+                    <td class="play-description">J. Coleman run for 8 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">102</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">7:44</td>
+                    <td class="win-prob win-prob-increase">56.9%</td>
+                    <td class="change positive">+1.1%</td>
+                    <td>2nd & 2 at WASH 13</td>
+                    <td>WASH 13</td>
+                    <td class="play-description">J. Coleman run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">103</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">7:12</td>
+                    <td class="win-prob win-prob-decrease">55.8%</td>
+                    <td class="change negative">-1.1%</td>
+                    <td>3rd & 1 at WASH 14</td>
+                    <td>WASH 14</td>
+                    <td class="play-description">J. Coleman run for 2 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">104</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:37</td>
+                    <td class="win-prob win-prob-increase">57.4%</td>
+                    <td class="change positive">+1.6%</td>
+                    <td>1st & 10 at WASH 16</td>
+                    <td>WASH 16</td>
+                    <td class="play-description">Washington penalty, Offensive Holding (D. DeGraaf)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">105</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:28</td>
+                    <td class="win-prob win-prob-decrease">54.7%</td>
+                    <td class="change negative">-2.7%</td>
+                    <td>1st & 18 at WASH 8</td>
+                    <td>WASH 8</td>
+                    <td class="play-description">D. Williams Jr. pass to D. DeGraaf for 14 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">106</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">6:02</td>
+                    <td class="win-prob win-prob-increase">56.7%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>2nd & 4 at WASH 22</td>
+                    <td>WASH 22</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">107</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">5:48</td>
+                    <td class="win-prob win-prob-increase">61.0%</td>
+                    <td class="change positive">+4.3%</td>
+                    <td>3rd & 4 at WASH 22</td>
+                    <td>WASH 22</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Boston for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">108</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">5:34</td>
+                    <td class="win-prob win-prob-decrease-high">52.3%</td>
+                    <td class="change negative">-8.7%</td>
+                    <td>4th & 1 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">J. Coleman run for 3 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">109</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">4:58</td>
+                    <td class="win-prob win-prob-neutral">52.5%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>1st & 10 at WASH 28</td>
+                    <td>WASH 28</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Roebuck for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">110</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">4:24</td>
+                    <td class="win-prob win-prob-increase">55.4%</td>
+                    <td class="change positive">+2.9%</td>
+                    <td>2nd & 5 at WASH 33</td>
+                    <td>WASH 33</td>
+                    <td class="play-description">D. Williams Jr. pass to D. DeGraaf for -1 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">111</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">3:48</td>
+                    <td class="win-prob win-prob-increase">59.7%</td>
+                    <td class="change positive">+4.2%</td>
+                    <td>3rd & 6 at WASH 32</td>
+                    <td>WASH 32</td>
+                    <td class="play-description">D. Williams Jr. pass incomplete</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">112</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">3:39</td>
+                    <td class="win-prob win-prob-decrease">57.0%</td>
+                    <td class="change negative">-2.6%</td>
+                    <td>4th & 6 at WASH 32</td>
+                    <td>WASH 32</td>
+                    <td class="play-description">L. Dunne punt for 55 yds,S. Morgan returns for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">113</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">3:31</td>
+                    <td class="win-prob win-prob-decrease">55.3%</td>
+                    <td class="change negative">-1.7%</td>
+                    <td>1st & 10 at MICH 18</td>
+                    <td>MICH 18</td>
+                    <td class="play-description">J. Marshall run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">114</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">2:56</td>
+                    <td class="win-prob win-prob-neutral">55.0%</td>
+                    <td class="change negative">-0.3%</td>
+                    <td>2nd & 7 at MICH 21</td>
+                    <td>MICH 21</td>
+                    <td class="play-description">B. Underwood run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">115</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">2:13</td>
+                    <td class="win-prob win-prob-decrease-high">49.9%</td>
+                    <td class="change negative">-5.1%</td>
+                    <td>3rd & 4 at MICH 24</td>
+                    <td>MICH 24</td>
+                    <td class="play-description">B. Underwood run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">116</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:30</td>
+                    <td class="win-prob win-prob-increase">53.2%</td>
+                    <td class="change positive">+3.3%</td>
+                    <td>4th & 1 at MICH 27</td>
+                    <td>MICH 27</td>
+                    <td class="play-description">H. Hollenbeck punt for 55 yds, fair catch by D. Boston</td>
+                </tr>
+
+                <tr class="interception">
+                    <td class="play-number">117</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:26</td>
+                    <td class="win-prob win-prob-increase-high">72.0%</td>
+                    <td class="change positive">+18.8%</td>
+                    <td>1st & 10 at WASH 18</td>
+                    <td>WASH 18</td>
+                    <td class="play-description">D. Williams Jr. pass intercepted,C. Sullivan return for 8 yds</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">118</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:20</td>
+                    <td class="win-prob win-prob-increase-high">80.3%</td>
+                    <td class="change positive">+8.3%</td>
+                    <td>1st & 10 at WASH 14</td>
+                    <td>WASH 14</td>
+                    <td class="play-description">Jordan Marshall 14 Yd Run (Dominic Zvada Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">119</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:20</td>
+                    <td class="win-prob win-prob-neutral">80.2%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">B. Sunderland kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">120</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">1:06</td>
+                    <td class="win-prob win-prob-decrease">77.5%</td>
+                    <td class="change negative">-2.7%</td>
+                    <td>1st & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Roebuck for 17 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">121</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">0:44</td>
+                    <td class="win-prob win-prob-decrease">75.1%</td>
+                    <td class="change negative">-2.4%</td>
+                    <td>1st & 10 at WASH 42</td>
+                    <td>WASH 42</td>
+                    <td class="play-description">D. Williams Jr. pass to D. Boston for 16 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="interception">
+                    <td class="play-number">122</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">0:30</td>
+                    <td class="win-prob win-prob-increase-high">86.4%</td>
+                    <td class="change positive">+11.4%</td>
+                    <td>1st & 10 at MICH 42</td>
+                    <td>MICH 42</td>
+                    <td class="play-description">D. Williams Jr. pass intercepted,J. Rolder return for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">123</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-decrease">85.4%</td>
+                    <td class="change negative">-1.1%</td>
+                    <td>1st & 10 at MICH 38</td>
+                    <td>MICH 38</td>
+                    <td class="play-description">J. Parker run for 3 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">124</td>
+                    <td class="quarter">Q3</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">85.4%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 3rd Quarter</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">125</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">14:53</td>
+                    <td class="win-prob win-prob-increase">86.6%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>2nd & 7 at MICH 41</td>
+                    <td>MICH 41</td>
+                    <td class="play-description">J. Marshall run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">126</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">14:11</td>
+                    <td class="win-prob win-prob-increase">88.2%</td>
+                    <td class="change positive">+1.6%</td>
+                    <td>3rd & 2 at MICH 46</td>
+                    <td>MICH 46</td>
+                    <td class="play-description">J. Marshall run for 2 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">127</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">13:43</td>
+                    <td class="win-prob win-prob-neutral">88.0%</td>
+                    <td class="change negative">-0.2%</td>
+                    <td>1st & 10 at MICH 48</td>
+                    <td>MICH 48</td>
+                    <td class="play-description">Timeout Michigan, clock 13:43</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">128</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">13:35</td>
+                    <td class="win-prob win-prob-neutral">87.3%</td>
+                    <td class="change negative">-0.7%</td>
+                    <td>1st & 10 at MICH 48</td>
+                    <td>MICH 48</td>
+                    <td class="play-description">J. Marshall run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">129</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">12:59</td>
+                    <td class="win-prob win-prob-decrease">84.5%</td>
+                    <td class="change negative">-2.8%</td>
+                    <td>2nd & 6 at WASH 48</td>
+                    <td>WASH 48</td>
+                    <td class="play-description">B. Underwood sacked by T. Uiagalelei for -5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">130</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">12:04</td>
+                    <td class="win-prob win-prob-increase-high">91.8%</td>
+                    <td class="change positive">+7.3%</td>
+                    <td>3rd & 11 at MICH 47</td>
+                    <td>MICH 47</td>
+                    <td class="play-description">B. Underwood pass to D. Tonielli for 28 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">131</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">11:21</td>
+                    <td class="win-prob win-prob-increase">93.7%</td>
+                    <td class="change positive">+2.0%</td>
+                    <td>1st & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">J. Marshall run for 11 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">132</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">10:39</td>
+                    <td class="win-prob win-prob-neutral">94.0%</td>
+                    <td class="change positive">+0.3%</td>
+                    <td>1st & 10 at WASH 14</td>
+                    <td>WASH 14</td>
+                    <td class="play-description">J. Marshall run for 4 yds</td>
+                </tr>
+
+                <tr class="scoring-play touchdown">
+                    <td class="play-number">133</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">10:05</td>
+                    <td class="win-prob win-prob-increase">97.0%</td>
+                    <td class="change positive">+3.0%</td>
+                    <td>2nd & 6 at WASH 10</td>
+                    <td>WASH 10</td>
+                    <td class="play-description">Zack Marshall 10 Yd pass from Bryce Underwood (Dominic Zvada Kick)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">134</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">10:05</td>
+                    <td class="win-prob win-prob-neutral">97.2%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">B. Sunderland kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">135</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:58</td>
+                    <td class="win-prob win-prob-neutral">96.8%</td>
+                    <td class="change negative">-0.4%</td>
+                    <td>1st & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">J. Coleman run for 7 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">136</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:28</td>
+                    <td class="win-prob win-prob-neutral">97.0%</td>
+                    <td class="change positive">+0.2%</td>
+                    <td>2nd & 3 at WASH 32</td>
+                    <td>WASH 32</td>
+                    <td class="play-description">J. Coleman run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">137</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">9:12</td>
+                    <td class="win-prob win-prob-increase">98.4%</td>
+                    <td class="change positive">+1.4%</td>
+                    <td>3rd & 1 at WASH 34</td>
+                    <td>WASH 34</td>
+                    <td class="play-description">J. Coleman run for -2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">138</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">8:42</td>
+                    <td class="win-prob win-prob-neutral">98.4%</td>
+                    <td class="change positive">+0.0%</td>
+                    <td>4th & 3 at WASH 32</td>
+                    <td>WASH 32</td>
+                    <td class="play-description">Timeout Michigan, clock 08:42</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">139</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">8:34</td>
+                    <td class="win-prob win-prob-increase">99.6%</td>
+                    <td class="change positive">+1.2%</td>
+                    <td>4th & 3 at WASH 32</td>
+                    <td>WASH 32</td>
+                    <td class="play-description">D. Williams Jr. sacked by D. Moore for -15 yds,D. Williams Jr. fumbled, recovered by WASH D. DeGraaf</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">140</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">8:26</td>
+                    <td class="win-prob win-prob-neutral">99.7%</td>
+                    <td class="change positive">+0.0%</td>
+                    <td>1st & 10 at WASH 17</td>
+                    <td>WASH 17</td>
+                    <td class="play-description">J. Marshall run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">141</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">7:40</td>
+                    <td class="win-prob win-prob-neutral">99.7%</td>
+                    <td class="change positive">+0.0%</td>
+                    <td>2nd & 5 at WASH 12</td>
+                    <td>WASH 12</td>
+                    <td class="play-description">J. Marshall run for 1 yd</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">142</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">6:57</td>
+                    <td class="win-prob win-prob-neutral">99.8%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>3rd & 4 at WASH 11</td>
+                    <td>WASH 11</td>
+                    <td class="play-description">J. Marshall run for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">143</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">6:15</td>
+                    <td class="win-prob win-prob-neutral">99.8%</td>
+                    <td class="change negative">-0.0%</td>
+                    <td>1st & Goal at WASH 5</td>
+                    <td>WASH 5</td>
+                    <td class="play-description">B. Underwood run for -4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">144</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">5:33</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>2nd & Goal at WASH 9</td>
+                    <td>WASH 9</td>
+                    <td class="play-description">J. Marshall run for 4 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">145</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">4:54</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>3rd & Goal at WASH 5</td>
+                    <td>WASH 5</td>
+                    <td class="play-description">J. Parker run for 2 yds</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">146</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">4:14</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>4th & Goal at WASH 3</td>
+                    <td>WASH 3</td>
+                    <td class="play-description">Michigan penalty, Delay Of Game (-5 Yards)</td>
+                </tr>
+
+                <tr class="scoring-play">
+                    <td class="play-number">147</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">4:10</td>
+                    <td class="win-prob win-prob-neutral">100.0%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>4th & 8 at WASH 8</td>
+                    <td>WASH 8</td>
+                    <td class="play-description">Dominic Zvada 26 Yd Field Goal</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">148</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">4:10</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change negative">-0.1%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">B. Sunderland kick for 65 yds for a touchback</td>
+                </tr>
+
+                <tr class="interception">
+                    <td class="play-number">149</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">4:00</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change positive">+0.0%</td>
+                    <td>1st & 10 at WASH 25</td>
+                    <td>WASH 25</td>
+                    <td class="play-description">D. Williams Jr. pass intercepted,J. Oden return for 0 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">150</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">3:49</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>1st & 10 at MICH 29</td>
+                    <td>MICH 29</td>
+                    <td class="play-description">J. Parker run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">151</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">3:12</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>3rd & 6 at MICH 33</td>
+                    <td>MICH 33</td>
+                    <td class="play-description">Timeout Washington, clock 03:12</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">152</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">3:12</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>2nd & 8 at MICH 31</td>
+                    <td>MICH 31</td>
+                    <td class="play-description">J. Marshall run for 2 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">153</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">3:04</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>3rd & 6 at MICH 33</td>
+                    <td>MICH 33</td>
+                    <td class="play-description">J. Marshall run for 8 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="penalty">
+                    <td class="play-number">154</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">2:21</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>1st & 10 at MICH 41</td>
+                    <td>MICH 41</td>
+                    <td class="play-description">Michigan penalty, Offensive Holding (-10 Yards)</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">155</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">2:11</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>1st & 20 at MICH 31</td>
+                    <td>MICH 31</td>
+                    <td class="play-description">B. Underwood run for 17 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">156</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">2:00</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>2nd & 3 at MICH 48</td>
+                    <td>MICH 48</td>
+                    <td class="play-description">Timeout Michigan, clock 02:00</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">157</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:53</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>2nd & 3 at MICH 48</td>
+                    <td>MICH 48</td>
+                    <td class="play-description">J. Parker run for 6 yds for a 1ST down</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">158</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">1:15</td>
+                    <td class="win-prob win-prob-neutral">99.9%</td>
+                    <td class="change ">0.0%</td>
+                    <td>1st & 10 at WASH 46</td>
+                    <td>WASH 46</td>
+                    <td class="play-description">J. Parker run for 5 yds</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">159</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">100.0%</td>
+                    <td class="change positive">+0.1%</td>
+                    <td>2nd & 5 at WASH 41</td>
+                    <td>WASH 41</td>
+                    <td class="play-description">B. Underwood takes a knee</td>
+                </tr>
+
+                <tr class="">
+                    <td class="play-number">160</td>
+                    <td class="quarter">Q4</td>
+                    <td class="time">0:00</td>
+                    <td class="win-prob win-prob-neutral">100.0%</td>
+                    <td class="change ">0.0%</td>
+                    <td></td>
+                    <td></td>
+                    <td class="play-description">End of 4th Quarter</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="stats">
+        <h3>Game Statistics</h3>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-label">Total Plays</div>
+                <div class="stat-value">160</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Scoring Plays</div>
+                <div class="stat-value">5</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Penalties</div>
+                <div class="stat-value">9</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Touchdowns</div>
+                <div class="stat-value">4</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Interceptions</div>
+                <div class="stat-value">3</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="penalty-analysis">
+        <h3>Penalty Impact Analysis</h3>
+        
+        <div class="penalty-stats">
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <h4>Washington Penalties</h4>
+                    <div class="stat-number">4</div>
+                    <div class="stat-detail">-23 yards</div>
+                    <div class="stat-detail">Win Prob Impact: +7.9%</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Michigan Penalties</h4>
+                    <div class="stat-number">5</div>
+                    <div class="stat-detail">-35 yards</div>
+                    <div class="stat-detail">Win Prob Impact: -9.0%</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="penalty-table">
+            <h4>Penalty Details</h4>
+            <table class="penalty-details">
+                <thead>
+                    <tr>
+                        <th>Qtr</th>
+                        <th>Time</th>
+                        <th>Team</th>
+                        <th>Yards</th>
+                        <th>Win Prob Change</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>Q1</td>
+                        <td>10:41</td>
+                        <td>Washington</td>
+                        <td>-5</td>
+                        <td class="positive">+2.1%</td>
+                        <td>Washington penalty, False Start (G. Hatchett)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q1</td>
+                        <td>7:03</td>
+                        <td>Michigan</td>
+                        <td>-10</td>
+                        <td class="negative">-4.3%</td>
+                        <td>Michigan penalty, Offensive Holding (M. Bredeson)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q2</td>
+                        <td>12:13</td>
+                        <td>Washington</td>
+                        <td>-5</td>
+                        <td class="positive">+2.9%</td>
+                        <td>Washington penalty, False Start (D. DeGraaf)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q2</td>
+                        <td>11:34</td>
+                        <td>Washington</td>
+                        <td>-5</td>
+                        <td class="positive">+1.2%</td>
+                        <td>Washington penalty, False Start (D. Azzopardi)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q2</td>
+                        <td>6:41</td>
+                        <td>Michigan</td>
+                        <td>-5</td>
+                        <td class="negative">-1.7%</td>
+                        <td>Michigan penalty, False Start (G. Crippen)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q3</td>
+                        <td>13:17</td>
+                        <td>Michigan</td>
+                        <td>-5</td>
+                        <td class="negative">-3.0%</td>
+                        <td>Michigan penalty, Ineligible Downfield on Pass (-5 Yards)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q3</td>
+                        <td>6:37</td>
+                        <td>Washington</td>
+                        <td>-8</td>
+                        <td class="positive">+1.6%</td>
+                        <td>Washington penalty, Offensive Holding (D. DeGraaf)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q4</td>
+                        <td>4:14</td>
+                        <td>Michigan</td>
+                        <td>-5</td>
+                        <td class="">+0.0%</td>
+                        <td>Michigan penalty, Delay Of Game (-5 Yards)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Q4</td>
+                        <td>2:21</td>
+                        <td>Michigan</td>
+                        <td>-10</td>
+                        <td class="">+0.0%</td>
+                        <td>Michigan penalty, Offensive Holding (-10 Yards)</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+    
+    <div class="win-probability-chart">
+        <h3>Win Probability Chart with Penalties</h3>
+        <p><strong>Debug Info:</strong> Washington penalties at x=[2.4, 9.0, 9.6, 20.6], Michigan penalties at x=[4.2, 11.8, 18.0, 29.0, 30.6]</p>
+        <canvas id="winProbabilityChart" width="800" height="400"></canvas>
+        <div class="chart-legend">
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: rgb(75, 192, 192);"></span>
+                <span>Michigan Win %</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: rgb(255, 99, 132);"></span>
+                <span>Washington Win %</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #ff6b6b; width: 8px; height: 8px; border-radius: 50%;"></span>
+                <span>Washington Penalties</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #4ecdc4; width: 8px; height: 8px; border-radius: 50%;"></span>
+                <span>Michigan Penalties</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('winProbabilityChart').getContext('2d');
+        
+        // Create penalty line datasets
+        const washingtonPenaltyLines = [{"x": 2.4, "y": 0}, {"x": 9.0, "y": 0}, {"x": 9.6, "y": 0}, {"x": 20.6, "y": 0}, {"x": 2.4, "y": 100}, {"x": 9.0, "y": 100}, {"x": 9.6, "y": 100}, {"x": 20.6, "y": 100}];
+        const michiganPenaltyLines = [{"x": 4.2, "y": 0}, {"x": 11.8, "y": 0}, {"x": 18.0, "y": 0}, {"x": 29.0, "y": 0}, {"x": 30.6, "y": 0}, {"x": 4.2, "y": 100}, {"x": 11.8, "y": 100}, {"x": 18.0, "y": 100}, {"x": 29.0, "y": 100}, {"x": 30.6, "y": 100}];
+        
+        const winProbabilityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Play 1", "Play 6", "Play 11", "Play 16", "Play 21", "Play 26", "Play 31", "Play 36", "Play 41", "Play 46", "Play 51", "Play 56", "Play 61", "Play 66", "Play 71", "Play 76", "Play 81", "Play 86", "Play 91", "Play 96", "Play 101", "Play 106", "Play 111", "Play 116", "Play 121", "Play 126", "Play 131", "Play 136", "Play 141", "Play 146", "Play 151", "Play 156"], // Show every 5th label to avoid crowding
+                datasets: [{
+                    label: 'Michigan Win %',
+                    data: [66.81, 63.54, 59.47, 66.53, 70.30999999999999, 61.83, 65.02, 69.13, 77.59, 76.25999999999999, 78.2, 81.03, 80.56, 76.78, 73.74000000000001, 68.17, 57.48, 58.24, 60.760000000000005, 71.28999999999999, 55.730000000000004, 56.730000000000004, 59.650000000000006, 53.190000000000005, 75.06, 88.18, 93.73, 96.96000000000001, 99.68, 99.85000000000001, 99.9, 99.9],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    tension: 0.1,
+                    fill: true,
+                    pointRadius: 0,
+                    pointHoverRadius: 4
+                }, {
+                    label: 'Washington Win %',
+                    data: [33.19, 36.46, 40.53, 33.47, 29.690000000000005, 38.17, 34.98, 30.869999999999997, 22.409999999999997, 23.740000000000006, 21.799999999999997, 18.97, 19.44, 23.219999999999995, 26.259999999999994, 31.830000000000002, 42.52, 41.76, 39.239999999999995, 28.71, 44.269999999999996, 43.269999999999996, 40.349999999999994, 46.809999999999995, 24.939999999999994, 11.819999999999997, 6.269999999999998, 3.0399999999999983, 0.31999999999999806, 0.14999999999999458, 0.10000000000000009, 0.10000000000000009],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    tension: 0.1,
+                    fill: true,
+                    pointRadius: 0,
+                    pointHoverRadius: 4
+                }, {
+                    label: 'Washington Penalties',
+                    data: washingtonPenaltyLines,
+                    borderColor: '#ff6b6b',
+                    backgroundColor: 'rgba(255, 107, 107, 0.3)',
+                    borderWidth: 3,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    showLine: true,
+                    fill: false
+                }, {
+                    label: 'Michigan Penalties',
+                    data: michiganPenaltyLines,
+                    borderColor: '#4ecdc4',
+                    backgroundColor: 'rgba(78, 205, 196, 0.3)',
+                    borderWidth: 3,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    showLine: true,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Win Probability Throughout the Game with Penalty Markers'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Play Number'
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    </script>
+
+    
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight rows with significant win probability changes
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const changeCell = row.querySelector('.change');
+                if (changeCell) {
+                    const changeText = changeCell.textContent;
+                    if (changeText.includes('+') && parseFloat(changeText) > 5) {
+                        row.style.borderLeft = '4px solid #10b981';
+                    } else if (changeText.includes('-') && parseFloat(changeText) < -5) {
+                        row.style.borderLeft = '4px solid #ef4444';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -48,6 +48,19 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
     washington_games = get_game_list(washington_data)
     wisconsin_games = get_game_list(wisconsin_data)
     
+    # Load BYE weeks data
+    bye_weeks_path = Path(data_dir) / "bye_weeks.json"
+    bye_weeks_data = {}
+    if bye_weeks_path.exists():
+        try:
+            with open(bye_weeks_path, 'r') as f:
+                bye_weeks_data = json.load(f)
+            print(f"BYE weeks data loaded: {bye_weeks_data}")
+        except Exception as e:
+            print(f"Warning: Could not load BYE weeks data: {e}")
+    else:
+        print(f"Warning: BYE weeks file not found at {bye_weeks_path}")
+    
     # Load SIS data and analyze situational receiving stats
     print("Loading SIS data...")
     try:
@@ -93,7 +106,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             'situational': wisc_situational,
             'games': wisconsin_games,
             'all_plays': wisconsin_data['all_plays']
-        }
+        },
+        'bye_weeks': bye_weeks_data
     })
     
     # Serialize for backwards compatibility
@@ -623,6 +637,85 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             font-weight: 500;
         }}
         
+        /* Filters in Nav Menu */
+        .nav-filters {{
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }}
+        
+        .nav-filters h3 {{
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            color: #667eea;
+            font-weight: 600;
+        }}
+        
+        .nav-filter-item {{
+            margin-bottom: 15px;
+        }}
+        
+        .nav-filter-item label {{
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85em;
+            color: #555;
+            font-weight: 500;
+        }}
+        
+        .nav-filter-item select {{
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.85em;
+            background: white;
+            color: #333;
+            cursor: pointer;
+        }}
+        
+        .nav-filter-item select:focus {{
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }}
+        
+        .nav-filter-buttons {{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }}
+        
+        .nav-filter-btn {{
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }}
+        
+        .nav-filter-btn.apply {{
+            background: #667eea;
+            color: white;
+        }}
+        
+        .nav-filter-btn.apply:hover {{
+            background: #5568d3;
+        }}
+        
+        .nav-filter-btn.reset {{
+            background: #f0f0f0;
+            color: #555;
+        }}
+        
+        .nav-filter-btn.reset:hover {{
+            background: #e0e0e0;
+        }}
+        
         /* Content Area */
         .content-area {{
             margin-left: 240px;
@@ -706,6 +799,27 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         
         table tr.team-row:hover {{
             background-color: #f5f5f5;
+        }}
+        
+        /* 4th Down Conversion Highlighting */
+        table tr.converted-success {{
+            background-color: rgba(76, 175, 80, 0.08) !important;
+            border-left: 3px solid rgba(76, 175, 80, 0.6);
+        }}
+        
+        table tr.converted-success:hover {{
+            background-color: rgba(76, 175, 80, 0.12) !important;
+            border-left-color: rgba(76, 175, 80, 0.8);
+        }}
+        
+        table tr.converted-failed {{
+            background-color: rgba(244, 67, 54, 0.08) !important;
+            border-left: 3px solid rgba(244, 67, 54, 0.6);
+        }}
+        
+        table tr.converted-failed:hover {{
+            background-color: rgba(244, 67, 54, 0.12) !important;
+            border-left-color: rgba(244, 67, 54, 0.8);
         }}
         
         /* Top 25 Big Ten Rank Highlighting */
@@ -809,6 +923,31 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 <li><a href="#situationalReceivingSection">Situational Receiving</a></li>
                 <li><a href="#allPlaysSection">All Plays Browser</a></li>
             </ul>
+            
+            <!-- Filters at Bottom of Nav -->
+            <div class="nav-filters">
+                <h3>Filters</h3>
+                <div class="nav-filter-item">
+                    <label>Game Type</label>
+                    <select id="conferenceFilter">
+                        <option value="all">All Games</option>
+                        <option value="conference">Conference Only</option>
+                        <option value="non-conference">Non-Conference Only</option>
+                        <option value="power4">Power 4 Opponents Only</option>
+                    </select>
+                </div>
+                <div class="nav-filter-item">
+                    <label>Time Period</label>
+                    <select id="timePeriodFilter">
+                        <option value="all">All Games</option>
+                        <option value="last3">Last 3 Games</option>
+                    </select>
+                </div>
+                <div class="nav-filter-buttons">
+                    <button class="nav-filter-btn apply" onclick="applyFilters()">Apply Filters</button>
+                    <button class="nav-filter-btn reset" onclick="resetFilters()">Reset</button>
+                </div>
+            </div>
         </nav>
         
         <!-- Main Content Area -->
@@ -833,6 +972,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         <option value="all">All Games</option>
                         <option value="conference">Conference Only</option>
                         <option value="non-conference">Non-Conference Only</option>
+                        <option value="power4">Power 4 Opponents Only</option>
                     </select>
                 </div>
                 <div class="filter-item">
@@ -922,8 +1062,19 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             <div class="chart-container">
                 <canvas id="explosivePlaysChart"></canvas>
             </div>
-            <div class="chart-container">
-                <canvas id="explosivePlaysTrendChart"></canvas>
+            <div class="chart-container" style="margin-top: 30px;">
+                <canvas id="explosivePlaysTrendChartWash"></canvas>
+            </div>
+            <div class="chart-container" style="margin-top: 30px;">
+                <canvas id="explosivePlaysTrendChartWisc"></canvas>
+            </div>
+            <div style="display: flex; gap: 20px; margin-top: 30px;">
+                <div class="chart-container" style="flex: 1;">
+                    <canvas id="explosiveRunPassChartWash"></canvas>
+                </div>
+                <div class="chart-container" style="flex: 1;">
+                    <canvas id="explosiveRunPassChartWisc"></canvas>
+                </div>
             </div>
             <h3 style="margin-top: 30px; color: #4a90e2;">Washington</h3>
             <table id="explosivePlaysTableWash" class="display">
@@ -1458,88 +1609,140 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }}
         }}
         
-        // Create master game mapping from ALL games (both teams) - ensures consistent Game 1-9
-        const masterGameMapping = (function() {{
+        // Create master week mapping - includes all weeks from 1 to max_week, with BYE weeks as 0
+        const masterWeekMapping = (function() {{
+            // Get BYE weeks data (if available)
+            const byeWeeks = allData.bye_weeks || {{}};
+            const washByeWeeks = new Set(byeWeeks.Washington?.bye_weeks || []);
+            const wiscByeWeeks = new Set(byeWeeks.Wisconsin?.bye_weeks || []);
+            
+            // Get all unique game IDs and their week numbers
             const allGameIds = new Set();
-            washingtonPlays.forEach(p => {{ if (p.game_id) allGameIds.add(p.game_id); }});
-            wisconsinPlays.forEach(p => {{ if (p.game_id) allGameIds.add(p.game_id); }});
+            washingtonGames.forEach(g => {{ if (g.game_id) allGameIds.add(g.game_id); }});
+            wisconsinGames.forEach(g => {{ if (g.game_id) allGameIds.add(g.game_id); }});
             
-            // Get week for each game and sort by week
+            // Get week for each game from the game lists
             const allGames = Array.from(allGameIds).map(gameId => {{
-                const play = [...washingtonPlays, ...wisconsinPlays].find(p => p.game_id === gameId);
-                return {{ gameId, week: play?.game_week || 0 }};
-            }}).sort((a, b) => a.week - b.week);
-            
-            // Create mapping: gameId -> sequential game number (1-9)
-            const gameIdToGameNum = {{}};
-            const gameLabels = [];
-            allGames.forEach((game, idx) => {{
-                gameIdToGameNum[game.gameId] = idx + 1;
-                gameLabels.push(`Game ${{idx + 1}}`);
+                const washGame = washingtonGames.find(g => g.game_id === gameId);
+                const wiscGame = wisconsinGames.find(g => g.game_id === gameId);
+                const week = washGame?.week || wiscGame?.week || 0;
+                return {{ gameId, week: week }};
             }});
             
-            return {{ gameIdToGameNum, allGames, gameLabels }};
+            // Find the maximum week number
+            const maxWeek = Math.max(...allGames.map(g => g.week).filter(w => w > 0), 0);
+            
+            // Create mapping: gameId -> week number
+            const gameIdToWeek = {{}};
+            allGames.forEach(game => {{
+                if (game.week > 0) {{
+                    gameIdToWeek[game.gameId] = game.week;
+                }}
+            }});
+            
+            // Create week-to-opponent mappings for both teams
+            // Explicitly mark BYE weeks if they exist in the bye_weeks data
+            const washWeekToOpponent = {{}};
+            washingtonGames.forEach(game => {{
+                if (game.week && game.opponent) {{
+                    washWeekToOpponent[game.week] = game.opponent;
+                }}
+            }});
+            // Mark BYE weeks explicitly (opponent will be 'BYE' or undefined)
+            washByeWeeks.forEach(week => {{
+                if (!washWeekToOpponent[week]) {{
+                    washWeekToOpponent[week] = 'BYE';
+                }}
+            }});
+            
+            const wiscWeekToOpponent = {{}};
+            wisconsinGames.forEach(game => {{
+                if (game.week && game.opponent) {{
+                    wiscWeekToOpponent[game.week] = game.opponent;
+                }}
+            }});
+            // Mark BYE weeks explicitly (opponent will be 'BYE' or undefined)
+            wiscByeWeeks.forEach(week => {{
+                if (!wiscWeekToOpponent[week]) {{
+                    wiscWeekToOpponent[week] = 'BYE';
+                }}
+            }});
+            
+            // Create week labels for all weeks (1 to maxWeek)
+            const weekLabels = [];
+            for (let week = 1; week <= maxWeek; week++) {{
+                weekLabels.push(`Week ${{week}}`);
+            }}
+            
+            return {{ gameIdToWeek, allGames: allGames, weekLabels, maxWeek, washWeekToOpponent, wiscWeekToOpponent, washByeWeeks, wiscByeWeeks }};
         }})();
         
-        // Helper function to get master game mapping (for backward compatibility)
-        function createGameIdToGameNumberMapping(plays) {{
-            // Always return the master mapping, ignoring the plays parameter
-            return masterGameMapping.gameIdToGameNum;
+        // Helper function to get week number for a game ID
+        function getWeekForGameId(gameId) {{
+            return masterWeekMapping.gameIdToWeek[gameId] || null;
         }}
         
-        // Helper function to calculate trends by game (sequential game numbers)
-        // Always includes all games (1-9) even if they have 0 values
+        // Helper function to get master game mapping (for backward compatibility - deprecated)
+        function createGameIdToGameNumberMapping(plays) {{
+            // Return week mapping instead of sequential game numbers
+            return masterWeekMapping.gameIdToWeek;
+        }}
+        
+        // Helper function to calculate trends by week (includes BYE weeks with 0)
         function calculateTrendsByWeek(plays, teamName, metricFn) {{
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = {{ plays: [] }};
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ plays: [] }};
                 }}
-                byGame[gameId].plays.push(play);
+                byWeek[week].plays.push(play);
             }});
             
-            // Use master mapping to ensure all games are included
-            const gameIdToGameNum = masterGameMapping.gameIdToGameNum;
+            // Create array with all weeks (1 to maxWeek), filling in 0 for BYE weeks
+            const values = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekPlays = byWeek[week]?.plays || [];
+                values.push(metricFn(weekPlays, teamName));
+            }}
             
-            // Create array with all games (1-9), filling in 0 for games with no data
-            const values = masterGameMapping.allGames.map(game => {{
-                const gamePlays = byGame[game.gameId]?.plays || [];
-                return metricFn(gamePlays, teamName);
-            }});
-            
-            return {{ weeks: masterGameMapping.gameLabels, values: values }};
+            return {{ weeks: masterWeekMapping.weekLabels, values: values }};
         }}
         
         function calculateTurnoverTrends(plays, teamName) {{
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.forEach(play => {{
                 if (play.turnover === true) {{
                     const gameId = play.game_id;
                     if (!gameId) return;
-                    if (!byGame[gameId]) {{
-                        byGame[gameId] = {{ ourTO: 0, oppTO: 0 }};
+                    const week = getWeekForGameId(gameId);
+                    if (!week) return;
+                    
+                    if (!byWeek[week]) {{
+                        byWeek[week] = {{ ourTO: 0, oppTO: 0 }};
                     }}
                     const isOur = play.offense?.toLowerCase() === teamName.toLowerCase();
                     if (isOur) {{
-                        byGame[gameId].ourTO++;
+                        byWeek[week].ourTO++;
                     }} else {{
-                        byGame[gameId].oppTO++;
+                        byWeek[week].oppTO++;
                     }}
                 }}
             }});
             
-            // Use master mapping to ensure all games are included
-            const ourTurnovers = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.ourTO || 0
-            );
-            const oppTurnovers = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.oppTO || 0
-            );
+            const ourTurnovers = [];
+            const oppTurnovers = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                ourTurnovers.push(byWeek[week]?.ourTO || 0);
+                oppTurnovers.push(byWeek[week]?.oppTO || 0);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 ourTurnovers: ourTurnovers,
                 oppTurnovers: oppTurnovers
             }};
@@ -1549,13 +1752,16 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const turnovers = plays.filter(p => p.turnover === true);
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
             
-            const byGame = {{}};
+            const byWeek = {{}};
             
             turnovers.forEach(turnover => {{
                 const gameId = turnover.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = {{ pointsScored: 0, pointsAllowed: 0 }};
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ pointsScored: 0, pointsAllowed: 0 }};
                 }}
                 
                 const isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
@@ -1577,57 +1783,58 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 }});
                 
                 if (isOurTurnover) {{
-                    byGame[gameId].pointsAllowed += drivePoints;
+                    byWeek[week].pointsAllowed += drivePoints;
                 }} else {{
-                    byGame[gameId].pointsScored += drivePoints;
+                    byWeek[week].pointsScored += drivePoints;
                 }}
             }});
             
-            // Use master mapping to ensure all games are included
-            const netPoints = masterGameMapping.allGames.map(game => {{
-                const gameData = byGame[game.gameId] || {{ pointsScored: 0, pointsAllowed: 0 }};
-                return gameData.pointsScored - gameData.pointsAllowed;
-            }});
+            const netPoints = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekData = byWeek[week] || {{ pointsScored: 0, pointsAllowed: 0 }};
+                netPoints.push(weekData.pointsScored - weekData.pointsAllowed);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 netPoints: netPoints
             }};
         }}
         
         function calculateMiddle8Trends(plays, teamName) {{
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.filter(p => p.middle_eight === true).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = {{ scored: 0, allowed: 0 }};
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ scored: 0, allowed: 0 }};
                 }}
                 if (play.scoring === true) {{
                     const points = play.play_type?.includes('Touchdown') ? 7 : (play.play_type?.includes('Field Goal') ? 3 : 0);
                     const isOur = play.offense?.toLowerCase() === teamName.toLowerCase();
                     if (isOur) {{
-                        byGame[gameId].scored += points;
+                        byWeek[week].scored += points;
                     }} else {{
-                        byGame[gameId].allowed += points;
+                        byWeek[week].allowed += points;
                     }}
                 }}
             }});
             
-            // Use master mapping to ensure all games are included
-            const scored = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.scored || 0
-            );
-            const allowed = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.allowed || 0
-            );
-            const net = masterGameMapping.allGames.map(game => {{
-                const gameData = byGame[game.gameId] || {{ scored: 0, allowed: 0 }};
-                return gameData.scored - gameData.allowed;
-            }});
+            const scored = [];
+            const allowed = [];
+            const net = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekData = byWeek[week] || {{ scored: 0, allowed: 0 }};
+                scored.push(weekData.scored);
+                allowed.push(weekData.allowed);
+                net.push(weekData.scored - weekData.allowed);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 scored: scored,
                 allowed: allowed,
                 net: net
@@ -1635,34 +1842,37 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         }}
         
         function calculateExplosiveTrends(plays, teamName) {{
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.filter(p => 
                 p.explosive_play === true && 
                 p.play_classification !== 'special_teams'
             ).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = {{ ours: 0, allowed: 0 }};
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ ours: 0, allowed: 0 }};
                 }}
                 const isOurs = play.offense?.toLowerCase() === teamName.toLowerCase();
                 if (isOurs) {{
-                    byGame[gameId].ours++;
+                    byWeek[week].ours++;
                 }} else {{
-                    byGame[gameId].allowed++;
+                    byWeek[week].allowed++;
                 }}
             }});
             
-            // Use master mapping to ensure all games are included
-            const ours = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.ours || 0
-            );
-            const allowed = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.allowed || 0
-            );
+            const ours = [];
+            const allowed = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekData = byWeek[week] || {{ ours: 0, allowed: 0 }};
+                ours.push(weekData.ours);
+                allowed.push(weekData.allowed);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 ours: ours,
                 allowed: allowed
             }};
@@ -1691,54 +1901,60 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 return false;
             }}
             
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.filter(p => isSpecialTeamsExplosive(p)).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = {{ ours: 0, allowed: 0 }};
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ ours: 0, allowed: 0 }};
                 }}
                 const isOurs = play.offense?.toLowerCase() === teamName.toLowerCase();
                 if (isOurs) {{
-                    byGame[gameId].ours++;
+                    byWeek[week].ours++;
                 }} else {{
-                    byGame[gameId].allowed++;
+                    byWeek[week].allowed++;
                 }}
             }});
             
-            // Use master mapping to ensure all games are included
-            const ours = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.ours || 0
-            );
-            const allowed = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.allowed || 0
-            );
+            const ours = [];
+            const allowed = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekData = byWeek[week] || {{ ours: 0, allowed: 0 }};
+                ours.push(weekData.ours);
+                allowed.push(weekData.allowed);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 ours: ours,
                 allowed: allowed
             }};
         }}
         
         function calculatePenaltyTrends(plays, teamName) {{
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.filter(p => p.penalty_type != null && (p.offense?.toLowerCase() === teamName.toLowerCase() || p.defense?.toLowerCase() === teamName.toLowerCase())).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = 0;
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = 0;
                 }}
-                byGame[gameId]++;
+                byWeek[week]++;
             }});
             
-            // Use master mapping to ensure all games are included
-            const values = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId] || 0
-            );
+            const values = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                values.push(byWeek[week] || 0);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 values: values
             }};
         }}
@@ -1811,7 +2027,11 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 // Only count accepted penalties
                 if (play.penalty_decision !== 'accepted') return;
                 
-                const week = play.game_week || 0;
+                const gameId = play.game_id;
+                if (!gameId) return;
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
                 const playText = (play.play_text || '').toLowerCase();
                 
                 // Extract penalty yards from text (not from yards_gained which includes return yards)
@@ -1851,60 +2071,51 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 }}
             }});
             
-            // Get all unique weeks
-            const allWeeks = new Set([...Object.keys(teamYardsByWeek), ...Object.keys(opponentYardsByWeek)]);
-            const weeks = Array.from(allWeeks).map(w => parseInt(w)).sort((a, b) => a - b);
-            
-            // Calculate net (opponent yards - team yards, so positive is good for team)
-            const netYards = weeks.map(week => {{
+            // Map to weeks and fill in BYE weeks with 0
+            const values = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
                 const teamYards = teamYardsByWeek[week] || 0;
                 const oppYards = opponentYardsByWeek[week] || 0;
-                return oppYards - teamYards; // Positive = opponent had more (good), negative = team had more (bad)
-            }});
-            
-            // Use master mapping to ensure all games are included
-            const values = masterGameMapping.allGames.map(game => {{
-                const teamYards = teamYardsByWeek[game.gameId] || 0;
-                const oppYards = opponentYardsByWeek[game.gameId] || 0;
-                return oppYards - teamYards; // Positive = opponent had more (good), negative = team had more (bad)
-            }});
+                values.push(oppYards - teamYards); // Positive = opponent had more (good), negative = team had more (bad)
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 values: values
             }};
         }}
         
         function calculate4thDownTrends(plays, teamName) {{
-            const byGame = {{}};
+            const byWeek = {{}};
             plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal')).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
-                if (!byGame[gameId]) {{
-                    byGame[gameId] = {{ attempts: 0, conversions: 0 }};
+                const week = getWeekForGameId(gameId);
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ attempts: 0, conversions: 0 }};
                 }}
-                byGame[gameId].attempts++;
+                byWeek[week].attempts++;
                 const playText = play.play_text?.toLowerCase() || '';
                 if (playText.includes('1st down') || playText.includes('first down') || playText.includes('touchdown') || (play.yards_gained >= play.distance)) {{
-                    byGame[gameId].conversions++;
+                    byWeek[week].conversions++;
                 }}
             }});
             
-            // Use master mapping to ensure all games are included
-            const attempts = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.attempts || 0
-            );
-            const conversions = masterGameMapping.allGames.map(game => 
-                byGame[game.gameId]?.conversions || 0
-            );
-            const rates = masterGameMapping.allGames.map(game => {{
-                const gameData = byGame[game.gameId];
-                const att = gameData?.attempts || 0;
-                return att > 0 ? (gameData.conversions / att * 100) : 0;
-            }});
+            const attempts = [];
+            const conversions = [];
+            const rates = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekData = byWeek[week] || {{ attempts: 0, conversions: 0 }};
+                attempts.push(weekData.attempts);
+                conversions.push(weekData.conversions);
+                const rate = weekData.attempts > 0 ? (weekData.conversions / weekData.attempts * 100) : 0;
+                rates.push(rate);
+            }}
             
             return {{
-                weeks: masterGameMapping.gameLabels,
+                weeks: masterWeekMapping.weekLabels,
                 attempts: attempts,
                 conversions: conversions,
                 rates: rates
@@ -1916,11 +2127,42 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             // Filters are now simple dropdowns that don't need population
         }}
         
+        // Helper function to safely update or initialize DataTable
+        function safeUpdateDataTable(selector, tableData, config) {{
+            try {{
+                const $table = $(selector);
+                if (!$table.length) return;
+                
+                if ($.fn.DataTable.isDataTable(selector)) {{
+                    // Table already exists - update data
+                    const table = $table.DataTable();
+                    table.clear();
+                    table.rows.add(tableData);
+                    table.draw();
+                }} else {{
+                    // Table doesn't exist - initialize it
+                    $table.DataTable(config);
+                }}
+            }} catch (e) {{
+                console.warn('Error updating DataTable for', selector, e);
+                // Fallback: destroy and recreate
+                try {{
+                    if ($.fn.DataTable.isDataTable(selector)) {{
+                        $(selector).DataTable().destroy();
+                    }}
+                    $(selector).DataTable(config);
+                }} catch (e2) {{
+                    console.error('Failed to recreate DataTable for', selector, e2);
+                }}
+            }}
+        }}
+        
         // Filter functions
         function getFilters() {{
             return {{
                 conference_only: document.getElementById('conferenceFilter').value === 'conference',
                 non_conference_only: document.getElementById('conferenceFilter').value === 'non-conference',
+                power4_only: document.getElementById('conferenceFilter').value === 'power4',
                 last_3_games: document.getElementById('timePeriodFilter').value === 'last3'
             }};
         }}
@@ -1928,11 +2170,13 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         function filterPlays(plays, filters) {{
             let filtered = plays;
             
-            // Filter by conference/non-conference
+            // Filter by conference/non-conference/power4
             if (filters.conference_only) {{
                 filtered = filtered.filter(p => p.is_conference === true);
             }} else if (filters.non_conference_only) {{
                 filtered = filtered.filter(p => p.is_conference === false);
+            }} else if (filters.power4_only) {{
+                filtered = filtered.filter(p => p.is_power4_opponent === true);
             }}
             
             // Filter by last 3 games
@@ -2048,23 +2292,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTrends = calculateMiddle8Trends(washPlaysForTrend, 'Washington');
             const wiscTrends = calculateMiddle8Trends(wiscPlaysForTrend, 'Wisconsin');
             
-            // Use master mapping to ensure all games (1-9) are included
-            const allWeeks = masterGameMapping.gameLabels;
-            
-            // Map data using master game mapping
-            const washNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = washTrends.weeks.indexOf(gameLabel);
-                return index >= 0 ? washTrends.net[index] : 0;
-            }});
-            
-            const wiscNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = wiscTrends.weeks.indexOf(gameLabel);
-                return index >= 0 ? wiscTrends.net[index] : 0;
-            }});
+            // Trend functions already return data for all weeks (1 to maxWeek), including BYE weeks with 0
+            const allWeeks = washTrends.weeks;
+            const washNetPointsAllWeeks = washTrends.net;
+            const wiscNetPointsAllWeeks = wiscTrends.net;
             
             const ctxTrend = document.getElementById('middleEightTrendChart').getContext('2d');
             if (charts.middleEightTrend) charts.middleEightTrend.destroy();
@@ -2091,13 +2322,18 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Middle 8 Net Points by Game' }},
+                        title: {{ display: true, text: 'Middle 8 Net Points by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
                                     const value = context.parsed.y;
                                     const sign = value >= 0 ? '+' : '';
-                                    return context.dataset.label + ': ' + sign + value;
+                                    const week = context.dataIndex + 1;
+                                    const teamName = context.dataset.label.includes('Washington') ? 'Washington' : 'Wisconsin';
+                                    const opponent = teamName === 'Washington' ? 
+                                        (masterWeekMapping.washWeekToOpponent[week] || 'BYE') : 
+                                        (masterWeekMapping.wiscWeekToOpponent[week] || 'BYE');
+                                    return context.dataset.label + ': ' + sign + value + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
                                 }}
                             }}
                         }}
@@ -2133,10 +2369,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 d.scoring_team || (d.is_offense ? 'Wisconsin' : (d.opponent || ''))  // Store scoring team for row class
             ]);
             
-            if ($.fn.DataTable.isDataTable('#middleEightTableWash')) {{
-                $('#middleEightTableWash').DataTable().destroy();
-            }}
-            $('#middleEightTableWash').DataTable({{
+            const washMiddle8Config = {{
                 data: washTableData,
                 paging: false,
                 searching: false,
@@ -2164,12 +2397,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#middleEightTableWash', washTableData, washMiddle8Config);
             
-            if ($.fn.DataTable.isDataTable('#middleEightTableWisc')) {{
-                $('#middleEightTableWisc').DataTable().destroy();
-            }}
-            $('#middleEightTableWisc').DataTable({{
+            const wiscMiddle8Config = {{
                 data: wiscTableData,
                 paging: false,
                 searching: false,
@@ -2197,12 +2428,35 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#middleEightTableWisc', wiscTableData, wiscMiddle8Config);
         }}
         
         function populateExplosivePlays() {{
             const wash = allData.washington.explosive;
             const wisc = allData.wisconsin.explosive;
+            
+            // If total_runs/total_passes don't exist (from Python data), calculate them from plays
+            if (typeof wash.total_runs === 'undefined' && wash.plays) {{
+                wash.total_runs = wash.plays.filter(p => {{
+                    const pt = (p.play_type || '').toLowerCase();
+                    return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+                }}).length;
+                wash.total_passes = wash.plays.filter(p => {{
+                    const pt = (p.play_type || '').toLowerCase();
+                    return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+                }}).length;
+            }}
+            if (typeof wisc.total_runs === 'undefined' && wisc.plays) {{
+                wisc.total_runs = wisc.plays.filter(p => {{
+                    const pt = (p.play_type || '').toLowerCase();
+                    return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+                }}).length;
+                wisc.total_passes = wisc.plays.filter(p => {{
+                    const pt = (p.play_type || '').toLowerCase();
+                    return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+                }}).length;
+            }}
             
             // Calculate allowed explosive plays stats
             const washPlaysForAllowed = typeof allData.washington.explosive._filtered_plays !== 'undefined' ? 
@@ -2227,6 +2481,16 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washAllowedGames = new Set(washAllowedPlays.map(p => p.game_id)).size;
             const washAllowedPerGame = washAllowedGames > 0 ? washAllowedTotal / washAllowedGames : 0;
             
+            // Calculate allowed runs and passes
+            const washAllowedRuns = washAllowedPlays.filter(p => {{
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+            }}).length;
+            const washAllowedPasses = washAllowedPlays.filter(p => {{
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+            }}).length;
+            
             // Last 3 games allowed
             const washGames = [...new Set(washAllowedPlays.map(p => p.game_id))].map(gid => ({{
                 id: gid,
@@ -2234,10 +2498,30 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }})).sort((a, b) => a.week - b.week);
             const washLast3GameIds = washGames.slice(-3).map(g => g.id);
             const washAllowedLast3 = washAllowedPlays.filter(p => washLast3GameIds.includes(p.game_id)).length;
+            const washAllowedLast3Runs = washAllowedPlays.filter(p => {{
+                if (!washLast3GameIds.includes(p.game_id)) return false;
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+            }}).length;
+            const washAllowedLast3Passes = washAllowedPlays.filter(p => {{
+                if (!washLast3GameIds.includes(p.game_id)) return false;
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+            }}).length;
             
             const wiscAllowedTotal = wiscAllowedPlays.length;
             const wiscAllowedGames = new Set(wiscAllowedPlays.map(p => p.game_id)).size;
             const wiscAllowedPerGame = wiscAllowedGames > 0 ? wiscAllowedTotal / wiscAllowedGames : 0;
+            
+            // Calculate allowed runs and passes
+            const wiscAllowedRuns = wiscAllowedPlays.filter(p => {{
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+            }}).length;
+            const wiscAllowedPasses = wiscAllowedPlays.filter(p => {{
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+            }}).length;
             
             const wiscGames = [...new Set(wiscAllowedPlays.map(p => p.game_id))].map(gid => ({{
                 id: gid,
@@ -2245,6 +2529,16 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }})).sort((a, b) => a.week - b.week);
             const wiscLast3GameIds = wiscGames.slice(-3).map(g => g.id);
             const wiscAllowedLast3 = wiscAllowedPlays.filter(p => wiscLast3GameIds.includes(p.game_id)).length;
+            const wiscAllowedLast3Runs = wiscAllowedPlays.filter(p => {{
+                if (!wiscLast3GameIds.includes(p.game_id)) return false;
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+            }}).length;
+            const wiscAllowedLast3Passes = wiscAllowedPlays.filter(p => {{
+                if (!wiscLast3GameIds.includes(p.game_id)) return false;
+                const pt = (p.play_type || '').toLowerCase();
+                return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+            }}).length;
             
             // Summary
             const summaryHtml = `
@@ -2254,9 +2548,13 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Total</h3><div class="value">${{wash.total_explosive_plays}}</div></div>
                             <div class="summary-card"><h3>Per Game</h3><div class="value">${{wash.avg_per_game.toFixed(1)}}</div></div>
-                            <div class="summary-card"><h3>Last 3</h3><div class="value">${{wash.last_3_games.total}}</div></div>
+                            <div class="summary-card"><h3>Runs</h3><div class="value">${{wash.total_runs || 0}}</div></div>
+                            <div class="summary-card"><h3>Passes</h3><div class="value">${{wash.total_passes || 0}}</div></div>
                             <div class="summary-card"><h3>Allowed Total</h3><div class="value">${{washAllowedTotal}}</div></div>
                             <div class="summary-card"><h3>Allowed Per Game</h3><div class="value">${{washAllowedPerGame.toFixed(1)}}</div></div>
+                            <div class="summary-card"><h3>Allowed Runs</h3><div class="value">${{washAllowedRuns}}</div></div>
+                            <div class="summary-card"><h3>Allowed Passes</h3><div class="value">${{washAllowedPasses}}</div></div>
+                            <div class="summary-card"><h3>Total Last 3</h3><div class="value">${{wash.last_3_games.total}}</div></div>
                             <div class="summary-card"><h3>Allowed Last 3</h3><div class="value">${{washAllowedLast3}}</div></div>
                         </div>
                     </div>
@@ -2265,9 +2563,13 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Total</h3><div class="value">${{wisc.total_explosive_plays}}</div></div>
                             <div class="summary-card"><h3>Per Game</h3><div class="value">${{wisc.avg_per_game.toFixed(1)}}</div></div>
-                            <div class="summary-card"><h3>Last 3</h3><div class="value">${{wisc.last_3_games.total}}</div></div>
+                            <div class="summary-card"><h3>Runs</h3><div class="value">${{wisc.total_runs || 0}}</div></div>
+                            <div class="summary-card"><h3>Passes</h3><div class="value">${{wisc.total_passes || 0}}</div></div>
                             <div class="summary-card"><h3>Allowed Total</h3><div class="value">${{wiscAllowedTotal}}</div></div>
                             <div class="summary-card"><h3>Allowed Per Game</h3><div class="value">${{wiscAllowedPerGame.toFixed(1)}}</div></div>
+                            <div class="summary-card"><h3>Allowed Runs</h3><div class="value">${{wiscAllowedRuns}}</div></div>
+                            <div class="summary-card"><h3>Allowed Passes</h3><div class="value">${{wiscAllowedPasses}}</div></div>
+                            <div class="summary-card"><h3>Total Last 3</h3><div class="value">${{wisc.last_3_games.total}}</div></div>
                             <div class="summary-card"><h3>Allowed Last 3</h3><div class="value">${{wiscAllowedLast3}}</div></div>
                         </div>
                     </div>
@@ -2298,58 +2600,174 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 options: {{ responsive: true, maintainAspectRatio: false }}
             }});
             
-            // Trend chart - use filtered plays if available
+            // Trend charts - split into two stacked bar charts (one per team)
             const washPlaysForTrend = typeof allData.washington.explosive._filtered_plays !== 'undefined' ? 
                 allData.washington.explosive._filtered_plays : washingtonPlays;
             const wiscPlaysForTrend = typeof allData.wisconsin.explosive._filtered_plays !== 'undefined' ? 
                 allData.wisconsin.explosive._filtered_plays : wisconsinPlays;
             const washTrends = calculateExplosiveTrends(washPlaysForTrend, 'Washington');
             const wiscTrends = calculateExplosiveTrends(wiscPlaysForTrend, 'Wisconsin');
-            const ctxTrend = document.getElementById('explosivePlaysTrendChart').getContext('2d');
-            if (charts.explosiveTrend) charts.explosiveTrend.destroy();
-            charts.explosiveTrend = new Chart(ctxTrend, {{
+            
+            // Washington line chart
+            const ctxTrendWash = document.getElementById('explosivePlaysTrendChartWash').getContext('2d');
+            if (charts.explosiveTrendWash) charts.explosiveTrendWash.destroy();
+            charts.explosiveTrendWash = new Chart(ctxTrendWash, {{
                 type: 'line',
                 data: {{
                     labels: washTrends.weeks,
                     datasets: [
-                        {{ label: 'Washington', data: washTrends.ours, borderColor: 'rgba(74, 144, 226, 1)', backgroundColor: 'rgba(74, 144, 226, 0.1)', fill: true }},
-                        {{ label: 'Washington Allowed', data: washTrends.allowed.map(v => -v), borderColor: 'rgba(74, 144, 226, 0.5)', backgroundColor: 'rgba(74, 144, 226, 0.05)', fill: true }},
-                        {{ label: 'Wisconsin', data: wiscTrends.ours, borderColor: 'rgba(196, 30, 58, 1)', backgroundColor: 'rgba(196, 30, 58, 0.1)', fill: true }},
-                        {{ label: 'Wisconsin Allowed', data: wiscTrends.allowed.map(v => -v), borderColor: 'rgba(196, 30, 58, 0.5)', backgroundColor: 'rgba(196, 30, 58, 0.05)', fill: true }}
+                        {{
+                            label: 'Washington',
+                            data: washTrends.ours,
+                            borderColor: 'rgba(74, 144, 226, 1)',
+                            backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }},
+                        {{
+                            label: 'Allowed',
+                            data: washTrends.allowed,
+                            borderColor: 'rgba(128, 128, 128, 1)',
+                            backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }}
                     ]
                 }},
                 options: {{ 
                     responsive: true, 
-                    maintainAspectRatio: false, 
+                    maintainAspectRatio: false,
                     scales: {{ 
                         y: {{ 
-                            beginAtZero: false,
-                            ticks: {{
-                                callback: function(value) {{
-                                    return Math.abs(value);
-                                }}
-                            }}
+                            beginAtZero: true
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Explosive Plays by Game (Allowed shown as negative)' }},
+                        title: {{ display: true, text: 'Washington - Explosive Plays by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
-                                    let label = context.dataset.label || '';
-                                    if (label) {{
-                                        label += ': ';
-                                    }}
-                                    if (context.parsed.y < 0) {{
-                                        label += Math.abs(context.parsed.y);
-                                    }} else {{
-                                        label += context.parsed.y;
-                                    }}
-                                    return label;
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    const week = context.dataIndex + 1;
+                                    const opponent = masterWeekMapping.washWeekToOpponent[week] || 'BYE';
+                                    return label + ': ' + value + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
                                 }}
                             }}
                         }}
-                    }} 
+                    }}
+                }}
+            }});
+            
+            // Wisconsin line chart
+            const ctxTrendWisc = document.getElementById('explosivePlaysTrendChartWisc').getContext('2d');
+            if (charts.explosiveTrendWisc) charts.explosiveTrendWisc.destroy();
+            charts.explosiveTrendWisc = new Chart(ctxTrendWisc, {{
+                type: 'line',
+                data: {{
+                    labels: wiscTrends.weeks,
+                    datasets: [
+                        {{
+                            label: 'Wisconsin',
+                            data: wiscTrends.ours,
+                            borderColor: 'rgba(196, 30, 58, 1)',
+                            backgroundColor: 'rgba(196, 30, 58, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }},
+                        {{
+                            label: 'Allowed',
+                            data: wiscTrends.allowed,
+                            borderColor: 'rgba(128, 128, 128, 1)',
+                            backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }}
+                    ]
+                }},
+                options: {{ 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    scales: {{ 
+                        y: {{ 
+                            beginAtZero: true
+                        }} 
+                    }}, 
+                    plugins: {{ 
+                        title: {{ display: true, text: 'Wisconsin - Explosive Plays by Week' }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    const week = context.dataIndex + 1;
+                                    const opponent = masterWeekMapping.wiscWeekToOpponent[week] || 'BYE';
+                                    return label + ': ' + value + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+            
+            // Run vs Pass Bar Charts - side by side (with Team Name and Allowed)
+            const ctxRunPassWash = document.getElementById('explosiveRunPassChartWash').getContext('2d');
+            if (charts.explosiveRunPassWash) charts.explosiveRunPassWash.destroy();
+            charts.explosiveRunPassWash = new Chart(ctxRunPassWash, {{
+                type: 'bar',
+                data: {{
+                    labels: ['Runs', 'Passes'],
+                    datasets: [
+                        {{
+                            label: 'Washington',
+                            data: [wash.total_runs || 0, wash.total_passes || 0],
+                            backgroundColor: ['rgba(74, 144, 226, 0.6)', 'rgba(74, 144, 226, 0.4)']
+                        }},
+                        {{
+                            label: 'Allowed',
+                            data: [washAllowedRuns, washAllowedPasses],
+                            backgroundColor: ['rgba(128, 128, 128, 0.6)', 'rgba(128, 128, 128, 0.4)']
+                        }}
+                    ]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Washington - Run vs Pass Explosives', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }}
+                    }},
+                    scales: {{ y: {{ beginAtZero: true }} }}
+                }}
+            }});
+            
+            const ctxRunPassWisc = document.getElementById('explosiveRunPassChartWisc').getContext('2d');
+            if (charts.explosiveRunPassWisc) charts.explosiveRunPassWisc.destroy();
+            charts.explosiveRunPassWisc = new Chart(ctxRunPassWisc, {{
+                type: 'bar',
+                data: {{
+                    labels: ['Runs', 'Passes'],
+                    datasets: [
+                        {{
+                            label: 'Wisconsin',
+                            data: [wisc.total_runs || 0, wisc.total_passes || 0],
+                            backgroundColor: ['rgba(196, 30, 58, 0.6)', 'rgba(196, 30, 58, 0.4)']
+                        }},
+                        {{
+                            label: 'Allowed',
+                            data: [wiscAllowedRuns, wiscAllowedPasses],
+                            backgroundColor: ['rgba(128, 128, 128, 0.6)', 'rgba(128, 128, 128, 0.4)']
+                        }}
+                    ]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Wisconsin - Run vs Pass Explosives', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }}
+                    }},
+                    scales: {{ y: {{ beginAtZero: true }} }}
                 }}
             }});
             
@@ -2383,10 +2801,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 p.offense || ''  // Store offense for row class
             ]);
             
-            if ($.fn.DataTable.isDataTable('#explosivePlaysTableWash')) {{
-                $('#explosivePlaysTableWash').DataTable().destroy();
-            }}
-            $('#explosivePlaysTableWash').DataTable({{
+            const washExplosiveConfig = {{
                 data: washTableData,
                 paging: false,
                 searching: false,
@@ -2409,12 +2824,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#explosivePlaysTableWash', washTableData, washExplosiveConfig);
             
-            if ($.fn.DataTable.isDataTable('#explosivePlaysTableWisc')) {{
-                $('#explosivePlaysTableWisc').DataTable().destroy();
-            }}
-            $('#explosivePlaysTableWisc').DataTable({{
+            const wiscExplosiveConfig = {{
                 data: wiscTableData,
                 paging: false,
                 searching: false,
@@ -2437,7 +2850,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#explosivePlaysTableWisc', wiscTableData, wiscExplosiveConfig);
         }}
         
         function populatePenalties() {{
@@ -2502,23 +2916,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washNetYards = calculateNetPenaltyYardsByWeek(washPlaysForTrend, 'Washington');
             const wiscNetYards = calculateNetPenaltyYardsByWeek(wiscPlaysForTrend, 'Wisconsin');
             
-            // Use master mapping to ensure all games (1-9) are included
-            const allWeeks = masterGameMapping.gameLabels;
-            
-            // Map data using master game mapping
-            const washNetYardsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = washNetYards.weeks.indexOf(gameLabel);
-                return index >= 0 ? washNetYards.values[index] : 0;
-            }});
-            
-            const wiscNetYardsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = wiscNetYards.weeks.indexOf(gameLabel);
-                return index >= 0 ? wiscNetYards.values[index] : 0;
-            }});
+            // Trend functions already return data for all weeks (1 to maxWeek), including BYE weeks with 0
+            const allWeeks = washNetYards.weeks;
+            const washNetYardsAllWeeks = washNetYards.values;
+            const wiscNetYardsAllWeeks = wiscNetYards.values;
             
             const ctxTrend = document.getElementById('penaltyTrendChart').getContext('2d');
             if (charts.penaltyTrend) charts.penaltyTrend.destroy();
@@ -2551,7 +2952,12 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                                 label: function(context) {{
                                     const value = context.parsed.y;
                                     const sign = value >= 0 ? '+' : '';
-                                    return context.dataset.label + ': ' + sign + value + ' yards';
+                                    const week = context.dataIndex + 1;
+                                    const teamName = context.dataset.label.includes('Washington') ? 'Washington' : 'Wisconsin';
+                                    const opponent = teamName === 'Washington' ? 
+                                        (masterWeekMapping.washWeekToOpponent[week] || 'BYE') : 
+                                        (masterWeekMapping.wiscWeekToOpponent[week] || 'BYE');
+                                    return context.dataset.label + ': ' + sign + value + ' yards' + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
                                 }}
                             }}
                         }}
@@ -2732,8 +3138,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 p.offense || ''  // Store offense for row class
             ]);
             
-            if ($.fn.DataTable.isDataTable('#penaltyTableWash')) $('#penaltyTableWash').DataTable().destroy();
-            $('#penaltyTableWash').DataTable({{
+            const washPenaltyConfig = {{
                 data: washTableData,
                 paging: false,
                 searching: false,
@@ -2754,10 +3159,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#penaltyTableWash', washTableData, washPenaltyConfig);
             
-            if ($.fn.DataTable.isDataTable('#penaltyTableWisc')) $('#penaltyTableWisc').DataTable().destroy();
-            $('#penaltyTableWisc').DataTable({{
+            const wiscPenaltyConfig = {{
                 data: wiscTableData,
                 paging: false,
                 searching: false,
@@ -2778,7 +3183,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#penaltyTableWisc', wiscTableData, wiscPenaltyConfig);
         }}
         
         function populate4thDowns() {{
@@ -2835,23 +3241,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTrends = calculate4thDownTrends(washPlaysForTrend, 'Washington');
             const wiscTrends = calculate4thDownTrends(wiscPlaysForTrend, 'Wisconsin');
             
-            // Use master mapping to ensure all games (1-9) are included
-            const allWeeks = masterGameMapping.gameLabels;
-            
-            // Map data using master game mapping
-            const washConversionsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = washTrends.weeks.indexOf(gameLabel);
-                return index >= 0 ? washTrends.conversions[index] : 0;
-            }});
-            
-            const wiscConversionsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = wiscTrends.weeks.indexOf(gameLabel);
-                return index >= 0 ? wiscTrends.conversions[index] : 0;
-            }});
+            // Trend functions already return data for all weeks (1 to maxWeek), including BYE weeks with 0
+            const allWeeks = washTrends.weeks;
+            const washConversionsAllWeeks = washTrends.conversions;
+            const wiscConversionsAllWeeks = wiscTrends.conversions;
             
             const ctxTrend = document.getElementById('fourthDownTrendChart').getContext('2d');
             if (charts.fourthDownTrend) charts.fourthDownTrend.destroy();
@@ -2881,28 +3274,33 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     maintainAspectRatio: false, 
                     scales: {{ y: {{ beginAtZero: true }} }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: '4th Down Conversions by Game' }},
+                        title: {{ display: true, text: '4th Down Conversions by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
                                     const datasetIndex = context.datasetIndex;
                                     const dataIndex = context.dataIndex;
-                                    const week = allWeeks[dataIndex];
+                                    const weekLabel = allWeeks[dataIndex];
+                                    const weekNum = dataIndex + 1;
                                     const conversions = context.parsed.y;
                                     
                                     // Find the original week index in the team's trends
                                     const teamTrends = datasetIndex === 0 ? washTrends : wiscTrends;
-                                    const weekIndex = teamTrends.weeks.indexOf(week);
+                                    const weekIndex = teamTrends.weeks.indexOf(weekLabel);
+                                    
+                                    const teamName = datasetIndex === 0 ? 'Washington' : 'Wisconsin';
+                                    const opponent = teamName === 'Washington' ? 
+                                        (masterWeekMapping.washWeekToOpponent[weekNum] || 'BYE') : 
+                                        (masterWeekMapping.wiscWeekToOpponent[weekNum] || 'BYE');
+                                    const opponentText = opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent;
                                     
                                     if (weekIndex >= 0) {{
                                         const attempts = teamTrends.attempts[weekIndex];
                                         const rate = teamTrends.rates[weekIndex];
-                                        const teamName = datasetIndex === 0 ? 'Washington' : 'Wisconsin';
-                                        return `${{teamName}}: ${{conversions}}/${{attempts}} (${{rate.toFixed(1)}}%)`;
+                                        return `${{teamName}}: ${{conversions}}/${{attempts}} (${{rate.toFixed(1)}}%)${{opponentText}}`;
                                     }} else {{
                                         // Week with no attempts
-                                        const teamName = datasetIndex === 0 ? 'Washington' : 'Wisconsin';
-                                        return `${{teamName}}: 0/0 (0.0%)`;
+                                        return `${{teamName}}: 0/0 (0.0%)${{opponentText}}`;
                                     }}
                                 }}
                             }}
@@ -2917,17 +3315,18 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTableData = washSorted.map(p => [
                 p.game_week || '', p.opponent || '', p.yard_line || '', p.distance || '',
                 p.play_type || '', p.converted ? 'Yes' : 'No', p.yards_gained || 0, p.ppa ? p.ppa.toFixed(2) : '',
-                p.play_text || ''
+                p.play_text || '',
+                p.converted || false  // Hidden column for conversion status
             ]);
             const wiscSorted = sortPlaysChronologically(wisc.plays);
             const wiscTableData = wiscSorted.map(p => [
                 p.game_week || '', p.opponent || '', p.yard_line || '', p.distance || '',
                 p.play_type || '', p.converted ? 'Yes' : 'No', p.yards_gained || 0, p.ppa ? p.ppa.toFixed(2) : '',
-                p.play_text || ''
+                p.play_text || '',
+                p.converted || false  // Hidden column for conversion status
             ]);
             
-            if ($.fn.DataTable.isDataTable('#fourthDownTableWash')) $('#fourthDownTableWash').DataTable().destroy();
-            $('#fourthDownTableWash').DataTable({{
+            const wash4thDownConfig = {{
                 data: washTableData,
                 paging: false,
                 searching: false,
@@ -2936,16 +3335,23 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 columns: [
                     {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Yard Line' }}, {{ title: 'Distance' }},
                     {{ title: 'Play Type' }}, {{ title: 'Converted' }}, {{ title: 'Yards' }}, {{ title: 'PPA' }},
-                    {{ title: 'Play Description' }}
+                    {{ title: 'Play Description' }},
+                    {{ title: '', visible: false }}  // Hidden column for conversion status
                 ],
                 createdRow: function(row, data) {{
                     const weekValue = data[0]; // Week is first column
                     addWeekClass(row, weekValue);
+                    const converted = data[9]; // Last column (hidden, index 9)
+                    if (converted === true) {{
+                        $(row).addClass('converted-success');
+                    }} else {{
+                        $(row).addClass('converted-failed');
+                    }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#fourthDownTableWash', washTableData, wash4thDownConfig);
             
-            if ($.fn.DataTable.isDataTable('#fourthDownTableWisc')) $('#fourthDownTableWisc').DataTable().destroy();
-            $('#fourthDownTableWisc').DataTable({{
+            const wisc4thDownConfig = {{
                 data: wiscTableData,
                 paging: false,
                 searching: false,
@@ -2954,13 +3360,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 columns: [
                     {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Yard Line' }}, {{ title: 'Distance' }},
                     {{ title: 'Play Type' }}, {{ title: 'Converted' }}, {{ title: 'Yards' }}, {{ title: 'PPA' }},
-                    {{ title: 'Play Description' }}
+                    {{ title: 'Play Description' }},
+                    {{ title: '', visible: false }}  // Hidden column for conversion status
                 ],
                 createdRow: function(row, data) {{
                     const weekValue = data[0]; // Week is first column
                     addWeekClass(row, weekValue);
+                    const converted = data[9]; // Last column (hidden, index 9)
+                    if (converted === true) {{
+                        $(row).addClass('converted-success');
+                    }} else {{
+                        $(row).addClass('converted-failed');
+                    }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#fourthDownTableWisc', wiscTableData, wisc4thDownConfig);
         }}
         
         function populatePostTurnover() {{
@@ -3024,10 +3438,16 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             callbacks: {{
                                 label: function(context) {{
                                     const value = context.parsed.y;
+                                    const week = context.dataIndex + 1;
+                                    const teamName = context.dataset.label.includes('Washington') ? 'Washington' : 'Wisconsin';
+                                    const opponent = teamName === 'Washington' ? 
+                                        (masterWeekMapping.washWeekToOpponent[week] || 'BYE') : 
+                                        (masterWeekMapping.wiscWeekToOpponent[week] || 'BYE');
+                                    const opponentText = opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent;
                                     if (value < 0) {{
-                                        return context.dataset.label + ': -' + Math.abs(value);
+                                        return context.dataset.label + ': -' + Math.abs(value) + opponentText;
                                     }}
-                                    return context.dataset.label + ': ' + value;
+                                    return context.dataset.label + ': ' + value + opponentText;
                                 }}
                             }}
                         }}
@@ -3043,23 +3463,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washNetPoints = calculateNetPointsByWeek(washPlaysForTrend, 'Washington');
             const wiscNetPoints = calculateNetPointsByWeek(wiscPlaysForTrend, 'Wisconsin');
             
-            // Use master mapping to ensure all games (1-9) are included
-            const allWeeks = masterGameMapping.gameLabels;
-            
-            // Map data using master game mapping
-            const washNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = washNetPoints.weeks.indexOf(gameLabel);
-                return index >= 0 ? washNetPoints.netPoints[index] : 0;
-            }});
-            
-            const wiscNetPointsAllWeeks = masterGameMapping.allGames.map(game => {{
-                const gameNum = masterGameMapping.gameIdToGameNum[game.gameId];
-                const gameLabel = `Game ${{gameNum}}`;
-                const index = wiscNetPoints.weeks.indexOf(gameLabel);
-                return index >= 0 ? wiscNetPoints.netPoints[index] : 0;
-            }});
+            // Trend functions already return data for all weeks (1 to maxWeek), including BYE weeks with 0
+            const allWeeks = washNetPoints.weeks;
+            const washNetPointsAllWeeks = washNetPoints.netPoints;
+            const wiscNetPointsAllWeeks = wiscNetPoints.netPoints;
             
             const ctxTrend = document.getElementById('postTurnoverTrendChart').getContext('2d');
             if (charts.postTurnoverTrend) charts.postTurnoverTrend.destroy();
@@ -3086,7 +3493,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Net Points After Turnovers by Game' }},
+                        title: {{ display: true, text: 'Net Points After Turnovers by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -3117,8 +3524,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 t.is_our_turnover ? false : true  // Store isOpponent for row class
             ]);
             
-            if ($.fn.DataTable.isDataTable('#postTurnoverTableWash')) $('#postTurnoverTableWash').DataTable().destroy();
-            $('#postTurnoverTableWash').DataTable({{
+            const washTurnoverConfig = {{
                 data: washTableData,
                 paging: false,
                 searching: false,
@@ -3140,10 +3546,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#postTurnoverTableWash', washTableData, washTurnoverConfig);
             
-            if ($.fn.DataTable.isDataTable('#postTurnoverTableWisc')) $('#postTurnoverTableWisc').DataTable().destroy();
-            $('#postTurnoverTableWisc').DataTable({{
+            const wiscTurnoverConfig = {{
                 data: wiscTableData,
                 paging: false,
                 searching: false,
@@ -3165,7 +3571,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#postTurnoverTableWisc', wiscTableData, wiscTurnoverConfig);
         }}
         
         function populateSpecialTeams() {{
@@ -3230,7 +3637,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: 'Explosive Special Teams Plays by Game (Allowed shown as negative)' }},
+                        title: {{ display: true, text: 'Explosive Special Teams Plays by Week (Allowed shown as negative)' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -3243,7 +3650,12 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                                     }} else {{
                                         label += context.parsed.y;
                                     }}
-                                    return label;
+                                    const week = context.dataIndex + 1;
+                                    const teamName = context.dataset.label.includes('Washington') ? 'Washington' : 'Wisconsin';
+                                    const opponent = teamName === 'Washington' ? 
+                                        (masterWeekMapping.washWeekToOpponent[week] || 'BYE') : 
+                                        (masterWeekMapping.wiscWeekToOpponent[week] || 'BYE');
+                                    return label + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
                                 }}
                             }}
                         }}
@@ -3270,8 +3682,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 !p.is_our  // Store isOpponent for row class
             ]);
             
-            if ($.fn.DataTable.isDataTable('#specialTeamsTableWash')) $('#specialTeamsTableWash').DataTable().destroy();
-            $('#specialTeamsTableWash').DataTable({{
+            const washSpecialTeamsConfig = {{
                 data: washTableData,
                 paging: false,
                 searching: false,
@@ -3293,10 +3704,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#specialTeamsTableWash', washTableData, washSpecialTeamsConfig);
             
-            if ($.fn.DataTable.isDataTable('#specialTeamsTableWisc')) $('#specialTeamsTableWisc').DataTable().destroy();
-            $('#specialTeamsTableWisc').DataTable({{
+            const wiscSpecialTeamsConfig = {{
                 data: wiscTableData,
                 paging: false,
                 searching: false,
@@ -3318,7 +3729,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         $(row).addClass('team-row');
                     }}
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#specialTeamsTableWisc', wiscTableData, wiscSpecialTeamsConfig);
         }}
         
         function populateRedZone() {{
@@ -3414,8 +3826,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 p.explosive ? 'Yes' : 'No', p.ppa ? p.ppa.toFixed(3) : '', p.play_text || ''
             ]);
             
-            if ($.fn.DataTable.isDataTable('#greenZoneTableWash')) $('#greenZoneTableWash').DataTable().destroy();
-            $('#greenZoneTableWash').DataTable({{
+            const washGreenZoneConfig = {{
                 data: washGreenTableData,
                 paging: false,
                 searching: false,
@@ -3431,10 +3842,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     const weekValue = data[0]; // Week is first column
                     addWeekClass(row, weekValue);
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#greenZoneTableWash', washGreenTableData, washGreenZoneConfig);
             
-            if ($.fn.DataTable.isDataTable('#greenZoneTableWisc')) $('#greenZoneTableWisc').DataTable().destroy();
-            $('#greenZoneTableWisc').DataTable({{
+            const wiscGreenZoneConfig = {{
                 data: wiscGreenTableData,
                 paging: false,
                 searching: false,
@@ -3450,7 +3861,8 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     const weekValue = data[0]; // Week is first column
                     addWeekClass(row, weekValue);
                 }}
-            }});
+            }};
+            safeUpdateDataTable('#greenZoneTableWisc', wiscGreenTableData, wiscGreenZoneConfig);
         }}
         
         function populateSituationalReceiving() {{
@@ -3737,39 +4149,35 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTop25_3rd = wash3rd.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
             const wiscTop25_3rd = wisc3rd.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
             
-            if ($('#thirdDownTableWash').length) {{
-                if ($.fn.DataTable.isDataTable('#thirdDownTableWash')) $('#thirdDownTableWash').DataTable().destroy();
-                $('#thirdDownTableWash').DataTable({{
-                    data: wash3rdTableData,
-                    paging: false,
-                    searching: false,
-                    scrollY: '400px',
-                    scrollCollapse: true,
-                    columns: [
-                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
-                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
-                        {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
-                        {{ title: 'Big Ten Rank' }}
-                    ]
-                }});
-            }}
+            const wash3rdDownConfig = {{
+                data: wash3rdTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                    {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                    {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                    {{ title: 'Big Ten Rank' }}
+                ]
+            }};
+            safeUpdateDataTable('#thirdDownTableWash', wash3rdTableData, wash3rdDownConfig);
             
-            if ($('#thirdDownTableWisc').length) {{
-                if ($.fn.DataTable.isDataTable('#thirdDownTableWisc')) $('#thirdDownTableWisc').DataTable().destroy();
-                $('#thirdDownTableWisc').DataTable({{
-                    data: wisc3rdTableData,
-                    paging: false,
-                    searching: false,
-                    scrollY: '400px',
-                    scrollCollapse: true,
-                    columns: [
-                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
-                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
-                        {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
-                        {{ title: 'Big Ten Rank' }}
-                    ]
-                }});
-            }}
+            const wisc3rdDownConfig = {{
+                data: wisc3rdTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                    {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                    {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                    {{ title: 'Big Ten Rank' }}
+                ]
+            }};
+            safeUpdateDataTable('#thirdDownTableWisc', wisc3rdTableData, wisc3rdDownConfig);
             
             // Add top 25 banner for 3rd down
             if (washTop25_3rd || wiscTop25_3rd) {{
@@ -4042,39 +4450,35 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTop25_RZ = washRZ.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
             const wiscTop25_RZ = wiscRZ.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
             
-            if ($('#redZoneReceivingTableWash').length) {{
-                if ($.fn.DataTable.isDataTable('#redZoneReceivingTableWash')) $('#redZoneReceivingTableWash').DataTable().destroy();
-                $('#redZoneReceivingTableWash').DataTable({{
-                    data: washRZTableData,
-                    paging: false,
-                    searching: false,
-                    scrollY: '400px',
-                    scrollCollapse: true,
-                    columns: [
-                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
-                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
-                        {{ title: 'TDs' }}, {{ title: 'Yards' }},
-                        {{ title: 'Big Ten Rank' }}
-                    ]
-                }});
-            }}
+            const washRZConfig = {{
+                data: washRZTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                    {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                    {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                    {{ title: 'Big Ten Rank' }}
+                ]
+            }};
+            safeUpdateDataTable('#redZoneReceivingTableWash', washRZTableData, washRZConfig);
             
-            if ($('#redZoneReceivingTableWisc').length) {{
-                if ($.fn.DataTable.isDataTable('#redZoneReceivingTableWisc')) $('#redZoneReceivingTableWisc').DataTable().destroy();
-                $('#redZoneReceivingTableWisc').DataTable({{
-                    data: wiscRZTableData,
-                    paging: false,
-                    searching: false,
-                    scrollY: '400px',
-                    scrollCollapse: true,
-                    columns: [
-                        {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
-                        {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
-                        {{ title: 'TDs' }}, {{ title: 'Yards' }},
-                        {{ title: 'Big Ten Rank' }}
-                    ]
-                }});
-            }}
+            const wiscRZConfig = {{
+                data: wiscRZTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                    {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                    {{ title: 'TDs' }}, {{ title: 'Yards' }},
+                    {{ title: 'Big Ten Rank' }}
+                ]
+            }};
+            safeUpdateDataTable('#redZoneReceivingTableWisc', wiscRZTableData, wiscRZConfig);
             
             // Add top 25 banner for red zone
             if (washTop25_RZ || wiscTop25_RZ) {{
@@ -4340,6 +4744,18 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }};
         }}
         
+        function isRunPlay(playType) {{
+            if (!playType) return false;
+            const pt = playType.toLowerCase();
+            return pt.includes('rush') || pt.includes('run') || pt === 'sack';
+        }}
+        
+        function isPassPlay(playType) {{
+            if (!playType) return false;
+            const pt = playType.toLowerCase();
+            return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
+        }}
+        
         function analyzeExplosivePlays(plays, teamName) {{
             const explosivePlays = plays.filter(p => 
                 p.explosive_play === true && 
@@ -4347,9 +4763,57 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 p.play_classification !== 'special_teams'
             );
             const uniqueGames = new Set(explosivePlays.map(p => p.game_id)).size;
+            
+            // Categorize runs vs passes
+            const runs = explosivePlays.filter(p => isRunPlay(p.play_type));
+            const passes = explosivePlays.filter(p => isPassPlay(p.play_type));
+            
+            // Calculate last 3 games stats
+            const gameStats = {{}};
+            const gameStatsRuns = {{}};
+            const gameStatsPasses = {{}};
+            explosivePlays.forEach(p => {{
+                const gameId = p.game_id;
+                if (!gameStats[gameId]) {{
+                    gameStats[gameId] = {{
+                        game_id: gameId,
+                        game_week: p.game_week || 0,
+                        count: 0
+                    }};
+                    gameStatsRuns[gameId] = {{ count: 0 }};
+                    gameStatsPasses[gameId] = {{ count: 0 }};
+                }}
+                gameStats[gameId].count++;
+                if (isRunPlay(p.play_type)) {{
+                    gameStatsRuns[gameId].count++;
+                }} else if (isPassPlay(p.play_type)) {{
+                    gameStatsPasses[gameId].count++;
+                }}
+            }});
+            
+            // Sort games by week and get last 3
+            const sortedGames = Object.values(gameStats).sort((a, b) => a.game_week - b.game_week);
+            const last3Games = sortedGames.slice(-3);
+            const last3GameIds = new Set(last3Games.map(g => g.game_id));
+            const last3Count = last3Games.reduce((sum, g) => sum + g.count, 0);
+            const last3Runs = last3Games.reduce((sum, g) => sum + (gameStatsRuns[g.game_id]?.count || 0), 0);
+            const last3Passes = last3Games.reduce((sum, g) => sum + (gameStatsPasses[g.game_id]?.count || 0), 0);
+            const last3Avg = last3Games.length > 0 ? last3Count / last3Games.length : 0;
+            
             return {{
                 total_explosive_plays: explosivePlays.length,
+                total_runs: runs.length,
+                total_passes: passes.length,
                 avg_per_game: uniqueGames > 0 ? explosivePlays.length / uniqueGames : 0,
+                avg_runs_per_game: uniqueGames > 0 ? runs.length / uniqueGames : 0,
+                avg_passes_per_game: uniqueGames > 0 ? passes.length / uniqueGames : 0,
+                last_3_games: {{
+                    total: last3Count,
+                    runs: last3Runs,
+                    passes: last3Passes,
+                    avg_per_game: last3Avg,
+                    games: last3Games.map(g => g.game_id)
+                }},
                 plays: explosivePlays.map(p => ({{
                     game_week: p.game_week,
                     opponent: p.opponent,
@@ -4399,6 +4863,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     clock: p.clock,
                     penalty_type: p.penalty_type,
                     penalty_decision: p.penalty_decision,
+                    down: p.down || 0,
                     play_text: p.play_text?.substring(0, 200) || ''
                 }}))
             }};

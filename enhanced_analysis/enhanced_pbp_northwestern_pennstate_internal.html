@@ -1,0 +1,2267 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Enhanced Play-by-Play Analysis - Northwestern vs Penn State</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                color: #333;
+            }
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 2.5em;
+                font-weight: 300;
+            }
+            .header p {
+                margin: 10px 0 0 0;
+                font-size: 1.2em;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .win-probability-chart {
+                margin: 30px 0;
+                padding: 20px;
+                background: #fafafa;
+                border-radius: 8px;
+                border: 1px solid #e0e0e0;
+            }
+            .chart-legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-top: 15px;
+                justify-content: center;
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 14px;
+            }
+            .legend-color {
+                width: 16px;
+                height: 16px;
+                border-radius: 3px;
+            }
+            .penalty-analysis {
+                margin: 30px 0;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                border-left: 4px solid #007bff;
+            }
+            .penalty-summary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                margin-top: 20px;
+            }
+            .inflection-analysis {
+                margin: 30px 0;
+                padding: 20px;
+                background: #fff3cd;
+                border-radius: 8px;
+                border-left: 4px solid #ffc107;
+            }
+            .inflection-summary {
+                margin-top: 20px;
+            }
+            .inflection-stats {
+                background: white;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 15px;
+            }
+            .inflection-stats ul {
+                list-style: none;
+                padding: 0;
+            }
+            .inflection-stats li {
+                padding: 10px;
+                margin: 5px 0;
+                background: #f8f9fa;
+                border-radius: 5px;
+                border-left: 3px solid #007bff;
+            }
+            .wp-impact {
+                font-weight: bold;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-size: 0.9em;
+            }
+            .wp-impact.positive {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            .wp-impact.negative {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+            .play-by-play-table {
+                margin: 30px 0;
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            th {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 10px;
+                text-align: left;
+                font-weight: 600;
+                font-size: 14px;
+            }
+            td {
+                padding: 12px 10px;
+                border-bottom: 1px solid #eee;
+                font-size: 14px;
+            }
+            tr:hover {
+                background-color: #f8f9fa;
+            }
+            .play-number {
+                font-weight: bold;
+                color: #667eea;
+            }
+            .quarter {
+                font-weight: bold;
+                color: #666;
+            }
+            .time {
+                font-family: monospace;
+                color: #666;
+            }
+            .win-prob {
+                font-weight: bold;
+            }
+            .win-prob.high {
+                color: #28a745;
+            }
+            .win-prob.medium {
+                color: #ffc107;
+            }
+            .win-prob.low {
+                color: #dc3545;
+            }
+            .change {
+                font-weight: bold;
+            }
+            .change.positive {
+                color: #28a745;
+            }
+            .change.negative {
+                color: #dc3545;
+            }
+            .play-description {
+                max-width: 300px;
+                word-wrap: break-word;
+            }
+            .down-dist {
+                font-weight: bold;
+                color: #666;
+            }
+            .yard-line {
+                font-weight: bold;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Enhanced Play-by-Play Analysis</h1>
+                <p>Northwestern vs Penn State | October 11, 2025 | Game ID: 401752866</p>
+            </div>
+            
+            <div class="content">
+                <div class="play-by-play-table">
+                    <h3>Complete Play-by-Play with Win Probability</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th style="width: 50px;">Qtr</th>
+                                <th style="width: 80px;">Time</th>
+                                <th style="width: 100px;">Win Prob</th>
+                                <th style="width: 80px;">Change</th>
+                                <th style="width: 100px;">Down/Dist</th>
+                                <th style="width: 120px;">Yard Line</th>
+                                <th>Play Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+                            <tr>
+                                <td class="play-number">1</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">90.2%</td>
+                                <td class="change ">0.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">PSU wins the toss and chooses endzone.</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">2</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00 (Drive Change)</td>
+                                <td class="win-prob high">89.6%</td>
+                                <td class="change negative">-0.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gabriel Nwosu kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">3</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">90.2%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 25</td>
+                                <td class="play-description">Caleb Komolafe run for 1 yd to the NU 26</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">4</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">89.9%</td>
+                                <td class="change negative">-0.3%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">NU 26</td>
+                                <td class="play-description">Caleb Komolafe run for 5 yds to the NU 31</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">5</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">89.1%</td>
+                                <td class="change negative">-0.8%</td>
+                                <td class="down-dist">3 & 4</td>
+                                <td class="yard-line">NU 31</td>
+                                <td class="play-description">Preston Stone run for no gain to the NU 31 for a 1ST down Penn State Penalty, off-side (Dani Dennis-Sutton) to the NU 36 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">6</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">89.2%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 36</td>
+                                <td class="play-description">Preston Stone pass complete to Hayden Eligon II for 4 yds to the NU 40</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">7</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">89.7%</td>
+                                <td class="change positive">+0.5%</td>
+                                <td class="down-dist">2 & 6</td>
+                                <td class="yard-line">NU 40</td>
+                                <td class="play-description">Preston Stone pass incomplete to Drew Wagner</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">8</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">90.7%</td>
+                                <td class="change positive">+0.9%</td>
+                                <td class="down-dist">3 & 6</td>
+                                <td class="yard-line">NU 40</td>
+                                <td class="play-description">Preston Stone pass incomplete to Drew Wagner</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">9</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">89.5%</td>
+                                <td class="change negative">-1.2%</td>
+                                <td class="down-dist">3 & 5</td>
+                                <td class="yard-line">PSU 34</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for 20 yds to the NU 46 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">10</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:31 (Drive Change)</td>
+                                <td class="win-prob high">92.0%</td>
+                                <td class="change positive">+2.4%</td>
+                                <td class="down-dist">4 & 6</td>
+                                <td class="yard-line">NU 40</td>
+                                <td class="play-description">punt for no gain</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">11</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:31</td>
+                                <td class="win-prob high">91.7%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 31</td>
+                                <td class="play-description">Kaytron Allen run for 3 yds to the NU 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">12</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:31</td>
+                                <td class="win-prob high">92.7%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">NU 28</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for 6 yds to the NU 22</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">13</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:31</td>
+                                <td class="win-prob high">92.7%</td>
+                                <td class="change negative">-0.0%</td>
+                                <td class="down-dist">3 & 1</td>
+                                <td class="yard-line">NU 22</td>
+                                <td class="play-description">Kaytron Allen run for 4 yds to the NU 18 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">14</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">12:31</td>
+                                <td class="win-prob high">93.3%</td>
+                                <td class="change positive">+0.7%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 18</td>
+                                <td class="play-description">Kaytron Allen run for 8 yds to the NU 10</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">15</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14 (Drive Change)</td>
+                                <td class="win-prob high">87.4%</td>
+                                <td class="change negative">-6.0%</td>
+                                <td class="down-dist">2 & 2</td>
+                                <td class="yard-line">NU 10</td>
+                                <td class="play-description">Ore Adeyi return for no gain to the NU 33</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">16</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">88.1%</td>
+                                <td class="change positive">+0.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 33</td>
+                                <td class="play-description">Joseph Himon II run for 1 yd to the NU 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">17</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">86.9%</td>
+                                <td class="change negative">-1.3%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">NU 34</td>
+                                <td class="play-description">Joseph Himon II run for 8 yds to the NU 42</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">18</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">86.5%</td>
+                                <td class="change negative">-0.4%</td>
+                                <td class="down-dist">3 & 1</td>
+                                <td class="yard-line">NU 42</td>
+                                <td class="play-description">Joseph Himon II run for 6 yds to the NU 48 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">19</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">85.5%</td>
+                                <td class="change negative">-0.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 48</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 13 yds to the PSU 39 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">20</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">84.7%</td>
+                                <td class="change negative">-0.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 39</td>
+                                <td class="play-description">Preston Stone pass complete to Alex Lines for 7 yds to the PSU 32</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">21</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">84.0%</td>
+                                <td class="change negative">-0.7%</td>
+                                <td class="down-dist">2 & 3</td>
+                                <td class="yard-line">PSU 32</td>
+                                <td class="play-description">Preston Stone pass complete to Joseph Himon II for 10 yds to the PSU 22 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">22</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">85.1%</td>
+                                <td class="change positive">+1.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 22</td>
+                                <td class="play-description">Joseph Himon II run for 1 yd to the PSU 21</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">23</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">82.3%</td>
+                                <td class="change negative">-2.8%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">PSU 21</td>
+                                <td class="play-description">Joseph Himon II run for 3 yds to the PSU 18 for a 1ST down Penn State Penalty, face mask (9 yards) (Alonzo Ford Jr.) to the PSU 9 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">24</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">10:14</td>
+                                <td class="win-prob high">85.2%</td>
+                                <td class="change positive">+2.8%</td>
+                                <td class="down-dist">1 & 9</td>
+                                <td class="yard-line">PSU 9</td>
+                                <td class="play-description">Preston Stone sacked by Zane Durant for a loss of 4 yards to the PSU 13</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">25</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">4:22 (Drive Change)</td>
+                                <td class="win-prob high">82.9%</td>
+                                <td class="change negative">-2.3%</td>
+                                <td class="down-dist">2 & 13</td>
+                                <td class="yard-line">PSU 13</td>
+                                <td class="play-description">Dashun Reeder run for no gain to the PSU 13</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">26</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">4:22</td>
+                                <td class="win-prob high">83.4%</td>
+                                <td class="change positive">+0.5%</td>
+                                <td class="down-dist">3 & 13</td>
+                                <td class="yard-line">PSU 13</td>
+                                <td class="play-description">Caleb Komolafe run for 4 yds to the PSU 9</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">27</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:51 (Drive Change)</td>
+                                <td class="win-prob high">81.8%</td>
+                                <td class="change negative">-1.6%</td>
+                                <td class="down-dist">4 & 9</td>
+                                <td class="yard-line">PSU 9</td>
+                                <td class="play-description">Jack Olsen 27 yd FG GOOD</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">28</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:51</td>
+                                <td class="win-prob high">81.2%</td>
+                                <td class="change negative">-0.5%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Luke Akers kickoff for 65 yds for a touchback Penn State Penalty, unsportsmanlike conduct (Andrew Rappleyea)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">29</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:51</td>
+                                <td class="win-prob high">81.4%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 13</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for 6 yds to the PSU 19</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">30</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:51</td>
+                                <td class="win-prob high">82.5%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">PSU 19</td>
+                                <td class="play-description">Kaytron Allen run for 10 yds to the PSU 29 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">31</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:51 (Drive Change)</td>
+                                <td class="win-prob high">82.1%</td>
+                                <td class="change negative">-0.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 29</td>
+                                <td class="play-description">Kaytron Allen run for 4 yds to the PSU 33</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">32</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">2:51</td>
+                                <td class="win-prob high">81.5%</td>
+                                <td class="change negative">-0.6%</td>
+                                <td class="down-dist">2 & 6</td>
+                                <td class="yard-line">PSU 33</td>
+                                <td class="play-description">Drew Allar pass complete to Trebor Pena for 1 yd to the PSU 34</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">33</td>
+                                <td class="quarter">Q1</td>
+                                <td class="time">0:00 (Drive Change)</td>
+                                <td class="win-prob high">79.8%</td>
+                                <td class="change negative">-1.8%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 1st Quarter</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">34</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">15:00 (Drive Change)</td>
+                                <td class="win-prob high">82.9%</td>
+                                <td class="change positive">+3.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 46</td>
+                                <td class="play-description">Kaytron Allen run for 5 yds to the NU 41</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">35</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">82.8%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">NU 41</td>
+                                <td class="play-description">Liam Clifford run for 2 yds to the NU 39</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">36</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">83.8%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">NU 39</td>
+                                <td class="play-description">Drew Allar pass complete to Trebor Pena for 4 yds to the NU 35 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">37</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">84.0%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 35</td>
+                                <td class="play-description">Kaytron Allen run for 5 yds to the NU 30</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">38</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">85.3%</td>
+                                <td class="change positive">+1.3%</td>
+                                <td class="down-dist">2 & 5</td>
+                                <td class="yard-line">NU 30</td>
+                                <td class="play-description">Drew Allar run for 10 yds to the NU 20 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">39</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">87.4%</td>
+                                <td class="change positive">+2.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 20</td>
+                                <td class="play-description">Kaytron Allen run for 9 yds to the NU 11</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">40</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:40 (Drive Change)</td>
+                                <td class="win-prob high">87.4%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">NU 11</td>
+                                <td class="play-description">Kaytron Allen run for 11 yds for a TD (Ryan Barker KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">41</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:40 (Drive Change)</td>
+                                <td class="win-prob high">87.4%</td>
+                                <td class="change positive">+0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gabriel Nwosu kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">42</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:40</td>
+                                <td class="win-prob high">87.2%</td>
+                                <td class="change negative">-0.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 25</td>
+                                <td class="play-description">Caleb Komolafe run for 6 yds to the NU 31</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">43</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:40 (Drive Change)</td>
+                                <td class="win-prob high">86.7%</td>
+                                <td class="change negative">-0.5%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">NU 31</td>
+                                <td class="play-description">Caleb Komolafe run for 6 yds to the NU 37 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">44</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">11:40</td>
+                                <td class="win-prob high">87.1%</td>
+                                <td class="change positive">+0.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 37</td>
+                                <td class="play-description">Preston Stone run for 3 yds to the NU 40</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">45</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">9:47 (Drive Change)</td>
+                                <td class="win-prob high">84.3%</td>
+                                <td class="change negative">-2.8%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">NU 40</td>
+                                <td class="play-description">Preston Stone pass complete to Hayden Eligon II for 3 yds to the PSU 43 for a 1ST down Penn State Penalty, personal foul (Dejuan Lane) to the PSU 42 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">46</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">9:47</td>
+                                <td class="win-prob high">85.4%</td>
+                                <td class="change positive">+1.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 42</td>
+                                <td class="play-description">Joseph Himon II run for 1 yd to the PSU 41</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">47</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">9:47</td>
+                                <td class="win-prob high">85.8%</td>
+                                <td class="change positive">+0.4%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">PSU 41</td>
+                                <td class="play-description">Joseph Himon II run for 2 yds to the PSU 39</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">48</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">9:47 (Drive Change)</td>
+                                <td class="win-prob high">83.0%</td>
+                                <td class="change negative">-2.7%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">PSU 39</td>
+                                <td class="play-description">Preston Stone pass complete to Joseph Himon II for 10 yds to the PSU 29 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">49</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">7:14 (Drive Change)</td>
+                                <td class="win-prob high">75.2%</td>
+                                <td class="change negative">-7.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 29</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 29 yds for a TD (Jack Olsen KICK) (Jack Olsen KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">50</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">7:08 (Drive Change)</td>
+                                <td class="win-prob high">76.1%</td>
+                                <td class="change positive">+0.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Luke Akers kickoff for 61 yds , Corey Smith return for 34 yds to the PSU 38</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">51</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">7:08 (Drive Change)</td>
+                                <td class="win-prob high">73.8%</td>
+                                <td class="change negative">-2.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 38</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for a loss of 2 yards to the PSU 36</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">52</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">7:08</td>
+                                <td class="win-prob high">74.3%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">2 & 12</td>
+                                <td class="yard-line">PSU 36</td>
+                                <td class="play-description">Nicholas Singleton run for 5 yds to the PSU 41</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">53</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">7:08</td>
+                                <td class="win-prob high">72.1%</td>
+                                <td class="change negative">-2.2%</td>
+                                <td class="down-dist">3 & 7</td>
+                                <td class="yard-line">PSU 41</td>
+                                <td class="play-description">Drew Allar pass incomplete to Kyron Hudson, broken up by Josh Fussell</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">54</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39 (Drive Change)</td>
+                                <td class="win-prob high">79.4%</td>
+                                <td class="change positive">+7.3%</td>
+                                <td class="down-dist">4 & 7</td>
+                                <td class="yard-line">PSU 41</td>
+                                <td class="play-description">Gabriel Nwosu punt for 35 yds , Drew Wagner returns for 2 yds to the NU 26, fumbles, recovered by Penn State at the NU 26</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">55</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39 (Drive Change)</td>
+                                <td class="win-prob high">79.7%</td>
+                                <td class="change positive">+0.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 26</td>
+                                <td class="play-description">Drew Allar run for 4 yds to the NU 22</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">56</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39 (Drive Change)</td>
+                                <td class="win-prob high">81.3%</td>
+                                <td class="change positive">+1.6%</td>
+                                <td class="down-dist">2 & 6</td>
+                                <td class="yard-line">NU 22</td>
+                                <td class="play-description">Nicholas Singleton run for 7 yds to the NU 15 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">57</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39</td>
+                                <td class="win-prob high">80.0%</td>
+                                <td class="change negative">-1.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 15</td>
+                                <td class="play-description">Nicholas Singleton run for 1 yd to the NU 14</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">58</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39</td>
+                                <td class="win-prob high">80.2%</td>
+                                <td class="change positive">+0.2%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">NU 14</td>
+                                <td class="play-description">Nicholas Singleton run for 3 yds to the NU 11</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">59</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39</td>
+                                <td class="win-prob high">83.6%</td>
+                                <td class="change positive">+3.4%</td>
+                                <td class="down-dist">3 & 6</td>
+                                <td class="yard-line">NU 11</td>
+                                <td class="play-description">Drew Allar run for 7 yds to the NU 4 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">60</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39</td>
+                                <td class="win-prob high">82.5%</td>
+                                <td class="change negative">-1.1%</td>
+                                <td class="down-dist">1 & 4</td>
+                                <td class="yard-line">NU 4</td>
+                                <td class="play-description">Drew Allar pass incomplete to Nicholas Singleton</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">61</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">5:39</td>
+                                <td class="win-prob high">82.1%</td>
+                                <td class="change negative">-0.4%</td>
+                                <td class="down-dist">2 & 4</td>
+                                <td class="yard-line">NU 4</td>
+                                <td class="play-description">Nicholas Singleton run for 2 yds to the NU 2</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">62</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">2:00 (Drive Change)</td>
+                                <td class="win-prob high">75.8%</td>
+                                <td class="change negative">-6.3%</td>
+                                <td class="down-dist">3 & 2</td>
+                                <td class="yard-line">NU 2</td>
+                                <td class="play-description">Nicholas Singleton run for no gain to the NU 2</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">63</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:19 (Drive Change)</td>
+                                <td class="win-prob high">84.3%</td>
+                                <td class="change positive">+8.5%</td>
+                                <td class="down-dist">4 & 2</td>
+                                <td class="yard-line">NU 2</td>
+                                <td class="play-description">Nicholas Singleton run for 2 yds for a TD (Ryan Barker KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">64</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:19 (Drive Change)</td>
+                                <td class="win-prob high">84.2%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gabriel Nwosu kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">65</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:19</td>
+                                <td class="win-prob high">84.5%</td>
+                                <td class="change positive">+0.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 25</td>
+                                <td class="play-description">Caleb Komolafe run for 2 yds to the NU 27</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">66</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15 (Drive Change)</td>
+                                <td class="win-prob high">82.7%</td>
+                                <td class="change negative">-1.9%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">NU 27</td>
+                                <td class="play-description">Caleb Komolafe run for no gain to the NU 27 for a 1ST down Penn State Penalty, face mask (15 yards) (Zuriah Fisher) to the NU 42 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">67</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">80.4%</td>
+                                <td class="change negative">-2.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 42</td>
+                                <td class="play-description">Preston Stone pass complete to Caleb Komolafe for 9 yds to the PSU 49</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">68</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">81.6%</td>
+                                <td class="change positive">+1.1%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">PSU 49</td>
+                                <td class="play-description">Caleb Komolafe run for 1 yd to the PSU 48 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">69</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">82.6%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 48</td>
+                                <td class="play-description">Preston Stone pass incomplete</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">70</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15 (Drive Change)</td>
+                                <td class="win-prob high">79.3%</td>
+                                <td class="change negative">-3.3%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">PSU 48</td>
+                                <td class="play-description">Preston Stone pass complete to Joseph Himon II for 16 yds to the PSU 32 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">71</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">80.5%</td>
+                                <td class="change positive">+1.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 32</td>
+                                <td class="play-description">Preston Stone pass incomplete to Hunter Welcing</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">72</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">76.4%</td>
+                                <td class="change negative">-4.1%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">PSU 32</td>
+                                <td class="play-description">Preston Stone pass incomplete to Drew Wagner for a 1ST down Penn State Penalty, roughing passer (Zuriah Fisher) to the PSU 17 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">73</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">78.1%</td>
+                                <td class="change positive">+1.7%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 17</td>
+                                <td class="play-description">Preston Stone pass incomplete to Hunter Welcing</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">74</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">79.1%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">PSU 17</td>
+                                <td class="play-description">Preston Stone pass incomplete to Hayden Eligon II, broken up by Elliot Washington II</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">75</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">1:15</td>
+                                <td class="win-prob high">80.5%</td>
+                                <td class="change positive">+1.3%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">PSU 17</td>
+                                <td class="play-description">Preston Stone run for 1 yd to the PSU 16</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">76</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:03 (Drive Change)</td>
+                                <td class="win-prob high">78.4%</td>
+                                <td class="change negative">-2.1%</td>
+                                <td class="down-dist">4 & 9</td>
+                                <td class="yard-line">PSU 16</td>
+                                <td class="play-description">J. Olsen 34 yd FG GOOD</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">77</td>
+                                <td class="quarter">Q2</td>
+                                <td class="time">0:00 (Drive Change)</td>
+                                <td class="win-prob high">77.8%</td>
+                                <td class="change negative">-0.6%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 2nd Quarter</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">78</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00 (Drive Change)</td>
+                                <td class="win-prob high">79.8%</td>
+                                <td class="change positive">+2.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Luke Akers kickoff for 65 yds for a touchback Northwestern Penalty, illegal formation (Garner Wallace)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">79</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">79.0%</td>
+                                <td class="change negative">-0.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 30</td>
+                                <td class="play-description">Kaytron Allen run for 3 yds to the PSU 33</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">80</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">78.6%</td>
+                                <td class="change negative">-0.4%</td>
+                                <td class="down-dist">2 & 7</td>
+                                <td class="yard-line">PSU 33</td>
+                                <td class="play-description">Kaytron Allen run for 2 yds to the PSU 35</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">81</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">81.2%</td>
+                                <td class="change positive">+2.5%</td>
+                                <td class="down-dist">3 & 5</td>
+                                <td class="yard-line">PSU 35</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for 7 yds to the PSU 42 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">82</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">79.4%</td>
+                                <td class="change negative">-1.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 42</td>
+                                <td class="play-description">Drew Allar pass incomplete to Kyron Hudson</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">83</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob high">78.9%</td>
+                                <td class="change negative">-0.5%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">PSU 42</td>
+                                <td class="play-description">Kaytron Allen run for 2 yds to the PSU 44</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">84</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00 (Drive Change)</td>
+                                <td class="win-prob high">76.9%</td>
+                                <td class="change negative">-2.0%</td>
+                                <td class="down-dist">3 & 8</td>
+                                <td class="yard-line">PSU 44</td>
+                                <td class="play-description">Drew Allar pass incomplete to Trebor Pena</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">85</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob medium">66.9%</td>
+                                <td class="change negative">-9.9%</td>
+                                <td class="down-dist">1 & 9</td>
+                                <td class="yard-line">PSU 9</td>
+                                <td class="play-description">Caleb Komolafe run for 1 yd to the PSU 8</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">86</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:15 (Drive Change)</td>
+                                <td class="win-prob high">77.6%</td>
+                                <td class="change positive">+10.6%</td>
+                                <td class="down-dist">4 & 8</td>
+                                <td class="yard-line">PSU 44</td>
+                                <td class="play-description">Gabriel Nwosu punt for 54 yds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">87</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:15</td>
+                                <td class="win-prob high">78.3%</td>
+                                <td class="change positive">+0.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 2</td>
+                                <td class="play-description">Caleb Komolafe run for 4 yds to the NU 6</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">88</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:15</td>
+                                <td class="win-prob high">76.2%</td>
+                                <td class="change negative">-2.2%</td>
+                                <td class="down-dist">2 & 6</td>
+                                <td class="yard-line">NU 6</td>
+                                <td class="play-description">Caleb Komolafe run for 8 yds to the NU 14 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">89</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:15</td>
+                                <td class="win-prob high">78.2%</td>
+                                <td class="change positive">+2.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 14</td>
+                                <td class="play-description">Caleb Komolafe run for no gain to the NU 14</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">90</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:15</td>
+                                <td class="win-prob high">76.2%</td>
+                                <td class="change negative">-2.0%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">NU 14</td>
+                                <td class="play-description">Preston Stone run for 7 yds to the NU 21</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">91</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">12:15</td>
+                                <td class="win-prob high">79.5%</td>
+                                <td class="change positive">+3.2%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">NU 21</td>
+                                <td class="play-description">Preston Stone pass incomplete to Hunter Welcing</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">92</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13 (Drive Change)</td>
+                                <td class="win-prob high">76.9%</td>
+                                <td class="change negative">-2.6%</td>
+                                <td class="down-dist">4 & 3</td>
+                                <td class="yard-line">NU 21</td>
+                                <td class="play-description">Luke Akers punt for 49 yds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">93</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13</td>
+                                <td class="win-prob high">78.1%</td>
+                                <td class="change positive">+1.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 30</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for 11 yds to the PSU 41 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">94</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13 (Drive Change)</td>
+                                <td class="win-prob high">76.8%</td>
+                                <td class="change negative">-1.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 41</td>
+                                <td class="play-description">Kaytron Allen run for 2 yds to the PSU 43</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">95</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13</td>
+                                <td class="win-prob high">79.6%</td>
+                                <td class="change positive">+2.9%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">PSU 43</td>
+                                <td class="play-description">Drew Allar pass complete to Kyron Hudson for 10 yds to the NU 47 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">96</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13</td>
+                                <td class="win-prob high">77.5%</td>
+                                <td class="change negative">-2.2%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 47</td>
+                                <td class="play-description">Drew Allar pass incomplete to Kaytron Allen</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">97</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13</td>
+                                <td class="win-prob high">76.1%</td>
+                                <td class="change negative">-1.3%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">NU 47</td>
+                                <td class="play-description">Drew Allar pass incomplete to Luke Reynolds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">98</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">9:13</td>
+                                <td class="win-prob high">74.1%</td>
+                                <td class="change negative">-2.1%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">NU 47</td>
+                                <td class="play-description">Drew Allar run for 2 yds to the NU 45</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">99</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19 (Drive Change)</td>
+                                <td class="win-prob high">73.0%</td>
+                                <td class="change negative">-1.1%</td>
+                                <td class="down-dist">4 & 8</td>
+                                <td class="yard-line">NU 45</td>
+                                <td class="play-description">Gabriel Nwosu punt for 35 yds</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">100</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob high">75.1%</td>
+                                <td class="change positive">+2.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 10</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 1 yd to the NU 11</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">101</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob high">76.1%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">NU 11</td>
+                                <td class="play-description">Caleb Komolafe run for 1 yd to the NU 12</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">102</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob high">70.2%</td>
+                                <td class="change negative">-5.9%</td>
+                                <td class="down-dist">3 & 8</td>
+                                <td class="yard-line">NU 12</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 12 yds to the NU 24 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">103</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob medium">68.6%</td>
+                                <td class="change negative">-1.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 24</td>
+                                <td class="play-description">Preston Stone pass complete to Drew Wagner for 8 yds to the NU 32</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">104</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob medium">68.3%</td>
+                                <td class="change negative">-0.3%</td>
+                                <td class="down-dist">2 & 2</td>
+                                <td class="yard-line">NU 32</td>
+                                <td class="play-description">Joseph Himon II run for 5 yds to the NU 37 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">105</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob high">71.3%</td>
+                                <td class="change positive">+3.0%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 37</td>
+                                <td class="play-description">Preston Stone pass complete to Drew Wagner for no gain to the NU 37</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">106</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob medium">68.9%</td>
+                                <td class="change negative">-2.4%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">NU 37</td>
+                                <td class="play-description">Joseph Himon II run for 7 yds to the NU 44</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">107</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob high">74.3%</td>
+                                <td class="change positive">+5.4%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">NU 44</td>
+                                <td class="play-description">Joseph Himon II run for no gain to the NU 44</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">108</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">6:19</td>
+                                <td class="win-prob high">74.8%</td>
+                                <td class="change positive">+0.5%</td>
+                                <td class="down-dist">4 & 3</td>
+                                <td class="yard-line">NU 44</td>
+                                <td class="play-description">Northwestern Penalty, delay of game (Luke Akers) to the NU 39</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">109</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">0:30 (Drive Change)</td>
+                                <td class="win-prob medium">47.9%</td>
+                                <td class="change negative">-26.9%</td>
+                                <td class="down-dist">4 & 8</td>
+                                <td class="yard-line">NU 39</td>
+                                <td class="play-description">Luke Akers punt for 49 yds , Devonte Ross returns for no gain to the PSU 9</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">110</td>
+                                <td class="quarter">Q3</td>
+                                <td class="time">0:00 (Drive Change)</td>
+                                <td class="win-prob medium">47.2%</td>
+                                <td class="change negative">-0.7%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 3rd Quarter</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">111</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">15:00 (Drive Change)</td>
+                                <td class="win-prob medium">54.0%</td>
+                                <td class="change positive">+6.7%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">PSU 8</td>
+                                <td class="play-description">Preston Stone pass incomplete to Hayden Eligon II</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">112</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">15:00</td>
+                                <td class="win-prob medium">63.0%</td>
+                                <td class="change positive">+9.0%</td>
+                                <td class="down-dist">3 & 8</td>
+                                <td class="yard-line">PSU 8</td>
+                                <td class="play-description">Preston Stone sacked by Zuriah Fisher for a loss of 15 yards to the PSU 23</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">113</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:08 (Drive Change)</td>
+                                <td class="win-prob medium">56.8%</td>
+                                <td class="change negative">-6.2%</td>
+                                <td class="down-dist">4 & 23</td>
+                                <td class="yard-line">PSU 23</td>
+                                <td class="play-description">Jack Olsen 41 yd FG GOOD</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">114</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:04 (Drive Change)</td>
+                                <td class="win-prob medium">52.4%</td>
+                                <td class="change negative">-4.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Luke Akers kickoff for 65 yds , Tyler Holzworth return for 9 yds to the PSU 9</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">115</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:04 (Drive Change)</td>
+                                <td class="win-prob medium">49.1%</td>
+                                <td class="change negative">-3.3%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 9</td>
+                                <td class="play-description">Drew Allar pass complete to Kaytron Allen for 1 yd to the PSU 10</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">116</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:04</td>
+                                <td class="win-prob medium">50.1%</td>
+                                <td class="change positive">+1.0%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">PSU 10</td>
+                                <td class="play-description">Kaytron Allen run for 4 yds to the PSU 14</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">117</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:04</td>
+                                <td class="win-prob high">70.6%</td>
+                                <td class="change positive">+20.5%</td>
+                                <td class="down-dist">3 & 5</td>
+                                <td class="yard-line">PSU 14</td>
+                                <td class="play-description">Drew Allar pass complete to Devonte Ross for 67 yds to the NU 19 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">118</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:04</td>
+                                <td class="win-prob high">78.0%</td>
+                                <td class="change positive">+7.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 19</td>
+                                <td class="play-description">Kaytron Allen run for 18 yds to the NU 1 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">119</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">14:04</td>
+                                <td class="win-prob high">76.2%</td>
+                                <td class="change negative">-1.8%</td>
+                                <td class="down-dist">1 & 1</td>
+                                <td class="yard-line">NU 1</td>
+                                <td class="play-description">Kaytron Allen run for no gain to the NU 1</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">120</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:50 (Drive Change)</td>
+                                <td class="win-prob high">79.2%</td>
+                                <td class="change positive">+3.1%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">NU 1</td>
+                                <td class="play-description">Drew Allar run for 1 yd for a TD (Ryan Barker KICK)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">121</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45 (Drive Change)</td>
+                                <td class="win-prob high">79.2%</td>
+                                <td class="change negative">-0.1%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Gabriel Nwosu kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">122</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob high">82.1%</td>
+                                <td class="change positive">+2.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 25</td>
+                                <td class="play-description">Preston Stone pass incomplete to Griffin Wilde, broken up by Dominic DeLuca</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">123</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob high">82.7%</td>
+                                <td class="change positive">+0.6%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">NU 25</td>
+                                <td class="play-description">Preston Stone pass complete to Joseph Himon II for 2 yds to the NU 27</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">124</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob high">75.4%</td>
+                                <td class="change negative">-7.4%</td>
+                                <td class="down-dist">3 & 8</td>
+                                <td class="yard-line">NU 27</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 16 yds to the NU 43 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">125</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob high">71.9%</td>
+                                <td class="change negative">-3.5%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">NU 43</td>
+                                <td class="play-description">Joseph Himon II run for 9 yds to the PSU 48</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">126</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob high">72.4%</td>
+                                <td class="change positive">+0.5%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">PSU 48</td>
+                                <td class="play-description">Joseph Himon II run for 5 yds to the PSU 43 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">127</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob medium">69.7%</td>
+                                <td class="change negative">-2.7%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 43</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 12 yds to the PSU 31 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">128</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob high">73.3%</td>
+                                <td class="change positive">+3.6%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 31</td>
+                                <td class="play-description">Dashun Reeder run for no gain to the PSU 31</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">129</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45 (Drive Change)</td>
+                                <td class="win-prob medium">66.1%</td>
+                                <td class="change negative">-7.2%</td>
+                                <td class="down-dist">2 & 10</td>
+                                <td class="yard-line">PSU 31</td>
+                                <td class="play-description">Preston Stone pass complete to Griffin Wilde for 11 yds to the PSU 20 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">130</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob medium">56.4%</td>
+                                <td class="change negative">-9.7%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 20</td>
+                                <td class="play-description">Caleb Komolafe run for 9 yds to the PSU 11</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">131</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">10:45</td>
+                                <td class="win-prob medium">60.7%</td>
+                                <td class="change positive">+4.4%</td>
+                                <td class="down-dist">2 & 1</td>
+                                <td class="yard-line">PSU 11</td>
+                                <td class="play-description">Caleb Komolafe run for 2 yds to the PSU 9 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">132</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:51 (Drive Change)</td>
+                                <td class="win-prob medium">44.6%</td>
+                                <td class="change negative">-16.1%</td>
+                                <td class="down-dist">1 & 9</td>
+                                <td class="yard-line">PSU 9</td>
+                                <td class="play-description">Caleb Komolafe 9 Yd Run (Two-Point Run Conversion Failed)</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">133</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:51</td>
+                                <td class="win-prob medium">30.8%</td>
+                                <td class="change negative">-13.8%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 3</td>
+                                <td class="play-description">Caleb Komolafe run for no gain to the NU 35</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">134</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:51</td>
+                                <td class="win-prob medium">44.7%</td>
+                                <td class="change positive">+13.9%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">Luke Akers kickoff for 65 yds for a touchback</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">135</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:51</td>
+                                <td class="win-prob medium">35.3%</td>
+                                <td class="change negative">-9.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 25</td>
+                                <td class="play-description">Drew Allar pass complete to Nicholas Singleton for a loss of 3 yards to the PSU 22</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">136</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:51</td>
+                                <td class="win-prob medium">42.8%</td>
+                                <td class="change positive">+7.5%</td>
+                                <td class="down-dist">2 & 13</td>
+                                <td class="yard-line">PSU 22</td>
+                                <td class="play-description">Drew Allar pass complete to Nicholas Singleton for 9 yds to the PSU 31</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">137</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">4:51 (Drive Change)</td>
+                                <td class="win-prob medium">32.5%</td>
+                                <td class="change negative">-10.2%</td>
+                                <td class="down-dist">3 & 4</td>
+                                <td class="yard-line">PSU 31</td>
+                                <td class="play-description">Drew Allar run for 1 yd to the PSU 32</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">138</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">3:00 (Drive Change)</td>
+                                <td class="win-prob low">16.5%</td>
+                                <td class="change negative">-16.0%</td>
+                                <td class="down-dist">4 & 3</td>
+                                <td class="yard-line">PSU 32</td>
+                                <td class="play-description">Ethan Grunkemeyer run for no gain to the PSU 32</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">139</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">3:00</td>
+                                <td class="win-prob low">18.0%</td>
+                                <td class="change positive">+1.5%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 32</td>
+                                <td class="play-description">Caleb Komolafe run for 4 yds to the PSU 28</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">140</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">3:00</td>
+                                <td class="win-prob low">16.7%</td>
+                                <td class="change negative">-1.3%</td>
+                                <td class="down-dist">2 & 6</td>
+                                <td class="yard-line">PSU 28</td>
+                                <td class="play-description">Caleb Komolafe run for 3 yds to the PSU 25</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">141</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">2:00 (Drive Change)</td>
+                                <td class="win-prob low">7.2%</td>
+                                <td class="change negative">-9.5%</td>
+                                <td class="down-dist">3 & 3</td>
+                                <td class="yard-line">PSU 25</td>
+                                <td class="play-description">Caleb Komolafe run for 5 yds to the PSU 20 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">142</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">2:00</td>
+                                <td class="win-prob low">10.6%</td>
+                                <td class="change positive">+3.4%</td>
+                                <td class="down-dist">1 & 10</td>
+                                <td class="yard-line">PSU 20</td>
+                                <td class="play-description">Caleb Komolafe run for 1 yd to the PSU 19</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">143</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">1:19 (Drive Change)</td>
+                                <td class="win-prob low">1.5%</td>
+                                <td class="change negative">-9.1%</td>
+                                <td class="down-dist">2 & 9</td>
+                                <td class="yard-line">PSU 19</td>
+                                <td class="play-description">Joseph Himon II run for 17 yds to the PSU 2 for a 1ST down</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">144</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">1:13 (Drive Change)</td>
+                                <td class="win-prob low">3.4%</td>
+                                <td class="change positive">+2.0%</td>
+                                <td class="down-dist">1 & 2</td>
+                                <td class="yard-line">PSU 2</td>
+                                <td class="play-description">Preston Stone run for a loss of 6 yards to the PSU 8</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">145</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">1:10 (Drive Change)</td>
+                                <td class="win-prob low">4.9%</td>
+                                <td class="change positive">+1.5%</td>
+                                <td class="down-dist">2 & 8</td>
+                                <td class="yard-line">PSU 8</td>
+                                <td class="play-description">Preston Stone run for a loss of 2 yards to the PSU 10</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">146</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">1:10</td>
+                                <td class="win-prob low">8.0%</td>
+                                <td class="change positive">+3.1%</td>
+                                <td class="down-dist">3 & 10</td>
+                                <td class="yard-line">PSU 10</td>
+                                <td class="play-description">Preston Stone run for a loss of 2 yards to the PSU 10</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="play-number">147</td>
+                                <td class="quarter">Q4</td>
+                                <td class="time">0:00 (Drive Change)</td>
+                                <td class="win-prob low">0.0%</td>
+                                <td class="change negative">-8.0%</td>
+                                <td class="down-dist"></td>
+                                <td class="yard-line"></td>
+                                <td class="play-description">End of 4th Quarter</td>
+                            </tr>
+        
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+    <div class="win-probability-chart">
+        <h3>Win Probability Chart</h3>
+        <div class="chart-container" style="position: relative; width: 100%; height: 400px;">
+            <!-- Quarter background shading -->
+            <div class="quarter-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+                <div class="quarter-section" style="position: absolute; top: 0; left: 0%; width: 22.4%; height: 100%; background-color: rgba(240, 248, 255, 0.3); border-right: 2px solid rgba(0, 0, 0, 0.1);">
+                    <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q1</div>
+                </div>
+                <div class="quarter-section" style="position: absolute; top: 0; left: 22.4%; width: 30.0%; height: 100%; background-color: rgba(255, 248, 240, 0.3); border-right: 2px solid rgba(0, 0, 0, 0.1);">
+                    <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q2</div>
+                </div>
+                <div class="quarter-section" style="position: absolute; top: 0; left: 52.4%; width: 22.4%; height: 100%; background-color: rgba(240, 255, 240, 0.3); border-right: 2px solid rgba(0, 0, 0, 0.1);">
+                    <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q3</div>
+                </div>
+                <div class="quarter-section" style="position: absolute; top: 0; left: 74.8%; width: 25.2%; height: 100%; background-color: rgba(255, 240, 255, 0.3);">
+                    <div style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Q4</div>
+                </div>
+            </div>
+            <canvas id="winProbabilityChart" width="800" height="400" style="position: relative; z-index: 2;"></canvas>
+        </div>
+        <div class="chart-legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgb(75, 192, 192);"></div>
+                <span>Penn State Win %</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgb(255, 99, 132);"></div>
+                <span>Northwestern Win %</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('winProbabilityChart').getContext('2d');
+        
+        const winProbabilityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Play 1", "Play 2", "Play 3", "Play 4", "Play 5", "Play 6", "Play 7", "Play 8", "Play 9", "Play 10", "Play 11", "Play 12", "Play 13", "Play 14", "Play 15", "Play 16", "Play 17", "Play 18", "Play 19", "Play 20", "Play 21", "Play 22", "Play 23", "Play 24", "Play 25", "Play 26", "Play 27", "Play 28", "Play 29", "Play 30", "Play 31", "Play 32", "Play 33", "Play 34", "Play 35", "Play 36", "Play 37", "Play 38", "Play 39", "Play 40", "Play 41", "Play 42", "Play 43", "Play 44", "Play 45", "Play 46", "Play 47", "Play 48", "Play 49", "Play 50", "Play 51", "Play 52", "Play 53", "Play 54", "Play 55", "Play 56", "Play 57", "Play 58", "Play 59", "Play 60", "Play 61", "Play 62", "Play 63", "Play 64", "Play 65", "Play 66", "Play 67", "Play 68", "Play 69", "Play 70", "Play 71", "Play 72", "Play 73", "Play 74", "Play 75", "Play 76", "Play 77", "Play 78", "Play 79", "Play 80", "Play 81", "Play 82", "Play 83", "Play 84", "Play 85", "Play 86", "Play 87", "Play 88", "Play 89", "Play 90", "Play 91", "Play 92", "Play 93", "Play 94", "Play 95", "Play 96", "Play 97", "Play 98", "Play 99", "Play 100", "Play 101", "Play 102", "Play 103", "Play 104", "Play 105", "Play 106", "Play 107", "Play 108", "Play 109", "Play 110", "Play 111", "Play 112", "Play 113", "Play 114", "Play 115", "Play 116", "Play 117", "Play 118", "Play 119", "Play 120", "Play 121", "Play 122", "Play 123", "Play 124", "Play 125", "Play 126", "Play 127", "Play 128", "Play 129", "Play 130", "Play 131", "Play 132", "Play 133", "Play 134", "Play 135", "Play 136", "Play 137", "Play 138", "Play 139", "Play 140", "Play 141", "Play 142", "Play 143", "Play 144", "Play 145", "Play 146", "Play 147"],
+                datasets: [{
+                    label: 'Penn State Win %',
+                    data: [90.16999999999999, 89.58, 90.21000000000001, 89.9, 89.09, 89.25, 89.74, 90.68, 89.53, 91.95, 91.7, 92.66, 92.65, 93.33, 87.36, 88.13, 86.86, 86.47, 85.54, 84.73, 84.02, 85.09, 82.34, 85.19, 82.89, 83.39999999999999, 81.77, 81.24, 81.42, 82.46, 82.1, 81.52000000000001, 79.75999999999999, 82.86, 82.75, 83.77, 84.05, 85.34, 87.42999999999999, 87.35000000000001, 87.42999999999999, 87.2, 86.69, 87.12, 84.34, 85.42999999999999, 85.78, 83.04, 75.21, 76.08, 73.75, 74.31, 72.11999999999999, 79.4, 79.67999999999999, 81.27, 79.95, 80.17999999999999, 83.58, 82.5, 82.12, 75.78, 84.28, 84.17999999999999, 84.54, 82.67999999999999, 80.44, 81.56, 82.6, 79.29, 80.54, 76.42, 78.09, 79.12, 80.46, 78.38000000000001, 77.81, 79.84, 79.02, 78.61, 81.15, 79.36999999999999, 78.88, 76.86, 66.93, 77.58, 78.33, 76.16000000000001, 78.22, 76.2, 79.45, 76.89, 78.11, 76.75, 79.61, 77.46, 76.14, 74.06, 72.96000000000001, 75.1, 76.1, 70.23, 68.58999999999999, 68.32000000000001, 71.34, 68.92, 74.31, 74.81, 47.910000000000004, 47.23, 53.959999999999994, 62.99, 56.76, 52.44, 49.1, 50.129999999999995, 70.6, 78.01, 76.17, 79.23, 79.17999999999999, 82.12, 82.72, 75.36, 71.87, 72.39, 69.67999999999999, 73.29, 66.09, 56.36, 60.72, 44.62, 30.78, 44.68, 35.3, 42.79, 32.54, 16.520000000000003, 18.04, 16.7, 7.180000000000001, 10.59, 1.4500000000000002, 3.4299999999999997, 4.93, 8.0, 0.0],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1,
+                    fill: false
+                }, {
+                    label: 'Northwestern Win %',
+                    data: [9.830000000000005, 10.419999999999996, 9.79, 10.099999999999998, 10.909999999999997, 10.750000000000004, 10.260000000000002, 9.319999999999995, 10.470000000000002, 8.05, 8.299999999999997, 7.340000000000002, 7.350000000000001, 6.669999999999998, 12.639999999999995, 11.870000000000003, 13.139999999999997, 13.529999999999998, 14.459999999999996, 15.269999999999994, 15.980000000000006, 14.91, 17.659999999999997, 14.81, 17.110000000000003, 16.600000000000005, 18.23, 18.759999999999998, 18.58, 17.54, 17.900000000000006, 18.479999999999997, 20.240000000000002, 17.14, 17.25, 16.23, 15.949999999999998, 14.659999999999995, 12.570000000000004, 12.649999999999995, 12.570000000000004, 12.8, 13.309999999999999, 12.880000000000003, 15.659999999999997, 14.570000000000006, 14.219999999999999, 16.959999999999997, 24.79, 23.919999999999998, 26.249999999999996, 25.69, 27.880000000000006, 20.599999999999994, 20.320000000000004, 18.730000000000004, 20.05, 19.820000000000004, 16.42, 17.500000000000004, 17.879999999999995, 24.22, 15.72, 15.82, 15.459999999999996, 17.32, 19.56, 18.44, 17.400000000000006, 20.709999999999994, 19.46, 23.580000000000002, 21.909999999999997, 20.88, 19.540000000000003, 21.619999999999994, 22.189999999999998, 20.16, 20.979999999999997, 21.389999999999997, 18.85, 20.630000000000003, 21.120000000000005, 23.140000000000004, 33.07, 22.419999999999995, 21.67, 23.839999999999996, 21.78, 23.799999999999997, 20.55, 23.109999999999996, 21.889999999999997, 23.250000000000004, 20.389999999999997, 22.540000000000006, 23.860000000000003, 25.939999999999998, 27.04, 24.9, 23.9, 29.769999999999996, 31.410000000000004, 31.679999999999996, 28.659999999999997, 31.08, 25.69, 25.19, 52.08999999999999, 52.77, 46.040000000000006, 37.01, 43.24, 47.56, 50.9, 49.870000000000005, 29.400000000000006, 21.99, 23.829999999999995, 20.77, 20.820000000000004, 17.879999999999995, 17.279999999999994, 24.639999999999993, 28.13, 27.61, 30.320000000000004, 26.71, 33.91, 43.64, 39.28, 55.38000000000001, 69.22, 55.32, 64.7, 57.21000000000001, 67.46, 83.48, 81.96, 83.3, 92.82000000000001, 89.41, 98.55000000000001, 96.57, 95.07, 92.0, 100.0],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1,
+                    fill: false
+                }, {
+                    label: 'Northwestern Penalty Impact',
+                    data: [null, null, null, null, 10.909999999999997, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 17.32, null, null, null, null, null, null, null, null, null, null, null, 20.16, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 25.19, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+                    borderColor: '#ff6b6b',
+                    backgroundColor: 'rgba(255, 107, 107, 0.3)',
+                    borderWidth: 4,
+                    tension: 0.1,
+                    fill: false,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    showLine: true,
+                    spanGaps: false
+                }, {
+                    label: 'Penn State Penalty Impact',
+                    data: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 82.34, null, null, null, null, 81.24, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 84.34, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 76.42, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+                    borderColor: '#4ecdc4',
+                    backgroundColor: 'rgba(78, 205, 196, 0.3)',
+                    borderWidth: 4,
+                    tension: 0.1,
+                    fill: false,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    showLine: true,
+                    spanGaps: false
+                }, {
+                    label: 'Major Inflection Points',
+                    data: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, 87.36, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 75.21, null, null, null, null, 79.4, null, null, null, null, null, null, null, 75.78, 84.28, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 66.93, 77.58, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 70.23, null, null, null, null, 74.31, null, 47.910000000000004, null, 53.959999999999994, 62.99, 56.76, null, null, null, 70.6, 78.01, null, null, null, null, null, 75.36, null, null, null, null, 66.09, 56.36, null, 44.62, 30.78, 44.68, 35.3, 42.79, 32.54, 16.520000000000003, null, null, 7.180000000000001, null, 1.4500000000000002, null, null, null, 0.0],
+                    borderColor: '#ffa500',
+                    backgroundColor: 'rgba(255, 165, 0, 0.3)',
+                    borderWidth: 3,
+                    tension: 0.1,
+                    fill: false,
+                    pointRadius: 8,
+                    pointHoverRadius: 12,
+                    showLine: true,
+                    spanGaps: false,
+                    pointStyle: 'triangle'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Win Probability Throughout Game'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterLabel: function(context) {
+                                const datasetLabel = context.dataset.label;
+                                const dataIndex = context.dataIndex;
+                                
+                                if (datasetLabel === 'Northwestern Penalty Impact') {
+                                    const delta = [null, null, null, null, -0.8100000000000023, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -1.8600000000000136, null, null, null, null, null, null, null, null, null, null, null, 2.030000000000001, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.5, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null][dataIndex];
+                                    if (delta !== null && delta !== undefined) {
+                                        return `Delta: ${delta > 0 ? '+' : ''}${delta.toFixed(1)}%`;
+                                    }
+                                } else if (datasetLabel === 'Penn State Penalty Impact') {
+                                    const delta = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -2.75, null, null, null, null, -0.5300000000000011, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -2.780000000000001, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -4.1200000000000045, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null][dataIndex];
+                                    if (delta !== null && delta !== undefined) {
+                                        return `Delta: ${delta > 0 ? '+' : ''}${delta.toFixed(1)}%`;
+                                    }
+                                } else if (datasetLabel === 'Major Inflection Points') {
+                                    const inflectionPoints = [{"play_number": 15, "change": -5.969999999999999, "home_wp": 87.36, "away_wp": 12.64, "category": "\ud83d\udccb ", "play_text": "Ore Adeyi return for no gain to the NU 33"}, {"play_number": 49, "change": -7.8300000000000125, "home_wp": 75.21, "away_wp": 24.790000000000006, "category": "\ud83d\udca5 Explosive Play", "play_text": "Preston Stone pass complete to Griffin Wilde for 29 yds for a TD (Jack Olsen KICK) (Jack Olsen KICK)"}, {"play_number": 54, "change": 7.280000000000015, "home_wp": 79.4, "away_wp": 20.599999999999994, "category": "\ud83d\udd04 Turnover", "play_text": "Gabriel Nwosu punt for 35 yds , Drew Wagner returns for 2 yds to the NU 26, fumbles, recovered by Penn State at the NU 26"}, {"play_number": 62, "change": -6.340000000000003, "home_wp": 75.78, "away_wp": 24.22, "category": "\ud83c\udfc3 Rush", "play_text": "Nicholas Singleton run for no gain to the NU 2"}, {"play_number": 63, "change": 8.5, "home_wp": 84.28, "away_wp": 15.719999999999999, "category": "\ud83d\udccb Rushing Touchdown", "play_text": "Nicholas Singleton run for 2 yds for a TD (Ryan Barker KICK)"}, {"play_number": 85, "change": -9.929999999999993, "home_wp": 66.93, "away_wp": 33.06999999999999, "category": "\ud83c\udfc3 Rush", "play_text": "Caleb Komolafe run for 1 yd to the PSU 8"}, {"play_number": 86, "change": 10.649999999999991, "home_wp": 77.58, "away_wp": 22.42, "category": "\ud83d\udca5 Explosive Play", "play_text": "Gabriel Nwosu punt for 54 yds"}, {"play_number": 102, "change": -5.86999999999999, "home_wp": 70.23, "away_wp": 29.769999999999996, "category": "\ud83d\udcc8 1st Down", "play_text": "Preston Stone pass complete to Griffin Wilde for 12 yds to the NU 24 for a 1ST down"}, {"play_number": 107, "change": 5.390000000000001, "home_wp": 74.31, "away_wp": 25.689999999999998, "category": "\ud83c\udfc3 Rush", "play_text": "Joseph Himon II run for no gain to the NU 44"}, {"play_number": 109, "change": -26.9, "home_wp": 47.910000000000004, "away_wp": 52.089999999999996, "category": "\ud83d\udca5 Explosive Play", "play_text": "Luke Akers punt for 49 yds , Devonte Ross returns for no gain to the PSU 9"}, {"play_number": 111, "change": 6.729999999999997, "home_wp": 53.959999999999994, "away_wp": 46.040000000000006, "category": "\u274c Incomplete Pass", "play_text": "Preston Stone pass incomplete to Hayden Eligon II"}, {"play_number": 112, "change": 9.030000000000008, "home_wp": 62.99, "away_wp": 37.01, "category": "\ud83c\udfc3 Sack", "play_text": "Preston Stone sacked by Zuriah Fisher for a loss of 15 yards to the PSU 23"}, {"play_number": 113, "change": -6.230000000000004, "home_wp": 56.76, "away_wp": 43.24, "category": "\ud83d\udca5 Explosive Play", "play_text": "Jack Olsen 41 yd FG GOOD"}, {"play_number": 117, "change": 20.47, "home_wp": 70.6, "away_wp": 29.400000000000006, "category": "\ud83d\udca5 Explosive Play", "play_text": "Drew Allar pass complete to Devonte Ross for 67 yds to the NU 19 for a 1ST down"}, {"play_number": 118, "change": 7.410000000000011, "home_wp": 78.01, "away_wp": 21.989999999999995, "category": "\ud83d\udcc8 1st Down", "play_text": "Kaytron Allen run for 18 yds to the NU 1 for a 1ST down"}, {"play_number": 124, "change": -7.359999999999999, "home_wp": 75.36, "away_wp": 24.64, "category": "\ud83d\udcc8 1st Down", "play_text": "Preston Stone pass complete to Griffin Wilde for 16 yds to the NU 43 for a 1ST down"}, {"play_number": 129, "change": -7.200000000000003, "home_wp": 66.09, "away_wp": 33.91, "category": "\ud83d\udcc8 1st Down", "play_text": "Preston Stone pass complete to Griffin Wilde for 11 yds to the PSU 20 for a 1ST down"}, {"play_number": 130, "change": -9.730000000000004, "home_wp": 56.36, "away_wp": 43.64, "category": "\ud83c\udfc3 Rush", "play_text": "Caleb Komolafe run for 9 yds to the PSU 11"}, {"play_number": 132, "change": -16.1, "home_wp": 44.62, "away_wp": 55.38, "category": "\ud83d\udccb Rushing Touchdown", "play_text": "Caleb Komolafe 9 Yd Run (Two-Point Run Conversion Failed)"}, {"play_number": 133, "change": -13.839999999999996, "home_wp": 30.78, "away_wp": 69.22, "category": "\ud83c\udfc3 Rush", "play_text": "Caleb Komolafe run for no gain to the NU 35"}, {"play_number": 134, "change": 13.899999999999999, "home_wp": 44.68, "away_wp": 55.32, "category": "\ud83d\udca5 Explosive Play", "play_text": "Luke Akers kickoff for 65 yds for a touchback"}, {"play_number": 135, "change": -9.380000000000003, "home_wp": 35.3, "away_wp": 64.7, "category": "\ud83d\udccb Pass Reception", "play_text": "Drew Allar pass complete to Nicholas Singleton for a loss of 3 yards to the PSU 22"}, {"play_number": 136, "change": 7.490000000000002, "home_wp": 42.79, "away_wp": 57.21, "category": "\ud83d\udccb Pass Reception", "play_text": "Drew Allar pass complete to Nicholas Singleton for 9 yds to the PSU 31"}, {"play_number": 137, "change": -10.25, "home_wp": 32.54, "away_wp": 67.46000000000001, "category": "\ud83c\udfc3 Rush", "play_text": "Drew Allar run for 1 yd to the PSU 32"}, {"play_number": 138, "change": -16.019999999999996, "home_wp": 16.520000000000003, "away_wp": 83.47999999999999, "category": "\ud83c\udfc3 Rush", "play_text": "Ethan Grunkemeyer run for no gain to the PSU 32"}, {"play_number": 141, "change": -9.52, "home_wp": 7.180000000000001, "away_wp": 92.82, "category": "\ud83d\udcc8 1st Down", "play_text": "Caleb Komolafe run for 5 yds to the PSU 20 for a 1ST down"}, {"play_number": 143, "change": -9.14, "home_wp": 1.4500000000000002, "away_wp": 98.55, "category": "\ud83d\udcc8 1st Down", "play_text": "Joseph Himon II run for 17 yds to the PSU 2 for a 1ST down"}, {"play_number": 147, "change": -8.0, "home_wp": 0.0, "away_wp": 100.0, "category": "\ud83c\udfaf 4th Down", "play_text": "End of 4th Quarter"}];
+                                    const point = inflectionPoints.find(p => p.play_number - 1 === dataIndex);
+                                    if (point) {
+                                        return `${point.category} - ${point.change > 0 ? '+' : ''}${point.change.toFixed(1)}%`;
+                                    }
+                                }
+                                return '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Win Probability (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Play Number'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    
+                
+                
+    <div class="penalty-analysis">
+        <h3>Penalty Impact Analysis</h3>
+        <div class="penalty-summary">
+            <div class="penalty-stats">
+                <h4>Northwestern Penalties: 4</h4>
+                <ul>
+    
+                    <li>
+                        <strong>Play 5</strong>: Preston Stone run for no gain to the NU 31 for a 1ST down Penn State Penalty, off-side (Dani Dennis-Sutton) to the NU 36 for a 1ST down 
+                        <span class="wp-impact">(-0.8%)</span>
+                    </li>
+        
+                    <li>
+                        <strong>Play 66</strong>: Caleb Komolafe run for no gain to the NU 27 for a 1ST down Penn State Penalty, face mask (15 yards) (Zuriah Fisher) to the NU 42 for a 1ST down 
+                        <span class="wp-impact">(-1.9%)</span>
+                    </li>
+        
+                    <li>
+                        <strong>Play 78</strong>: Luke Akers kickoff for 65 yds for a touchback Northwestern Penalty, illegal formation (Garner Wallace) 
+                        <span class="wp-impact">(+2.0%)</span>
+                    </li>
+        
+                    <li>
+                        <strong>Play 108</strong>: Northwestern Penalty, delay of game (Luke Akers) to the NU 39 
+                        <span class="wp-impact">(+0.5%)</span>
+                    </li>
+        
+                </ul>
+            </div>
+            <div class="penalty-stats">
+                <h4>Penn State Penalties: 4</h4>
+                <ul>
+    
+                    <li>
+                        <strong>Play 23</strong>: Joseph Himon II run for 3 yds to the PSU 18 for a 1ST down Penn State Penalty, face mask (9 yards) (Alonzo Ford Jr.) to the PSU 9 for a 1ST down 
+                        <span class="wp-impact">(-2.8%)</span>
+                    </li>
+        
+                    <li>
+                        <strong>Play 28</strong>: Luke Akers kickoff for 65 yds for a touchback Penn State Penalty, unsportsmanlike conduct (Andrew Rappleyea) 
+                        <span class="wp-impact">(-0.5%)</span>
+                    </li>
+        
+                    <li>
+                        <strong>Play 45</strong>: Preston Stone pass complete to Hayden Eligon II for 3 yds to the PSU 43 for a 1ST down Penn State Penalty, personal foul (Dejuan Lane) to the PSU 42 for a 1ST down 
+                        <span class="wp-impact">(-2.8%)</span>
+                    </li>
+        
+                    <li>
+                        <strong>Play 72</strong>: Preston Stone pass incomplete to Drew Wagner for a 1ST down Penn State Penalty, roughing passer (Zuriah Fisher) to the PSU 17 for a 1ST down 
+                        <span class="wp-impact">(-4.1%)</span>
+                    </li>
+        
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+                
+                
+    <div class="inflection-analysis">
+        <h3>Major Inflection Points Analysis</h3>
+        <p>Plays that caused significant win probability changes (5% or more)</p>
+        <div class="inflection-summary">
+            <div class="inflection-stats">
+                <h4>Total Major Inflection Points: 28</h4>
+                <ul>
+    
+                    <li>
+                        <strong>Play 15</strong>: 📋  
+                        <span class="wp-impact negative">(-6.0%)</span>
+                        <br><small>Penn State WP: 87.4% → Northwestern WP: 12.6%</small>
+                        <br><em>"Ore Adeyi return for no gain to the NU 33"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 49</strong>: 💥 Explosive Play 
+                        <span class="wp-impact negative">(-7.8%)</span>
+                        <br><small>Penn State WP: 75.2% → Northwestern WP: 24.8%</small>
+                        <br><em>"Preston Stone pass complete to Griffin Wilde for 29 yds for a TD (Jack Olsen KICK) (Jack Olsen KICK)"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 54</strong>: 🔄 Turnover 
+                        <span class="wp-impact positive">(+7.3%)</span>
+                        <br><small>Penn State WP: 79.4% → Northwestern WP: 20.6%</small>
+                        <br><em>"Gabriel Nwosu punt for 35 yds , Drew Wagner returns for 2 yds to the NU 26, fumbles, recovered by Penn State at the NU 26"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 62</strong>: 🏃 Rush 
+                        <span class="wp-impact negative">(-6.3%)</span>
+                        <br><small>Penn State WP: 75.8% → Northwestern WP: 24.2%</small>
+                        <br><em>"Nicholas Singleton run for no gain to the NU 2"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 63</strong>: 📋 Rushing Touchdown 
+                        <span class="wp-impact positive">(+8.5%)</span>
+                        <br><small>Penn State WP: 84.3% → Northwestern WP: 15.7%</small>
+                        <br><em>"Nicholas Singleton run for 2 yds for a TD (Ryan Barker KICK)"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 85</strong>: 🏃 Rush 
+                        <span class="wp-impact negative">(-9.9%)</span>
+                        <br><small>Penn State WP: 66.9% → Northwestern WP: 33.1%</small>
+                        <br><em>"Caleb Komolafe run for 1 yd to the PSU 8"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 86</strong>: 💥 Explosive Play 
+                        <span class="wp-impact positive">(+10.6%)</span>
+                        <br><small>Penn State WP: 77.6% → Northwestern WP: 22.4%</small>
+                        <br><em>"Gabriel Nwosu punt for 54 yds"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 102</strong>: 📈 1st Down 
+                        <span class="wp-impact negative">(-5.9%)</span>
+                        <br><small>Penn State WP: 70.2% → Northwestern WP: 29.8%</small>
+                        <br><em>"Preston Stone pass complete to Griffin Wilde for 12 yds to the NU 24 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 107</strong>: 🏃 Rush 
+                        <span class="wp-impact positive">(+5.4%)</span>
+                        <br><small>Penn State WP: 74.3% → Northwestern WP: 25.7%</small>
+                        <br><em>"Joseph Himon II run for no gain to the NU 44"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 109</strong>: 💥 Explosive Play 
+                        <span class="wp-impact negative">(-26.9%)</span>
+                        <br><small>Penn State WP: 47.9% → Northwestern WP: 52.1%</small>
+                        <br><em>"Luke Akers punt for 49 yds , Devonte Ross returns for no gain to the PSU 9"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 111</strong>: ❌ Incomplete Pass 
+                        <span class="wp-impact positive">(+6.7%)</span>
+                        <br><small>Penn State WP: 54.0% → Northwestern WP: 46.0%</small>
+                        <br><em>"Preston Stone pass incomplete to Hayden Eligon II"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 112</strong>: 🏃 Sack 
+                        <span class="wp-impact positive">(+9.0%)</span>
+                        <br><small>Penn State WP: 63.0% → Northwestern WP: 37.0%</small>
+                        <br><em>"Preston Stone sacked by Zuriah Fisher for a loss of 15 yards to the PSU 23"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 113</strong>: 💥 Explosive Play 
+                        <span class="wp-impact negative">(-6.2%)</span>
+                        <br><small>Penn State WP: 56.8% → Northwestern WP: 43.2%</small>
+                        <br><em>"Jack Olsen 41 yd FG GOOD"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 117</strong>: 💥 Explosive Play 
+                        <span class="wp-impact positive">(+20.5%)</span>
+                        <br><small>Penn State WP: 70.6% → Northwestern WP: 29.4%</small>
+                        <br><em>"Drew Allar pass complete to Devonte Ross for 67 yds to the NU 19 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 118</strong>: 📈 1st Down 
+                        <span class="wp-impact positive">(+7.4%)</span>
+                        <br><small>Penn State WP: 78.0% → Northwestern WP: 22.0%</small>
+                        <br><em>"Kaytron Allen run for 18 yds to the NU 1 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 124</strong>: 📈 1st Down 
+                        <span class="wp-impact negative">(-7.4%)</span>
+                        <br><small>Penn State WP: 75.4% → Northwestern WP: 24.6%</small>
+                        <br><em>"Preston Stone pass complete to Griffin Wilde for 16 yds to the NU 43 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 129</strong>: 📈 1st Down 
+                        <span class="wp-impact negative">(-7.2%)</span>
+                        <br><small>Penn State WP: 66.1% → Northwestern WP: 33.9%</small>
+                        <br><em>"Preston Stone pass complete to Griffin Wilde for 11 yds to the PSU 20 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 130</strong>: 🏃 Rush 
+                        <span class="wp-impact negative">(-9.7%)</span>
+                        <br><small>Penn State WP: 56.4% → Northwestern WP: 43.6%</small>
+                        <br><em>"Caleb Komolafe run for 9 yds to the PSU 11"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 132</strong>: 📋 Rushing Touchdown 
+                        <span class="wp-impact negative">(-16.1%)</span>
+                        <br><small>Penn State WP: 44.6% → Northwestern WP: 55.4%</small>
+                        <br><em>"Caleb Komolafe 9 Yd Run (Two-Point Run Conversion Failed)"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 133</strong>: 🏃 Rush 
+                        <span class="wp-impact negative">(-13.8%)</span>
+                        <br><small>Penn State WP: 30.8% → Northwestern WP: 69.2%</small>
+                        <br><em>"Caleb Komolafe run for no gain to the NU 35"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 134</strong>: 💥 Explosive Play 
+                        <span class="wp-impact positive">(+13.9%)</span>
+                        <br><small>Penn State WP: 44.7% → Northwestern WP: 55.3%</small>
+                        <br><em>"Luke Akers kickoff for 65 yds for a touchback"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 135</strong>: 📋 Pass Reception 
+                        <span class="wp-impact negative">(-9.4%)</span>
+                        <br><small>Penn State WP: 35.3% → Northwestern WP: 64.7%</small>
+                        <br><em>"Drew Allar pass complete to Nicholas Singleton for a loss of 3 yards to the PSU 22"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 136</strong>: 📋 Pass Reception 
+                        <span class="wp-impact positive">(+7.5%)</span>
+                        <br><small>Penn State WP: 42.8% → Northwestern WP: 57.2%</small>
+                        <br><em>"Drew Allar pass complete to Nicholas Singleton for 9 yds to the PSU 31"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 137</strong>: 🏃 Rush 
+                        <span class="wp-impact negative">(-10.2%)</span>
+                        <br><small>Penn State WP: 32.5% → Northwestern WP: 67.5%</small>
+                        <br><em>"Drew Allar run for 1 yd to the PSU 32"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 138</strong>: 🏃 Rush 
+                        <span class="wp-impact negative">(-16.0%)</span>
+                        <br><small>Penn State WP: 16.5% → Northwestern WP: 83.5%</small>
+                        <br><em>"Ethan Grunkemeyer run for no gain to the PSU 32"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 141</strong>: 📈 1st Down 
+                        <span class="wp-impact negative">(-9.5%)</span>
+                        <br><small>Penn State WP: 7.2% → Northwestern WP: 92.8%</small>
+                        <br><em>"Caleb Komolafe run for 5 yds to the PSU 20 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 143</strong>: 📈 1st Down 
+                        <span class="wp-impact negative">(-9.1%)</span>
+                        <br><small>Penn State WP: 1.5% → Northwestern WP: 98.5%</small>
+                        <br><em>"Joseph Himon II run for 17 yds to the PSU 2 for a 1ST down"</em>
+                    </li>
+        
+                    <li>
+                        <strong>Play 147</strong>: 🎯 4th Down 
+                        <span class="wp-impact negative">(-8.0%)</span>
+                        <br><small>Penn State WP: 0.0% → Northwestern WP: 100.0%</small>
+                        <br><em>"End of 4th Quarter"</em>
+                    </li>
+        
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+            </div>
+        </div>
+    </body>
+    </html>
+    

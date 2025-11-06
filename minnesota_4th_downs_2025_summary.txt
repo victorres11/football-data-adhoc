@@ -1,0 +1,353 @@
+Minnesota 2025 Season - All 4th Down Offensive Plays
+======================================================================
+
+Week 1 vs Unknown
+  Q1 9:57 - 4 & 7
+  Tom Weston punt for 45 yds
+  Result: Punt
+
+Week 1 vs Unknown
+  Q1 4:49 - 4 & 1
+  Jameson Geers run for no gain to the BUF 11
+  Result: ✗ FAILED
+
+Week 1 vs Unknown
+  Q2 6:05 - 4 & 17
+  Tom Weston punt for 50 yds , Victor Snow returns for no gain to the BUF 21
+  Result: Punt
+
+Week 1 vs Unknown
+  Q3 11:39 - 4 & 7
+  Brady Denaburg 29 yd FG GOOD
+  Result: ✓ CONVERTED
+
+Week 1 vs Unknown
+  Q3 4:32 - 4 & 5
+  Tom Weston punt for 35 yds, fair catch by Victor Snow at the BUF 13
+  Result: Punt
+
+Week 1 vs Unknown
+  Q4 11:31 - 4 & 5
+  Brady Denaburg 25 yd FG GOOD
+  Result: ✓ CONVERTED
+
+Week 1 vs Unknown
+  Q4 0:25 - 4 & 1
+  Timeout Minnesota, clock 00:25
+  Result: ✗ FAILED
+
+Week 1 vs Unknown
+  Q4 0:00 - 4 & 1
+  Darius Taylor run for 3 yds to the BUF 15 for a 1ST down
+  Result: ✓ CONVERTED
+
+Week 2 vs Unknown
+  Q1 6:36 - 4 & 1
+  Drake Lindsey run for 2 yds to the NWST 17 for a 1ST down
+  Result: ✓ CONVERTED
+
+Week 2 vs Unknown
+  Q2 2:38 - 4 & 9
+  Brady Denaburg 27 yd FG GOOD
+  Result: ✓ CONVERTED
+
+Week 2 vs Unknown
+  Q4 13:15 - 4 & 9
+  Tom Weston punt for 40 yds for a touchback
+  Result: Punt
+
+Week 2 vs Unknown
+  Q4 6:15 - 4 & 1
+  Grant Washington run for no gain to the NWST 2
+  Result: ✗ FAILED
+
+Week 3 vs Unknown
+  Q1 11:06 - 4 & 7
+  Tom Weston punt for 54 yds , Jacob De Jesus returns for 6 yds to the CAL 9
+  Result: Punt
+
+Week 3 vs Unknown
+  Q1 5:24 - 4 & 3
+  Tom Weston punt for 42 yds California Penalty, Offensive holding (Hezekiah Masses) to the CAL 38
+  Result: Punt
+
+Week 3 vs Unknown
+  Q1 1:55 - 4 & 22
+  Tom Weston punt for 35 yds
+  Result: Punt
+
+Week 3 vs Unknown
+  Q2 9:43 - 4 & 13
+  Tom Weston punt for 32 yds
+  Result: Punt
+
+Week 3 vs Unknown
+  Q4 9:42 - 4 & 10
+  Brady Denaburg 51 yd FG MISSED
+  Result: ✓ CONVERTED
+
+Week 3 vs Unknown
+  Q4 5:46 - 4 & 8
+  Drake Lindsey pass incomplete to Jalen Smith, broken up by Isaiah Crosby
+  Result: ✗ FAILED
+
+Week 3 vs Unknown
+  Q4 0:27 - 4 & 19
+  Cam Davis run for 14 yds to the MINN 41
+  Result: ✗ FAILED
+
+Week 5 vs Unknown
+  Q1 7:35 - 4 & 1
+  Tom Weston punt for 41 yds
+  Result: Punt
+
+Week 5 vs Unknown
+  Q1 0:27 - 4 & 4
+  Tom Weston punt for 34 yds
+  Result: Punt
+
+Week 5 vs Unknown
+  Q2 6:10 - 4 & 10
+  Tom Weston punt for 43 yds , DT Sheffield returns for 5 yds to the RUTG 32 Rutgers Penalty, illegal block (Timmy Ward) to the RUTG 25
+  Result: Punt
+
+Week 5 vs Unknown
+  Q2 1:08 - 4 & 1
+  Cam Davis run for no gain to the RUTG 37
+  Result: ✗ FAILED
+
+Week 5 vs Unknown
+  Q3 0:11 - 4 & 6
+  Brady Denaburg 26 Yd Field Goal 
+  Result: Field Goal
+
+Week 5 vs Unknown
+  Q4 9:29 - 4 & 5
+  Tom Weston punt for 59 yds
+  Result: Punt
+
+Week 6 vs Unknown
+  Q1 8:05 - 4 & 9
+  Brady Denaburg 27 yd FG GOOD
+  Result: ✓ CONVERTED
+
+Week 6 vs Unknown
+  Q1 3:41 - 4 & 2
+  Tom Weston punt for 48 yds, punt out-of-bounds at the OSU 9
+  Result: Punt
+
+Week 6 vs Unknown
+  Q2 13:57 - 4 & 8
+  Tom Weston punt for 53 yds, fair catch by Brandon Inniss at the OSU 20
+  Result: Punt
+
+Week 6 vs Unknown
+  Q2 8:18 - 4 & 1
+  Timeout Ohio State, clock 08:18
+  Result: ✗ FAILED
+
+Week 6 vs Unknown
+  Q2 8:12 - 4 & 1
+  Darius Taylor run for no gain to the MINN 44
+  Result: ✗ FAILED
+
+Week 6 vs Unknown
+  Q2 6:35 - 4 & 16
+  Tom Weston punt for 52 yds, fair catch by Brandon Inniss at the OSU 29
+  Result: Punt
+
+Week 6 vs Unknown
+  Q2 0:06 - 4 & 4
+  Timeout Minnesota, clock 00:06
+  Result: ✗ FAILED
+
+Week 6 vs Unknown
+  Q2 0:00 - 4 & 4
+  Tom Weston punt for 58 yds
+  Result: Punt
+
+Week 6 vs Unknown
+  Q3 7:31 - 4 & 10
+  Tom Weston punt for 48 yds , Brandon Inniss returns for no gain to the MINN 20
+  Result: Punt
+
+Week 6 vs Unknown
+  Q3 4:09 - 4 & 11
+  Tom Weston punt for 58 yds , Brandon Inniss returns for 10 yds to the OSU 28
+  Result: Punt
+
+Week 6 vs Unknown
+  Q4 9:26 - 4 & 10
+  Brady Denaburg 41 yd FG MISSED
+  Result: ✓ CONVERTED
+
+Week 6 vs Unknown
+  Q4 0:23 - 4 & 5
+  Timeout Minnesota, clock 00:23
+  Result: ✗ FAILED
+
+Week 6 vs Unknown
+  Q4 0:15 - 4 & 5
+  Tom Weston punt for 39 yds, fair catch by Phillip Bell at the OSU 21
+  Result: Punt
+
+Week 7 vs Unknown
+  Q1 9:12 - 4 & 1
+  Tom Weston punt for 44 yds, fair catch by Michael Jackson III at the PUR 14
+  Result: Punt
+
+Week 7 vs Unknown
+  Q1 5:43 - 4 & 10
+  Tom Weston punt for 52 yds for a touchback
+  Result: Punt
+
+Week 7 vs Unknown
+  Q1 1:44 - 4 & 12
+  Tom Weston punt for 44 yds
+  Result: Punt
+
+Week 7 vs Unknown
+  Q2 13:48 - 4 & 8
+  Tom Weston punt for 46 yds
+  Result: Punt
+
+Week 7 vs Unknown
+  Q2 8:44 - 4 & 9
+  Brady Denaburg 46 yd FG GOOD
+  Result: ✓ CONVERTED
+
+Week 7 vs Unknown
+  Q3 14:02 - 4 & 7
+  Tom Weston punt for 51 yds, fair catch by Michael Jackson III at the PUR 21
+  Result: Punt
+
+Week 7 vs Unknown
+  Q3 3:06 - 4 & 11
+  Tom Weston punt for 41 yds , Michael Jackson III returns for 15 yds to the MINN 48
+  Result: Punt
+
+Week 7 vs Unknown
+  Q3 3:06 - 4 & 11
+  Tom Weston punt for 41 yds , Michael Jackson III returns for 15 yds to the PUR 31
+  Result: Punt
+
+Week 7 vs Unknown
+  Q4 10:31 - 4 & 2
+  Timeout Purdue, clock 10:31
+  Result: ✗ FAILED
+
+Week 7 vs Unknown
+  Q4 10:22 - 4 & 2
+  Drake Lindsey run for 3 yds to the PUR 25 for a 1ST down
+  Result: ✓ CONVERTED
+
+Week 7 vs Unknown
+  Q4 0:21 - 4 & 3
+  Timeout Minnesota, clock 00:21
+  Result: ✗ FAILED
+
+Week 7 vs Unknown
+  Q4 0:14 - 4 & 3
+  Tom Weston punt for 47 yds, fair catch by Michael Jackson III at the PUR 39
+  Result: Punt
+
+Week 8 vs Unknown
+  Q1 12:59 - 4 & 2
+  Tom Weston punt for 42 yds, punt out-of-bounds at the NEB 25
+  Result: Punt
+
+Week 8 vs Unknown
+  Q1 6:42 - 4 & 2
+  Tom Weston punt for 37 yds, punt out-of-bounds at the NEB 15
+  Result: Punt
+
+Week 8 vs Unknown
+  Q3 3:23 - 4 & 3
+  (03:26) Lindsey,Drake pass incomplete short left to Brockington,Lemeke thrown to NEB20 broken up by Jones,Donovan PENALTY NEB Holding (Marshall,Andrew) 10 yards from NEB34 to NEB24, 1ST DOWN. NO PLAY.
+  Result: ✓ CONVERTED
+
+Week 8 vs Unknown
+  Q4 5:14 - 4 & 12
+  Brady Denaburg 30 yd FG GOOD
+  Result: ✓ CONVERTED
+
+Week 8 vs Unknown
+  Q4 5:17 - 4 & 12
+  Timeout Nebraska, clock 05:17
+  Result: ✗ FAILED
+
+Week 8 vs Unknown
+  Q4 1:13 - 4 & 7
+  Timeout Minnesota, clock 01:13
+  Result: ✗ FAILED
+
+Week 8 vs Unknown
+  Q4 0:56 - 4 & 7
+  Tom Weston punt for 45 yds, punt out-of-bounds at the NEB 45 , Jacory Barney Jr. returns for 30 yds to the NEB 45
+  Result: Punt
+
+Week 8 vs Unknown
+  Q2 10:01 - 4 & 1
+  Timeout Minnesota, clock 10:01
+  Result: ✗ FAILED
+
+Week 8 vs Unknown
+  Q2 9:53 - 4 & 1
+  Tom Weston punt for 34 yds, fair catch by Jacory Barney Jr. at the NEB 19
+  Result: Punt
+
+Week 8 vs Unknown
+  Q2 1:11 - 4 & 10
+  Timeout Nebraska, clock 01:11
+  Result: ✗ FAILED
+
+Week 8 vs Unknown
+  Q2 1:02 - 4 & 10
+  Tom Weston punt for 40 yds , Jacory Barney Jr. returns for no gain to the NEB 6
+  Result: Punt
+
+Week 9 vs Unknown
+  Q4 0:37 - 4 & 1
+  (00:39) No Huddle #31 X.Ford rush middle for 1 yard loss to the Iowa44 (#97 I.Epenesa), TURNOVER ON DOWNS
+  Result: ✗ FAILED
+
+Week 9 vs Unknown
+  Q1 8:23 - 4 & 5
+  (08:34) #42 T.Weston punt 48 yards to the Iowa23 #21 K.Wetjen return 15 yards to the Iowa38 (#19 J.Gerlach)
+  Result: Punt
+
+Week 9 vs Unknown
+  Q1 1:28 - 4 & 3
+  (01:36) #42 T.Weston punt 13 yards to the Minn45, out of bounds at Minn45
+  Result: Punt
+
+Week 9 vs Unknown
+  Q2 11:23 - 4 & 21
+  (11:33) #42 T.Weston punt 36 yards to the Minn50 #21 K.Wetjen return 50 yards to the Minn00 TOUCHDOWN, clock 11:23 #18 D.Stevens kick attempt good (H: #99 T.Nissen, LS: #45 B.Worrell)
+  Result: Punt
+
+Week 9 vs Unknown
+  Q2 8:52 - 4 & 13
+  (08:57) #42 T.Weston punt 55 yards to the Iowa00, Touchback
+  Result: Punt
+
+Week 9 vs Unknown
+  Q2 4:00 - 4 & 9
+  (04:06) #42 T.Weston punt 32 yards to the Iowa23, out of bounds at Iowa23
+  Result: Punt
+
+Week 9 vs Unknown
+  Q3 7:46 - 4 & 8
+  (07:55) #42 T.Weston punt 37 yards to the Iowa43 #21 K.Wetjen return 9 yards to the Minn48 (#49 M.Kingsbury), out of bounds
+  Result: Punt
+
+Week 9 vs Unknown
+  Q3 0:03 - 4 & 6
+  (00:05) #92 B.Denaburg field goal attempt from 34 yards GOOD (H: #42 T.Weston, LS: #80 A.Soukup), clock 00:03
+  Result: Field Goal
+
+Week 9 vs Unknown
+  Q4 13:00 - 4 & 9
+  (13:10) #42 T.Weston punt 38 yards to the Iowa31 #21 K.Wetjen return 6 yards to the Iowa37 (#19 J.Gerlach; #80 A.Soukup)
+  Result: Punt
+

@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minnesota 2025 Season - All 4th Down Offensive Plays</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7E1416 0%, #000000 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7E1416 0%, #000000 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #7E1416;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .game-section {
+            margin-bottom: 50px;
+            border-top: 3px solid #7E1416;
+            padding-top: 30px;
+        }
+        
+        .game-header {
+            background: #7E1416;
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+        }
+        
+        .game-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .game-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #7E1416;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-size: 0.8em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-top: 5px;
+        }
+        
+        .plays-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 30px;
+        }
+        
+        .plays-table th {
+            background: #7E1416;
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .plays-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+        
+        .plays-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .plays-table tr.go-for-it {
+            background-color: #fff3cd;
+        }
+        
+        .plays-table tr.go-for-it:hover {
+            background-color: #ffeaa7;
+        }
+        
+        .plays-table tr.converted {
+            border-left: 4px solid #28a745;
+        }
+        
+        .plays-table tr.failed {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .plays-table tr.punt-fg {
+            border-left: 4px solid #6c757d;
+        }
+        
+        .quarter-badge {
+            display: inline-block;
+            background: #7E1416;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .outcome-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .outcome-converted {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .outcome-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .outcome-punt {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .outcome-fg {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .outcome-td {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .outcome-timeout {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .plays-table tr.timeout {
+            background-color: #f8f9fa;
+            border-left: 4px solid #adb5bd;
+        }
+        
+        .plays-table tr.timeout:hover {
+            background-color: #e9ecef;
+        }
+        
+        .yards {
+            font-weight: bold;
+            color: #7E1416;
+        }
+        
+        .down-distance {
+            font-family: monospace;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .play-text {
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+        
+        .no-plays {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .toc h3 {
+            margin-bottom: 15px;
+            color: #7E1416;
+        }
+        
+        .toc ul {
+            list-style: none;
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .toc a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .toc a:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏈 Minnesota Golden Gophers</h1>
+            <div class="subtitle">2025 Season - All 4th Down Offensive Plays</div>
+        </div>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-value">70</div>
+                <div class="stat-label">Total 4th Downs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">29</div>
+                <div class="stat-label">Go For It Attempts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Conversions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">41.4%</div>
+                <div class="stat-label">Conversion Rate</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="toc">
+                <h3>📋 Table of Contents</h3>
+                <ul>
+
+                    <li><a href="#game-401752793">Week 1 vs Buffalo (8 plays)</a></li>
+
+                    <li><a href="#game-401752813">Week 2 vs Northwestern State (4 plays)</a></li>
+
+                    <li><a href="#game-401752840">Week 3 vs California (7 plays)</a></li>
+
+                    <li><a href="#game-401752849">Week 5 vs Rutgers (6 plays)</a></li>
+
+                    <li><a href="#game-401752859">Week 6 vs Ohio State (13 plays)</a></li>
+
+                    <li><a href="#game-401752864">Week 7 vs Purdue (12 plays)</a></li>
+
+                    <li><a href="#game-401752872">Week 8 vs Nebraska (11 plays)</a></li>
+
+                    <li><a href="#game-401752882">Week 9 vs Iowa (9 plays)</a></li>
+
+                </ul>
+            </div>
+
+            <div id="game-401752793" class="game-section">
+                <div class="game-header">
+                    <h2>Week 1: Minnesota vs Buffalo</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752793</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Buffalo</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Buffalo 10 - Minnesota 23</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">8</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">5</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>9:57</td>
+                            <td>#2</td>
+                            <td><span class="down-distance">4 & 7</span></td>
+                            <td>+46</td>
+                            <td>46</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 45 yds</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>4:49</td>
+                            <td>#4</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+11</td>
+                            <td>11</td>
+                            <td>Go For It</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">Jameson Geers run for no gain to the BUF 11</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>6:05</td>
+                            <td>#10</td>
+                            <td><span class="down-distance">4 & 17</span></td>
+                            <td>-29</td>
+                            <td>71</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">7-3</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 50 yds , Victor Snow returns for no gain to the BUF 21</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>11:39</td>
+                            <td>#13</td>
+                            <td><span class="down-distance">4 & 7</span></td>
+                            <td>+11</td>
+                            <td>11</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+29</td>
+                            <td style="font-weight: bold;">13-3</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 29 yd FG GOOD</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>4:32</td>
+                            <td>#15</td>
+                            <td><span class="down-distance">4 & 5</span></td>
+                            <td>+48</td>
+                            <td>48</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">13-10</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 35 yds, fair catch by Victor Snow at the BUF 13</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>11:31</td>
+                            <td>#17</td>
+                            <td><span class="down-distance">4 & 5</span></td>
+                            <td>+7</td>
+                            <td>7</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+25</td>
+                            <td style="font-weight: bold;">16-10</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 25 yd FG GOOD</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:25</td>
+                            <td>#21</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+18</td>
+                            <td>18</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">23-10</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Minnesota, clock 00:25</td>
+                        </tr>
+
+                        <tr class="go-for-it converted">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:00</td>
+                            <td>#21</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+18</td>
+                            <td>18</td>
+                            <td>Go For It</td>
+                            <td class="yards">+3</td>
+                            <td style="font-weight: bold;">23-10</td>
+                            <td><span class="outcome-badge outcome-converted">✓ Converted</span></td>
+                            <td class="play-text">Darius Taylor run for 3 yds to the BUF 15 for a 1ST down</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752813" class="game-section">
+                <div class="game-header">
+                    <h2>Week 2: Minnesota vs Northwestern State</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752813</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Northwestern State</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Northwestern State 0 - Minnesota 66</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">4</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">3</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="go-for-it converted">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>6:36</td>
+                            <td>#5</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+19</td>
+                            <td>19</td>
+                            <td>Go For It</td>
+                            <td class="yards">+2</td>
+                            <td style="font-weight: bold;">14-0</td>
+                            <td><span class="outcome-badge outcome-converted">✓ Converted</span></td>
+                            <td class="play-text">Drake Lindsey run for 2 yds to the NWST 17 for a 1ST down</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>2:38</td>
+                            <td>#16</td>
+                            <td><span class="down-distance">4 & 9</span></td>
+                            <td>+9</td>
+                            <td>9</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+27</td>
+                            <td style="font-weight: bold;">59-0</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 27 yd FG GOOD</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>13:15</td>
+                            <td>#22</td>
+                            <td><span class="down-distance">4 & 9</span></td>
+                            <td>+40</td>
+                            <td>40</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">66-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 40 yds for a touchback</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>6:15</td>
+                            <td>#24</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+2</td>
+                            <td>2</td>
+                            <td>Go For It</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">66-0</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">Grant Washington run for no gain to the NWST 2</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752840" class="game-section">
+                <div class="game-header">
+                    <h2>Week 3: Minnesota vs California</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752840</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">California</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Minnesota 14 - California 27</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">7</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">3</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>11:06</td>
+                            <td>#2</td>
+                            <td><span class="down-distance">4 & 7</span></td>
+                            <td>-43</td>
+                            <td>57</td>
+                            <td>Punt</td>
+                            <td class="yards">+6</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 54 yds , Jacob De Jesus returns for 6 yds to the CAL 9</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>5:24</td>
+                            <td>#4</td>
+                            <td><span class="down-distance">4 & 3</span></td>
+                            <td>-10</td>
+                            <td>90</td>
+                            <td>Punt</td>
+                            <td class="yards">+52</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 42 yds California Penalty, Offensive holding (Hezekiah Masses) to the CAL 38</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>1:55</td>
+                            <td>#6</td>
+                            <td><span class="down-distance">4 & 22</span></td>
+                            <td>-21</td>
+                            <td>79</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 35 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>9:43</td>
+                            <td>#8</td>
+                            <td><span class="down-distance">4 & 13</span></td>
+                            <td>+42</td>
+                            <td>42</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 32 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>9:42</td>
+                            <td>#16</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>+33</td>
+                            <td>33</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+51</td>
+                            <td style="font-weight: bold;">14-17</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 51 yd FG MISSED</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>5:46</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 8</span></td>
+                            <td>+48</td>
+                            <td>48</td>
+                            <td>Go For It</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">14-24</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">Drake Lindsey pass incomplete to Jalen Smith, broken up by Isaiah Crosby</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:27</td>
+                            <td>#21</td>
+                            <td><span class="down-distance">4 & 19</span></td>
+                            <td>-27</td>
+                            <td>73</td>
+                            <td>Go For It</td>
+                            <td class="yards">+14</td>
+                            <td style="font-weight: bold;">14-27</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">Cam Davis run for 14 yds to the MINN 41</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752849" class="game-section">
+                <div class="game-header">
+                    <h2>Week 5: Minnesota vs Rutgers</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752849</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Rutgers</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Rutgers 28 - Minnesota 31</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">6</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">1</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>7:35</td>
+                            <td>#2</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>-21</td>
+                            <td>79</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 41 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>0:27</td>
+                            <td>#4</td>
+                            <td><span class="down-distance">4 & 4</span></td>
+                            <td>-34</td>
+                            <td>66</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 34 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>6:10</td>
+                            <td>#10</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>-27</td>
+                            <td>73</td>
+                            <td>Punt</td>
+                            <td class="yards">+5</td>
+                            <td style="font-weight: bold;">14-14</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 43 yds , DT Sheffield returns for 5 yds to the RUTG 32 Rutgers Penalty, illegal block (Timmy Ward) to the RUTG 25</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>1:08</td>
+                            <td>#12</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+37</td>
+                            <td>37</td>
+                            <td>Go For It</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">14-14</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">Cam Davis run for no gain to the RUTG 37</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>0:11</td>
+                            <td>#17</td>
+                            <td><span class="down-distance">4 & 6</span></td>
+                            <td>+8</td>
+                            <td>8</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+26</td>
+                            <td style="font-weight: bold;">24-21</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 26 Yd Field Goal </td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>9:29</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 5</span></td>
+                            <td>-30</td>
+                            <td>70</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">24-28</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 59 yds</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752859" class="game-section">
+                <div class="game-header">
+                    <h2>Week 6: Minnesota vs Ohio State</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752859</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Ohio State</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Minnesota 3 - Ohio State 42</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">13</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">6</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>8:05</td>
+                            <td>#1</td>
+                            <td><span class="down-distance">4 & 9</span></td>
+                            <td>+9</td>
+                            <td>9</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+27</td>
+                            <td style="font-weight: bold;">3-0</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 27 yd FG GOOD</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>3:41</td>
+                            <td>#3</td>
+                            <td><span class="down-distance">4 & 2</span></td>
+                            <td>-43</td>
+                            <td>57</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 48 yds, punt out-of-bounds at the OSU 9</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>13:57</td>
+                            <td>#5</td>
+                            <td><span class="down-distance">4 & 8</span></td>
+                            <td>-27</td>
+                            <td>73</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 53 yds, fair catch by Brandon Inniss at the OSU 20</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>8:18</td>
+                            <td>#7</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>-44</td>
+                            <td>56</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-14</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Ohio State, clock 08:18</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>8:12</td>
+                            <td>#7</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>-44</td>
+                            <td>56</td>
+                            <td>Go For It</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-14</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">Darius Taylor run for no gain to the MINN 44</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>6:35</td>
+                            <td>#9</td>
+                            <td><span class="down-distance">4 & 16</span></td>
+                            <td>-19</td>
+                            <td>81</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-21</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 52 yds, fair catch by Brandon Inniss at the OSU 29</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>0:06</td>
+                            <td>#11</td>
+                            <td><span class="down-distance">4 & 4</span></td>
+                            <td>-27</td>
+                            <td>73</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-21</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Minnesota, clock 00:06</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>0:00</td>
+                            <td>#11</td>
+                            <td><span class="down-distance">4 & 4</span></td>
+                            <td>-27</td>
+                            <td>73</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-21</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 58 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>7:31</td>
+                            <td>#13</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>-8</td>
+                            <td>92</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-21</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 48 yds , Brandon Inniss returns for no gain to the MINN 20</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>4:09</td>
+                            <td>#15</td>
+                            <td><span class="down-distance">4 & 11</span></td>
+                            <td>-24</td>
+                            <td>76</td>
+                            <td>Punt</td>
+                            <td class="yards">+10</td>
+                            <td style="font-weight: bold;">3-35</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 58 yds , Brandon Inniss returns for 10 yds to the OSU 28</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>9:26</td>
+                            <td>#17</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>+23</td>
+                            <td>23</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+41</td>
+                            <td style="font-weight: bold;">3-35</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 41 yd FG MISSED</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:23</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 5</span></td>
+                            <td>-40</td>
+                            <td>60</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-42</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Minnesota, clock 00:23</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:15</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 5</span></td>
+                            <td>-40</td>
+                            <td>60</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">3-42</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 39 yds, fair catch by Phillip Bell at the OSU 21</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752864" class="game-section">
+                <div class="game-header">
+                    <h2>Week 7: Minnesota vs Purdue</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752864</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Purdue</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Purdue 20 - Minnesota 27</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">12</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">4</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>9:12</td>
+                            <td>#2</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>-42</td>
+                            <td>58</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 44 yds, fair catch by Michael Jackson III at the PUR 14</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>5:43</td>
+                            <td>#4</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>-48</td>
+                            <td>52</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 52 yds for a touchback</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>1:44</td>
+                            <td>#6</td>
+                            <td><span class="down-distance">4 & 12</span></td>
+                            <td>-32</td>
+                            <td>68</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 44 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>13:48</td>
+                            <td>#8</td>
+                            <td><span class="down-distance">4 & 8</span></td>
+                            <td>-3</td>
+                            <td>97</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 46 yds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>8:44</td>
+                            <td>#12</td>
+                            <td><span class="down-distance">4 & 9</span></td>
+                            <td>+28</td>
+                            <td>28</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+46</td>
+                            <td style="font-weight: bold;">10-10</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 46 yd FG GOOD</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>14:02</td>
+                            <td>#15</td>
+                            <td><span class="down-distance">4 & 7</span></td>
+                            <td>-28</td>
+                            <td>72</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">13-17</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 51 yds, fair catch by Michael Jackson III at the PUR 21</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>3:06</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 11</span></td>
+                            <td>-22</td>
+                            <td>78</td>
+                            <td>Punt</td>
+                            <td class="yards">+15</td>
+                            <td style="font-weight: bold;">13-20</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 41 yds , Michael Jackson III returns for 15 yds to the MINN 48</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>3:06</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 11</span></td>
+                            <td>-22</td>
+                            <td>78</td>
+                            <td>Punt</td>
+                            <td class="yards">+15</td>
+                            <td style="font-weight: bold;">13-20</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 41 yds , Michael Jackson III returns for 15 yds to the PUR 31</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>10:31</td>
+                            <td>#21</td>
+                            <td><span class="down-distance">4 & 2</span></td>
+                            <td>+28</td>
+                            <td>28</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">13-20</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Purdue, clock 10:31</td>
+                        </tr>
+
+                        <tr class="go-for-it converted">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>10:22</td>
+                            <td>#21</td>
+                            <td><span class="down-distance">4 & 2</span></td>
+                            <td>+28</td>
+                            <td>28</td>
+                            <td>Go For It</td>
+                            <td class="yards">+3</td>
+                            <td style="font-weight: bold;">13-20</td>
+                            <td><span class="outcome-badge outcome-converted">✓ Converted</span></td>
+                            <td class="play-text">Drake Lindsey run for 3 yds to the PUR 25 for a 1ST down</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:21</td>
+                            <td>#24</td>
+                            <td><span class="down-distance">4 & 3</span></td>
+                            <td>-14</td>
+                            <td>86</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">27-20</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Minnesota, clock 00:21</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:14</td>
+                            <td>#24</td>
+                            <td><span class="down-distance">4 & 3</span></td>
+                            <td>-14</td>
+                            <td>86</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">27-20</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 47 yds, fair catch by Michael Jackson III at the PUR 39</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752872" class="game-section">
+                <div class="game-header">
+                    <h2>Week 8: Minnesota vs Nebraska</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752872</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Nebraska</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Nebraska 6 - Minnesota 24</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">11</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">6</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>12:59</td>
+                            <td>#1</td>
+                            <td><span class="down-distance">4 & 2</span></td>
+                            <td>-33</td>
+                            <td>67</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 42 yds, punt out-of-bounds at the NEB 25</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>6:42</td>
+                            <td>#3</td>
+                            <td><span class="down-distance">4 & 2</span></td>
+                            <td>-48</td>
+                            <td>52</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-0</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 37 yds, punt out-of-bounds at the NEB 15</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>10:01</td>
+                            <td>#7</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>-47</td>
+                            <td>53</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">7-3</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Minnesota, clock 10:01</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>9:53</td>
+                            <td>#7</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>-47</td>
+                            <td>53</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">7-3</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 34 yds, fair catch by Jacory Barney Jr. at the NEB 19</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>1:11</td>
+                            <td>#9</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>-46</td>
+                            <td>54</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">7-6</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Nebraska, clock 01:11</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>1:02</td>
+                            <td>#9</td>
+                            <td><span class="down-distance">4 & 10</span></td>
+                            <td>-46</td>
+                            <td>54</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">7-6</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 40 yds , Jacory Barney Jr. returns for no gain to the NEB 6</td>
+                        </tr>
+
+                        <tr class="go-for-it converted">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>3:23</td>
+                            <td>#12</td>
+                            <td><span class="down-distance">4 & 3</span></td>
+                            <td>+34</td>
+                            <td>34</td>
+                            <td>Go For It</td>
+                            <td class="yards">+10</td>
+                            <td style="font-weight: bold;">7-6</td>
+                            <td><span class="outcome-badge outcome-converted">✓ Converted</span></td>
+                            <td class="play-text">(03:26) Lindsey,Drake pass incomplete short left to Brockington,Lemeke thrown to NEB20 broken up by Jones,Donovan PENALTY NEB Holding (Marshall,Andrew) 10 yards from NEB34 to NEB24, 1ST DOWN. NO PLAY.</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>5:17</td>
+                            <td>#17</td>
+                            <td><span class="down-distance">4 & 12</span></td>
+                            <td>+12</td>
+                            <td>12</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">21-6</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Nebraska, clock 05:17</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>5:14</td>
+                            <td>#17</td>
+                            <td><span class="down-distance">4 & 12</span></td>
+                            <td>+12</td>
+                            <td>12</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+30</td>
+                            <td style="font-weight: bold;">24-6</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">Brady Denaburg 30 yd FG GOOD</td>
+                        </tr>
+
+                        <tr class="timeout">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>1:13</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 7</span></td>
+                            <td>-40</td>
+                            <td>60</td>
+                            <td>Timeout</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">24-6</td>
+                            <td><span class="outcome-badge outcome-timeout">Timeout</span></td>
+                            <td class="play-text">Timeout Minnesota, clock 01:13</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:56</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 7</span></td>
+                            <td>-40</td>
+                            <td>60</td>
+                            <td>Punt</td>
+                            <td class="yards">+30</td>
+                            <td style="font-weight: bold;">24-6</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">Tom Weston punt for 45 yds, punt out-of-bounds at the NEB 45 , Jacory Barney Jr. returns for 30 yds to the NEB 45</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="game-401752882" class="game-section">
+                <div class="game-header">
+                    <h2>Week 9: Minnesota vs Iowa</h2>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Game ID</span>
+                        <span class="info-value">401752882</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Home Team</span>
+                        <span class="info-value">Iowa</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Away Team</span>
+                        <span class="info-value">Minnesota</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Final Score</span>
+                        <span class="info-value">Minnesota 3 - Iowa 41</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total 4th Downs</span>
+                        <span class="info-value">9</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Go For It</span>
+                        <span class="info-value">1</span>
+                    </div>
+                </div>
+
+                <table class="plays-table">
+                    <thead>
+                        <tr>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                            <th>Drive</th>
+                            <th>Down & Distance</th>
+                            <th>Yard Line</th>
+                            <th>Yards to Goal</th>
+                            <th>Type</th>
+                            <th>Yards Gained</th>
+                            <th>Score</th>
+                            <th>Outcome</th>
+                            <th>Play Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>8:23</td>
+                            <td>#2</td>
+                            <td><span class="down-distance">4 & 5</span></td>
+                            <td>-29</td>
+                            <td>71</td>
+                            <td>Punt</td>
+                            <td class="yards">+15</td>
+                            <td style="font-weight: bold;">0-7</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(08:34) #42 T.Weston punt 48 yards to the Iowa23 #21 K.Wetjen return 15 yards to the Iowa38 (#19 J.Gerlach)</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q1</span></td>
+                            <td>1:28</td>
+                            <td>#5</td>
+                            <td><span class="down-distance">4 & 3</span></td>
+                            <td>-32</td>
+                            <td>68</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-17</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(01:36) #42 T.Weston punt 13 yards to the Minn45, out of bounds at Minn45</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>11:23</td>
+                            <td>#7</td>
+                            <td><span class="down-distance">4 & 21</span></td>
+                            <td>-14</td>
+                            <td>86</td>
+                            <td>Punt</td>
+                            <td class="yards">+50</td>
+                            <td style="font-weight: bold;">0-31</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(11:33) #42 T.Weston punt 36 yards to the Minn50 #21 K.Wetjen return 50 yards to the Minn00 TOUCHDOWN, clock 11:23 #18 D.Stevens kick attempt good (H: #99 T.Nissen, LS: #45 B.Worrell)</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>8:52</td>
+                            <td>#8</td>
+                            <td><span class="down-distance">4 & 13</span></td>
+                            <td>-45</td>
+                            <td>55</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-31</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(08:57) #42 T.Weston punt 55 yards to the Iowa00, Touchback</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q2</span></td>
+                            <td>4:00</td>
+                            <td>#10</td>
+                            <td><span class="down-distance">4 & 9</span></td>
+                            <td>-45</td>
+                            <td>55</td>
+                            <td>Punt</td>
+                            <td class="yards">0</td>
+                            <td style="font-weight: bold;">0-31</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(04:06) #42 T.Weston punt 32 yards to the Iowa23, out of bounds at Iowa23</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>7:46</td>
+                            <td>#15</td>
+                            <td><span class="down-distance">4 & 8</span></td>
+                            <td>-20</td>
+                            <td>80</td>
+                            <td>Punt</td>
+                            <td class="yards">+9</td>
+                            <td style="font-weight: bold;">0-31</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(07:55) #42 T.Weston punt 37 yards to the Iowa43 #21 K.Wetjen return 9 yards to the Minn48 (#49 M.Kingsbury), out of bounds</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q3</span></td>
+                            <td>0:03</td>
+                            <td>#17</td>
+                            <td><span class="down-distance">4 & 6</span></td>
+                            <td>+16</td>
+                            <td>16</td>
+                            <td>Field Goal</td>
+                            <td class="yards">+34</td>
+                            <td style="font-weight: bold;">3-34</td>
+                            <td><span class="outcome-badge outcome-fg">FG</span></td>
+                            <td class="play-text">(00:05) #92 B.Denaburg field goal attempt from 34 yards GOOD (H: #42 T.Weston, LS: #80 A.Soukup), clock 00:03</td>
+                        </tr>
+
+                        <tr class="punt-fg">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>13:00</td>
+                            <td>#19</td>
+                            <td><span class="down-distance">4 & 9</span></td>
+                            <td>-31</td>
+                            <td>69</td>
+                            <td>Punt</td>
+                            <td class="yards">+6</td>
+                            <td style="font-weight: bold;">3-34</td>
+                            <td><span class="outcome-badge outcome-punt">Punt</span></td>
+                            <td class="play-text">(13:10) #42 T.Weston punt 38 yards to the Iowa31 #21 K.Wetjen return 6 yards to the Iowa37 (#19 J.Gerlach; #80 A.Soukup)</td>
+                        </tr>
+
+                        <tr class="go-for-it failed">
+                            <td><span class="quarter-badge">Q4</span></td>
+                            <td>0:37</td>
+                            <td>#23</td>
+                            <td><span class="down-distance">4 & 1</span></td>
+                            <td>+43</td>
+                            <td>43</td>
+                            <td>Go For It</td>
+                            <td class="yards">-1</td>
+                            <td style="font-weight: bold;">3-41</td>
+                            <td><span class="outcome-badge outcome-failed">✗ Failed</span></td>
+                            <td class="play-text">(00:39) No Huddle #31 X.Ford rush middle for 1 yard loss to the Iowa44 (#97 I.Epenesa), TURNOVER ON DOWNS</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        
+        <div style="padding: 20px; text-align: center; color: #666; font-size: 0.9em;">
+            Generated on October 30, 2025 at 07:51 PM
+        </div>
+    </div>
+</body>
+</html>

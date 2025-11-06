@@ -14,6 +14,7 @@ from analyze_post_turnover import analyze_post_turnover
 from analyze_special_teams import analyze_special_teams
 from analyze_red_zone import analyze_red_zone
 from analyze_situational_receiving import load_sis_data, analyze_situational_receiving
+from analyze_deep_targets import analyze_deep_targets
 
 
 def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir: str = "advanced_reports_yogi"):
@@ -67,7 +68,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         sis_data = load_sis_data(f"{data_dir}/sis-data/washington_wisconsin_analysis_2025.json")
         wash_situational = analyze_situational_receiving(sis_data, "Washington", washington_games)
         wisc_situational = analyze_situational_receiving(sis_data, "Wisconsin", wisconsin_games)
+        wash_deep_targets = analyze_deep_targets(sis_data, "Washington")
+        wisc_deep_targets = analyze_deep_targets(sis_data, "Wisconsin")
         print("SIS situational receiving data loaded successfully")
+        print("SIS deep target data loaded successfully")
     except Exception as e:
         print(f"Warning: Could not load SIS data: {e}")
         wash_situational = {
@@ -79,6 +83,14 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             '3rd_down': {'total': {}, 'by_week': {}, 'last_3_games': {}, 'players': []},
             'redzone': {'total': {}, 'by_week': {}, 'last_3_games': {}, 'players': []},
             'game_mapping': {}
+        }
+        wash_deep_targets = {
+            'passing': {'total': {}, 'by_game': {}, 'last_3_games': {}, 'big_ten_rank': None},
+            'receiving': {'total': {}, 'by_game': {}, 'last_3_games': {}, 'players': []}
+        }
+        wisc_deep_targets = {
+            'passing': {'total': {}, 'by_game': {}, 'last_3_games': {}, 'big_ten_rank': None},
+            'receiving': {'total': {}, 'by_game': {}, 'last_3_games': {}, 'players': []}
         }
     
     # Serialize all analysis data for JavaScript
@@ -92,6 +104,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             'specialteams': wash_st,
             'redzone': wash_redzone,
             'situational': wash_situational,
+            'deep_targets': wash_deep_targets,
             'games': washington_games,
             'all_plays': washington_data['all_plays']
         },
@@ -104,6 +117,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             'specialteams': wisc_st,
             'redzone': wisc_redzone,
             'situational': wisc_situational,
+            'deep_targets': wisc_deep_targets,
             'games': wisconsin_games,
             'all_plays': wisconsin_data['all_plays']
         },
@@ -970,6 +984,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 <li><a href="#specialTeamsSection">Special Teams</a></li>
                 <li><a href="#redZoneSection">Red Zone / Green Zone</a></li>
                 <li><a href="#situationalReceivingSection">Situational Receiving</a></li>
+                <li><a href="#deepTargetSection">Deep Target Analysis</a></li>
                 <li><a href="#allPlaysSection">All Plays Browser</a></li>
             </ul>
             
@@ -1594,6 +1609,80 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             <th>TDs</th>
                             <th>Yards</th>
                             <th>Big Ten Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Deep Target Analysis (SIS Data) -->
+        <div class="section sis-section" id="deepTargetSection">
+            <h2>Deep Target Analysis (20+ Air Yards) <span class="sis-badge">SIS</span></h2>
+            <div class="definition-box">
+                <p><strong>Definition:</strong> Deep targets are pass attempts with 20 or more air yards. This section analyzes both passing attempts and receiving targets for deep ball plays.</p>
+            </div>
+            
+            <!-- Combined Summary -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.4em;">Deep Target Summary</h3>
+                <div id="deepTargetSummary"></div>
+            </div>
+            
+            <!-- Passing Charts -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.4em;">Deep Ball Passing</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div class="chart-container">
+                        <canvas id="deepPassingChartWash"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="deepPassingChartWisc"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Receiving Charts -->
+            <div style="margin-top: 50px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.4em;">Deep Ball Receiving</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div class="chart-container">
+                        <canvas id="deepReceivingChartWash"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="deepReceivingChartWisc"></canvas>
+                    </div>
+                </div>
+                <h3 style="margin-top: 30px; color: #4a90e2;">Washington</h3>
+                <table id="deepReceivingTableWash" class="display">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Opponent</th>
+                            <th>Player</th>
+                            <th>Targets</th>
+                            <th>Receptions</th>
+                            <th>Reception %</th>
+                            <th>Yards</th>
+                            <th>Air Yards</th>
+                            <th>TDs</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <h3 style="margin-top: 30px; color: #c41e3a;">Wisconsin</h3>
+                <table id="deepReceivingTableWisc" class="display">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Opponent</th>
+                            <th>Player</th>
+                            <th>Targets</th>
+                            <th>Receptions</th>
+                            <th>Reception %</th>
+                            <th>Yards</th>
+                            <th>Air Yards</th>
+                            <th>TDs</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -4832,6 +4921,483 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }}
         }}
         
+        function filterDeepTargets(deepTargetData, filters) {{
+            // Filter deep target data based on filters
+            // Returns filtered copy of the data structure
+            if (!deepTargetData) return null;
+            
+            // Check if any filters are actually applied
+            const hasFilters = filters.conference_only || filters.non_conference_only || 
+                              filters.power4_only || filters.last_3_games;
+            
+            // If no filters, return original data
+            if (!hasFilters) {{
+                return deepTargetData;
+            }}
+            
+            const filtered = JSON.parse(JSON.stringify(deepTargetData)); // Deep copy
+            
+            // Helper function to filter by_game data
+            // For passing data, we need to match it to receiving data to get enrichment fields
+            function filterByGame(byGame, isPassing, receivingByGame) {{
+                if (!byGame) return byGame;
+                
+                const filteredByGame = {{}};
+                let filteredTotal = isPassing ? 
+                    {{ attempts: 0, completions: 0, yards: 0, touchdowns: 0, interceptions: 0 }} :
+                    {{ targets: 0, receptions: 0, yards: 0, touchdowns: 0 }};
+                const filteredLast3Games = [];
+                
+                // Get last 3 game IDs if needed (use receiving data which has game_id)
+                let last3GameIds = [];
+                if (filters.last_3_games && receivingByGame) {{
+                    const allGames = Object.entries(receivingByGame)
+                        .map(([key, data]) => ({{
+                            week: data.week || parseInt(key.replace('Week', '').split('_')[0]) || 0,
+                            game_id: data.game_id,
+                            key: key
+                        }}))
+                        .filter(g => g.game_id)
+                        .sort((a, b) => a.week - b.week);
+                    last3GameIds = allGames.slice(-3).map(g => g.game_id);
+                }}
+                
+                // Filter games
+                for (const [gameKey, gameData] of Object.entries(byGame)) {{
+                    let include = true;
+                    
+                    // For passing data, get enrichment fields from matching receiving game
+                    let enrichmentData = null;
+                    if (isPassing && receivingByGame && receivingByGame[gameKey]) {{
+                        enrichmentData = receivingByGame[gameKey];
+                    }} else if (!isPassing) {{
+                        enrichmentData = gameData; // Receiving data has enrichment fields
+                    }}
+                    
+                    // Filter by conference/non-conference/power4
+                    // Only apply filters if we have enrichment data, otherwise include the game
+                    if (enrichmentData) {{
+                        if (filters.conference_only) {{
+                            include = include && enrichmentData.is_conference === true;
+                        }} else if (filters.non_conference_only) {{
+                            include = include && enrichmentData.is_conference === false;
+                        }} else if (filters.power4_only) {{
+                            include = include && enrichmentData.is_power4_opponent === true;
+                        }}
+                        
+                        // Filter by last 3 games
+                        if (filters.last_3_games) {{
+                            include = include && last3GameIds.includes(enrichmentData.game_id);
+                        }}
+                    }}
+                    // If no enrichment data but filters are active, we can't determine if it should be included
+                    // For now, exclude it to be safe (this shouldn't happen if data is properly enriched)
+                    
+                    if (include) {{
+                        filteredByGame[gameKey] = gameData;
+                        filteredLast3Games.push(gameData);
+                        
+                        // Aggregate totals
+                        if (isPassing) {{
+                            filteredTotal.attempts += gameData.attempts || 0;
+                            filteredTotal.completions += gameData.completions || 0;
+                            filteredTotal.yards += gameData.yards || 0;
+                            filteredTotal.touchdowns += gameData.touchdowns || 0;
+                            filteredTotal.interceptions += gameData.interceptions || 0;
+                        }} else {{
+                            filteredTotal.targets += gameData.targets || 0;
+                            filteredTotal.receptions += gameData.receptions || 0;
+                            filteredTotal.yards += gameData.yards || 0;
+                            filteredTotal.touchdowns += gameData.touchdowns || 0;
+                        }}
+                    }}
+                }}
+                
+                // Calculate last 3 games stats
+                filteredLast3Games.sort((a, b) => (a.week || 0) - (b.week || 0));
+                const last3 = filteredLast3Games.slice(-3);
+                
+                const last3Stats = isPassing ? 
+                    {{
+                        attempts: last3.reduce((sum, g) => sum + (g.attempts || 0), 0),
+                        completions: last3.reduce((sum, g) => sum + (g.completions || 0), 0),
+                        yards: last3.reduce((sum, g) => sum + (g.yards || 0), 0),
+                        touchdowns: last3.reduce((sum, g) => sum + (g.touchdowns || 0), 0),
+                        interceptions: last3.reduce((sum, g) => sum + (g.interceptions || 0), 0)
+                    }} :
+                    {{
+                        targets: last3.reduce((sum, g) => sum + (g.targets || 0), 0),
+                        receptions: last3.reduce((sum, g) => sum + (g.receptions || 0), 0),
+                        yards: last3.reduce((sum, g) => sum + (g.yards || 0), 0),
+                        touchdowns: last3.reduce((sum, g) => 
+                            sum + (g.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0)
+                    }};
+                
+                return {{
+                    total: filteredTotal,
+                    by_game: filteredByGame,
+                    last_3_games: last3Stats,
+                    big_ten_rank: isPassing ? (deepTargetData.passing?.big_ten_rank || null) : undefined, // Preserve rank if passing
+                    players: isPassing ? undefined : aggregateReceivingPlayers(filteredByGame)
+                }};
+            }}
+            
+            // Helper to aggregate receiving players across filtered games
+            function aggregateReceivingPlayers(byGame) {{
+                const playerStats = {{}};
+                for (const gameData of Object.values(byGame)) {{
+                    for (const player of gameData.players || []) {{
+                        const name = player.player || 'Unknown';
+                        if (!playerStats[name]) {{
+                            playerStats[name] = {{
+                                player: name,
+                                targets: 0,
+                                receptions: 0,
+                                yards: 0,
+                                touchdowns: 0,
+                                air_yards: 0
+                            }};
+                        }}
+                        playerStats[name].targets += player.targets || 0;
+                        playerStats[name].receptions += player.receptions || 0;
+                        playerStats[name].yards += player.yards || 0;
+                        playerStats[name].touchdowns += player.touchdowns || 0;
+                        playerStats[name].air_yards += player.air_yards || 0;
+                    }}
+                }}
+                return Object.values(playerStats).sort((a, b) => b.targets - a.targets);
+            }}
+            
+            // Filter passing and receiving
+            // Pass receiving by_game to filterByGame so passing can use enrichment fields
+            if (filtered.passing && filtered.receiving) {{
+                filtered.passing = filterByGame(filtered.passing.by_game, true, filtered.receiving.by_game);
+            }}
+            if (filtered.receiving) {{
+                filtered.receiving = filterByGame(filtered.receiving.by_game, false, null);
+            }}
+            
+            return filtered;
+        }}
+        
+        function populateDeepTargets() {{
+            // Use filtered data if available, otherwise use original
+            const wash = allData.washington.deep_targets_filtered || allData.washington.deep_targets;
+            const wisc = allData.wisconsin.deep_targets_filtered || allData.wisconsin.deep_targets;
+            
+            if (!wash || !wisc) {{
+                console.warn('Deep target data not available');
+                return;
+            }}
+            
+            // Combined Summary (unique cards only)
+            const washPassing = wash.passing;
+            const wiscPassing = wisc.passing;
+            const washReceiving = wash.receiving;
+            const wiscReceiving = wisc.receiving;
+            const combinedSummary = `
+                <div class="team-comparison">
+                    <div class="team-section washington">
+                        <h3>Washington</h3>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Pass Attempts</h3><div class="value">${{washPassing.total.attempts || 0}}</div></div>
+                            <div class="summary-card"><h3>Completions</h3><div class="value">${{washPassing.total.completions || 0}}</div></div>
+                            <div class="summary-card"><h3>Completion %</h3><div class="value">${{washPassing.total.attempts > 0 ? (washPassing.total.completions / washPassing.total.attempts * 100).toFixed(1) : 0}}%</div></div>
+                            <div class="summary-card"><h3>Yards</h3><div class="value">${{washPassing.total.yards || 0}}</div></div>
+                            <div class="summary-card"><h3>TDs</h3><div class="value">${{washPassing.total.touchdowns || 0}}</div></div>
+                            <div class="summary-card"><h3>INTs</h3><div class="value">${{washPassing.total.interceptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Attempts</h3><div class="value">${{washPassing.last_3_games.attempts || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Completions</h3><div class="value">${{washPassing.last_3_games.completions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 TDs</h3><div class="value">${{washReceiving.last_3_games.touchdowns || 0}}</div></div>
+                        </div>
+                    </div>
+                    <div class="team-section wisconsin">
+                        <h3>Wisconsin</h3>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Pass Attempts</h3><div class="value">${{wiscPassing.total.attempts || 0}}</div></div>
+                            <div class="summary-card"><h3>Completions</h3><div class="value">${{wiscPassing.total.completions || 0}}</div></div>
+                            <div class="summary-card"><h3>Completion %</h3><div class="value">${{wiscPassing.total.attempts > 0 ? (wiscPassing.total.completions / wiscPassing.total.attempts * 100).toFixed(1) : 0}}%</div></div>
+                            <div class="summary-card"><h3>Yards</h3><div class="value">${{wiscPassing.total.yards || 0}}</div></div>
+                            <div class="summary-card"><h3>TDs</h3><div class="value">${{wiscPassing.total.touchdowns || 0}}</div></div>
+                            <div class="summary-card"><h3>INTs</h3><div class="value">${{wiscPassing.total.interceptions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Attempts</h3><div class="value">${{wiscPassing.last_3_games.attempts || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Completions</h3><div class="value">${{wiscPassing.last_3_games.completions || 0}}</div></div>
+                            <div class="summary-card"><h3>Last 3 TDs</h3><div class="value">${{wiscReceiving.last_3_games.touchdowns || 0}}</div></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('deepTargetSummary').innerHTML = combinedSummary;
+            
+            // Passing Charts - Attempts by Week (sorted by week)
+            const washPassingGames = Object.entries(washPassing.by_game || {{}})
+                .map(([key, data]) => ({{
+                    week: data.week || parseInt(key.replace('Week', '').split('_')[0]) || 0,
+                    opponent: data.opponent || key.replace('Week', '').split('_').slice(1).join(' ').replace(/_/g, ' ') || '',
+                    attempts: data.attempts || 0,
+                    completions: data.completions || 0
+                }}))
+                .sort((a, b) => a.week - b.week);
+            
+            const washPassingWeeks = washPassingGames.map(g => `Week ${{g.week}}`);
+            const washPassingAttempts = washPassingGames.map(g => g.attempts);
+            const washPassingCompletions = washPassingGames.map(g => g.completions);
+            const washPassingOpponents = washPassingGames.map(g => g.opponent);
+            
+            const wiscPassingGames = Object.entries(wiscPassing.by_game || {{}})
+                .map(([key, data]) => ({{
+                    week: data.week || parseInt(key.replace('Week', '').split('_')[0]) || 0,
+                    opponent: data.opponent || key.replace('Week', '').split('_').slice(1).join(' ').replace(/_/g, ' ') || '',
+                    attempts: data.attempts || 0,
+                    completions: data.completions || 0
+                }}))
+                .sort((a, b) => a.week - b.week);
+            
+            const wiscPassingWeeks = wiscPassingGames.map(g => `Week ${{g.week}}`);
+            const wiscPassingAttempts = wiscPassingGames.map(g => g.attempts);
+            const wiscPassingCompletions = wiscPassingGames.map(g => g.completions);
+            const wiscPassingOpponents = wiscPassingGames.map(g => g.opponent);
+            
+            // Washington passing chart
+            const ctxPassWash = document.getElementById('deepPassingChartWash').getContext('2d');
+            if (charts.deepPassingWash) charts.deepPassingWash.destroy();
+            charts.deepPassingWash = new Chart(ctxPassWash, {{
+                type: 'bar',
+                data: {{
+                    labels: washPassingWeeks,
+                    datasets: [{{
+                        label: 'Attempts',
+                        data: washPassingAttempts,
+                        backgroundColor: 'rgba(74, 144, 226, 0.6)',
+                        borderColor: 'rgba(74, 144, 226, 1)',
+                        borderWidth: 1
+                    }}, {{
+                        label: 'Completions',
+                        data: washPassingCompletions,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Washington - Deep Ball Attempts by Week', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }},
+                        tooltip: {{
+                            callbacks: {{
+                                title: function(context) {{
+                                    const index = context[0].dataIndex;
+                                    const opponent = washPassingOpponents[index] || '';
+                                    return `Week ${{washPassingGames[index].week}}${{opponent ? ' vs ' + opponent : ''}}`;
+                                }},
+                                label: function(context) {{
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y || 0;
+                                    return `${{label}}: ${{value}}`;
+                                }}
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        y: {{ beginAtZero: true, ticks: {{ stepSize: 1 }} }}
+                    }}
+                }}
+            }});
+            
+            // Wisconsin passing chart
+            const ctxPassWisc = document.getElementById('deepPassingChartWisc').getContext('2d');
+            if (charts.deepPassingWisc) charts.deepPassingWisc.destroy();
+            charts.deepPassingWisc = new Chart(ctxPassWisc, {{
+                type: 'bar',
+                data: {{
+                    labels: wiscPassingWeeks,
+                    datasets: [{{
+                        label: 'Attempts',
+                        data: wiscPassingAttempts,
+                        backgroundColor: 'rgba(196, 30, 58, 0.6)',
+                        borderColor: 'rgba(196, 30, 58, 1)',
+                        borderWidth: 1
+                    }}, {{
+                        label: 'Completions',
+                        data: wiscPassingCompletions,
+                        backgroundColor: 'rgba(220, 53, 69, 0.6)',
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Wisconsin - Deep Ball Attempts by Week', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'top' }},
+                        tooltip: {{
+                            callbacks: {{
+                                title: function(context) {{
+                                    const index = context[0].dataIndex;
+                                    const opponent = wiscPassingOpponents[index] || '';
+                                    return `Week ${{wiscPassingGames[index].week}}${{opponent ? ' vs ' + opponent : ''}}`;
+                                }},
+                                label: function(context) {{
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y || 0;
+                                    return `${{label}}: ${{value}}`;
+                                }}
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        y: {{ beginAtZero: true, ticks: {{ stepSize: 1 }} }}
+                    }}
+                }}
+            }});
+            
+            
+            // Receiving Charts - Target Distribution by Player
+            const washPlayerTargets = {{}};
+            const wiscPlayerTargets = {{}};
+            
+            for (const player of washReceiving.players || []) {{
+                const name = player.player || 'Unknown';
+                washPlayerTargets[name] = (washPlayerTargets[name] || 0) + (player.targets || 0);
+            }}
+            
+            for (const player of wiscReceiving.players || []) {{
+                const name = player.player || 'Unknown';
+                wiscPlayerTargets[name] = (wiscPlayerTargets[name] || 0) + (player.targets || 0);
+            }}
+            
+            const washTopPlayers = Object.entries(washPlayerTargets)
+                .map(([name, targets]) => [name, targets])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            const wiscTopPlayers = Object.entries(wiscPlayerTargets)
+                .map(([name, targets]) => [name, targets])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            
+            // Washington receiving pie chart
+            const ctxRecWash = document.getElementById('deepReceivingChartWash').getContext('2d');
+            if (charts.deepReceivingWash) charts.deepReceivingWash.destroy();
+            const washColors = [
+                'rgba(74, 144, 226, 0.8)', 'rgba(74, 144, 226, 0.6)', 'rgba(74, 144, 226, 0.4)',
+                'rgba(54, 162, 235, 0.8)', 'rgba(54, 162, 235, 0.6)', 'rgba(54, 162, 235, 0.4)',
+                'rgba(153, 102, 255, 0.8)', 'rgba(153, 102, 255, 0.6)'
+            ];
+            charts.deepReceivingWash = new Chart(ctxRecWash, {{
+                type: 'pie',
+                data: {{
+                    labels: washTopPlayers.map(p => p[0]),
+                    datasets: [{{
+                        data: washTopPlayers.map(p => p[1]),
+                        backgroundColor: washColors.slice(0, washTopPlayers.length),
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Washington - Deep Target Distribution', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'right' }}
+                    }}
+                }}
+            }});
+            
+            // Wisconsin receiving pie chart
+            const ctxRecWisc = document.getElementById('deepReceivingChartWisc').getContext('2d');
+            if (charts.deepReceivingWisc) charts.deepReceivingWisc.destroy();
+            const wiscColors = [
+                'rgba(196, 30, 58, 0.8)', 'rgba(196, 30, 58, 0.6)', 'rgba(196, 30, 58, 0.4)',
+                'rgba(220, 53, 69, 0.8)', 'rgba(220, 53, 69, 0.6)', 'rgba(220, 53, 69, 0.4)',
+                'rgba(255, 99, 132, 0.8)', 'rgba(255, 99, 132, 0.6)'
+            ];
+            charts.deepReceivingWisc = new Chart(ctxRecWisc, {{
+                type: 'pie',
+                data: {{
+                    labels: wiscTopPlayers.map(p => p[0]),
+                    datasets: [{{
+                        data: wiscTopPlayers.map(p => p[1]),
+                        backgroundColor: wiscColors.slice(0, wiscTopPlayers.length),
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        title: {{ display: true, text: 'Wisconsin - Deep Target Distribution', font: {{ size: 14 }} }},
+                        legend: {{ display: true, position: 'right' }}
+                    }}
+                }}
+            }});
+            
+            // Receiving Tables
+            const washRecTableData = [];
+            for (const [gameKey, gameData] of Object.entries(washReceiving.by_game || {{}})) {{
+                for (const player of gameData.players || []) {{
+                    const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
+                    washRecTableData.push([
+                        gameData.week || '', gameData.opponent || '', player.player || 'Unknown',
+                        player.targets || 0, player.receptions || 0, recPct + '%',
+                        player.yards || 0, player.air_yards || 0, player.touchdowns || 0
+                    ]);
+                }}
+            }}
+            washRecTableData.sort((a, b) => {{
+                if (a[0] !== b[0]) return (a[0] || 0) - (b[0] || 0);
+                return (b[3] || 0) - (a[3] || 0);
+            }});
+            
+            const wiscRecTableData = [];
+            for (const [gameKey, gameData] of Object.entries(wiscReceiving.by_game || {{}})) {{
+                for (const player of gameData.players || []) {{
+                    const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
+                    wiscRecTableData.push([
+                        gameData.week || '', gameData.opponent || '', player.player || 'Unknown',
+                        player.targets || 0, player.receptions || 0, recPct + '%',
+                        player.yards || 0, player.air_yards || 0, player.touchdowns || 0
+                    ]);
+                }}
+            }}
+            wiscRecTableData.sort((a, b) => {{
+                if (a[0] !== b[0]) return (a[0] || 0) - (b[0] || 0);
+                return (b[3] || 0) - (a[3] || 0);
+            }});
+            
+            const washRecConfig = {{
+                data: washRecTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                    {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                    {{ title: 'Yards' }}, {{ title: 'Air Yards' }}, {{ title: 'TDs' }}
+                ]
+            }};
+            safeUpdateDataTable('#deepReceivingTableWash', washRecTableData, washRecConfig);
+            
+            const wiscRecConfig = {{
+                data: wiscRecTableData,
+                paging: false,
+                searching: false,
+                scrollY: '400px',
+                scrollCollapse: true,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
+                    {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
+                    {{ title: 'Yards' }}, {{ title: 'Air Yards' }}, {{ title: 'TDs' }}
+                ]
+            }};
+            safeUpdateDataTable('#deepReceivingTableWisc', wiscRecTableData, wiscRecConfig);
+        }}
+        
         function populateAllSections() {{
             populateMiddleEight();
             populateExplosivePlays();
@@ -4841,6 +5407,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             populateSpecialTeams();
             populateRedZone();
             populateSituationalReceiving();
+            populateDeepTargets();
             populateAllPlaysBrowser();
         }}
         
@@ -5607,6 +6174,10 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washSituationalFiltered = filterSituationalReceiving(originalAllData.washington.situational, filters);
             const wiscSituationalFiltered = filterSituationalReceiving(originalAllData.wisconsin.situational, filters);
             
+            // Filter SIS deep target data
+            const washDeepTargetsFiltered = filterDeepTargets(originalAllData.washington.deep_targets, filters);
+            const wiscDeepTargetsFiltered = filterDeepTargets(originalAllData.wisconsin.deep_targets, filters);
+            
             // Temporarily replace allData with filtered data
             allData.washington = washFilteredData;
             allData.wisconsin = wiscFilteredData;
@@ -5617,6 +6188,12 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             }}
             if (wiscSituationalFiltered) {{
                 allData.wisconsin.situational_filtered = wiscSituationalFiltered;
+            }}
+            if (washDeepTargetsFiltered) {{
+                allData.washington.deep_targets_filtered = washDeepTargetsFiltered;
+            }}
+            if (wiscDeepTargetsFiltered) {{
+                allData.wisconsin.deep_targets_filtered = wiscDeepTargetsFiltered;
             }}
             
             // Re-populate all sections with filtered data

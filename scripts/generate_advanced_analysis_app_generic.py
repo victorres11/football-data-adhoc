@@ -4471,6 +4471,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             if (!hasEnrichment) {{
                 console.warn('Situational receiving data does not have enrichment fields (is_conference, is_power4_opponent, game_id). Cannot apply filters. Returning unfiltered data.');
+                // Return original data structure, not null
                 return situationalData;
             }}
             

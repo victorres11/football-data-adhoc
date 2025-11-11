@@ -52,7 +52,36 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
     
     # Set default SIS data file if not provided
     if sis_data_file is None:
-        sis_data_file = f"{data_dir}/sis-data/{team1_key}_{team2_key}_analysis_{year}.json"
+        # Sort team keys alphabetically for consistent file naming
+        sorted_keys = sorted([team1_key, team2_key])
+        key1, key2 = sorted_keys[0], sorted_keys[1]
+        
+        # Resolve data_dir path to handle relative paths correctly
+        data_dir_path = Path(data_dir)
+        if not data_dir_path.is_absolute():
+            # Try from current directory first, then parent
+            if not data_dir_path.exists():
+                data_dir_path = Path("..") / data_dir
+        
+        # Try main file first, then fallback to _partial suffix
+        base_file = data_dir_path / "sis-data" / f"{key1}_{key2}_analysis_{year}.json"
+        partial_file = data_dir_path / "sis-data" / f"{key1}_{key2}_analysis_{year}_partial.json"
+        
+        # Check which file exists
+        if base_file.exists():
+            sis_data_file = str(base_file)
+        elif partial_file.exists():
+            sis_data_file = str(partial_file)
+        else:
+            # Try the other order (team2_team1) in case files weren't sorted
+            alt_base_file = data_dir_path / "sis-data" / f"{key2}_{key1}_analysis_{year}.json"
+            alt_partial_file = data_dir_path / "sis-data" / f"{key2}_{key1}_analysis_{year}_partial.json"
+            if alt_base_file.exists():
+                sis_data_file = str(alt_base_file)
+            elif alt_partial_file.exists():
+                sis_data_file = str(alt_partial_file)
+            else:
+                sis_data_file = str(base_file)  # Will fail with clear error message
     
     # Load data for both teams
     print(f"Loading team data for {team_name1} and {team_name2}...")
@@ -388,7 +417,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .team-section.{team2_key} {{
-            border-left-color: #DC143C;
+            border-left-color: #282828;
         }}
         
         .team-section h3 {{
@@ -454,7 +483,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .team-header-browser.{team2_key} {{
-            background: #DC143C;
+            background: #282828;
         }}
         
         .game-section-browser {{
@@ -1024,6 +1053,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <li><a href="#postTurnoverSection">Post Turnover</a></li>
                 <li><a href="#specialTeamsSection">Special Teams</a></li>
                 <li><a href="#redZoneSection">Red Zone / Green Zone</a></li>
+                <li><a href="#iowaLikeOpponentsSection">🚨 USC vs Iowa-Like Opponents</a></li>
                 <li><a href="#situationalReceivingSection">Situational Receiving</a></li>
                 <li><a href="#deepTargetSection">Deep Target Analysis</a></li>
                 <li><a href="#allPlaysSection">All Plays Browser</a></li>
@@ -1103,13 +1133,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             <div class="definition-box">
                 <p><strong>Definition:</strong> The "Middle 8" refers to the final 4 minutes of the first half and the first 4 minutes of the second half.</p>
             </div>
-            <div class="insight-box">
-                <h4>Key Insights:</h4>
-                <ul>
-                    <li><strong>Performance Gap:</strong> Both teams show decreased performance during Middle 8 periods compared to regular game time.</li>
-                    <li><strong>Explosive Rate:</strong> Teams show varying explosive play rates during Middle 8 periods.</li>
-                </ul>
-            </div>
             <div id="middleEightSummary"></div>
             <div class="chart-container">
                 <canvas id="middleEightChart"></canvas>
@@ -1134,7 +1157,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <table id="middleEightTableWisc" class="display">
                 <thead>
                     <tr>
@@ -1158,14 +1181,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             <h2>Explosive Plays Analysis</h2>
             <div class="definition-box">
                 <p><strong>Definition:</strong> Explosive plays are runs of 15+ yards or passes of 20+ yards while on offense.</p>
-            </div>
-            <div class="insight-box">
-                <h4>Key Insights:</h4>
-                <ul>
-                    <li><strong>Drive Conversion:</strong> Teams show varying rates of converting explosive plays into scores.</li>
-                    <li><strong>Quarterly Distribution:</strong> Explosive play rates vary by quarter for both teams.</li>
-                    <li><strong>2nd & Long Efficiency:</strong> Teams show different efficiency levels on difficult 2nd down situations.</li>
-                </ul>
             </div>
             <div id="explosivePlaysSummary"></div>
             <div class="chart-container">
@@ -1203,7 +1218,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <table id="explosivePlaysTableWisc" class="display">
                 <thead>
                     <tr>
@@ -1228,12 +1243,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             <h2>Penalty Analysis</h2>
             <div class="definition-box">
                 <p><strong>Definition:</strong> Penalties can significantly impact field position, drive outcomes, and game flow. This analysis tracks all penalties (both accepted and declined) to identify patterns in penalty frequency, types, and timing. High penalty counts often correlate with discipline issues and can cost teams field position and scoring opportunities.</p>
-            </div>
-            <div class="insight-box">
-                <h4>Key Insights:</h4>
-                <ul>
-                    <li><strong>Penalty-Explosive Correlation:</strong> Teams show varying correlations between penalties and explosive plays on the same drives.</li>
-                </ul>
             </div>
             <div id="penaltySummary"></div>
             <div class="chart-container">
@@ -1278,7 +1287,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <table id="penaltyTableWisc" class="display">
                 <thead>
                     <tr>
@@ -1301,13 +1310,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             <h2>4th Down Decision Analysis</h2>
             <div class="definition-box">
                 <p><strong>Definition:</strong> This analysis focuses on "Go For It" 4th down decisions (excluding punts and field goal attempts).</p>
-            </div>
-            <div class="insight-box">
-                <h4>Key Insights:</h4>
-                <ul>
-                    <li><strong>4th & 1 Dominance:</strong> Teams show varying efficiency levels on critical 4th & 1 situations.</li>
-                    <li><strong>Situational Efficiency:</strong> Teams perform differently across various down/distance situations.</li>
-                </ul>
             </div>
             <div id="fourthDownSummary"></div>
             <div class="chart-container">
@@ -1333,7 +1335,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <table id="fourthDownTableWisc" class="display">
                 <thead>
                     <tr>
@@ -1355,13 +1357,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         <!-- Post Turnover Analysis -->
         <div class="section" id="postTurnoverSection">
             <h2>Post Turnover Analysis</h2>
-            <div class="insight-box">
-                <h4>Key Insights:</h4>
-                <ul>
-                    <li><strong>1st Quarter Turnover Problem:</strong> Teams show varying turnover rates in the first quarter, which can indicate game-opening script execution issues.</li>
-                    <li><strong>Field Position:</strong> Teams show different patterns in where turnovers occur on the field.</li>
-                </ul>
-            </div>
             <div id="postTurnoverSummary"></div>
             <div class="chart-container">
                 <canvas id="postTurnoverChart"></canvas>
@@ -1384,7 +1379,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <table id="postTurnoverTableWisc" class="display">
                 <thead>
                     <tr>
@@ -1407,13 +1402,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             <div class="definition-box">
                 <p><strong>Definition:</strong> Special teams encompasses kickoffs, punts, field goals, and returns. This analysis focuses on explosive special teams plays (35+ yard kick returns, 20+ yard punt returns) and explosive returns allowed by opponents. Special teams can swing field position and momentum, making it a critical phase of the game that often determines close contests.</p>
             </div>
-            <div class="insight-box">
-                <h4>Key Insights:</h4>
-                <ul>
-                    <li><strong>Red Zone Efficiency:</strong> Teams show varying performance levels in the red zone, indicating different play-calling effectiveness in compressed space.</li>
-                    <li><strong>Own Territory Struggles:</strong> Teams show different performance levels in their own 21-40 yard line zone.</li>
-                </ul>
-            </div>
             <div id="specialTeamsSummary"></div>
             <div class="chart-container">
                 <canvas id="specialTeamsTrendChart"></canvas>
@@ -1433,7 +1421,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <table id="specialTeamsTableWisc" class="display">
                 <thead>
                     <tr>
@@ -1503,7 +1491,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-            <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <h4 style="color: #b71c1c; margin-top: 20px;">Tight Red Zone Plays (10 & In)</h4>
             <table id="tightRedZoneTableWisc" class="display">
                 <thead>
@@ -1548,6 +1536,73 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             </table>
         </div>
         
+        <!-- USC vs Iowa-Like Opponents Analysis -->
+        <div class="section" id="iowaLikeOpponentsSection">
+            <h2>🚨 USC vs Iowa-Like Opponents Analysis</h2>
+            <div class="definition-box">
+                <p><strong>Critical Analysis:</strong> USC has played 3 opponents with defensive profiles similar to Iowa: <strong>Michigan, Notre Dame, and Nebraska</strong>. This analysis reveals how USC performs against physical, turnover-forcing defenses similar to Iowa's style.</p>
+            </div>
+            <div class="insight-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                <h4>⚠️ Key Finding:</h4>
+                <p><strong>USC's performance DECLINES against Iowa-like defenses:</strong></p>
+                <ul>
+                    <li><strong>Turnovers:</strong> 2.3/game vs Iowa-like (vs 0.8/game vs other Power 4) - <strong>+188% increase</strong></li>
+                    <li><strong>Turnover Margin:</strong> -0.3/game vs Iowa-like (vs +1.25/game vs other Power 4) - <strong>-1.55 swing</strong></li>
+                    <li><strong>3rd Down %:</strong> 26.2% vs Iowa-like (vs 36.1% vs other Power 4) - <strong>-9.9% decline</strong></li>
+                    <li><strong>4th Down %:</strong> 16.7% vs Iowa-like (vs 64.7% vs other Power 4) - <strong>-48% decline</strong></li>
+                    <li><strong>Middle 8:</strong> 7.27 yds/play vs Iowa-like (vs 11.3 yds/play vs other Power 4) - <strong>-36% decline</strong></li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Note:</strong> Turnover statistics count only fumbles lost and interceptions thrown. Turnovers on downs and plays marked "NO PLAY" are excluded.</p>
+            </div>
+            
+            <h3 style="margin-top: 30px; color: #8B0000;">Game-by-Game Breakdown</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div class="summary-card" style="background-color: #d4edda; border-left: 4px solid #28a745;">
+                    <h4>vs Michigan ✓</h4>
+                    <p><strong>2 TOs committed, 3 forced</strong></p>
+                    <p>TO margin: <strong>+1</strong></p>
+                    <p>Result: Positive turnover margin</p>
+                </div>
+                <div class="summary-card" style="background-color: #f8d7da; border-left: 4px solid #dc3545;">
+                    <h4>vs Notre Dame 💀</h4>
+                    <p><strong>4 TOs committed, 1 forced</strong></p>
+                    <p>TO margin: <strong>-3</strong></p>
+                    <p>Result: <strong>OUTLIER GAME</strong> - worst performance</p>
+                </div>
+                <div class="summary-card" style="background-color: #d4edda; border-left: 4px solid #28a745;">
+                    <h4>vs Nebraska ✓</h4>
+                    <p><strong>1 TO committed, 2 forced</strong></p>
+                    <p>TO margin: <strong>+1</strong></p>
+                    <p>Result: Positive turnover margin</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;"><strong>Notable:</strong> 0/16 on 3rd down (0.0%), 0/3 on 4th down</p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 40px; color: #8B0000;">Revised Prediction for USC vs Iowa</h3>
+            <div class="insight-box" style="background-color: #e7f3ff; border-left: 4px solid #0066cc;">
+                <h4>If USC plays like they did vs Iowa-like opponents:</h4>
+                <ul>
+                    <li><strong>Turnovers:</strong> 2-3 (averaging 2.3/game, with Notre Dame being the outlier at 4)</li>
+                    <li><strong>Turnover Margin:</strong> -1 to 0 (averaging -0.3/game, with Notre Dame being the outlier at -3)</li>
+                    <li><strong>3rd Down:</strong> 20-30% (not 31%)</li>
+                    <li><strong>4th Down:</strong> 0-17% success (not 53%)</li>
+                    <li><strong>Middle 8:</strong> 7-8 yds/play (not 9.5)</li>
+                </ul>
+            </div>
+            
+            <div class="insight-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107; margin-top: 20px;">
+                <h4>Revised Bottom Line:</h4>
+                <p>The explosive USC offense that dominates most opponents <strong>struggles</strong> against physical, turnover-forcing defenses like Iowa, but not as dramatically as initially thought. Historical data from Michigan/Notre Dame/Nebraska games shows:</p>
+                <ul>
+                    <li>USC commits 2.3 TOs/game (vs 1.4/game overall)</li>
+                    <li>Slightly negative turnover margin (-0.3/game)</li>
+                    <li><strong>Notre Dame game (4 TOs) is the outlier;</strong> Michigan and Nebraska combined for only 3 TOs</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Iowa wins if they:</strong> Force USC into a Notre Dame-like performance (4+ turnovers)</p>
+                <p><strong>USC wins if they:</strong> Avoid the Notre Dame pattern and play like they did vs Michigan/Nebraska (1-2 TOs, positive margin)</p>
+            </div>
+        </div>
+        
         <!-- Situational Receiving Analysis (SIS Data) -->
         <div class="section sis-section" id="situationalReceivingSection">
             <h2>Situational Receiving Analysis <span class="sis-badge">SIS</span></h2>
@@ -1582,7 +1637,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
-                <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+                <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
                 <table id="thirdDownTableWisc" class="display">
                     <thead>
                         <tr>
@@ -1631,7 +1686,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
-                <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+                <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
                 <table id="redZoneReceivingTableWisc" class="display">
                     <thead>
                         <tr>
@@ -1705,7 +1760,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
-                <h3 style="margin-top: 30px; color: #DC143C;">{team_name2}</h3>
+                <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
                 <table id="deepReceivingTableWisc" class="display">
                     <thead>
                         <tr>
@@ -1982,7 +2037,29 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         function calculateNetPointsByWeek(plays, teamName) {{
-            const turnovers = plays.filter(p => p.turnover === true);
+            // Filter turnovers - only fumbles lost and interceptions thrown
+            // Exclude turnovers on downs and plays with "NO PLAY" in text
+            const turnovers = plays.filter(p => {{
+                if (p.turnover !== true) return false;
+                
+                // Filter out plays with "NO PLAY" in the text
+                const playText = (p.play_text || '').toUpperCase();
+                if (playText.includes('NO PLAY')) return false;
+                
+                // Only count fumbles lost and interceptions thrown
+                // Exclude turnovers on downs
+                const playType = (p.play_type || '').toUpperCase();
+                const isInterception = playType.includes('INTERCEPTION');
+                const isFumble = playType.includes('FUMBLE');
+                const isTurnoverOnDowns = playType.includes('TURNOVER ON DOWNS') ||
+                    (p.down === 4 && playType.includes('TURNOVER') && 
+                     !playType.includes('INTERCEPTION') && !playType.includes('FUMBLE')) ||
+                    playType.includes('DOWNS');
+                
+                // Only include interceptions and fumbles lost, exclude turnovers on downs
+                return (isInterception || isFumble) && !isTurnoverOnDowns;
+            }});
+            
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
             
             const byWeek = {{}};
@@ -1999,21 +2076,40 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 
                 const isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
                 
-                // Find subsequent drive
-                const nextDrivePlays = postTurnoverPlays.filter(p => 
-                    p.game_id === turnover.game_id && p.drive_id !== turnover.drive_id
-                );
-                
+                // Check if the turnover play itself resulted in points (e.g., pick-6, fumble return TD)
                 let drivePoints = 0;
-                nextDrivePlays.forEach(p => {{
-                    if (p.scoring === true) {{
-                        if (p.play_type?.includes('Touchdown')) {{
-                            drivePoints = 7;
-                        }} else if (p.play_type?.includes('Field Goal')) {{
-                            drivePoints = 3;
-                        }}
+                if (turnover.scoring === true) {{
+                    // Check play_type first, then play_text (for pick-6, fumble return TD)
+                    const playType = (turnover.play_type || '').toUpperCase();
+                    const playText = (turnover.play_text || '').toUpperCase();
+                    
+                    // Check for touchdown in play_type or play_text
+                    if (playType.includes('TOUCHDOWN') || playText.includes('TOUCHDOWN')) {{
+                        drivePoints = 7;
+                    }} else if (playType.includes('FIELD GOAL')) {{
+                        drivePoints = 3;
                     }}
-                }});
+                }}
+                
+                // If turnover didn't score, check the subsequent drive
+                if (drivePoints === 0) {{
+                    // Find subsequent drive - look for plays in the next drive after the turnover
+                    const turnoverDriveNumber = turnover.drive_number || 0;
+                    const nextDrivePlays = postTurnoverPlays.filter(p => 
+                        p.game_id === turnover.game_id && 
+                        (p.drive_number === turnoverDriveNumber + 1 || p.drive_number === turnoverDriveNumber)
+                    );
+                    
+                    nextDrivePlays.forEach(p => {{
+                        if (p.scoring === true) {{
+                            if (p.play_type?.includes('Touchdown')) {{
+                                drivePoints = 7;
+                            }} else if (p.play_type?.includes('Field Goal') && drivePoints === 0) {{
+                                drivePoints = 3;
+                            }}
+                        }}
+                    }});
+                }}
                 
                 if (isOurTurnover) {{
                     byWeek[week].pointsAllowed += drivePoints;
@@ -2551,7 +2647,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team2Name,
                             data: [team2.total_points_scored, team2.total_points_allowed, team2.total_net_points],
-                            backgroundColor: 'rgba(220, 20, 60, 0.6)'
+                            backgroundColor: 'rgba(40, 40, 40, 0.6)'
                         }}
                     ]
                 }},
@@ -2582,7 +2678,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: allWeeks,
                     datasets: [
                         {{ label: team1Name + ' Net Points', data: team1NetPointsAllWeeks, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: 'rgba(220, 20, 60, 1)', backgroundColor: 'rgba(220, 20, 60, 0.1)', fill: true }}
+                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -2870,7 +2966,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team2Name,
                             data: [team2.total_explosive_plays, team2.avg_per_game, team2.last_3_games.total],
-                            backgroundColor: 'rgba(220, 20, 60, 0.6)'
+                            backgroundColor: 'rgba(40, 40, 40, 0.6)'
                         }}
                     ]
                 }},
@@ -2947,8 +3043,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team2Name,
                             data: team2Trends.ours,
-                            borderColor: 'rgba(220, 20, 60, 1)',
-                            backgroundColor: 'rgba(220, 20, 60, 0.1)',
+                            borderColor: 'rgba(40, 40, 40, 1)',
+                            backgroundColor: 'rgba(40, 40, 40, 0.1)',
                             fill: true,
                             tension: 0.1
                         }},
@@ -3028,7 +3124,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team2Name,
                             data: [team2.total_runs || 0, team2.total_passes || 0],
-                            backgroundColor: ['rgba(220, 20, 60, 0.6)', 'rgba(220, 20, 60, 0.4)']
+                            backgroundColor: ['rgba(40, 40, 40, 0.6)', 'rgba(40, 40, 40, 0.4)']
                         }},
                         {{
                             label: 'Allowed',
@@ -3169,7 +3265,50 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </div>
                 </div>
             `;
-            document.getElementById('penaltySummary').innerHTML = summaryHtml;
+            // Calculate Pass Interference drawn by each team
+            // PI drawn = when team is on offense and opponent defense commits PI
+            let team1PIDrawn = 0;
+            let team1PIDrawnYards = 0;
+            let team2PIDrawn = 0;
+            let team2PIDrawnYards = 0;
+            
+            team1Plays.forEach(p => {{
+                const penaltyType = (p.penalty_type || '').toUpperCase();
+                if ((penaltyType.includes('PASS INTERFERENCE') || penaltyType.includes('PI')) && 
+                    (p.offense || '').toUpperCase() === team1Name.toUpperCase()) {{
+                    team1PIDrawn++;
+                    if (p.penalty_decision === 'accepted') {{
+                        team1PIDrawnYards += Math.abs(p.yards_gained || 0);
+                    }}
+                }}
+            }});
+            
+            team2Plays.forEach(p => {{
+                const penaltyType = (p.penalty_type || '').toUpperCase();
+                if ((penaltyType.includes('PASS INTERFERENCE') || penaltyType.includes('PI')) && 
+                    (p.offense || '').toUpperCase() === team2Name.toUpperCase()) {{
+                    team2PIDrawn++;
+                    if (p.penalty_decision === 'accepted') {{
+                        team2PIDrawnYards += Math.abs(p.yards_gained || 0);
+                    }}
+                }}
+            }});
+            
+            // Add PI drawn note and penalty yards warning to summary
+            const piDrawnNote = `
+                <div class="insight-box" style="background-color: #e7f3ff; border-left: 4px solid #0066cc; margin-top: 20px;">
+                    <h4>Pass Interference Drawn by Offense:</h4>
+                    <p><strong>${{team1Name}}:</strong> ${{team1PIDrawn}} PI penalties drawn (${{team1PIDrawnYards}} yards, ${{(team1PIDrawn / (team1.total_games || 1)).toFixed(1)}}/game)</p>
+                    <p><strong>${{team2Name}}:</strong> ${{team2PIDrawn}} PI penalties drawn (${{team2PIDrawnYards}} yards, ${{(team2PIDrawn / (team2.total_games || 1)).toFixed(1)}}/game)</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;"><em>Note: This counts defensive pass interference penalties committed by opponents when the team was on offense.</em></p>
+                </div>
+                <div class="insight-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107; margin-top: 20px;">
+                    <h4>⚠️ Penalty Yards Note:</h4>
+                    <p style="font-size: 0.95em;">Penalty yards data is currently buggy because the yardage from the play is not separated from the penalty yardage yet. The yardage values shown may include both play yardage and penalty yardage combined.</p>
+                </div>
+            `;
+            
+            document.getElementById('penaltySummary').innerHTML = summaryHtml + piDrawnNote;
             
             const ctx = document.getElementById('penaltyChart').getContext('2d');
             if (charts.penalties) charts.penalties.destroy();
@@ -3179,7 +3318,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['Total', 'Accepted', 'Penalty Yards/G'],
                     datasets: [
                         {{ label: team1Name, data: [team1.total_penalties, team1.accepted, washYardsPerGame], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.total_penalties, team2.accepted, wiscYardsPerGame], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [team2.total_penalties, team2.accepted, wiscYardsPerGame], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
@@ -3206,7 +3345,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: allWeeks,
                     datasets: [
                         {{ label: team1Name + ' Net Yards', data: team1NetYardsAllWeeks, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Net Yards', data: team2NetYardsAllWeeks, borderColor: 'rgba(220, 20, 60, 1)', backgroundColor: 'rgba(220, 20, 60, 0.1)', fill: true }}
+                        {{ label: team2Name + ' Net Yards', data: team2NetYardsAllWeeks, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -3262,7 +3401,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['Q1', 'Q2', 'Q3', 'Q4'],
                     datasets: [
                         {{ label: team1Name, data: [washByQuarter[1], washByQuarter[2], washByQuarter[3], washByQuarter[4]], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [wiscByQuarter[1], wiscByQuarter[2], wiscByQuarter[3], wiscByQuarter[4]], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [wiscByQuarter[1], wiscByQuarter[2], wiscByQuarter[3], wiscByQuarter[4]], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ 
@@ -3277,17 +3416,59 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }});
             
             // Penalty Type Breakdown
-            // Note: The penalty_type in plays already uses penalty_category for holding penalties
-            // (handled in analyzePenalties function), so we just need to use it directly
+            // Use penalty_category for holding penalties to distinguish offensive vs defensive
+            // Otherwise use penalty_type
+            // If penalty_category is missing but penalty_type is "Holding", try to infer from play_text
             const washPenaltyTypes = {{}};
             const wiscPenaltyTypes = {{}};
+            
+            function getDisplayPenaltyType(play, teamName) {{
+                let displayType = play.penalty_type || 'Unknown';
+                
+                // If we have a penalty_category, use it for holding penalties
+                if (play.penalty_category && ['offensive_holding', 'defensive_holding', 'special_teams_holding'].includes(play.penalty_category)) {{
+                    // Convert snake_case to Title Case: "Offensive Holding", "Defensive Holding", "Special Teams Holding"
+                    return play.penalty_category.replace(/_/g, ' ').replace(/\\b\\w/g, function(l) {{ return l.toUpperCase(); }});
+                }}
+                
+                // If penalty_type is "Holding" but no category, determine from offense/defense
+                if (displayType && displayType.toUpperCase().includes('HOLDING')) {{
+                    // First try to infer from play_text (explicit mentions)
+                    const playText = (play.play_text || '').toUpperCase();
+                    if (playText.includes('OFFENSIVE HOLDING') || playText.includes('OFFENSIVE HOLD')) {{
+                        return 'Offensive Holding';
+                    }} else if (playText.includes('DEFENSIVE HOLDING') || playText.includes('DEFENSIVE HOLD')) {{
+                        return 'Defensive Holding';
+                    }} else if (playText.includes('SPECIAL TEAMS HOLDING') || playText.includes('SPECIAL TEAMS HOLD')) {{
+                        return 'Special Teams Holding';
+                    }}
+                    
+                    // If not explicit in play_text, determine by checking if the team was on offense or defense
+                    // Since we're analyzing penalties for a specific team, all penalties in this list
+                    // are committed by that team. So if the team is on offense, it's offensive holding.
+                    // If the team is on defense, it's defensive holding.
+                    const offense = (play.offense || '').toUpperCase();
+                    const teamNameUpper = (teamName || '').toUpperCase();
+                    
+                    if (offense === teamNameUpper) {{
+                        // Team was on offense, so this is offensive holding
+                        return 'Offensive Holding';
+                    }} else {{
+                        // Team was on defense, so this is defensive holding
+                        return 'Defensive Holding';
+                    }}
+                }}
+                
+                return displayType;
+            }}
+            
             team1.plays.forEach(p => {{
-                const type = p.penalty_type || 'Unknown';
-                washPenaltyTypes[type] = (washPenaltyTypes[type] || 0) + 1;
+                const displayType = getDisplayPenaltyType(p, team1Name);
+                washPenaltyTypes[displayType] = (washPenaltyTypes[displayType] || 0) + 1;
             }});
             team2.plays.forEach(p => {{
-                const type = p.penalty_type || 'Unknown';
-                wiscPenaltyTypes[type] = (wiscPenaltyTypes[type] || 0) + 1;
+                const displayType = getDisplayPenaltyType(p, team2Name);
+                wiscPenaltyTypes[displayType] = (wiscPenaltyTypes[displayType] || 0) + 1;
             }});
             
             // Get top penalty types (combine both teams)
@@ -3311,7 +3492,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: topTypes,
                     datasets: [
                         {{ label: team1Name, data: topTypes.map(t => washPenaltyTypes[t] || 0), backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: topTypes.map(t => wiscPenaltyTypes[t] || 0), backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: topTypes.map(t => wiscPenaltyTypes[t] || 0), backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ 
@@ -3348,7 +3529,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['1st Down', '2nd Down', '3rd Down', '4th Down'],
                     datasets: [
                         {{ label: team1Name, data: [washByDown[1], washByDown[2], washByDown[3], washByDown[4]], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [wiscByDown[1], wiscByDown[2], wiscByDown[3], wiscByDown[4]], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [wiscByDown[1], wiscByDown[2], wiscByDown[3], wiscByDown[4]], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ 
@@ -3384,7 +3565,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['First Half', 'Second Half'],
                     datasets: [
                         {{ label: team1Name, data: [washByHalf.first, washByHalf.second], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [wiscByHalf.first, wiscByHalf.second], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [wiscByHalf.first, wiscByHalf.second], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ 
@@ -3506,7 +3687,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['Attempts', 'Conversions', 'Rate %'],
                     datasets: [
                         {{ label: team1Name, data: [team1.total_attempts, team1.total_conversions, team1.conversion_rate], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.total_attempts, team2.total_conversions, team2.conversion_rate], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [team2.total_attempts, team2.total_conversions, team2.conversion_rate], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
@@ -3554,8 +3735,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{ 
                             label: team2Name + ' Conversions', 
                             data: team2ConversionsAllWeeks, 
-                            borderColor: 'rgba(220, 20, 60, 1)', 
-                            backgroundColor: 'rgba(220, 20, 60, 0.1)', 
+                            borderColor: 'rgba(40, 40, 40, 1)', 
+                            backgroundColor: 'rgba(40, 40, 40, 0.1)', 
                             fill: true,
                             borderWidth: 2
                         }},
@@ -3727,7 +3908,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['Team TO', 'Opp TO', 'Pts Scored Off TO', 'Pts Allowed Off TO'],
                     datasets: [
                         {{ label: team1Name, data: [team1.our_turnovers, team1.opponent_turnovers, team1.points_scored_after_opponent_turnovers, -team1.points_allowed_after_our_turnovers], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.our_turnovers, team2.opponent_turnovers, team2.points_scored_after_opponent_turnovers, -team2.points_allowed_after_our_turnovers], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [team2.our_turnovers, team2.opponent_turnovers, team2.points_scored_after_opponent_turnovers, -team2.points_allowed_after_our_turnovers], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ 
@@ -3781,7 +3962,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: allWeeks,
                     datasets: [
                         {{ label: team1Name + ' Net Points', data: team1NetPointsAllWeeks, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: 'rgba(220, 20, 60, 1)', backgroundColor: 'rgba(220, 20, 60, 0.1)', fill: true }}
+                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -3936,8 +4117,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     datasets: [
                         {{ label: team1Name + ' Explosive ST Plays', data: team1Trends.ours, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
                         {{ label: team1Name + ' Allowed', data: team1Trends.allowed.map(v => -v), borderColor: 'rgba(139, 0, 0, 0.5)', backgroundColor: 'rgba(139, 0, 0, 0.05)', fill: true }},
-                        {{ label: team2Name + ' Explosive ST Plays', data: team2Trends.ours, borderColor: 'rgba(220, 20, 60, 1)', backgroundColor: 'rgba(220, 20, 60, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Allowed', data: team2Trends.allowed.map(v => -v), borderColor: 'rgba(220, 20, 60, 0.5)', backgroundColor: 'rgba(220, 20, 60, 0.05)', fill: true }}
+                        {{ label: team2Name + ' Explosive ST Plays', data: team2Trends.ours, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }},
+                        {{ label: team2Name + ' Allowed', data: team2Trends.allowed.map(v => -v), borderColor: 'rgba(40, 40, 40, 0.5)', backgroundColor: 'rgba(40, 40, 40, 0.05)', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -4141,7 +4322,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     labels: ['Tight Red Zone TD %', 'Red Zone TD %', 'Green Zone TD %'],
                     datasets: [
                         {{ label: team1Name, data: [team1.tight_red_zone.td_scoring_rate, team1.red_zone.td_scoring_rate, team1.green_zone.td_scoring_rate], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.tight_red_zone.td_scoring_rate, team2.red_zone.td_scoring_rate, team2.green_zone.td_scoring_rate], backgroundColor: 'rgba(220, 20, 60, 0.6)' }}
+                        {{ label: team2Name, data: [team2.tight_red_zone.td_scoring_rate, team2.red_zone.td_scoring_rate, team2.green_zone.td_scoring_rate], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
@@ -4472,8 +4653,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
             
             // 3rd Down Summary
-            const team13rd = team1['3rd_down'];
-            const team23rd = team2['3rd_down'];
+            const team13rd = team1['3rd_down'] || {{ total: {{}}, last_3_games: {{}} }};
+            const team23rd = team2['3rd_down'] || {{ total: {{}}, last_3_games: {{}} }};
             const thirdDownSummary = `
                 <div class="team-comparison">
                     <div class="team-section ">
@@ -4628,7 +4809,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             if (charts.thirdDownWisc) charts.thirdDownWisc.destroy();
             
             const wiscColors = [
-                'rgba(220, 20, 60, 0.8)', 'rgba(220, 20, 60, 0.6)', 'rgba(220, 20, 60, 0.4)',
+                'rgba(40, 40, 40, 0.8)', 'rgba(40, 40, 40, 0.6)', 'rgba(40, 40, 40, 0.4)',
                 'rgba(139, 0, 0, 0.8)', 'rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)',
                 'rgba(165, 42, 42, 0.8)', 'rgba(165, 42, 42, 0.6)'
             ];
@@ -4787,8 +4968,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
             
             // Red Zone Summary
-            const washRZ = team1.redzone;
-            const wiscRZ = team2.redzone;
+            const washRZ = team1.redzone || {{ total: {{}}, last_3_games: {{}} }};
+            const wiscRZ = team2.redzone || {{ total: {{}}, last_3_games: {{}} }};
             const redZoneSummary = `
                 <div class="team-comparison">
                     <div class="team-section ">
@@ -5254,10 +5435,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             // Filter passing and receiving
             // Pass receiving by_game to filterByGame so passing can use enrichment fields
-            if (filtered.passing && filtered.receiving) {{
+            if (filtered.passing && filtered.passing.by_game && filtered.receiving && filtered.receiving.by_game) {{
                 filtered.passing = filterByGame(filtered.passing.by_game, true, filtered.receiving.by_game);
             }}
-            if (filtered.receiving) {{
+            if (filtered.receiving && filtered.receiving.by_game) {{
                 filtered.receiving = filterByGame(filtered.receiving.by_game, false, null);
             }}
             
@@ -5275,10 +5456,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
             
             // Combined Summary (unique cards only)
-            const team1Passing = team1.passing;
-            const team2Passing = team2.passing;
-            const team1Receiving = team1.receiving;
-            const team2Receiving = team2.receiving;
+            const team1Passing = team1.passing || {{ total: {{}}, last_3_games: {{}} }};
+            const team2Passing = team2.passing || {{ total: {{}}, last_3_games: {{}} }};
+            const team1Receiving = team1.receiving || {{ total: {{}}, last_3_games: {{}} }};
+            const team2Receiving = team2.receiving || {{ total: {{}}, last_3_games: {{}} }};
             const combinedSummary = `
                 <div class="team-comparison">
                     <div class="team-section ">
@@ -5400,8 +5581,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     datasets: [{{
                         label: 'Attempts',
                         data: wiscPassingAttempts,
-                        backgroundColor: 'rgba(220, 20, 60, 0.6)',
-                        borderColor: 'rgba(220, 20, 60, 1)',
+                        backgroundColor: 'rgba(40, 40, 40, 0.6)',
+                        borderColor: 'rgba(40, 40, 40, 1)',
                         borderWidth: 1
                     }}, {{
                         label: 'Completions',
@@ -5495,7 +5676,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const ctxRecWisc = document.getElementById('deepReceivingChartWisc').getContext('2d');
             if (charts.deepReceivingWisc) charts.deepReceivingWisc.destroy();
             const wiscColors = [
-                'rgba(220, 20, 60, 0.8)', 'rgba(220, 20, 60, 0.6)', 'rgba(220, 20, 60, 0.4)',
+                'rgba(40, 40, 40, 0.8)', 'rgba(40, 40, 40, 0.6)', 'rgba(40, 40, 40, 0.4)',
                 'rgba(139, 0, 0, 0.8)', 'rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)',
                 'rgba(165, 42, 42, 0.8)', 'rgba(165, 42, 42, 0.6)'
             ];

@@ -164,7 +164,12 @@
                   "week": 11,
                   "opp": "Oregon"
                 }
-              ]
+              ],
+              "week": 11,
+              "opponent": "Oregon",
+              "game_id": 401752898,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week9_Minnesota": {
               "targets": 2,
@@ -196,7 +201,12 @@
                   "week": 9,
                   "opp": "Minnesota"
                 }
-              ]
+              ],
+              "week": 9,
+              "opponent": "Minnesota",
+              "game_id": 401752882,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week8_Penn State": {
               "targets": 1,
@@ -218,7 +228,12 @@
                   "week": 8,
                   "opp": "Penn State"
                 }
-              ]
+              ],
+              "week": 8,
+              "opponent": "Penn State",
+              "game_id": 401752875,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week7_Wisconsin": {
               "targets": 2,
@@ -250,7 +265,12 @@
                   "week": 7,
                   "opp": "Wisconsin"
                 }
-              ]
+              ],
+              "week": 7,
+              "opponent": "Wisconsin",
+              "game_id": 401752869,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week4_Rutgers": {
               "targets": 3,
@@ -292,7 +312,12 @@
                   "week": 4,
                   "opp": "Rutgers"
                 }
-              ]
+              ],
+              "week": 4,
+              "opponent": "Rutgers",
+              "game_id": 401752844,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week3_UMASS": {
               "targets": 3,
@@ -346,7 +371,12 @@
                   "week": 2,
                   "opp": "Iowa State"
                 }
-              ]
+              ],
+              "week": 2,
+              "opponent": "Iowa State",
+              "game_id": 401752822,
+              "is_conference": false,
+              "is_power4_opponent": true
             },
             "Week1_Albany": {
               "targets": 1,
@@ -721,7 +751,12 @@
                   "week": 11,
                   "opp": "Northwestern"
                 }
-              ]
+              ],
+              "week": 11,
+              "opponent": "Northwestern",
+              "game_id": 401752896,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week10_Nebraska": {
               "targets": 4,
@@ -753,7 +788,12 @@
                   "week": 10,
                   "opp": "Nebraska"
                 }
-              ]
+              ],
+              "week": 10,
+              "opponent": "Nebraska",
+              "game_id": 401752892,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week8_Notre Dame": {
               "targets": 9,
@@ -805,7 +845,12 @@
                   "week": 8,
                   "opp": "Notre Dame"
                 }
-              ]
+              ],
+              "week": 8,
+              "opponent": "Notre Dame",
+              "game_id": 401752871,
+              "is_conference": false,
+              "is_power4_opponent": true
             },
             "Week7_Michigan": {
               "targets": 2,
@@ -837,7 +882,12 @@
                   "week": 7,
                   "opp": "Michigan"
                 }
-              ]
+              ],
+              "week": 7,
+              "opponent": "Michigan",
+              "game_id": 401752868,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week5_Illinois": {
               "targets": 4,
@@ -879,7 +929,12 @@
                   "week": 5,
                   "opp": "Illinois"
                 }
-              ]
+              ],
+              "week": 5,
+              "opponent": "Illinois",
+              "game_id": 401752850,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week4_Michigan State": {
               "targets": 3,
@@ -911,7 +966,12 @@
                   "week": 4,
                   "opp": "Michigan State"
                 }
-              ]
+              ],
+              "week": 4,
+              "opponent": "Michigan State",
+              "game_id": 401752847,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week3_Purdue": {
               "targets": 7,
@@ -953,7 +1013,12 @@
                   "week": 3,
                   "opp": "Purdue"
                 }
-              ]
+              ],
+              "week": 3,
+              "opponent": "Purdue",
+              "game_id": 401752832,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "Week2_Georgia Southern": {
               "targets": 5,
@@ -1005,7 +1070,12 @@
                   "week": 2,
                   "opp": "Georgia Southern"
                 }
-              ]
+              ],
+              "week": 2,
+              "opponent": "Georgia Southern",
+              "game_id": 401752814,
+              "is_conference": false,
+              "is_power4_opponent": false
             },
             "Week1_Missouri State": {
               "targets": 3,
@@ -1037,7 +1107,12 @@
                   "week": 1,
                   "opp": "Missouri State"
                 }
-              ]
+              ],
+              "week": 1,
+              "opponent": "Missouri State",
+              "game_id": 401752798,
+              "is_conference": false,
+              "is_power4_opponent": false
             }
           },
           "total": {
@@ -1414,7 +1489,10 @@
                   "week": 11,
                   "opp": "Oregon"
                 }
-              ]
+              ],
+              "game_id": 401752898,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "9": {
               "stats": {
@@ -1446,7 +1524,10 @@
                   "week": 9,
                   "opp": "Minnesota"
                 }
-              ]
+              ],
+              "game_id": 401752882,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "8": {
               "stats": {
@@ -1498,7 +1579,10 @@
                   "week": 8,
                   "opp": "Penn State"
                 }
-              ]
+              ],
+              "game_id": 401752875,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "7": {
               "stats": {
@@ -1570,7 +1654,10 @@
                   "week": 7,
                   "opp": "Wisconsin"
                 }
-              ]
+              ],
+              "game_id": 401752869,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "5": {
               "stats": {
@@ -1652,7 +1739,10 @@
                   "week": 5,
                   "opp": "Indiana"
                 }
-              ]
+              ],
+              "game_id": 401752853,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "4": {
               "stats": {
@@ -1714,7 +1804,10 @@
                   "week": 4,
                   "opp": "Rutgers"
                 }
-              ]
+              ],
+              "game_id": 401752844,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "3": {
               "stats": {
@@ -1828,7 +1921,10 @@
                   "week": 2,
                   "opp": "Iowa State"
                 }
-              ]
+              ],
+              "game_id": 401752822,
+              "is_conference": false,
+              "is_power4_opponent": true
             },
             "1": {
               "stats": {
@@ -1953,7 +2049,10 @@
                   "week": 11,
                   "opp": "Oregon"
                 }
-              ]
+              ],
+              "game_id": 401752898,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "9": {
               "stats": {
@@ -1985,7 +2084,10 @@
                   "week": 9,
                   "opp": "Minnesota"
                 }
-              ]
+              ],
+              "game_id": 401752882,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "7": {
               "stats": {
@@ -2037,7 +2139,10 @@
                   "week": 7,
                   "opp": "Wisconsin"
                 }
-              ]
+              ],
+              "game_id": 401752869,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "4": {
               "stats": {
@@ -2059,7 +2164,10 @@
                   "week": 4,
                   "opp": "Rutgers"
                 }
-              ]
+              ],
+              "game_id": 401752844,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "3": {
               "stats": {
@@ -2143,7 +2251,10 @@
                   "week": 2,
                   "opp": "Iowa State"
                 }
-              ]
+              ],
+              "game_id": 401752822,
+              "is_conference": false,
+              "is_power4_opponent": true
             },
             "1": {
               "stats": {
@@ -2260,7 +2371,10 @@
                   "week": 11,
                   "opp": "Northwestern"
                 }
-              ]
+              ],
+              "game_id": 401752896,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "10": {
               "stats": {
@@ -2312,7 +2426,10 @@
                   "week": 10,
                   "opp": "Nebraska"
                 }
-              ]
+              ],
+              "game_id": 401752892,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "8": {
               "stats": {
@@ -2374,7 +2491,10 @@
                   "week": 8,
                   "opp": "Notre Dame"
                 }
-              ]
+              ],
+              "game_id": 401752871,
+              "is_conference": false,
+              "is_power4_opponent": true
             },
             "7": {
               "stats": {
@@ -2426,7 +2546,10 @@
                   "week": 7,
                   "opp": "Michigan"
                 }
-              ]
+              ],
+              "game_id": 401752868,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "5": {
               "stats": {
@@ -2478,7 +2601,10 @@
                   "week": 5,
                   "opp": "Illinois"
                 }
-              ]
+              ],
+              "game_id": 401752850,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "4": {
               "stats": {
@@ -2530,7 +2656,10 @@
                   "week": 4,
                   "opp": "Michigan State"
                 }
-              ]
+              ],
+              "game_id": 401752847,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "3": {
               "stats": {
@@ -2582,7 +2711,10 @@
                   "week": 3,
                   "opp": "Purdue"
                 }
-              ]
+              ],
+              "game_id": 401752832,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "2": {
               "stats": {
@@ -2634,7 +2766,10 @@
                   "week": 2,
                   "opp": "Georgia Southern"
                 }
-              ]
+              ],
+              "game_id": 401752814,
+              "is_conference": false,
+              "is_power4_opponent": false
             },
             "1": {
               "stats": {
@@ -2666,7 +2801,10 @@
                   "week": 1,
                   "opp": "Missouri State"
                 }
-              ]
+              ],
+              "game_id": 401752798,
+              "is_conference": false,
+              "is_power4_opponent": false
             }
           },
           "total": {
@@ -2729,7 +2867,10 @@
                   "week": 11,
                   "opp": "Northwestern"
                 }
-              ]
+              ],
+              "game_id": 401752896,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "10": {
               "stats": {
@@ -2761,7 +2902,10 @@
                   "week": 10,
                   "opp": "Nebraska"
                 }
-              ]
+              ],
+              "game_id": 401752892,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "8": {
               "stats": {
@@ -2813,7 +2957,10 @@
                   "week": 8,
                   "opp": "Notre Dame"
                 }
-              ]
+              ],
+              "game_id": 401752871,
+              "is_conference": false,
+              "is_power4_opponent": true
             },
             "7": {
               "stats": {
@@ -2865,7 +3012,10 @@
                   "week": 7,
                   "opp": "Michigan"
                 }
-              ]
+              ],
+              "game_id": 401752868,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "5": {
               "stats": {
@@ -2897,7 +3047,10 @@
                   "week": 5,
                   "opp": "Illinois"
                 }
-              ]
+              ],
+              "game_id": 401752850,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "4": {
               "stats": {
@@ -2949,7 +3102,10 @@
                   "week": 4,
                   "opp": "Michigan State"
                 }
-              ]
+              ],
+              "game_id": 401752847,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "3": {
               "stats": {
@@ -2991,7 +3147,10 @@
                   "week": 3,
                   "opp": "Purdue"
                 }
-              ]
+              ],
+              "game_id": 401752832,
+              "is_conference": true,
+              "is_power4_opponent": true
             },
             "2": {
               "stats": {
@@ -3023,7 +3182,10 @@
                   "week": 2,
                   "opp": "Georgia Southern"
                 }
-              ]
+              ],
+              "game_id": 401752814,
+              "is_conference": false,
+              "is_power4_opponent": false
             },
             "1": {
               "stats": {
@@ -3075,7 +3237,10 @@
                   "week": 1,
                   "opp": "Missouri State"
                 }
-              ]
+              ],
+              "game_id": 401752798,
+              "is_conference": false,
+              "is_power4_opponent": false
             }
           },
           "total": {

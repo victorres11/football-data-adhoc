@@ -2358,7 +2358,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         function calculate4thDownTrends(plays, teamName) {{
             const byWeek = {{}};
-            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal')).forEach(play => {{
+            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('timeout')).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
                 const week = getWeekForGameId(gameId);

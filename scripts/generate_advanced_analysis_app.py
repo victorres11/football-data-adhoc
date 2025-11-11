@@ -1366,9 +1366,6 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             <div class="definition-box">
                 <p><strong>Definition:</strong> Special teams encompasses kickoffs, punts, field goals, and returns. This analysis focuses on explosive special teams plays (35+ yard kick returns, 20+ yard punt returns) and explosive returns allowed by opponents. Special teams can swing field position and momentum, making it a critical phase of the game that often determines close contests.</p>
             </div>
-            <div class="notice-banner">
-                Note: Add blocks
-            </div>
             <div class="insight-box">
                 <h4>Key Insights:</h4>
                 <ul>
@@ -1513,9 +1510,6 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         <!-- Situational Receiving Analysis (SIS Data) -->
         <div class="section sis-section" id="situationalReceivingSection">
             <h2>Situational Receiving Analysis <span class="sis-badge">SIS</span></h2>
-            <div class="notice-banner" style="background-color: #fff3cd; border-left-color: #ffc107; color: #856404;">
-                <strong>Note:</strong> Filters do not currently work for this section. This section displays data for all games regardless of filter settings.
-            </div>
             
             <!-- 3rd Down Receiving -->
             <div style="margin-bottom: 40px;">
@@ -2071,18 +2065,42 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 if (play.play_classification !== 'special_teams') return false;
                 const pt = (play.play_type || '').toLowerCase();
                 const ptxt = (play.play_text || '').toLowerCase();
-                const yards = play.yards_gained || 0;
+                
+                // For returns, we need to parse the return yards from the play text
+                // because yards_gained might include the kick/punt distance
+                function parseReturnYards(playText) {{
+                    if (!playText) return 0;
+                    
+                    // Look for patterns like "returns for X yds" or "returns for no gain"
+                    // Examples:
+                    // "returns for 56 yds" -> 56
+                    // "returns for no gain" -> 0
+                    // "return for 20 yds" -> 20
+                    const returnMatch = playText.match(/return[s]? for (?:no gain|(\d+) (?:yd|yard))/i);
+                    if (returnMatch) {{
+                        if (returnMatch[1]) {{
+                            return parseInt(returnMatch[1], 10);
+                        }} else {{
+                            return 0; // "no gain"
+                        }}
+                    }}
+                    
+                    // Fallback: if we can't parse, return 0 to be safe
+                    return 0;
+                }}
                 
                 // Kick return: 35+ yards
                 if ((pt.includes('kickoff') || ptxt.includes('kickoff')) && 
                     (pt.includes('return') || ptxt.includes('return'))) {{
-                    return yards >= 35;
+                    const returnYards = parseReturnYards(play.play_text);
+                    return returnYards >= 35;
                 }}
                 
                 // Punt return: 20+ yards
                 if ((pt.includes('punt') || ptxt.includes('punt')) && 
                     (pt.includes('return') || ptxt.includes('return'))) {{
-                    return yards >= 20;
+                    const returnYards = parseReturnYards(play.play_text);
+                    return returnYards >= 20;
                 }}
                 
                 return false;
@@ -2098,7 +2116,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                 if (!byWeek[week]) {{
                     byWeek[week] = {{ ours: 0, allowed: 0 }};
                 }}
-                const isOurs = play.offense?.toLowerCase() === teamName.toLowerCase();
+                
+                // For return plays, check defense field (returning team)
+                // For other ST plays, check offense field
+                const playType = (play.play_type || '').toLowerCase();
+                const playText = (play.play_text || '').toLowerCase();
+                const isReturn = (
+                    (playType.includes('return') || playText.includes('return')) &&
+                    (playType.includes('kickoff') || playText.includes('kickoff') ||
+                     playType.includes('punt') || playText.includes('punt'))
+                );
+                
+                const isOurs = isReturn 
+                    ? (play.defense?.toLowerCase().trim() || '') === (teamName.toLowerCase().trim() || '')
+                    : (play.offense?.toLowerCase().trim() || '') === (teamName.toLowerCase().trim() || '');
+                
                 if (isOurs) {{
                     byWeek[week].ours++;
                 }} else {{
@@ -2274,7 +2306,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         
         function calculate4thDownTrends(plays, teamName) {{
             const byWeek = {{}};
-            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal')).forEach(play => {{
+            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('timeout')).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
                 const week = getWeekForGameId(gameId);
@@ -3577,9 +3609,9 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Opponent Turnovers</h3><div class="value">${{wash.opponent_turnovers}}</div></div>
                             <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{wash.points_scored_after_opponent_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{wash.net_points_after_turnovers}}</div></div>
                             <div class="summary-card"><h3>Washington Turnovers</h3><div class="value">${{wash.our_turnovers}}</div></div>
                             <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{wash.points_allowed_after_our_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{wash.net_points_after_turnovers}}</div></div>
                             <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{wash.last_3_games?.net_points || 0}}</div></div>
                         </div>
                     </div>
@@ -3588,9 +3620,9 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Opponent Turnovers</h3><div class="value">${{wisc.opponent_turnovers}}</div></div>
                             <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{wisc.points_scored_after_opponent_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{wisc.net_points_after_turnovers}}</div></div>
                             <div class="summary-card"><h3>Wisconsin Turnovers</h3><div class="value">${{wisc.our_turnovers}}</div></div>
                             <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{wisc.points_allowed_after_our_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{wisc.net_points_after_turnovers}}</div></div>
                             <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{wisc.last_3_games?.net_points || 0}}</div></div>
                         </div>
                     </div>
@@ -3701,14 +3733,16 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const washTurnoverSorted = wash.turnover_analysis.slice().sort((a, b) => (a.game_week || 0) - (b.game_week || 0));
             const washTableData = washTurnoverSorted.map(t => [
                 t.game_week || '', t.opponent || '', t.turnover_type || '',
-                t.is_our_turnover ? 'Washington' : 'Opponent', t.drive_result || '', t.points_scored || 0,
+                t.is_our_turnover ? 'Washington' : 'Opponent', t.drive_result || '', 
+                (t.points_scored || 0) + (t.points_allowed || 0), // Total points from turnover
                 t.play_text || '',
                 t.is_our_turnover ? false : true  // Store isOpponent for row class
             ]);
             const wiscTurnoverSorted = wisc.turnover_analysis.slice().sort((a, b) => (a.game_week || 0) - (b.game_week || 0));
             const wiscTableData = wiscTurnoverSorted.map(t => [
                 t.game_week || '', t.opponent || '', t.turnover_type || '',
-                t.is_our_turnover ? 'Wisconsin' : 'Opponent', t.drive_result || '', t.points_scored || 0,
+                t.is_our_turnover ? 'Wisconsin' : 'Opponent', t.drive_result || '', 
+                (t.points_scored || 0) + (t.points_allowed || 0), // Total points from turnover
                 t.play_text || '',
                 t.is_our_turnover ? false : true  // Store isOpponent for row class
             ]);
@@ -3777,6 +3811,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             <div class="summary-card"><h3>Explosive Allowed</h3><div class="value">${{wash.explosive_returns_allowed}}</div></div>
                             <div class="summary-card"><h3>TD's Scored</h3><div class="value">${{wash.tds_scored || 0}}</div></div>
                             <div class="summary-card"><h3>TD's Allowed</h3><div class="value">${{wash.tds_allowed || 0}}</div></div>
+                            <div class="summary-card"><h3>Punt Blocks</h3><div class="value">${{wash.punt_blocks || 0}}</div></div>
                         </div>
                     </div>
                     <div class="team-section wisconsin">
@@ -3786,6 +3821,7 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             <div class="summary-card"><h3>Explosive Allowed</h3><div class="value">${{wisc.explosive_returns_allowed}}</div></div>
                             <div class="summary-card"><h3>TD's Scored</h3><div class="value">${{wisc.tds_scored || 0}}</div></div>
                             <div class="summary-card"><h3>TD's Allowed</h3><div class="value">${{wisc.tds_allowed || 0}}</div></div>
+                            <div class="summary-card"><h3>Punt Blocks</h3><div class="value">${{wisc.punt_blocks || 0}}</div></div>
                         </div>
                     </div>
                 </div>
@@ -3931,14 +3967,14 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     <div class="team-section washington">
                         <h3>Washington</h3>
                         <div style="margin-bottom: 20px;">
-                            <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
+                            <h4 style="color: #388e3c; margin-bottom: 10px;">Green Zone (30 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wash.tight_red_zone.total_plays}}</div></div>
-                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wash.tight_red_zone.touchdowns}}</div></div>
-                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wash.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wash.tight_red_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wash.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
-                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wash.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wash.green_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wash.green_zone.touchdowns}}</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wash.green_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wash.green_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wash.green_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wash.green_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
@@ -3953,28 +3989,28 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             </div>
                         </div>
                         <div>
-                            <h4 style="color: #388e3c; margin-bottom: 10px;">Green Zone (30 & In)</h4>
+                            <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wash.green_zone.total_plays}}</div></div>
-                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wash.green_zone.touchdowns}}</div></div>
-                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wash.green_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wash.green_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wash.green_zone.avg_ppa.toFixed(3)}}</div></div>
-                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wash.green_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wash.tight_red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wash.tight_red_zone.touchdowns}}</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wash.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wash.tight_red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wash.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wash.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                     </div>
                     <div class="team-section wisconsin">
                         <h3>Wisconsin</h3>
                         <div style="margin-bottom: 20px;">
-                            <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
+                            <h4 style="color: #388e3c; margin-bottom: 10px;">Green Zone (30 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wisc.tight_red_zone.total_plays}}</div></div>
-                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wisc.tight_red_zone.touchdowns}}</div></div>
-                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wisc.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wisc.tight_red_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wisc.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
-                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wisc.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wisc.green_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wisc.green_zone.touchdowns}}</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wisc.green_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wisc.green_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wisc.green_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wisc.green_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
@@ -3989,14 +4025,14 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                             </div>
                         </div>
                         <div>
-                            <h4 style="color: #388e3c; margin-bottom: 10px;">Green Zone (30 & In)</h4>
+                            <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wisc.green_zone.total_plays}}</div></div>
-                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wisc.green_zone.touchdowns}}</div></div>
-                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wisc.green_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wisc.green_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wisc.green_zone.avg_ppa.toFixed(3)}}</div></div>
-                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wisc.green_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Plays</h3><div class="value">${{wisc.tight_red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{wisc.tight_red_zone.touchdowns}}</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{wisc.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{wisc.tight_red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{wisc.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{wisc.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                     </div>
@@ -5855,35 +5891,101 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
             const turnovers = plays.filter(p => p.turnover === true);
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
             
+            // Group by drive_id to get unique drives that started after turnovers
+            const postTurnoverDrives = {{}};
+            postTurnoverPlays.forEach(play => {{
+                const driveId = play.drive_id;
+                if (!postTurnoverDrives[driveId]) {{
+                    postTurnoverDrives[driveId] = {{
+                        game_id: play.game_id,
+                        drive_number: play.drive_number || 0,
+                        plays: []
+                    }};
+                }}
+                postTurnoverDrives[driveId].plays.push(play);
+            }});
+            
             let ourTurnovers = 0;
             let opponentTurnovers = 0;
             let pointsScoredAfterOpponentTO = 0;
             let pointsAllowedAfterOurTO = 0;
             const turnoverAnalysis = [];
             
-            turnovers.forEach(turnover => {{
-                const isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
-                if (isOurTurnover) ourTurnovers++;
-                else opponentTurnovers++;
+            // For each drive that started after a turnover, find the turnover that caused it
+            Object.keys(postTurnoverDrives).forEach(driveId => {{
+                const driveInfo = postTurnoverDrives[driveId];
+                const gameId = driveInfo.game_id;
+                const driveNumber = driveInfo.drive_number;
+                const drivePlays = driveInfo.plays;
                 
-                // Find subsequent drive
-                const nextDrivePlays = postTurnoverPlays.filter(p => 
-                    p.game_id === turnover.game_id && p.drive_id !== turnover.drive_id
-                );
-                
-                let drivePoints = 0;
-                let driveResult = 'No Score';
-                nextDrivePlays.forEach(p => {{
-                    if (p.scoring === true) {{
-                        if (p.play_type?.includes('Touchdown')) {{
-                            drivePoints = 7;
-                            driveResult = 'Touchdown';
-                        }} else if (p.play_type?.includes('Field Goal')) {{
-                            drivePoints = 3;
-                            driveResult = 'Field Goal';
+                // Find the turnover in the previous drive (or same drive if turnover ended the drive)
+                let matchingTurnover = null;
+                turnovers.forEach(turnover => {{
+                    if (turnover.game_id === gameId && 
+                        (turnover.drive_number === driveNumber - 1 || 
+                         turnover.drive_number === driveNumber)) {{
+                        // Prefer the previous drive, but accept same drive if no previous drive turnover
+                        if (turnover.drive_number === driveNumber - 1) {{
+                            matchingTurnover = turnover;
+                            return;
+                        }} else if (!matchingTurnover) {{
+                            matchingTurnover = turnover;
                         }}
                     }}
                 }});
+                
+                if (!matchingTurnover) return; // Skip if we can't find the matching turnover
+                
+                const isOurTurnover = matchingTurnover.offense?.toLowerCase() === teamName.toLowerCase();
+                if (isOurTurnover) ourTurnovers++;
+                else opponentTurnovers++;
+                
+                // Determine turnover type
+                // If it's an interception or fumble, use that; otherwise it's a turnover on downs
+                const playType = matchingTurnover.play_type || 'Unknown';
+                let turnoverType;
+                if (playType.includes('Interception')) {{
+                    turnoverType = 'Interception';
+                }} else if (playType.includes('Fumble')) {{
+                    turnoverType = 'Fumble';
+                }} else {{
+                    turnoverType = 'Turnover on Downs';
+                }}
+                
+                // Check if the turnover play itself resulted in points (e.g., pick-6, fumble return TD)
+                let drivePoints = 0;
+                let driveResult = 'No Score';
+                let scoringPlayText = '';
+                
+                if (matchingTurnover.scoring === true) {{
+                    if (matchingTurnover.play_type?.includes('Touchdown')) {{
+                        drivePoints = 7;
+                        driveResult = 'Touchdown';
+                        scoringPlayText = matchingTurnover.play_text?.substring(0, 150) || '';
+                    }} else if (matchingTurnover.play_type?.includes('Field Goal')) {{
+                        drivePoints = 3;
+                        driveResult = 'Field Goal';
+                        scoringPlayText = matchingTurnover.play_text?.substring(0, 150) || '';
+                    }}
+                }}
+                
+                // If turnover didn't score, check the subsequent drive for scoring plays
+                if (drivePoints === 0) {{
+                    drivePlays.forEach(p => {{
+                        if (p.scoring === true) {{
+                            if (p.play_type?.includes('Touchdown')) {{
+                                drivePoints = 7;
+                                driveResult = 'Touchdown';
+                                scoringPlayText = p.play_text?.substring(0, 150) || '';
+                                return; // Touchdown is highest priority
+                            }} else if (p.play_type?.includes('Field Goal') && driveResult === 'No Score') {{
+                                drivePoints = 3;
+                                driveResult = 'Field Goal';
+                                scoringPlayText = p.play_text?.substring(0, 150) || '';
+                            }}
+                        }}
+                    }});
+                }}
                 
                 if (isOurTurnover) {{
                     pointsAllowedAfterOurTO += drivePoints;
@@ -5891,15 +5993,21 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
                     pointsScoredAfterOpponentTO += drivePoints;
                 }}
                 
+                // Combine turnover play and scoring play text
+                const turnoverText = matchingTurnover.play_text?.substring(0, 150) || '';
+                const playDescription = scoringPlayText 
+                    ? `TO: ${{turnoverText}} | Score: ${{scoringPlayText}}`
+                    : `TO: ${{turnoverText}}`;
+                
                 turnoverAnalysis.push({{
-                    game_week: turnover.game_week,
-                    opponent: turnover.opponent,
-                    turnover_type: turnover.play_type,
+                    game_week: matchingTurnover.game_week,
+                    opponent: matchingTurnover.opponent,
+                    turnover_type: turnoverType,
                     is_our_turnover: isOurTurnover,
                     drive_result: driveResult,
                     points_scored: isOurTurnover ? 0 : drivePoints,
                     points_allowed: isOurTurnover ? drivePoints : 0,
-                    play_text: turnover.play_text?.substring(0, 150) || ''
+                    play_text: playDescription
                 }});
             }});
             
@@ -6016,25 +6124,76 @@ def generate_html_app(output_file: str = "advanced_analysis_app.html", data_dir:
         
         function analyzeSpecialTeams(plays, teamName) {{
             const stPlays = plays.filter(p => p.play_classification === 'special_teams');
-            const ourSTPlays = stPlays.filter(p => p.offense?.toLowerCase() === teamName.toLowerCase());
-            const opponentSTPlays = stPlays.filter(p => p.offense?.toLowerCase() !== teamName.toLowerCase());
+            
+            // Separate by offense (our special teams) vs defense (opponent special teams)
+            // For returns, the returning team is on "defense", not "offense"
+            const ourSTPlays = [];
+            const opponentSTPlays = [];
+            
+            stPlays.forEach(p => {{
+                const playType = (p.play_type || '').toLowerCase();
+                const playText = (p.play_text || '').toLowerCase();
+                
+                // Check if it's a return play (kickoff return or punt return)
+                const isReturn = (
+                    (playType.includes('return') || playText.includes('return')) &&
+                    (playType.includes('kickoff') || playText.includes('kickoff') ||
+                     playType.includes('punt') || playText.includes('punt'))
+                );
+                
+                if (isReturn) {{
+                    // For returns, check defense field (returning team)
+                    if (p.defense?.toLowerCase() === teamName.toLowerCase()) {{
+                        ourSTPlays.push(p);
+                    }} else {{
+                        opponentSTPlays.push(p);
+                    }}
+                }} else {{
+                    // For other ST plays (kicks, punts), check offense field
+                    if (p.offense?.toLowerCase() === teamName.toLowerCase()) {{
+                        ourSTPlays.push(p);
+                    }} else {{
+                        opponentSTPlays.push(p);
+                    }}
+                }}
+            }});
             
             // Check if special teams play is explosive: 35+ kick return, 20+ punt return
             function isSpecialTeamsExplosive(play) {{
                 const pt = (play.play_type || '').toLowerCase();
                 const ptxt = (play.play_text || '').toLowerCase();
-                const yards = play.yards_gained || 0;
+                
+                // For returns, we need to parse the return yards from the play text
+                // because yards_gained might include the kick/punt distance
+                function parseReturnYards(playText) {{
+                    if (!playText) return 0;
+                    
+                    // Look for patterns like "returns for X yds" or "returns for no gain"
+                    const returnMatch = playText.match(/return[s]? for (?:no gain|(\d+) (?:yd|yard))/i);
+                    if (returnMatch) {{
+                        if (returnMatch[1]) {{
+                            return parseInt(returnMatch[1], 10);
+                        }} else {{
+                            return 0; // "no gain"
+                        }}
+                    }}
+                    
+                    // Fallback: if we can't parse, return 0 to be safe
+                    return 0;
+                }}
                 
                 // Kick return: 35+ yards
                 if ((pt.includes('kickoff') || ptxt.includes('kickoff')) && 
                     (pt.includes('return') || ptxt.includes('return'))) {{
-                    return yards >= 35;
+                    const returnYards = parseReturnYards(play.play_text);
+                    return returnYards >= 35;
                 }}
                 
                 // Punt return: 20+ yards
                 if ((pt.includes('punt') || ptxt.includes('punt')) && 
                     (pt.includes('return') || ptxt.includes('return'))) {{
-                    return yards >= 20;
+                    const returnYards = parseReturnYards(play.play_text);
+                    return returnYards >= 20;
                 }}
                 
                 return false;

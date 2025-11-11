@@ -2347,7 +2347,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
                 const teamYards = teamYardsByWeek[week] || 0;
                 const oppYards = opponentYardsByWeek[week] || 0;
-                values.push(oppYards - teamYards); // Positive = opponent had more (good), negative = team had more (bad)
+                const netYards = oppYards - teamYards; // Positive = opponent had more (good), negative = team had more (bad)
+                values.push(netYards);
+                
+                // Verification: Log if we have data for this week (helps verify calculation)
+                if (teamYards > 0 || oppYards > 0) {{
+                    console.log(`${{teamName}} Week ${{week}}: Team=${{teamYards}}yds, Opp=${{oppYards}}yds, Net=${{netYards}}yds`);
+                }}
             }}
             
             return {{
@@ -2358,7 +2364,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         function calculate4thDownTrends(plays, teamName) {{
             const byWeek = {{}};
-            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('timeout')).forEach(play => {{
+            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('timeout') && !(p.no_play === true) && !(p.play_type?.toLowerCase() === 'penalty' && p.play_text?.toLowerCase().includes('no play')) && !p.play_text?.toLowerCase().includes('knee')).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
                 const week = getWeekForGameId(gameId);
@@ -2914,7 +2920,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: '${{team1Name}} - Explosive Plays by Week' }},
+                        title: {{ display: true, text: team1Name + ' - Explosive Plays by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -2965,7 +2971,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         }} 
                     }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: '${{team2Name}} - Explosive Plays by Week' }},
+                        title: {{ display: true, text: team2Name + ' - Explosive Plays by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -3518,6 +3524,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const allWeeks = team1Trends.weeks;
             const team1ConversionsAllWeeks = team1Trends.conversions;
             const team2ConversionsAllWeeks = team2Trends.conversions;
+            const team1AttemptsAllWeeks = team1Trends.attempts;
+            const team2AttemptsAllWeeks = team2Trends.attempts;
             
             const ctxTrend = document.getElementById('fourthDownTrendChart').getContext('2d');
             if (charts.fourthDownTrend) charts.fourthDownTrend.destroy();
@@ -3531,14 +3539,34 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             data: team1ConversionsAllWeeks, 
                             borderColor: 'rgba(139, 0, 0, 1)', 
                             backgroundColor: 'rgba(139, 0, 0, 0.1)', 
-                            fill: true 
+                            fill: true,
+                            borderWidth: 2
+                        }},
+                        {{ 
+                            label: team1Name + ' Attempts', 
+                            data: team1AttemptsAllWeeks, 
+                            borderColor: 'rgba(255, 193, 7, 1)', 
+                            backgroundColor: 'rgba(255, 193, 7, 0.1)', 
+                            borderDash: [5, 5],
+                            fill: false,
+                            borderWidth: 1.5
                         }},
                         {{ 
                             label: team2Name + ' Conversions', 
                             data: team2ConversionsAllWeeks, 
                             borderColor: 'rgba(220, 20, 60, 1)', 
                             backgroundColor: 'rgba(220, 20, 60, 0.1)', 
-                            fill: true 
+                            fill: true,
+                            borderWidth: 2
+                        }},
+                        {{ 
+                            label: team2Name + ' Attempts', 
+                            data: team2AttemptsAllWeeks, 
+                            borderColor: 'rgba(128, 128, 128, 1)', 
+                            backgroundColor: 'rgba(128, 128, 128, 0.1)', 
+                            borderDash: [5, 5],
+                            fill: false,
+                            borderWidth: 1.5
                         }}
                     ]
                 }},
@@ -3547,7 +3575,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     maintainAspectRatio: false, 
                     scales: {{ y: {{ beginAtZero: true }} }}, 
                     plugins: {{ 
-                        title: {{ display: true, text: '4th Down Conversions by Week' }},
+                        title: {{ display: true, text: '4th Down Attempts & Conversions by Week' }},
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
@@ -3555,25 +3583,34 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                                     const dataIndex = context.dataIndex;
                                     const weekLabel = allWeeks[dataIndex];
                                     const weekNum = dataIndex + 1;
-                                    const conversions = context.parsed.y;
+                                    const value = context.parsed.y;
                                     
-                                    // Find the original week index in the team's trends
-                                    const teamTrends = datasetIndex === 0 ? team1Trends : team2Trends;
-                                    const weekIndex = teamTrends.weeks.indexOf(weekLabel);
+                                    // Check if this is an attempts dataset (indices 1 and 3)
+                                    const isAttempts = datasetIndex === 1 || datasetIndex === 3;
                                     
-                                    const teamName = datasetIndex === 0 ? team1Name : team2Name;
-                                    const opponent = datasetIndex === 0 ? 
-                                        (masterWeekMapping.team1WeekToOpponent[weekNum] || 'BYE') : 
-                                        (masterWeekMapping.team2WeekToOpponent[weekNum] || 'BYE');
-                                    const opponentText = opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent;
-                                    
-                                    if (weekIndex >= 0) {{
-                                        const attempts = teamTrends.attempts[weekIndex];
-                                        const rate = teamTrends.rates[weekIndex];
-                                        return `${{teamName}}: ${{conversions}}/${{attempts}} (${{rate.toFixed(1)}}%)${{opponentText}}`;
+                                    if (isAttempts) {{
+                                        // Simple format for attempts: team name, number, and "attempts"
+                                        const teamName = datasetIndex === 1 ? team1Name : team2Name;
+                                        return `${{teamName}} ${{value}} attempts`;
                                     }} else {{
-                                        // Week with no attempts
-                                        return `${{teamName}}: 0/0 (0.0%)${{opponentText}}`;
+                                        // Full format for conversions: conversions/attempts (rate%)
+                                        const teamTrends = datasetIndex === 0 ? team1Trends : team2Trends;
+                                        const weekIndex = teamTrends.weeks.indexOf(weekLabel);
+                                        
+                                        const teamName = datasetIndex === 0 ? team1Name : team2Name;
+                                        const opponent = datasetIndex === 0 ? 
+                                            (masterWeekMapping.team1WeekToOpponent[weekNum] || 'BYE') : 
+                                            (masterWeekMapping.team2WeekToOpponent[weekNum] || 'BYE');
+                                        const opponentText = opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent;
+                                        
+                                        if (weekIndex >= 0) {{
+                                            const attempts = teamTrends.attempts[weekIndex];
+                                            const rate = teamTrends.rates[weekIndex];
+                                            return `${{teamName}}: ${{value}}/${{attempts}} (${{rate.toFixed(1)}}%)${{opponentText}}`;
+                                        }} else {{
+                                            // Week with no attempts
+                                            return `${{teamName}}: 0/0 (0.0%)${{opponentText}}`;
+                                        }}
                                     }}
                                 }}
                             }}
@@ -4440,7 +4477,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const thirdDownSummary = `
                 <div class="team-comparison">
                     <div class="team-section ">
-                        <h3></h3>
+                        <h3>${{team1Name}}</h3>
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Total Targets</h3><div class="value">${{team13rd.total.targets || 0}}</div></div>
                             <div class="summary-card"><h3>Receptions</h3><div class="value">${{team13rd.total.receptions || 0}}</div></div>
@@ -4453,7 +4490,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         </div>
                     </div>
                     <div class="team-section ">
-                        <h3></h3>
+                        <h3>${{team2Name}}</h3>
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Total Targets</h3><div class="value">${{team23rd.total.targets || 0}}</div></div>
                             <div class="summary-card"><h3>Receptions</h3><div class="value">${{team23rd.total.receptions || 0}}</div></div>
@@ -4755,7 +4792,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const redZoneSummary = `
                 <div class="team-comparison">
                     <div class="team-section ">
-                        <h3></h3>
+                        <h3>${{team1Name}}</h3>
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Total Targets</h3><div class="value">${{washRZ.total.targets || 0}}</div></div>
                             <div class="summary-card"><h3>Receptions</h3><div class="value">${{washRZ.total.receptions || 0}}</div></div>
@@ -4767,7 +4804,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         </div>
                     </div>
                     <div class="team-section ">
-                        <h3></h3>
+                        <h3>${{team2Name}}</h3>
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Total Targets</h3><div class="value">${{wiscRZ.total.targets || 0}}</div></div>
                             <div class="summary-card"><h3>Receptions</h3><div class="value">${{wiscRZ.total.receptions || 0}}</div></div>
@@ -5939,7 +5976,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 p.offense?.toLowerCase() === teamName.toLowerCase() &&
                 !p.play_type?.toLowerCase().includes('punt') &&
                 !p.play_type?.toLowerCase().includes('field goal') &&
-                !p.play_type?.toLowerCase().includes('timeout')
+                !p.play_type?.toLowerCase().includes('timeout') &&
+                !(p.no_play === true) &&
+                !(p.play_type?.toLowerCase() === 'penalty' && p.play_text?.toLowerCase().includes('no play')) &&
+                !p.play_text?.toLowerCase().includes('knee')
             );
             
             let conversions = 0;

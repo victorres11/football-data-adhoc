@@ -1,0 +1,3097 @@
+{
+  "metadata": {
+    "schema_version": "1.0",
+    "export_date": "2025-11-11T19:11:43Z",
+    "season": 2025,
+    "data_source": "CSV Export (Partial Data)",
+    "analysis_context": "Partial statistical analysis of Iowa Hawkeyes vs USC Trojans. This analysis includes only Tasks 4 (Deep Ball Passing & Receiving) and Task 9 (3rd Down & Red Zone Targets) due to limited data availability. All data sourced from CSV exports.",
+    "teams": {
+      "iowa": {
+        "name": "Iowa Hawkeyes",
+        "abbreviation": "IOWA",
+        "conference": "Big Ten"
+      },
+      "usc": {
+        "name": "USC Trojans",
+        "abbreviation": "USC",
+        "conference": "Big Ten"
+      }
+    },
+    "conference": {
+      "name": "Big Ten",
+      "id": 3,
+      "description": "Big Ten Conference (B1G)"
+    },
+    "data_quality_notes": [
+      "This is a PARTIAL analysis - only Tasks 4 and 9 are included",
+      "Task 4: Deep Ball Passing & Receiving (20+ air yards) - CSV data only",
+      "Task 9: 3rd Down and Red Zone Targets - CSV data only",
+      "Tasks 1, 3, 6, 7, 8 are not included (no data available)",
+      "All data uses CSV exports exclusively - no API data",
+      "Only games present in CSV files are included in totals"
+    ],
+    "partial_analysis_note": "This export contains only 2 of 7 tasks that were completed for the Washington/Wisconsin analysis. The missing tasks (1, 3, 6, 7, 8) require API access or additional CSV files that are not currently available."
+  },
+  "task_definitions": {
+    "task_4": {
+      "task_id": 4,
+      "task_name": "Deep Ball Passing (20+ Air Yards)",
+      "description": "Analysis of passing plays with 20 or more air yards downfield, including attempts, completions, yards, touchdowns, and receiving statistics.",
+      "methodology": "Data sourced from CSV export. Receiving and passing stats use CSV data exclusively. Only games present in CSV are included.",
+      "fields": {
+        "game_key": {
+          "type": "string",
+          "description": "Game identifier in format Week{week}_{opponent}",
+          "format": "Week{week}_{opponent}"
+        },
+        "targets": {
+          "type": "integer",
+          "description": "Number of deep ball targets (20+ air yards)",
+          "unit": "count"
+        },
+        "receptions": {
+          "type": "integer",
+          "description": "Number of deep ball receptions",
+          "unit": "count"
+        },
+        "touchdowns": {
+          "type": "integer",
+          "description": "Number of deep ball touchdowns",
+          "unit": "count"
+        },
+        "yards": {
+          "type": "integer",
+          "description": "Total receiving yards on deep balls",
+          "unit": "yards"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player-level breakdown of deep ball receiving stats"
+        }
+      },
+      "notes": "Includes both receiving perspective (targets, receptions, touchdowns) and passing perspective (attempts, completions, interceptions, etc.) data from CSV."
+    },
+    "task_9": {
+      "task_id": 9,
+      "task_name": "3rd Down and Red Zone Targets",
+      "description": "Receiving targets, receptions, first downs, and touchdowns on 3rd down situations and in the Red Zone. Includes player-level breakdown by game.",
+      "methodology": "Data sourced from CSV export. All stats (targets, receptions, touchdowns, first downs, yards) use CSV data exclusively. Only games present in CSV are included.",
+      "fields": {
+        "week": {
+          "type": "integer",
+          "description": "Week number in the season",
+          "unit": "week"
+        },
+        "opponent": {
+          "type": "string",
+          "description": "Name of the opposing team"
+        },
+        "targets": {
+          "type": "integer",
+          "description": "Number of targets (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "receptions": {
+          "type": "integer",
+          "description": "Number of receptions (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "touchdowns": {
+          "type": "integer",
+          "description": "Number of touchdowns (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "first_downs": {
+          "type": "integer",
+          "description": "Number of first downs (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "yards": {
+          "type": "integer",
+          "description": "Total receiving yards (3rd down or Red Zone)",
+          "unit": "yards"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player-level breakdown of receiving stats"
+        }
+      },
+      "notes": "Includes both 3rd down and Red Zone situational targets. Data structure separates 3rd_down and redzone for each team."
+    }
+  },
+  "data": {
+    "task_4": {
+      "iowa": {
+        "receiving": {
+          "by_game": {
+            "Week11_Oregon": {
+              "targets": 4,
+              "receptions": 2,
+              "touchdowns": 0,
+              "yards": 78,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 38,
+                  "air_yards": 26,
+                  "week": 11,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 11,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Trevor Lauck",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 40,
+                  "air_yards": 35,
+                  "week": 11,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "Week9_Minnesota": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 29,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Seth Anderson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 9,
+                  "opp": "Minnesota"
+                },
+                {
+                  "player": "Reece Vander Zee",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 29,
+                  "air_yards": 29,
+                  "week": 9,
+                  "opp": "Minnesota"
+                }
+              ]
+            },
+            "Week8_Penn State": {
+              "targets": 1,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 8,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "Week7_Wisconsin": {
+              "targets": 2,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Seth Anderson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                }
+              ]
+            },
+            "Week4_Rutgers": {
+              "targets": 3,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 42,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Seth Anderson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Dayton Howard",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 42,
+                  "air_yards": 38,
+                  "week": 4,
+                  "opp": "Rutgers"
+                }
+              ]
+            },
+            "Week3_UMASS": {
+              "targets": 3,
+              "receptions": 2,
+              "touchdowns": 0,
+              "yards": 67,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Sam Phillips",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "yards": 67,
+                  "air_yards": 59,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "KJ Parker",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 3,
+                  "opp": "UMASS"
+                }
+              ]
+            },
+            "Week2_Iowa State": {
+              "targets": 1,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 2,
+                  "opp": "Iowa State"
+                }
+              ]
+            },
+            "Week1_Albany": {
+              "targets": 1,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Albany"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 17,
+            "receptions": 6,
+            "touchdowns": 1,
+            "yards": 216
+          }
+        },
+        "passing": {
+          "by_game": {
+            "Week11_Oregon": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 2,
+              "catchable": 3,
+              "on_target": 2,
+              "yards": 78,
+              "air_yards": 61,
+              "intended_air_yards": 109,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 2,
+                  "catchable": 3,
+                  "on_target": 2,
+                  "yards": 78,
+                  "air_yards": 61,
+                  "intended_air_yards": 109,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 11,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "Week9_Minnesota": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 29,
+              "air_yards": 29,
+              "intended_air_yards": 63,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 29,
+                  "air_yards": 29,
+                  "intended_air_yards": 63,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 9,
+                  "opp": "Minnesota"
+                }
+              ]
+            },
+            "Week8_Penn State": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 0,
+              "catchable": 0,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 20,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 20,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 8,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "Week7_Wisconsin": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 0,
+              "catchable": 1,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 49,
+              "touchdowns": 0,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 0,
+                  "catchable": 1,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 49,
+                  "touchdowns": 0,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                }
+              ]
+            },
+            "Week4_Rutgers": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 42,
+              "air_yards": 38,
+              "intended_air_yards": 106,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 42,
+                  "air_yards": 38,
+                  "intended_air_yards": 106,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                }
+              ]
+            },
+            "Week3_UMASS": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 2,
+              "catchable": 3,
+              "on_target": 2,
+              "yards": 67,
+              "air_yards": 59,
+              "intended_air_yards": 90,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 67,
+                  "air_yards": 59,
+                  "intended_air_yards": 59,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Hank Brown",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 1,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 31,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 3,
+                  "opp": "UMASS"
+                }
+              ]
+            },
+            "Week2_Iowa State": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 0,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 30,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 30,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 2,
+                  "opp": "Iowa State"
+                }
+              ]
+            },
+            "Week1_Albany": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 0,
+              "catchable": 0,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 26,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Mark Gronowski",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 26,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 1,
+                  "opp": "Albany"
+                }
+              ]
+            }
+          },
+          "total": {
+            "dropbacks": 17,
+            "attempts": 17,
+            "completions": 6,
+            "catchable": 11,
+            "on_target": 8,
+            "yards": 216,
+            "air_yards": 187,
+            "intended_air_yards": 493,
+            "touchdowns": 1,
+            "interceptions": 1,
+            "sacks": 0,
+            "pressures": 7
+          }
+        }
+      },
+      "usc": {
+        "receiving": {
+          "by_game": {
+            "Week11_Northwestern": {
+              "targets": 8,
+              "receptions": 3,
+              "touchdowns": 0,
+              "yards": 118,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 6,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "yards": 76,
+                  "air_yards": 52,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 42,
+                  "air_yards": 23,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 11,
+                  "opp": "Northwestern"
+                }
+              ]
+            },
+            "Week10_Nebraska": {
+              "targets": 4,
+              "receptions": 2,
+              "touchdowns": 0,
+              "yards": 72,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jaden Richardson",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 43,
+                  "air_yards": 43,
+                  "week": 10,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 29,
+                  "air_yards": 25,
+                  "week": 10,
+                  "opp": "Nebraska"
+                }
+              ]
+            },
+            "Week8_Notre Dame": {
+              "targets": 9,
+              "receptions": 3,
+              "touchdowns": 1,
+              "yards": 122,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Tanook Hines",
+                  "targets": 4,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 21,
+                  "air_yards": 21,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 59,
+                  "air_yards": 34,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 42,
+                  "air_yards": 36,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Walker Lyons",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                }
+              ]
+            },
+            "Week7_Michigan": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 28,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 28,
+                  "air_yards": 28,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "Week5_Illinois": {
+              "targets": 4,
+              "receptions": 3,
+              "touchdowns": 0,
+              "yards": 83,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Tanook Hines",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 30,
+                  "air_yards": 22,
+                  "week": 5,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 29,
+                  "air_yards": 26,
+                  "week": 5,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 24,
+                  "air_yards": 23,
+                  "week": 5,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "Week4_Michigan State": {
+              "targets": 3,
+              "receptions": 2,
+              "touchdowns": 1,
+              "yards": 67,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "yards": 67,
+                  "air_yards": 54,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jay Fair",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "Week3_Purdue": {
+              "targets": 7,
+              "receptions": 5,
+              "touchdowns": 0,
+              "yards": 181,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "yards": 101,
+                  "air_yards": 70,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "yards": 55,
+                  "air_yards": 51,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 25,
+                  "air_yards": 25,
+                  "week": 3,
+                  "opp": "Purdue"
+                }
+              ]
+            },
+            "Week2_Georgia Southern": {
+              "targets": 5,
+              "receptions": 4,
+              "touchdowns": 2,
+              "yards": 250,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "yards": 136,
+                  "air_yards": 136,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 53,
+                  "air_yards": 53,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Zacharyus Williams",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 61,
+                  "air_yards": 31,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                }
+              ]
+            },
+            "Week1_Missouri State": {
+              "targets": 3,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 26,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 26,
+                  "air_yards": 21,
+                  "week": 1,
+                  "opp": "Missouri State"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Missouri State"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 45,
+            "receptions": 24,
+            "touchdowns": 4,
+            "yards": 947
+          }
+        },
+        "passing": {
+          "by_game": {
+            "Week11_Northwestern": {
+              "dropbacks": 8,
+              "attempts": 8,
+              "completions": 3,
+              "catchable": 4,
+              "on_target": 2,
+              "yards": 118,
+              "air_yards": 75,
+              "intended_air_yards": 216,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 8,
+                  "attempts": 8,
+                  "completions": 3,
+                  "catchable": 4,
+                  "on_target": 2,
+                  "yards": 118,
+                  "air_yards": 75,
+                  "intended_air_yards": 216,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 11,
+                  "opp": "Northwestern"
+                }
+              ]
+            },
+            "Week10_Nebraska": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 2,
+              "catchable": 3,
+              "on_target": 3,
+              "yards": 72,
+              "air_yards": 68,
+              "intended_air_yards": 131,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 2,
+                  "catchable": 3,
+                  "on_target": 3,
+                  "yards": 72,
+                  "air_yards": 68,
+                  "intended_air_yards": 131,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 10,
+                  "opp": "Nebraska"
+                }
+              ]
+            },
+            "Week8_Notre Dame": {
+              "dropbacks": 9,
+              "attempts": 9,
+              "completions": 3,
+              "catchable": 8,
+              "on_target": 6,
+              "yards": 122,
+              "air_yards": 91,
+              "intended_air_yards": 262,
+              "touchdowns": 1,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 6,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 9,
+                  "attempts": 9,
+                  "completions": 3,
+                  "catchable": 8,
+                  "on_target": 6,
+                  "yards": 122,
+                  "air_yards": 91,
+                  "intended_air_yards": 262,
+                  "touchdowns": 1,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 6,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                }
+              ]
+            },
+            "Week7_Michigan": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 28,
+              "air_yards": 28,
+              "intended_air_yards": 51,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 28,
+                  "air_yards": 28,
+                  "intended_air_yards": 51,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 7,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "Week5_Illinois": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 3,
+              "catchable": 4,
+              "on_target": 4,
+              "yards": 83,
+              "air_yards": 71,
+              "intended_air_yards": 92,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 3,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 3,
+                  "catchable": 4,
+                  "on_target": 4,
+                  "yards": 83,
+                  "air_yards": 71,
+                  "intended_air_yards": 92,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 3,
+                  "week": 5,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "Week4_Michigan State": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 2,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 67,
+              "air_yards": 54,
+              "intended_air_yards": 77,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 67,
+                  "air_yards": 54,
+                  "intended_air_yards": 77,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 4,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "Week3_Purdue": {
+              "dropbacks": 7,
+              "attempts": 7,
+              "completions": 5,
+              "catchable": 7,
+              "on_target": 4,
+              "yards": 181,
+              "air_yards": 146,
+              "intended_air_yards": 199,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 7,
+                  "attempts": 7,
+                  "completions": 5,
+                  "catchable": 7,
+                  "on_target": 4,
+                  "yards": 181,
+                  "air_yards": 146,
+                  "intended_air_yards": 199,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 3,
+                  "opp": "Purdue"
+                }
+              ]
+            },
+            "Week2_Georgia Southern": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 4,
+              "catchable": 4,
+              "on_target": 2,
+              "yards": 250,
+              "air_yards": 220,
+              "intended_air_yards": 240,
+              "touchdowns": 2,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 5,
+                  "attempts": 5,
+                  "completions": 4,
+                  "catchable": 4,
+                  "on_target": 2,
+                  "yards": 250,
+                  "air_yards": 220,
+                  "intended_air_yards": 240,
+                  "touchdowns": 2,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                }
+              ]
+            },
+            "Week1_Missouri State": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 26,
+              "air_yards": 21,
+              "intended_air_yards": 77,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Jayden Maiava",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 26,
+                  "air_yards": 21,
+                  "intended_air_yards": 77,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 1,
+                  "opp": "Missouri State"
+                }
+              ]
+            }
+          },
+          "total": {
+            "dropbacks": 45,
+            "attempts": 45,
+            "completions": 24,
+            "catchable": 35,
+            "on_target": 26,
+            "yards": 947,
+            "air_yards": 774,
+            "intended_air_yards": 1345,
+            "touchdowns": 4,
+            "interceptions": 1,
+            "sacks": 0,
+            "pressures": 16
+          }
+        }
+      },
+      "data_source_note": {
+        "receiving_stats": "CSV import for receiving targets, receptions, touchdowns, and yards",
+        "passing_stats": "CSV import for passing attempts, completions, touchdowns, yards, interceptions, and other passing metrics",
+        "csv_import_date": "2025-11-11T14:11:41.548872",
+        "note": "Receiving and passing stats use CSV data EXCLUSIVELY. Only games present in CSV are included."
+      }
+    },
+    "task_9": {
+      "iowa": {
+        "3rd_down": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 6,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 57
+              },
+              "opponent": "Oregon",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 4,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 11,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 11,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Trevor Lauck",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 40,
+                  "week": 11,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "9": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 22
+              },
+              "opponent": "Minnesota",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 18,
+                  "week": 9,
+                  "opp": "Minnesota"
+                },
+                {
+                  "player": "Seth Anderson",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 4,
+                  "week": 9,
+                  "opp": "Minnesota"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 21
+              },
+              "opponent": "Penn State",
+              "players": [
+                {
+                  "player": "Reece Vander Zee",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 10,
+                  "week": 8,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 8,
+                  "week": 8,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Jacob Gill",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Xavier Williams",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 3,
+                  "week": 8,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 8,
+                "receptions": 6,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 35
+              },
+              "opponent": "Wisconsin",
+              "players": [
+                {
+                  "player": "DJ Vonnahme",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Kamari Moulton",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Alex Eichmann",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Reece Vander Zee",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 11,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                }
+              ]
+            },
+            "5": {
+              "stats": {
+                "targets": 14,
+                "receptions": 8,
+                "touchdowns": 0,
+                "first_downs": 6,
+                "yards": 60
+              },
+              "opponent": "Indiana",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 17,
+                  "week": 5,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "DJ Vonnahme",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 5,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Nathan McNeil",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 5,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Dayton Howard",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 5,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 5,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Kamari Moulton",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "KJ Parker",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Indiana"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 6,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 31
+              },
+              "opponent": "Rutgers",
+              "players": [
+                {
+                  "player": "Kaden Wetjen",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 20,
+                  "week": 4,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Kamari Moulton",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Zach Ortwerth",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "DJ Vonnahme",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 10,
+                "receptions": 7,
+                "touchdowns": 1,
+                "first_downs": 6,
+                "yards": 70
+              },
+              "opponent": "UMASS",
+              "players": [
+                {
+                  "player": "KJ Parker",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Nathan McNeil",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 35,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Seth Anderson",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 3,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Jaziun Patterson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Zach Ortwerth",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 3,
+                  "opp": "UMASS"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 30
+              },
+              "opponent": "Iowa State",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 5,
+                  "receptions": 4,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 30,
+                  "week": 2,
+                  "opp": "Iowa State"
+                },
+                {
+                  "player": "Addison Ostrenga",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Iowa State"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 27
+              },
+              "opponent": "Albany",
+              "players": [
+                {
+                  "player": "Terrell Washington Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Jacob Gill",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Zach Ortwerth",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "KJ Parker",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Xavier Williams",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 3,
+                  "week": 1,
+                  "opp": "Albany"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 66,
+            "receptions": 41,
+            "touchdowns": 1,
+            "first_downs": 25,
+            "yards": 353
+          }
+        },
+        "redzone": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 3,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 12
+              },
+              "opponent": "Oregon",
+              "players": [
+                {
+                  "player": "DJ Vonnahme",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 3,
+                  "week": 11,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Kaden Wetjen",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 3,
+                  "week": 11,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Hayden Large",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 11,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "9": {
+              "stats": {
+                "targets": 3,
+                "receptions": 1,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 6
+              },
+              "opponent": "Minnesota",
+              "players": [
+                {
+                  "player": "Seth Anderson",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "Minnesota"
+                },
+                {
+                  "player": "KJ Parker",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 9,
+                  "opp": "Minnesota"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 24
+              },
+              "opponent": "Wisconsin",
+              "players": [
+                {
+                  "player": "Sam Phillips",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Reece Vander Zee",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "DJ Vonnahme",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Kaden Wetjen",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 3,
+                  "week": 7,
+                  "opp": "Wisconsin"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 1,
+                "receptions": 0,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 0
+              },
+              "opponent": "Rutgers",
+              "players": [
+                {
+                  "player": "Zach Ortwerth",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Rutgers"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 7,
+                "receptions": 4,
+                "touchdowns": 3,
+                "first_downs": 3,
+                "yards": 28
+              },
+              "opponent": "UMASS",
+              "players": [
+                {
+                  "player": "Seth Anderson",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "first_downs": 2,
+                  "yards": 23,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "KJ Parker",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Dayton Howard",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 3,
+                  "week": 3,
+                  "opp": "UMASS"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "UMASS"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 7
+              },
+              "opponent": "Iowa State",
+              "players": [
+                {
+                  "player": "Jacob Gill",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 2,
+                  "opp": "Iowa State"
+                },
+                {
+                  "player": "Jaziun Patterson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 2,
+                  "opp": "Iowa State"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 17
+              },
+              "opponent": "Albany",
+              "players": [
+                {
+                  "player": "Terrell Washington Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Jacob Gill",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Sam Phillips",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Albany"
+                },
+                {
+                  "player": "Kaden Wetjen",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 1,
+                  "opp": "Albany"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 27,
+            "receptions": 16,
+            "touchdowns": 5,
+            "first_downs": 8,
+            "yards": 94
+          }
+        }
+      },
+      "usc": {
+        "3rd_down": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 4,
+                "yards": 51
+              },
+              "opponent": "Northwestern",
+              "players": [
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 2,
+                  "yards": 23,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 19,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Walker Lyons",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 11,
+                  "opp": "Northwestern"
+                }
+              ]
+            },
+            "10": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 56
+              },
+              "opponent": "Nebraska",
+              "players": [
+                {
+                  "player": "Tanook Hines",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 41,
+                  "week": 10,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 10,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 10,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "King Miller",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Nebraska"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 10,
+                "receptions": 5,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 90
+              },
+              "opponent": "Notre Dame",
+              "players": [
+                {
+                  "player": "Tanook Hines",
+                  "targets": 4,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 32,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 42,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Jaden Richardson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Walker Lyons",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 3,
+                "yards": 52
+              },
+              "opponent": "Michigan",
+              "players": [
+                {
+                  "player": "Lake McRee",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 41,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 9,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Waymond Jordan",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "5": {
+              "stats": {
+                "targets": 8,
+                "receptions": 6,
+                "touchdowns": 0,
+                "first_downs": 5,
+                "yards": 102
+              },
+              "opponent": "Illinois",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 5,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 45,
+                  "week": 5,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 5,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Walker Lyons",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 18,
+                  "week": 5,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 30,
+                  "week": 5,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 4,
+                "yards": 44
+              },
+              "opponent": "Michigan State",
+              "players": [
+                {
+                  "player": "Walker Lyons",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jaden Richardson",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 17,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 4,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 6,
+                "receptions": 5,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 128
+              },
+              "opponent": "Purdue",
+              "players": [
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 101,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 25,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Waymond Jordan",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": -4,
+                  "week": 3,
+                  "opp": "Purdue"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 4,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 60
+              },
+              "opponent": "Georgia Southern",
+              "players": [
+                {
+                  "player": "Jay Fair",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 53,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 30
+              },
+              "opponent": "Missouri State",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 17,
+                  "week": 1,
+                  "opp": "Missouri State"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 1,
+                  "opp": "Missouri State"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 54,
+            "receptions": 36,
+            "touchdowns": 3,
+            "first_downs": 30,
+            "yards": 613
+          }
+        },
+        "redzone": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 6,
+                "receptions": 5,
+                "touchdowns": 2,
+                "first_downs": 3,
+                "yards": 29
+              },
+              "opponent": "Northwestern",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 2,
+                  "yards": 21,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "King Miller",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 1,
+                  "week": 11,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Northwestern"
+                }
+              ]
+            },
+            "10": {
+              "stats": {
+                "targets": 2,
+                "receptions": 0,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 0
+              },
+              "opponent": "Nebraska",
+              "players": [
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Jaden Richardson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Nebraska"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 5,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 10
+              },
+              "opponent": "Notre Dame",
+              "players": [
+                {
+                  "player": "Lake McRee",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Bryan Jackson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                },
+                {
+                  "player": "Jaden Richardson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Notre Dame"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 5,
+                "receptions": 4,
+                "touchdowns": 2,
+                "first_downs": 3,
+                "yards": 24
+              },
+              "opponent": "Michigan",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Eli Sanders",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Lake McRee",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 7,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "5": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 2,
+                "first_downs": 2,
+                "yards": 35
+              },
+              "opponent": "Illinois",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "first_downs": 2,
+                  "yards": 35,
+                  "week": 5,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Jay Fair",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 5,
+                "receptions": 4,
+                "touchdowns": 2,
+                "first_downs": 2,
+                "yards": 30
+              },
+              "opponent": "Michigan State",
+              "players": [
+                {
+                  "player": "Walker Lyons",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Tanook Hines",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Eli Sanders",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jaden Richardson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 4,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 9
+              },
+              "opponent": "Purdue",
+              "players": [
+                {
+                  "player": "Makai Lemon",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Waymond Jordan",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": -4,
+                  "week": 3,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "King Miller",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 3,
+                  "opp": "Purdue"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 2,
+                "first_downs": 2,
+                "yards": 26
+              },
+              "opponent": "Georgia Southern",
+              "players": [
+                {
+                  "player": "Walker Lyons",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 2,
+                  "opp": "Georgia Southern"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 4,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 24
+              },
+              "opponent": "Missouri State",
+              "players": [
+                {
+                  "player": "Tanook Hines",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 1,
+                  "opp": "Missouri State"
+                },
+                {
+                  "player": "Carson Tabaracci",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 1,
+                  "opp": "Missouri State"
+                },
+                {
+                  "player": "Ja'Kobi Lane",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 4,
+                  "week": 1,
+                  "opp": "Missouri State"
+                },
+                {
+                  "player": "Jay Fair",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Missouri State"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 36,
+            "receptions": 26,
+            "touchdowns": 12,
+            "first_downs": 15,
+            "yards": 187
+          }
+        }
+      },
+      "data_source_note": {
+        "note": "CSV import for all 3rd down and Red Zone stats (targets, receptions, touchdowns, first downs, yards)",
+        "csv_import_date": "2025-11-11T14:11:42.359820",
+        "note_detail": "3rd down and Red Zone targets data uses CSV data EXCLUSIVELY. Only games present in CSV are included."
+      }
+    }
+  }
+}

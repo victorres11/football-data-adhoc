@@ -1,0 +1,3246 @@
+{
+  "metadata": {
+    "schema_version": "1.0",
+    "export_date": "2025-11-09T03:34:17Z",
+    "season": 2025,
+    "data_source": "CSV Export (Partial Data)",
+    "analysis_context": "Partial statistical analysis of Minnesota Golden Gophers vs Oregon Ducks. This analysis includes only Tasks 4 (Deep Ball Passing & Receiving) and Task 9 (3rd Down & Red Zone Targets) due to limited data availability. All data sourced from CSV exports.",
+    "teams": {
+      "minnesota": {
+        "name": "Minnesota Golden Gophers",
+        "abbreviation": "MINN",
+        "conference": "Big Ten"
+      },
+      "oregon": {
+        "name": "Oregon Ducks",
+        "abbreviation": "ORE",
+        "conference": "Big Ten"
+      }
+    },
+    "conference": {
+      "name": "Big Ten",
+      "id": 3,
+      "description": "Big Ten Conference (B1G)"
+    },
+    "data_quality_notes": [
+      "This is a PARTIAL analysis - only Tasks 4 and 9 are included",
+      "Task 4: Deep Ball Passing & Receiving (20+ air yards) - CSV data only",
+      "Task 9: 3rd Down and Red Zone Targets - CSV data only",
+      "Tasks 1, 3, 6, 7, 8 are not included (no data available)",
+      "All data uses CSV exports exclusively - no API data",
+      "Only games present in CSV files are included in totals"
+    ],
+    "partial_analysis_note": "This export contains only 2 of 7 tasks that were completed for the Washington/Wisconsin analysis. The missing tasks (1, 3, 6, 7, 8) require API access or additional CSV files that are not currently available."
+  },
+  "task_definitions": {
+    "task_4": {
+      "task_id": 4,
+      "task_name": "Deep Ball Passing (20+ Air Yards)",
+      "description": "Analysis of passing plays with 20 or more air yards downfield, including attempts, completions, yards, touchdowns, and receiving statistics.",
+      "methodology": "Data sourced from CSV export. Receiving stats (targets, receptions, touchdowns, yards) use CSV data exclusively. Only games present in CSV are included.",
+      "fields": {
+        "game_key": {
+          "type": "string",
+          "description": "Game identifier in format Week{week}_{opponent}",
+          "format": "Week{week}_{opponent}"
+        },
+        "targets": {
+          "type": "integer",
+          "description": "Number of deep ball targets (20+ air yards)",
+          "unit": "count"
+        },
+        "receptions": {
+          "type": "integer",
+          "description": "Number of deep ball receptions",
+          "unit": "count"
+        },
+        "touchdowns": {
+          "type": "integer",
+          "description": "Number of deep ball touchdowns",
+          "unit": "count"
+        },
+        "yards": {
+          "type": "integer",
+          "description": "Total receiving yards on deep balls",
+          "unit": "yards"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player-level breakdown of deep ball receiving stats"
+        }
+      },
+      "notes": "Includes both receiving perspective (targets, receptions, touchdowns) and passing perspective (attempts, completions, interceptions, etc.) data from CSV."
+    },
+    "task_9": {
+      "task_id": 9,
+      "task_name": "3rd Down and Red Zone Targets",
+      "description": "Receiving targets, receptions, first downs, and touchdowns on 3rd down situations and in the Red Zone. Includes player-level breakdown by game.",
+      "methodology": "Data sourced from CSV export. All stats (targets, receptions, touchdowns, first downs, yards) use CSV data exclusively. Only games present in CSV are included.",
+      "fields": {
+        "week": {
+          "type": "integer",
+          "description": "Week number in the season",
+          "unit": "week"
+        },
+        "opponent": {
+          "type": "string",
+          "description": "Name of the opposing team"
+        },
+        "targets": {
+          "type": "integer",
+          "description": "Number of targets (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "receptions": {
+          "type": "integer",
+          "description": "Number of receptions (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "touchdowns": {
+          "type": "integer",
+          "description": "Number of touchdowns (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "first_downs": {
+          "type": "integer",
+          "description": "Number of first downs (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "yards": {
+          "type": "integer",
+          "description": "Total receiving yards (3rd down or Red Zone)",
+          "unit": "yards"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player-level breakdown of receiving stats"
+        }
+      },
+      "notes": "Includes both 3rd down and Red Zone situational targets. Data structure separates 3rd_down and redzone for each team."
+    }
+  },
+  "data": {
+    "task_4": {
+      "minnesota": {
+        "receiving": {
+          "by_game": {
+            "Week10_Michigan State": {
+              "targets": 1,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 10,
+                  "opp": "Michigan State"
+                }
+              ],
+              "week": 10,
+              "opponent": "Michigan State",
+              "game_id": 401752888,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week9_Iowa": {
+              "targets": 2,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 9,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 9,
+                  "opp": "Iowa"
+                }
+              ],
+              "week": 9,
+              "opponent": "Iowa",
+              "game_id": 401752882,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week8_Nebraska": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 20,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Kenric Lanier II",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 8,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 20,
+                  "air_yards": 20,
+                  "week": 8,
+                  "opp": "Nebraska"
+                }
+              ],
+              "week": 8,
+              "opponent": "Nebraska",
+              "game_id": 401752872,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week7_Purdue": {
+              "targets": 4,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Malachi Coleman",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Jalen Smith",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Purdue"
+                }
+              ],
+              "week": 7,
+              "opponent": "Purdue",
+              "game_id": 401752864,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week6_Ohio State": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 25,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jameson Geers",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 25,
+                  "air_yards": 21,
+                  "week": 6,
+                  "opp": "Ohio State"
+                }
+              ],
+              "week": 6,
+              "opponent": "Ohio State",
+              "game_id": 401752859,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week5_Rutgers": {
+              "targets": 5,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 78,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 78,
+                  "air_yards": 39,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 5,
+                  "opp": "Rutgers"
+                }
+              ],
+              "week": 5,
+              "opponent": "Rutgers",
+              "game_id": 401752849,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week3_California": {
+              "targets": 1,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 25,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 25,
+                  "air_yards": 20,
+                  "week": 3,
+                  "opp": "California"
+                }
+              ],
+              "week": 3,
+              "opponent": "California",
+              "game_id": 401752840,
+              "is_conference": false,
+              "is_power4_opponent": true
+            },
+            "Week2_Northwestern State": {
+              "targets": 5,
+              "receptions": 3,
+              "touchdowns": 1,
+              "yards": 121,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Kenric Lanier II",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 52,
+                  "air_yards": 44,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 45,
+                  "air_yards": 45,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Logan Loya",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Malachi Coleman",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Koi Perich",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 24,
+                  "air_yards": 20,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                }
+              ],
+              "week": 2,
+              "opponent": "Northwestern State",
+              "game_id": 401752813,
+              "is_conference": false,
+              "is_power4_opponent": false
+            },
+            "Week1_Buffalo": {
+              "targets": 5,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 60,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 60,
+                  "air_yards": 30,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Buffalo"
+                }
+              ],
+              "week": 1,
+              "opponent": "Buffalo",
+              "game_id": 401752793,
+              "is_conference": false,
+              "is_power4_opponent": false
+            }
+          },
+          "total": {
+            "targets": 27,
+            "receptions": 8,
+            "touchdowns": 3,
+            "yards": 329
+          }
+        },
+        "passing": {
+          "by_game": {
+            "Week10_Michigan State": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 0,
+              "catchable": 1,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 20,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 1,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 20,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 10,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "Week9_Iowa": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 0,
+              "catchable": 0,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 71,
+              "touchdowns": 0,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 71,
+                  "touchdowns": 0,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 9,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "Week8_Nebraska": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 20,
+              "air_yards": 20,
+              "intended_air_yards": 66,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 20,
+                  "air_yards": 20,
+                  "intended_air_yards": 66,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 8,
+                  "opp": "Nebraska"
+                }
+              ]
+            },
+            "Week7_Purdue": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 0,
+              "catchable": 3,
+              "on_target": 1,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 104,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 0,
+                  "catchable": 3,
+                  "on_target": 1,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 104,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 7,
+                  "opp": "Purdue"
+                }
+              ]
+            },
+            "Week6_Ohio State": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 25,
+              "air_yards": 21,
+              "intended_air_yards": 42,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 25,
+                  "air_yards": 21,
+                  "intended_air_yards": 42,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 6,
+                  "opp": "Ohio State"
+                }
+              ]
+            },
+            "Week5_Rutgers": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 78,
+              "air_yards": 39,
+              "intended_air_yards": 153,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 5,
+                  "attempts": 5,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 78,
+                  "air_yards": 39,
+                  "intended_air_yards": 153,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 5,
+                  "opp": "Rutgers"
+                }
+              ]
+            },
+            "Week3_California": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 25,
+              "air_yards": 20,
+              "intended_air_yards": 20,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 25,
+                  "air_yards": 20,
+                  "intended_air_yards": 20,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 3,
+                  "opp": "California"
+                }
+              ]
+            },
+            "Week2_Northwestern State": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 3,
+              "catchable": 3,
+              "on_target": 3,
+              "yards": 121,
+              "air_yards": 109,
+              "intended_air_yards": 159,
+              "touchdowns": 1,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 69,
+                  "air_yards": 65,
+                  "intended_air_yards": 86,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Dylan Wittke",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 29,
+                  "touchdowns": 0,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Max Shikenjanski",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 52,
+                  "air_yards": 44,
+                  "intended_air_yards": 44,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                }
+              ]
+            },
+            "Week1_Buffalo": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 1,
+              "catchable": 3,
+              "on_target": 3,
+              "yards": 60,
+              "air_yards": 30,
+              "intended_air_yards": 114,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Drake Lindsey",
+                  "dropbacks": 5,
+                  "attempts": 5,
+                  "completions": 1,
+                  "catchable": 3,
+                  "on_target": 3,
+                  "yards": 60,
+                  "air_yards": 30,
+                  "intended_air_yards": 114,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 1,
+                  "opp": "Buffalo"
+                }
+              ]
+            }
+          },
+          "total": {
+            "dropbacks": 27,
+            "attempts": 27,
+            "completions": 8,
+            "catchable": 15,
+            "on_target": 12,
+            "yards": 329,
+            "air_yards": 239,
+            "intended_air_yards": 749,
+            "touchdowns": 3,
+            "interceptions": 2,
+            "sacks": 0,
+            "pressures": 5
+          }
+        }
+      },
+      "oregon": {
+        "receiving": {
+          "by_game": {
+            "Week8_Rutgers": {
+              "targets": 4,
+              "receptions": 3,
+              "touchdowns": 3,
+              "yards": 85,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "yards": 51,
+                  "air_yards": 48,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 34,
+                  "air_yards": 34,
+                  "week": 8,
+                  "opp": "Rutgers"
+                }
+              ],
+              "week": 8,
+              "opponent": "Rutgers",
+              "game_id": 401752876,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week7_Indiana": {
+              "targets": 4,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 44,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 44,
+                  "air_yards": 41,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Indiana"
+                }
+              ],
+              "week": 7,
+              "opponent": "Indiana",
+              "game_id": 401752870,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week5_Penn State": {
+              "targets": 3,
+              "receptions": 2,
+              "touchdowns": 0,
+              "yards": 49,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "yards": 49,
+                  "air_yards": 41,
+                  "week": 5,
+                  "opp": "Penn State"
+                }
+              ],
+              "week": 5,
+              "opponent": "Penn State",
+              "game_id": 401752854,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week4_Oregon State": {
+              "targets": 8,
+              "receptions": 4,
+              "touchdowns": 2,
+              "yards": 126,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 23,
+                  "air_yards": 23,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 49,
+                  "air_yards": 32,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 31,
+                  "air_yards": 31,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 23,
+                  "air_yards": 21,
+                  "week": 4,
+                  "opp": "Oregon State"
+                }
+              ],
+              "week": 4,
+              "opponent": "Oregon State",
+              "game_id": 401752841,
+              "is_conference": false,
+              "is_power4_opponent": false
+            },
+            "Week3_Northwestern": {
+              "targets": 5,
+              "receptions": 3,
+              "touchdowns": 1,
+              "yards": 71,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Malik Benson",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "yards": 47,
+                  "air_yards": 46,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 24,
+                  "air_yards": 23,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 3,
+                  "opp": "Northwestern"
+                }
+              ],
+              "week": 3,
+              "opponent": "Northwestern",
+              "game_id": 401752831,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "Week2_Oklahoma State": {
+              "targets": 3,
+              "receptions": 2,
+              "touchdowns": 2,
+              "yards": 107,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 42,
+                  "air_yards": 40,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                },
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 65,
+                  "air_yards": 36,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                }
+              ],
+              "week": 2,
+              "opponent": "Oklahoma State",
+              "game_id": 401752824,
+              "is_conference": false,
+              "is_power4_opponent": true
+            },
+            "Week1_Montana State": {
+              "targets": 1,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 40,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Kyler Kasper",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 40,
+                  "air_yards": 36,
+                  "week": 1,
+                  "opp": "Montana State"
+                }
+              ],
+              "week": 1,
+              "opponent": "Montana State",
+              "game_id": 401752804,
+              "is_conference": false,
+              "is_power4_opponent": false
+            }
+          },
+          "total": {
+            "targets": 28,
+            "receptions": 16,
+            "touchdowns": 9,
+            "yards": 522
+          }
+        },
+        "passing": {
+          "by_game": {
+            "Week8_Rutgers": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 3,
+              "catchable": 4,
+              "on_target": 4,
+              "yards": 85,
+              "air_yards": 82,
+              "intended_air_yards": 124,
+              "touchdowns": 3,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Dante Moore",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 3,
+                  "catchable": 4,
+                  "on_target": 4,
+                  "yards": 85,
+                  "air_yards": 82,
+                  "intended_air_yards": 124,
+                  "touchdowns": 3,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 8,
+                  "opp": "Rutgers"
+                }
+              ]
+            },
+            "Week7_Indiana": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 44,
+              "air_yards": 41,
+              "intended_air_yards": 120,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Dante Moore",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 44,
+                  "air_yards": 41,
+                  "intended_air_yards": 120,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 7,
+                  "opp": "Indiana"
+                }
+              ]
+            },
+            "Week5_Penn State": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 2,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 49,
+              "air_yards": 41,
+              "intended_air_yards": 70,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Dante Moore",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 49,
+                  "air_yards": 41,
+                  "intended_air_yards": 70,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 5,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "Week4_Oregon State": {
+              "dropbacks": 8,
+              "attempts": 8,
+              "completions": 4,
+              "catchable": 6,
+              "on_target": 5,
+              "yards": 126,
+              "air_yards": 107,
+              "intended_air_yards": 225,
+              "touchdowns": 2,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Dante Moore",
+                  "dropbacks": 8,
+                  "attempts": 8,
+                  "completions": 4,
+                  "catchable": 6,
+                  "on_target": 5,
+                  "yards": 126,
+                  "air_yards": 107,
+                  "intended_air_yards": 225,
+                  "touchdowns": 2,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                }
+              ]
+            },
+            "Week3_Northwestern": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 3,
+              "catchable": 3,
+              "on_target": 3,
+              "yards": 71,
+              "air_yards": 69,
+              "intended_air_yards": 138,
+              "touchdowns": 1,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Dante Moore",
+                  "dropbacks": 5,
+                  "attempts": 5,
+                  "completions": 3,
+                  "catchable": 3,
+                  "on_target": 3,
+                  "yards": 71,
+                  "air_yards": 69,
+                  "intended_air_yards": 138,
+                  "touchdowns": 1,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 3,
+                  "opp": "Northwestern"
+                }
+              ]
+            },
+            "Week2_Oklahoma State": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 2,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 107,
+              "air_yards": 76,
+              "intended_air_yards": 105,
+              "touchdowns": 2,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Dante Moore",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 107,
+                  "air_yards": 76,
+                  "intended_air_yards": 105,
+                  "touchdowns": 2,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                }
+              ]
+            },
+            "Week1_Montana State": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 40,
+              "air_yards": 36,
+              "intended_air_yards": 36,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Austin Novosad",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 40,
+                  "air_yards": 36,
+                  "intended_air_yards": 36,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 1,
+                  "opp": "Montana State"
+                }
+              ]
+            }
+          },
+          "total": {
+            "dropbacks": 28,
+            "attempts": 28,
+            "completions": 16,
+            "catchable": 20,
+            "on_target": 19,
+            "yards": 522,
+            "air_yards": 452,
+            "intended_air_yards": 818,
+            "touchdowns": 9,
+            "interceptions": 1,
+            "sacks": 0,
+            "pressures": 7
+          }
+        }
+      },
+      "data_source_note": {
+        "receiving_stats": "CSV import for receiving targets, receptions, touchdowns, and yards",
+        "passing_stats": "CSV import for passing attempts, completions, touchdowns, yards, interceptions, and other passing metrics",
+        "csv_import_date": "2025-11-08T22:34:05.940500",
+        "note": "Receiving and passing stats use CSV data EXCLUSIVELY. Only games present in CSV are included."
+      }
+    },
+    "task_9": {
+      "minnesota": {
+        "3rd_down": {
+          "by_week": {
+            "10": {
+              "stats": {
+                "targets": 11,
+                "receptions": 6,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 71
+              },
+              "opponent": "Michigan State",
+              "players": [
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 24,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jalen Smith",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 17,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Cam Davis",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Drew Biber",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 19,
+                  "week": 10,
+                  "opp": "Michigan State"
+                }
+              ],
+              "game_id": 401752888,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "9": {
+              "stats": {
+                "targets": 9,
+                "receptions": 5,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 45
+              },
+              "opponent": "Iowa",
+              "players": [
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 4,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 30,
+                  "week": 9,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 8,
+                  "week": 9,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Drew Biber",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 9,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Fame Ijeboi",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "Iowa"
+                }
+              ],
+              "game_id": 401752882,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "8": {
+              "stats": {
+                "targets": 7,
+                "receptions": 6,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 75
+              },
+              "opponent": "Nebraska",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 3,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 3,
+                  "yards": 59,
+                  "week": 8,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 8,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 8,
+                  "opp": "Nebraska"
+                },
+                {
+                  "player": "Darius Taylor",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 8,
+                  "opp": "Nebraska"
+                }
+              ],
+              "game_id": 401752872,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "7": {
+              "stats": {
+                "targets": 10,
+                "receptions": 5,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 60
+              },
+              "opponent": "Purdue",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Darius Taylor",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Logan Loya",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Cam Davis",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 2,
+                  "week": 7,
+                  "opp": "Purdue"
+                }
+              ],
+              "game_id": 401752864,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "6": {
+              "stats": {
+                "targets": 7,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 12
+              },
+              "opponent": "Ohio State",
+              "players": [
+                {
+                  "player": "Drew Biber",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 1,
+                  "week": 6,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 6,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 6,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Darius Taylor",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 6,
+                  "opp": "Ohio State"
+                }
+              ],
+              "game_id": 401752859,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "5": {
+              "stats": {
+                "targets": 8,
+                "receptions": 6,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 42
+              },
+              "opponent": "Rutgers",
+              "players": [
+                {
+                  "player": "Logan Loya",
+                  "targets": 3,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 22,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Fame Ijeboi",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": -1,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Jalen Smith",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Rutgers"
+                }
+              ],
+              "game_id": 401752849,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "3": {
+              "stats": {
+                "targets": 9,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 42
+              },
+              "opponent": "California",
+              "players": [
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 4,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 23,
+                  "week": 3,
+                  "opp": "California"
+                },
+                {
+                  "player": "Logan Loya",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 10,
+                  "week": 3,
+                  "opp": "California"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "California"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 3,
+                  "opp": "California"
+                },
+                {
+                  "player": "Cam Davis",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "California"
+                }
+              ],
+              "game_id": 401752840,
+              "is_conference": false,
+              "is_power4_opponent": true
+            },
+            "2": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 9
+              },
+              "opponent": "Northwestern State",
+              "players": [
+                {
+                  "player": "Cam Davis",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Fame Ijeboi",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Kenric Lanier II",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                }
+              ],
+              "game_id": 401752813,
+              "is_conference": false,
+              "is_power4_opponent": false
+            },
+            "1": {
+              "stats": {
+                "targets": 10,
+                "receptions": 5,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 52
+              },
+              "opponent": "Buffalo",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 6,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 15,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Darius Taylor",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 1,
+                  "opp": "Buffalo"
+                }
+              ],
+              "game_id": 401752793,
+              "is_conference": false,
+              "is_power4_opponent": false
+            }
+          },
+          "total": {
+            "targets": 74,
+            "receptions": 43,
+            "touchdowns": 0,
+            "first_downs": 27,
+            "yards": 408
+          }
+        },
+        "redzone": {
+          "by_week": {
+            "10": {
+              "stats": {
+                "targets": 8,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 20
+              },
+              "opponent": "Michigan State",
+              "players": [
+                {
+                  "player": "Javon Tracy",
+                  "targets": 3,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": -2,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 9,
+                  "week": 10,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jalen Smith",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 10,
+                  "opp": "Michigan State"
+                }
+              ],
+              "game_id": 401752888,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "8": {
+              "stats": {
+                "targets": 1,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 20
+              },
+              "opponent": "Nebraska",
+              "players": [
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 20,
+                  "week": 8,
+                  "opp": "Nebraska"
+                }
+              ],
+              "game_id": 401752872,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "7": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 5
+              },
+              "opponent": "Purdue",
+              "players": [
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 4,
+                  "week": 7,
+                  "opp": "Purdue"
+                },
+                {
+                  "player": "Darius Taylor",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 1,
+                  "week": 7,
+                  "opp": "Purdue"
+                }
+              ],
+              "game_id": 401752864,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "6": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 11
+              },
+              "opponent": "Ohio State",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 6,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 1,
+                  "week": 6,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 6,
+                  "opp": "Ohio State"
+                }
+              ],
+              "game_id": 401752859,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "5": {
+              "stats": {
+                "targets": 7,
+                "receptions": 5,
+                "touchdowns": 3,
+                "first_downs": 4,
+                "yards": 36
+              },
+              "opponent": "Rutgers",
+              "players": [
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Jalen Smith",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 15,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Javon Tracy",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 4,
+                  "week": 5,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Kenric Lanier II",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Rutgers"
+                }
+              ],
+              "game_id": 401752849,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "3": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 12
+              },
+              "opponent": "California",
+              "players": [
+                {
+                  "player": "Jameson Geers",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 2,
+                  "yards": 12,
+                  "week": 3,
+                  "opp": "California"
+                },
+                {
+                  "player": "Le'Meke Brockington",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "California"
+                }
+              ],
+              "game_id": 401752840,
+              "is_conference": false,
+              "is_power4_opponent": true
+            },
+            "2": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 10
+              },
+              "opponent": "Northwestern State",
+              "players": [
+                {
+                  "player": "Fame Ijeboi",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                },
+                {
+                  "player": "Cam Davis",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 2,
+                  "opp": "Northwestern State"
+                }
+              ],
+              "game_id": 401752813,
+              "is_conference": false,
+              "is_power4_opponent": false
+            },
+            "1": {
+              "stats": {
+                "targets": 7,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 16
+              },
+              "opponent": "Buffalo",
+              "players": [
+                {
+                  "player": "Jalen Smith",
+                  "targets": 4,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Jameson Geers",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 1,
+                  "opp": "Buffalo"
+                },
+                {
+                  "player": "Frank Bierman",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Buffalo"
+                }
+              ],
+              "game_id": 401752793,
+              "is_conference": false,
+              "is_power4_opponent": false
+            }
+          },
+          "total": {
+            "targets": 33,
+            "receptions": 19,
+            "touchdowns": 7,
+            "first_downs": 12,
+            "yards": 130
+          }
+        }
+      },
+      "oregon": {
+        "3rd_down": {
+          "by_week": {
+            "9": {
+              "stats": {
+                "targets": 8,
+                "receptions": 7,
+                "touchdowns": 0,
+                "first_downs": 5,
+                "yards": 113
+              },
+              "opponent": "Wisconsin",
+              "players": [
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 4,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 45,
+                  "week": 9,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 38,
+                  "week": 9,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 9,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 23,
+                  "week": 9,
+                  "opp": "Wisconsin"
+                }
+              ],
+              "game_id": 401752886,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "8": {
+              "stats": {
+                "targets": 7,
+                "receptions": 7,
+                "touchdowns": 1,
+                "first_downs": 5,
+                "yards": 148
+              },
+              "opponent": "Rutgers",
+              "players": [
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 51,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Cooper Perry",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 4,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 8,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Noah Whittington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 56,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 24,
+                  "week": 8,
+                  "opp": "Rutgers"
+                }
+              ],
+              "game_id": 401752876,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "7": {
+              "stats": {
+                "targets": 7,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 64
+              },
+              "opponent": "Indiana",
+              "players": [
+                {
+                  "player": "Malik Benson",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 44,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Noah Whittington",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Jordon Davison",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 4,
+                  "week": 7,
+                  "opp": "Indiana"
+                }
+              ],
+              "game_id": 401752870,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "5": {
+              "stats": {
+                "targets": 10,
+                "receptions": 9,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 94
+              },
+              "opponent": "Penn State",
+              "players": [
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 3,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 18,
+                  "week": 5,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 3,
+                  "receptions": 3,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 34,
+                  "week": 5,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Jayden Limar",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 13,
+                  "week": 5,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 29,
+                  "week": 5,
+                  "opp": "Penn State"
+                }
+              ],
+              "game_id": 401752854,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "4": {
+              "stats": {
+                "targets": 8,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 3,
+                "yards": 30
+              },
+              "opponent": "Oregon State",
+              "players": [
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Kyler Kasper",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Roger Saleapaga",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 4,
+                  "opp": "Oregon State"
+                }
+              ],
+              "game_id": 401752841,
+              "is_conference": false,
+              "is_power4_opponent": false
+            },
+            "3": {
+              "stats": {
+                "targets": 7,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 51
+              },
+              "opponent": "Northwestern",
+              "players": [
+                {
+                  "player": "Kyler Kasper",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 20,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Jordon Davison",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 20,
+                  "week": 3,
+                  "opp": "Northwestern"
+                }
+              ],
+              "game_id": 401752831,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "2": {
+              "stats": {
+                "targets": 4,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 35
+              },
+              "opponent": "Oklahoma State",
+              "players": [
+                {
+                  "player": "Justius Lowe",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 10,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                },
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                }
+              ],
+              "game_id": 401752824,
+              "is_conference": false,
+              "is_power4_opponent": true
+            },
+            "1": {
+              "stats": {
+                "targets": 4,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 78
+              },
+              "opponent": "Montana State",
+              "players": [
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 1,
+                  "opp": "Montana State"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 1,
+                  "opp": "Montana State"
+                },
+                {
+                  "player": "Jay Harris",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 50,
+                  "week": 1,
+                  "opp": "Montana State"
+                },
+                {
+                  "player": "Malik Benson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 1,
+                  "opp": "Montana State"
+                }
+              ],
+              "game_id": 401752804,
+              "is_conference": false,
+              "is_power4_opponent": false
+            }
+          },
+          "total": {
+            "targets": 55,
+            "receptions": 41,
+            "touchdowns": 4,
+            "first_downs": 27,
+            "yards": 613
+          }
+        },
+        "redzone": {
+          "by_week": {
+            "9": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 7
+              },
+              "opponent": "Wisconsin",
+              "players": [
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 9,
+                  "opp": "Wisconsin"
+                },
+                {
+                  "player": "Gernorris Wilson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 1,
+                  "week": 9,
+                  "opp": "Wisconsin"
+                }
+              ],
+              "game_id": 401752886,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "8": {
+              "stats": {
+                "targets": 3,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 5
+              },
+              "opponent": "Rutgers",
+              "players": [
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Noah Whittington",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 8,
+                  "opp": "Rutgers"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 8,
+                  "opp": "Rutgers"
+                }
+              ],
+              "game_id": 401752876,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "7": {
+              "stats": {
+                "targets": 2,
+                "receptions": 1,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 4
+              },
+              "opponent": "Indiana",
+              "players": [
+                {
+                  "player": "Jordon Davison",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 4,
+                  "week": 7,
+                  "opp": "Indiana"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Indiana"
+                }
+              ],
+              "game_id": 401752870,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "5": {
+              "stats": {
+                "targets": 4,
+                "receptions": 4,
+                "touchdowns": 2,
+                "first_downs": 3,
+                "yards": 24
+              },
+              "opponent": "Penn State",
+              "players": [
+                {
+                  "player": "Jayden Limar",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 5,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Dierre Hill Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 5,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 5,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 7,
+                  "week": 5,
+                  "opp": "Penn State"
+                }
+              ],
+              "game_id": 401752854,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "4": {
+              "stats": {
+                "targets": 4,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 11
+              },
+              "opponent": "Oregon State",
+              "players": [
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Roger Saleapaga",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                },
+                {
+                  "player": "Kyler Kasper",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Oregon State"
+                }
+              ],
+              "game_id": 401752841,
+              "is_conference": false,
+              "is_power4_opponent": false
+            },
+            "3": {
+              "stats": {
+                "targets": 4,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 21
+              },
+              "opponent": "Northwestern",
+              "players": [
+                {
+                  "player": "Dakorien Moore",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Jeremiah McClellan",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 9,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Kyler Kasper",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "Northwestern"
+                },
+                {
+                  "player": "Jamari Johnson",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 3,
+                  "opp": "Northwestern"
+                }
+              ],
+              "game_id": 401752831,
+              "is_conference": true,
+              "is_power4_opponent": true
+            },
+            "2": {
+              "stats": {
+                "targets": 1,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 11
+              },
+              "opponent": "Oklahoma State",
+              "players": [
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 2,
+                  "opp": "Oklahoma State"
+                }
+              ],
+              "game_id": 401752824,
+              "is_conference": false,
+              "is_power4_opponent": true
+            },
+            "1": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 3,
+                "first_downs": 3,
+                "yards": 52
+              },
+              "opponent": "Montana State",
+              "players": [
+                {
+                  "player": "Malik Benson",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 18,
+                  "week": 1,
+                  "opp": "Montana State"
+                },
+                {
+                  "player": "Kenyon Sadiq",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 20,
+                  "week": 1,
+                  "opp": "Montana State"
+                },
+                {
+                  "player": "Gary Bryant Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 1,
+                  "opp": "Montana State"
+                },
+                {
+                  "player": "Justius Lowe",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Montana State"
+                }
+              ],
+              "game_id": 401752804,
+              "is_conference": false,
+              "is_power4_opponent": false
+            }
+          },
+          "total": {
+            "targets": 26,
+            "receptions": 18,
+            "touchdowns": 9,
+            "first_downs": 11,
+            "yards": 135
+          }
+        }
+      },
+      "data_source_note": {
+        "note": "CSV import for all 3rd down and Red Zone stats (targets, receptions, touchdowns, first downs, yards)",
+        "csv_import_date": "2025-11-08T22:31:53.575305",
+        "note_detail": "3rd down and Red Zone targets data uses CSV data EXCLUSIVELY. Only games present in CSV are included."
+      }
+    }
+  }
+}

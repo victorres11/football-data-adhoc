@@ -1,0 +1,3229 @@
+{
+  "metadata": {
+    "schema_version": "1.0",
+    "export_date": "2025-11-11T14:30:07Z",
+    "season": 2025,
+    "data_source": "CSV Export (Partial Data)",
+    "analysis_context": "Partial statistical analysis of Wisconsin Badgers vs Indiana Hoosiers. This analysis includes only Tasks 4 (Deep Ball Passing & Receiving) and Task 9 (3rd Down & Red Zone Targets) due to limited data availability. All data sourced from CSV exports.",
+    "teams": {
+      "wisconsin": {
+        "name": "Wisconsin Badgers",
+        "abbreviation": "WIS",
+        "conference": "Big Ten"
+      },
+      "indiana": {
+        "name": "Indiana Hoosiers",
+        "abbreviation": "IND",
+        "conference": "Big Ten"
+      }
+    },
+    "conference": {
+      "name": "Big Ten",
+      "id": 3,
+      "description": "Big Ten Conference (B1G)"
+    },
+    "data_quality_notes": [
+      "This is a PARTIAL analysis - only Tasks 4 and 9 are included",
+      "Task 4: Deep Ball Passing & Receiving (20+ air yards) - CSV data only",
+      "Task 9: 3rd Down and Red Zone Targets - CSV data only",
+      "Tasks 1, 3, 6, 7, 8 are not included (no data available)",
+      "All data uses CSV exports exclusively - no API data",
+      "Only games present in CSV files are included in totals"
+    ],
+    "partial_analysis_note": "This export contains only 2 of 7 tasks that were completed for the Washington/Wisconsin analysis. The missing tasks (1, 3, 6, 7, 8) require API access or additional CSV files that are not currently available."
+  },
+  "task_definitions": {
+    "task_4": {
+      "task_id": 4,
+      "task_name": "Deep Ball Passing (20+ Air Yards)",
+      "description": "Analysis of passing plays with 20 or more air yards downfield, including attempts, completions, yards, touchdowns, and receiving statistics.",
+      "methodology": "Data sourced from CSV export. Receiving and passing stats use CSV data exclusively. Only games present in CSV are included.",
+      "fields": {
+        "game_key": {
+          "type": "string",
+          "description": "Game identifier in format Week{week}_{opponent}",
+          "format": "Week{week}_{opponent}"
+        },
+        "targets": {
+          "type": "integer",
+          "description": "Number of deep ball targets (20+ air yards)",
+          "unit": "count"
+        },
+        "receptions": {
+          "type": "integer",
+          "description": "Number of deep ball receptions",
+          "unit": "count"
+        },
+        "touchdowns": {
+          "type": "integer",
+          "description": "Number of deep ball touchdowns",
+          "unit": "count"
+        },
+        "yards": {
+          "type": "integer",
+          "description": "Total receiving yards on deep balls",
+          "unit": "yards"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player-level breakdown of deep ball receiving stats"
+        }
+      },
+      "notes": "Includes both receiving perspective (targets, receptions, touchdowns) and passing perspective (attempts, completions, interceptions, etc.) data from CSV."
+    },
+    "task_9": {
+      "task_id": 9,
+      "task_name": "3rd Down and Red Zone Targets",
+      "description": "Receiving targets, receptions, first downs, and touchdowns on 3rd down situations and in the Red Zone. Includes player-level breakdown by game.",
+      "methodology": "Data sourced from CSV export. All stats (targets, receptions, touchdowns, first downs, yards) use CSV data exclusively. Only games present in CSV are included.",
+      "fields": {
+        "week": {
+          "type": "integer",
+          "description": "Week number in the season",
+          "unit": "week"
+        },
+        "opponent": {
+          "type": "string",
+          "description": "Name of the opposing team"
+        },
+        "targets": {
+          "type": "integer",
+          "description": "Number of targets (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "receptions": {
+          "type": "integer",
+          "description": "Number of receptions (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "touchdowns": {
+          "type": "integer",
+          "description": "Number of touchdowns (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "first_downs": {
+          "type": "integer",
+          "description": "Number of first downs (3rd down or Red Zone)",
+          "unit": "count"
+        },
+        "yards": {
+          "type": "integer",
+          "description": "Total receiving yards (3rd down or Red Zone)",
+          "unit": "yards"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player-level breakdown of receiving stats"
+        }
+      },
+      "notes": "Includes both 3rd down and Red Zone situational targets. Data structure separates 3rd_down and redzone for each team."
+    }
+  },
+  "data": {
+    "task_4": {
+      "wisconsin": {
+        "receiving": {
+          "by_game": {
+            "Week11_Washington": {
+              "targets": 3,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Gideon Ituka",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 11,
+                  "opp": "Washington"
+                },
+                {
+                  "player": "Grant Stec",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 11,
+                  "opp": "Washington"
+                },
+                {
+                  "player": "Dekel Crowdus",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 11,
+                  "opp": "Washington"
+                }
+              ]
+            },
+            "Week9_Oregon": {
+              "targets": 3,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 42,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Eugene Hilton Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 42,
+                  "air_yards": 37,
+                  "week": 9,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 9,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Dekel Crowdus",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 9,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "Week8_Ohio State": {
+              "targets": 3,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 24,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 24,
+                  "air_yards": 23,
+                  "week": 8,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Eugene Hilton Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 8,
+                  "opp": "Ohio State"
+                }
+              ]
+            },
+            "Week7_Iowa": {
+              "targets": 5,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 29,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 29,
+                  "air_yards": 24,
+                  "week": 7,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "Week6_Michigan": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 27,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 27,
+                  "air_yards": 25,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Chris Brooks Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 6,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "Week4_Maryland": {
+              "targets": 5,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 23,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Eugene Hilton Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 23,
+                  "air_yards": 23,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "Week3_Alabama": {
+              "targets": 3,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 41,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 41,
+                  "air_yards": 36,
+                  "week": 3,
+                  "opp": "Alabama"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 3,
+                  "opp": "Alabama"
+                }
+              ]
+            },
+            "Week2_Middle Tennessee": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 34,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Cade Yacamelli",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                },
+                {
+                  "player": "Lance Mason",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 34,
+                  "air_yards": 30,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                }
+              ]
+            },
+            "Week1_Miami OH": {
+              "targets": 5,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 22,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Grant Stec",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 22,
+                  "air_yards": 22,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Joseph Griffin Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 31,
+            "receptions": 8,
+            "touchdowns": 1,
+            "yards": 242
+          }
+        },
+        "passing": {
+          "by_game": {
+            "Week11_Washington": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 0,
+              "catchable": 0,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 73,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 3,
+              "players": [
+                {
+                  "player": "Carter Smith",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 50,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 11,
+                  "opp": "Washington"
+                },
+                {
+                  "player": "Danny O'Neil",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 23,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 11,
+                  "opp": "Washington"
+                }
+              ]
+            },
+            "Week9_Oregon": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 1,
+              "catchable": 3,
+              "on_target": 2,
+              "yards": 42,
+              "air_yards": 37,
+              "intended_air_yards": 93,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Hunter Simmons",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 1,
+                  "catchable": 3,
+                  "on_target": 2,
+                  "yards": 42,
+                  "air_yards": 37,
+                  "intended_air_yards": 93,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 9,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "Week8_Ohio State": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 24,
+              "air_yards": 23,
+              "intended_air_yards": 71,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Hunter Simmons",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 24,
+                  "air_yards": 23,
+                  "intended_air_yards": 71,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 8,
+                  "opp": "Ohio State"
+                }
+              ]
+            },
+            "Week7_Iowa": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 1,
+              "catchable": 4,
+              "on_target": 3,
+              "yards": 29,
+              "air_yards": 24,
+              "intended_air_yards": 128,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 3,
+              "players": [
+                {
+                  "player": "Hunter Simmons",
+                  "dropbacks": 5,
+                  "attempts": 5,
+                  "completions": 1,
+                  "catchable": 4,
+                  "on_target": 3,
+                  "yards": 29,
+                  "air_yards": 24,
+                  "intended_air_yards": 128,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 3,
+                  "week": 7,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "Week6_Michigan": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 27,
+              "air_yards": 25,
+              "intended_air_yards": 64,
+              "touchdowns": 0,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Hunter Simmons",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 27,
+                  "air_yards": 25,
+                  "intended_air_yards": 64,
+                  "touchdowns": 0,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 6,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "Week4_Maryland": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 23,
+              "air_yards": 23,
+              "intended_air_yards": 129,
+              "touchdowns": 0,
+              "interceptions": 1,
+              "sacks": 0,
+              "pressures": 3,
+              "players": [
+                {
+                  "player": "Danny O'Neil",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 23,
+                  "air_yards": 23,
+                  "intended_air_yards": 73,
+                  "touchdowns": 0,
+                  "interceptions": 1,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Tyrell Henry",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 23,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Hunter Simmons",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 33,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 4,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "Week3_Alabama": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 1,
+              "yards": 41,
+              "air_yards": 36,
+              "intended_air_yards": 108,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Danny O'Neil",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 1,
+                  "yards": 41,
+                  "air_yards": 36,
+                  "intended_air_yards": 108,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 3,
+                  "opp": "Alabama"
+                }
+              ]
+            },
+            "Week2_Middle Tennessee": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 34,
+              "air_yards": 30,
+              "intended_air_yards": 56,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Danny O'Neil",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 34,
+                  "air_yards": 30,
+                  "intended_air_yards": 56,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                }
+              ]
+            },
+            "Week1_Miami OH": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 22,
+              "air_yards": 22,
+              "intended_air_yards": 181,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Billy Edwards Jr.",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 115,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Danny O'Neil",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 22,
+                  "air_yards": 22,
+                  "intended_air_yards": 66,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                }
+              ]
+            }
+          },
+          "total": {
+            "dropbacks": 31,
+            "attempts": 31,
+            "completions": 8,
+            "catchable": 16,
+            "on_target": 13,
+            "yards": 242,
+            "air_yards": 220,
+            "intended_air_yards": 903,
+            "touchdowns": 1,
+            "interceptions": 2,
+            "sacks": 0,
+            "pressures": 18
+          }
+        }
+      },
+      "indiana": {
+        "receiving": {
+          "by_game": {
+            "Week11_Penn State": {
+              "targets": 4,
+              "receptions": 2,
+              "touchdowns": 0,
+              "yards": 82,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Charlie Becker",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 53,
+                  "air_yards": 36,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Riley Nowakowski",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 29,
+                  "air_yards": 24,
+                  "week": 11,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "Week10_Maryland": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 22,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 22,
+                  "air_yards": 22,
+                  "week": 10,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "Week9_UCLA": {
+              "targets": 4,
+              "receptions": 2,
+              "touchdowns": 1,
+              "yards": 92,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "yards": 92,
+                  "air_yards": 54,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Lebron Bond",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 9,
+                  "opp": "UCLA"
+                }
+              ]
+            },
+            "Week8_Michigan State": {
+              "targets": 3,
+              "receptions": 3,
+              "touchdowns": 2,
+              "yards": 99,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "yards": 72,
+                  "air_yards": 56,
+                  "week": 8,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 27,
+                  "air_yards": 26,
+                  "week": 8,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "Week7_Oregon": {
+              "targets": 2,
+              "receptions": 1,
+              "touchdowns": 0,
+              "yards": 24,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Charlie Becker",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 7,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 24,
+                  "air_yards": 21,
+                  "week": 7,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "Week5_Iowa": {
+              "targets": 4,
+              "receptions": 2,
+              "touchdowns": 0,
+              "yards": 66,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 37,
+                  "air_yards": 33,
+                  "week": 5,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 29,
+                  "air_yards": 21,
+                  "week": 5,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 5,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "Week4_Illinois": {
+              "targets": 1,
+              "receptions": 0,
+              "touchdowns": 0,
+              "yards": 0,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 4,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "Week3_Indiana State": {
+              "targets": 1,
+              "receptions": 1,
+              "touchdowns": 1,
+              "yards": 31,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 31,
+                  "air_yards": 31,
+                  "week": 3,
+                  "opp": "Indiana State"
+                }
+              ]
+            },
+            "Week2_Kennesaw State": {
+              "targets": 5,
+              "receptions": 2,
+              "touchdowns": 1,
+              "yards": 49,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 4,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "yards": 20,
+                  "air_yards": 20,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                },
+                {
+                  "player": "Charlie Becker",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 29,
+                  "air_yards": 20,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                }
+              ]
+            },
+            "Week1_Old Dominion": {
+              "targets": 7,
+              "receptions": 3,
+              "touchdowns": 0,
+              "yards": 90,
+              "targets_source": "CSV",
+              "receptions_source": "CSV",
+              "touchdowns_source": "CSV",
+              "yards_source": "CSV",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 46,
+                  "air_yards": 42,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 22,
+                  "air_yards": 21,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "Lebron Bond",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "yards": 22,
+                  "air_yards": 20,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 33,
+            "receptions": 17,
+            "touchdowns": 6,
+            "yards": 555
+          }
+        },
+        "passing": {
+          "by_game": {
+            "Week11_Penn State": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 2,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 82,
+              "air_yards": 60,
+              "intended_air_yards": 121,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 82,
+                  "air_yards": 60,
+                  "intended_air_yards": 121,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 11,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "Week10_Maryland": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 2,
+              "on_target": 1,
+              "yards": 22,
+              "air_yards": 22,
+              "intended_air_yards": 53,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 2,
+                  "on_target": 1,
+                  "yards": 22,
+                  "air_yards": 22,
+                  "intended_air_yards": 53,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 10,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "Week9_UCLA": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 2,
+              "catchable": 2,
+              "on_target": 2,
+              "yards": 92,
+              "air_yards": 54,
+              "intended_air_yards": 105,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 2,
+                  "catchable": 2,
+                  "on_target": 2,
+                  "yards": 92,
+                  "air_yards": 54,
+                  "intended_air_yards": 85,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Alberto Mendoza",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 20,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 9,
+                  "opp": "UCLA"
+                }
+              ]
+            },
+            "Week8_Michigan State": {
+              "dropbacks": 3,
+              "attempts": 3,
+              "completions": 3,
+              "catchable": 3,
+              "on_target": 3,
+              "yards": 99,
+              "air_yards": 82,
+              "intended_air_yards": 82,
+              "touchdowns": 2,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 3,
+                  "attempts": 3,
+                  "completions": 3,
+                  "catchable": 3,
+                  "on_target": 3,
+                  "yards": 99,
+                  "air_yards": 82,
+                  "intended_air_yards": 82,
+                  "touchdowns": 2,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 8,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "Week7_Oregon": {
+              "dropbacks": 2,
+              "attempts": 2,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 24,
+              "air_yards": 21,
+              "intended_air_yards": 62,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 2,
+                  "attempts": 2,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 24,
+                  "air_yards": 21,
+                  "intended_air_yards": 62,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 7,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "Week5_Iowa": {
+              "dropbacks": 4,
+              "attempts": 4,
+              "completions": 2,
+              "catchable": 3,
+              "on_target": 2,
+              "yards": 66,
+              "air_yards": 54,
+              "intended_air_yards": 119,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 4,
+                  "attempts": 4,
+                  "completions": 2,
+                  "catchable": 3,
+                  "on_target": 2,
+                  "yards": 66,
+                  "air_yards": 54,
+                  "intended_air_yards": 119,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 5,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "Week4_Illinois": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 0,
+              "catchable": 0,
+              "on_target": 0,
+              "yards": 0,
+              "air_yards": 0,
+              "intended_air_yards": 27,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 0,
+                  "catchable": 0,
+                  "on_target": 0,
+                  "yards": 0,
+                  "air_yards": 0,
+                  "intended_air_yards": 27,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 4,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "Week3_Indiana State": {
+              "dropbacks": 1,
+              "attempts": 1,
+              "completions": 1,
+              "catchable": 1,
+              "on_target": 1,
+              "yards": 31,
+              "air_yards": 31,
+              "intended_air_yards": 31,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 1,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 1,
+                  "attempts": 1,
+                  "completions": 1,
+                  "catchable": 1,
+                  "on_target": 1,
+                  "yards": 31,
+                  "air_yards": 31,
+                  "intended_air_yards": 31,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 1,
+                  "week": 3,
+                  "opp": "Indiana State"
+                }
+              ]
+            },
+            "Week2_Kennesaw State": {
+              "dropbacks": 5,
+              "attempts": 5,
+              "completions": 2,
+              "catchable": 5,
+              "on_target": 5,
+              "yards": 49,
+              "air_yards": 40,
+              "intended_air_yards": 105,
+              "touchdowns": 1,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 0,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 5,
+                  "attempts": 5,
+                  "completions": 2,
+                  "catchable": 5,
+                  "on_target": 5,
+                  "yards": 49,
+                  "air_yards": 40,
+                  "intended_air_yards": 105,
+                  "touchdowns": 1,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 0,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                }
+              ]
+            },
+            "Week1_Old Dominion": {
+              "dropbacks": 7,
+              "attempts": 7,
+              "completions": 3,
+              "catchable": 5,
+              "on_target": 3,
+              "yards": 90,
+              "air_yards": 83,
+              "intended_air_yards": 219,
+              "touchdowns": 0,
+              "interceptions": 0,
+              "sacks": 0,
+              "pressures": 2,
+              "players": [
+                {
+                  "player": "Fernando Mendoza",
+                  "dropbacks": 7,
+                  "attempts": 7,
+                  "completions": 3,
+                  "catchable": 5,
+                  "on_target": 3,
+                  "yards": 90,
+                  "air_yards": 83,
+                  "intended_air_yards": 219,
+                  "touchdowns": 0,
+                  "interceptions": 0,
+                  "sacks": 0,
+                  "pressures": 2,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                }
+              ]
+            }
+          },
+          "total": {
+            "dropbacks": 33,
+            "attempts": 33,
+            "completions": 17,
+            "catchable": 24,
+            "on_target": 20,
+            "yards": 555,
+            "air_yards": 447,
+            "intended_air_yards": 924,
+            "touchdowns": 6,
+            "interceptions": 0,
+            "sacks": 0,
+            "pressures": 7
+          }
+        }
+      },
+      "data_source_note": {
+        "receiving_stats": "CSV import for receiving targets, receptions, touchdowns, and yards",
+        "passing_stats": "CSV import for passing attempts, completions, touchdowns, yards, interceptions, and other passing metrics",
+        "csv_import_date": "2025-11-11T09:29:32.588122",
+        "note": "Receiving and passing stats use CSV data EXCLUSIVELY. Only games present in CSV are included."
+      }
+    },
+    "task_9": {
+      "wisconsin": {
+        "3rd_down": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 6,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 17
+              },
+              "opponent": "Washington",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 11,
+                  "opp": "Washington"
+                },
+                {
+                  "player": "Chris Brooks Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 11,
+                  "opp": "Washington"
+                },
+                {
+                  "player": "Gideon Ituka",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Washington"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Washington"
+                }
+              ]
+            },
+            "9": {
+              "stats": {
+                "targets": 7,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 61
+              },
+              "opponent": "Oregon",
+              "players": [
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 9,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Eugene Hilton Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 42,
+                  "week": 9,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Lance Mason",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 9,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 34
+              },
+              "opponent": "Ohio State",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 24,
+                  "week": 8,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Eugene Hilton Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 8,
+                  "opp": "Ohio State"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 8,
+                  "opp": "Ohio State"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 7,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 15
+              },
+              "opponent": "Iowa",
+              "players": [
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 7,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Chris Brooks Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 7,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Dilin Jones",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Lance Mason",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "6": {
+              "stats": {
+                "targets": 8,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 11
+              },
+              "opponent": "Michigan",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Chris Brooks Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Jackson Acker",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Dilin Jones",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 6,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 6,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 18
+              },
+              "opponent": "Maryland",
+              "players": [
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 3,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 13,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Grant Stec",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 5,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 50
+              },
+              "opponent": "Alabama",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 30,
+                  "week": 3,
+                  "opp": "Alabama"
+                },
+                {
+                  "player": "Chris Brooks Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "Alabama"
+                },
+                {
+                  "player": "Jackson Acker",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 3,
+                  "opp": "Alabama"
+                },
+                {
+                  "player": "Darrion Dupree",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 12,
+                  "week": 3,
+                  "opp": "Alabama"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 5,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 3,
+                "yards": 51
+              },
+              "opponent": "Middle Tennessee",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 21,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                },
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 3,
+                "receptions": 1,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 5
+              },
+              "opponent": "Miami OH",
+              "players": [
+                {
+                  "player": "Joseph Griffin Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Jayden Ballard",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 5,
+                  "week": 1,
+                  "opp": "Miami OH"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 52,
+            "receptions": 25,
+            "touchdowns": 0,
+            "first_downs": 14,
+            "yards": 262
+          }
+        },
+        "redzone": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 1,
+                "receptions": 0,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 0
+              },
+              "opponent": "Washington",
+              "players": [
+                {
+                  "player": "Grant Stec",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Washington"
+                }
+              ]
+            },
+            "9": {
+              "stats": {
+                "targets": 1,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 2
+              },
+              "opponent": "Oregon",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 9,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 1,
+                "receptions": 1,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": -5
+              },
+              "opponent": "Ohio State",
+              "players": [
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": -5,
+                  "week": 8,
+                  "opp": "Ohio State"
+                }
+              ]
+            },
+            "6": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 12
+              },
+              "opponent": "Michigan",
+              "players": [
+                {
+                  "player": "Jackson Acker",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 5,
+                  "week": 6,
+                  "opp": "Michigan"
+                },
+                {
+                  "player": "Lance Mason",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 6,
+                  "opp": "Michigan"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 19
+              },
+              "opponent": "Maryland",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 4,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Eugene Hilton Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 6,
+                  "week": 4,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 2,
+                "first_downs": 3,
+                "yards": 34
+              },
+              "opponent": "Middle Tennessee",
+              "players": [
+                {
+                  "player": "Lance Mason",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 2,
+                  "yards": 31,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                },
+                {
+                  "player": "Tyrell Henry",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 3,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Middle Tennessee"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 2,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 3
+              },
+              "opponent": "Miami OH",
+              "players": [
+                {
+                  "player": "Vinny Anthony II",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 3,
+                  "week": 1,
+                  "opp": "Miami OH"
+                },
+                {
+                  "player": "Trech Kekahuna",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Miami OH"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 15,
+            "receptions": 10,
+            "touchdowns": 5,
+            "first_downs": 7,
+            "yards": 65
+          }
+        }
+      },
+      "indiana": {
+        "3rd_down": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 9,
+                "receptions": 6,
+                "touchdowns": 1,
+                "first_downs": 3,
+                "yards": 35
+              },
+              "opponent": "Penn State",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 3,
+                  "receptions": 3,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Charlie Becker",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 20,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Kaelon Black",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Roman Hemby",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 1,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Holden Staes",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 11,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "10": {
+              "stats": {
+                "targets": 6,
+                "receptions": 4,
+                "touchdowns": 0,
+                "first_downs": 4,
+                "yards": 53
+              },
+              "opponent": "Maryland",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 2,
+                  "yards": 26,
+                  "week": 10,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 10,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Holden Staes",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 10,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Lebron Bond",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 10,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "9": {
+              "stats": {
+                "targets": 7,
+                "receptions": 5,
+                "touchdowns": 2,
+                "first_downs": 4,
+                "yards": 102
+              },
+              "opponent": "UCLA",
+              "players": [
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 2,
+                  "yards": 92,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 1,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Kaelon Black",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 3,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Riley Nowakowski",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Lebron Bond",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "UCLA"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 5,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 3,
+                "yards": 57
+              },
+              "opponent": "Michigan State",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 8,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 16,
+                  "week": 8,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Roman Hemby",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 21,
+                  "week": 8,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 8,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 7,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 3,
+                "yards": 25
+              },
+              "opponent": "Oregon",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 5,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 2,
+                  "yards": 21,
+                  "week": 7,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Riley Nowakowski",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 4,
+                  "week": 7,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "5": {
+              "stats": {
+                "targets": 7,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 3,
+                "yards": 78
+              },
+              "opponent": "Iowa",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 4,
+                  "receptions": 3,
+                  "touchdowns": 1,
+                  "first_downs": 3,
+                  "yards": 78,
+                  "week": 5,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Iowa"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 5,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 5,
+                "receptions": 4,
+                "touchdowns": 1,
+                "first_downs": 4,
+                "yards": 54
+              },
+              "opponent": "Illinois",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 4,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Roman Hemby",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 26,
+                  "week": 4,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 24
+              },
+              "opponent": "Indiana State",
+              "players": [
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 3,
+                  "opp": "Indiana State"
+                },
+                {
+                  "player": "Makai Jackson",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "Indiana State"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 3,
+                  "opp": "Indiana State"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 3,
+                "receptions": 1,
+                "touchdowns": 0,
+                "first_downs": 1,
+                "yards": 17
+              },
+              "opponent": "Kennesaw State",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                },
+                {
+                  "player": "Jackson Wassertstrom",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 17,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 3,
+                "receptions": 2,
+                "touchdowns": 0,
+                "first_downs": 2,
+                "yards": 50
+              },
+              "opponent": "Old Dominion",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 46,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 4,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 55,
+            "receptions": 34,
+            "touchdowns": 8,
+            "first_downs": 29,
+            "yards": 495
+          }
+        },
+        "redzone": {
+          "by_week": {
+            "11": {
+              "stats": {
+                "targets": 9,
+                "receptions": 6,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 33
+              },
+              "opponent": "Penn State",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 6,
+                  "receptions": 4,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 11,
+                  "opp": "Penn State"
+                },
+                {
+                  "player": "Charlie Becker",
+                  "targets": 3,
+                  "receptions": 2,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 19,
+                  "week": 11,
+                  "opp": "Penn State"
+                }
+              ]
+            },
+            "10": {
+              "stats": {
+                "targets": 2,
+                "receptions": 2,
+                "touchdowns": 1,
+                "first_downs": 2,
+                "yards": 17
+              },
+              "opponent": "Maryland",
+              "players": [
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 10,
+                  "opp": "Maryland"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 10,
+                  "opp": "Maryland"
+                }
+              ]
+            },
+            "9": {
+              "stats": {
+                "targets": 5,
+                "receptions": 3,
+                "touchdowns": 2,
+                "first_downs": 3,
+                "yards": 13
+              },
+              "opponent": "UCLA",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 1,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 2,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Kaelon Black",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 1,
+                  "yards": 10,
+                  "week": 9,
+                  "opp": "UCLA"
+                },
+                {
+                  "player": "Lebron Bond",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 9,
+                  "opp": "UCLA"
+                }
+              ]
+            },
+            "8": {
+              "stats": {
+                "targets": 4,
+                "receptions": 3,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 19
+              },
+              "opponent": "Michigan State",
+              "players": [
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 13,
+                  "week": 8,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": -1,
+                  "week": 8,
+                  "opp": "Michigan State"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 7,
+                  "week": 8,
+                  "opp": "Michigan State"
+                }
+              ]
+            },
+            "7": {
+              "stats": {
+                "targets": 3,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 8
+              },
+              "opponent": "Oregon",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 2,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 7,
+                  "opp": "Oregon"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 7,
+                  "opp": "Oregon"
+                }
+              ]
+            },
+            "5": {
+              "stats": {
+                "targets": 1,
+                "receptions": 1,
+                "touchdowns": 1,
+                "first_downs": 1,
+                "yards": 14
+              },
+              "opponent": "Iowa",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 5,
+                  "opp": "Iowa"
+                }
+              ]
+            },
+            "4": {
+              "stats": {
+                "targets": 5,
+                "receptions": 5,
+                "touchdowns": 4,
+                "first_downs": 4,
+                "yards": 39
+              },
+              "opponent": "Illinois",
+              "players": [
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 14,
+                  "week": 4,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "first_downs": 2,
+                  "yards": 14,
+                  "week": 4,
+                  "opp": "Illinois"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 11,
+                  "week": 4,
+                  "opp": "Illinois"
+                }
+              ]
+            },
+            "3": {
+              "stats": {
+                "targets": 6,
+                "receptions": 5,
+                "touchdowns": 5,
+                "first_downs": 5,
+                "yards": 60
+              },
+              "opponent": "Indiana State",
+              "players": [
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "first_downs": 2,
+                  "yards": 26,
+                  "week": 3,
+                  "opp": "Indiana State"
+                },
+                {
+                  "player": "Jonathan Brady",
+                  "targets": 2,
+                  "receptions": 2,
+                  "touchdowns": 2,
+                  "first_downs": 2,
+                  "yards": 16,
+                  "week": 3,
+                  "opp": "Indiana State"
+                },
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 3,
+                  "opp": "Indiana State"
+                },
+                {
+                  "player": "Holden Staes",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 18,
+                  "week": 3,
+                  "opp": "Indiana State"
+                }
+              ]
+            },
+            "2": {
+              "stats": {
+                "targets": 6,
+                "receptions": 6,
+                "touchdowns": 5,
+                "first_downs": 5,
+                "yards": 52
+              },
+              "opponent": "Kennesaw State",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 4,
+                  "receptions": 4,
+                  "touchdowns": 3,
+                  "first_downs": 3,
+                  "yards": 38,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 8,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                },
+                {
+                  "player": "Charlie Becker",
+                  "targets": 1,
+                  "receptions": 1,
+                  "touchdowns": 1,
+                  "first_downs": 1,
+                  "yards": 6,
+                  "week": 2,
+                  "opp": "Kennesaw State"
+                }
+              ]
+            },
+            "1": {
+              "stats": {
+                "targets": 5,
+                "receptions": 0,
+                "touchdowns": 0,
+                "first_downs": 0,
+                "yards": 0
+              },
+              "opponent": "Old Dominion",
+              "players": [
+                {
+                  "player": "Elijah Sarratt",
+                  "targets": 2,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "E.J. Williams Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "Riley Nowakowski",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                },
+                {
+                  "player": "Omar Cooper Jr.",
+                  "targets": 1,
+                  "receptions": 0,
+                  "touchdowns": 0,
+                  "first_downs": 0,
+                  "yards": 0,
+                  "week": 1,
+                  "opp": "Old Dominion"
+                }
+              ]
+            }
+          },
+          "total": {
+            "targets": 46,
+            "receptions": 32,
+            "touchdowns": 21,
+            "first_downs": 24,
+            "yards": 255
+          }
+        }
+      },
+      "data_source_note": {
+        "note": "CSV import for all 3rd down and Red Zone stats (targets, receptions, touchdowns, first downs, yards)",
+        "csv_import_date": "2025-11-11T09:29:33.364512",
+        "note_detail": "3rd down and Red Zone targets data uses CSV data EXCLUSIVELY. Only games present in CSV are included."
+      }
+    }
+  }
+}

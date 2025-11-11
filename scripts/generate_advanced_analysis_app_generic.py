@@ -3107,7 +3107,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {{
-                        title: {{ display: true, text: '${{team1Name}} - Run vs Pass Explosives', font: {{ size: 14 }} }},
+                        title: {{ display: true, text: team1Name + ' - Run vs Pass Explosives', font: {{ size: 14 }} }},
                         legend: {{ display: true, position: 'top' }}
                     }},
                     scales: {{ y: {{ beginAtZero: true }} }}
@@ -3137,7 +3137,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {{
-                        title: {{ display: true, text: '${{team2Name}} - Run vs Pass Explosives', font: {{ size: 14 }} }},
+                        title: {{ display: true, text: team2Name + ' - Run vs Pass Explosives', font: {{ size: 14 }} }},
                         legend: {{ display: true, position: 'top' }}
                     }},
                     scales: {{ y: {{ beginAtZero: true }} }}

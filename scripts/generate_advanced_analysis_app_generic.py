@@ -1574,7 +1574,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <p><strong>1 TO committed, 2 forced</strong></p>
                     <p>TO margin: <strong>+1</strong></p>
                     <p>Result: Positive turnover margin</p>
-                    <p style="margin-top: 10px; font-size: 0.9em;"><strong>Notable:</strong> 0/16 on 3rd down (0.0%), 0/3 on 4th down</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;"><strong>Notable:</strong> 6-14 on 3rd downs, 0-1 on 4th downs</p>
                 </div>
             </div>
             

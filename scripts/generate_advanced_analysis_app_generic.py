@@ -1973,6 +1973,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <th>Yards</th>
                             <th>Air Yards</th>
                             <th>TDs</th>
+                            <th>Big Ten Rank</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -1990,6 +1991,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <th>Yards</th>
                             <th>Air Yards</th>
                             <th>TDs</th>
+                            <th>Big Ten Rank</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -2015,6 +2017,24 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         const team2Key = '{team2_key}';
         const team1Name = '{team_name1}';
         const team2Name = '{team_name2}';
+        
+        // Debug: Check deep_targets data structure immediately after parsing
+        console.log('=== DATA LOADING DEBUG ===');
+        console.log('team1Key =', team1Key, 'team2Key =', team2Key);
+        console.log('allData keys =', Object.keys(allData));
+        console.log('allData[team1Key] keys =', allData[team1Key] ? Object.keys(allData[team1Key]) : 'N/A');
+        console.log('allData[team1Key].deep_targets =', allData[team1Key]?.deep_targets ? 'exists' : 'missing');
+        if (allData[team1Key]?.deep_targets) {{
+            console.log('allData[team1Key].deep_targets keys =', Object.keys(allData[team1Key].deep_targets));
+            console.log('allData[team1Key].deep_targets.passing =', allData[team1Key].deep_targets.passing);
+            console.log('allData[team1Key].deep_targets.passing.total =', allData[team1Key].deep_targets.passing?.total);
+            console.log('allData[team1Key].deep_targets.passing.by_game count =', allData[team1Key].deep_targets.passing?.by_game ? Object.keys(allData[team1Key].deep_targets.passing.by_game).length : 0);
+            console.log('allData[team1Key].deep_targets.receiving =', allData[team1Key].deep_targets.receiving);
+            console.log('allData[team1Key].deep_targets.receiving.total =', allData[team1Key].deep_targets.receiving?.total);
+            console.log('allData[team1Key].deep_targets.receiving.by_game count =', allData[team1Key].deep_targets.receiving?.by_game ? Object.keys(allData[team1Key].deep_targets.receiving.by_game).length : 0);
+        }}
+        console.log('=== END DATA LOADING DEBUG ===');
+        
         // Store original data for filtering (deep copy to avoid reference issues)
         const originalAllData = {{
             [team1Key]: JSON.parse(JSON.stringify(allData[team1Key])),
@@ -2701,10 +2721,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 const netYards = oppYards - teamYards; // Positive = opponent had more (good), negative = team had more (bad)
                 values.push(netYards);
                 
-                // Verification: Log if we have data for this week (helps verify calculation)
-                if (teamYards > 0 || oppYards > 0) {{
-                    console.log(`${{teamName}} Week ${{week}}: Team=${{teamYards}}yds, Opp=${{oppYards}}yds, Net=${{netYards}}yds`);
-                }}
             }}
             
             return {{
@@ -2772,7 +2788,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     $table.DataTable(config);
                 }}
             }} catch (e) {{
-                console.warn('Error updating DataTable for', selector, e);
                 // Fallback: destroy and recreate
                 try {{
                     if ($.fn.DataTable.isDataTable(selector)) {{
@@ -2780,7 +2795,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     }}
                     $(selector).DataTable(config);
                 }} catch (e2) {{
-                    console.error('Failed to recreate DataTable for', selector, e2);
+                    // Silently fail if DataTable recreation fails
                 }}
             }}
         }}
@@ -4138,14 +4153,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1TotalNetPoints = team1NetPointsByWeek.netPoints.reduce((sum, val) => sum + val, 0);
             const team2TotalNetPoints = team2NetPointsByWeek.netPoints.reduce((sum, val) => sum + val, 0);
             
-            // Debug logging to identify discrepancies
-            console.log('=== POST TURNOVER DEBUG ===');
-            console.log(team1Name + ' Weekly Net Points:', team1NetPointsByWeek.netPoints);
-            console.log(team1Name + ' Week Labels:', team1NetPointsByWeek.weeks);
-            console.log(team1Name + ' Total Net Points (sum):', team1TotalNetPoints);
-            console.log(team1Name + ' analyzePostTurnover net_points_after_turnovers:', team1.net_points_after_turnovers);
-            console.log(team1Name + ' Last 3 games from analyzePostTurnover:', team1.last_3_games);
-            
             // Calculate last 3 games from weekly data (matching chart calculation)
             // Get weeks that have games (not BYE weeks)
             const team1WeeksWithGames = team1NetPointsByWeek.netPoints.map((val, idx) => ({{
@@ -4155,8 +4162,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }})).filter(w => team1Games.some(g => g.week === w.week));
             const team1Last3Weeks = team1WeeksWithGames.slice(-3);
             const team1Last3NetFromWeekly = team1Last3Weeks.reduce((sum, w) => sum + w.netPoints, 0);
-            console.log(team1Name + ' Last 3 weeks from weekly data:', team1Last3Weeks);
-            console.log(team1Name + ' Last 3 net points (from weekly):', team1Last3NetFromWeekly);
             
             const team2WeeksWithGames = team2NetPointsByWeek.netPoints.map((val, idx) => ({{
                 week: idx + 1,
@@ -4165,14 +4170,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }})).filter(w => team2Games.some(g => g.week === w.week));
             const team2Last3Weeks = team2WeeksWithGames.slice(-3);
             const team2Last3NetFromWeekly = team2Last3Weeks.reduce((sum, w) => sum + w.netPoints, 0);
-            console.log(team2Name + ' Last 3 weeks from weekly data:', team2Last3Weeks);
-            console.log(team2Name + ' Last 3 net points (from weekly):', team2Last3NetFromWeekly);
-            
-            console.log(team2Name + ' Weekly Net Points:', team2NetPointsByWeek.netPoints);
-            console.log(team2Name + ' Week Labels:', team2NetPointsByWeek.weeks);
-            console.log(team2Name + ' Total Net Points (sum):', team2TotalNetPoints);
-            console.log(team2Name + ' analyzePostTurnover net_points_after_turnovers:', team2.net_points_after_turnovers);
-            console.log('=== END DEBUG ===');
             
             const summaryHtml = `
                 <div class="team-comparison">
@@ -4790,7 +4787,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
             
             if (!hasEnrichment) {{
-                console.warn('Situational receiving data does not have enrichment fields (is_conference, is_power4_opponent, game_id). Cannot apply filters. Returning unfiltered data.');
                 // Return original data structure, not null
                 return situationalData;
             }}
@@ -4851,20 +4847,20 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         // Only apply filters if enrichment fields are present
                         // If enrichment fields are missing, include the data (don't filter it out)
                         if (filters.conference_only) {{
-                            if (weekData.hasOwnProperty('is_conference')) {{
+                            if (weekData.hasOwnProperty('is_conference') && weekData.is_conference !== null && weekData.is_conference !== undefined) {{
                                 include = include && weekData.is_conference === true;
                             }}
-                            // If enrichment field is missing, include it (can't filter without enrichment)
+                            // If enrichment field is missing or null, include it (can't filter without enrichment)
                         }} else if (filters.non_conference_only) {{
-                            if (weekData.hasOwnProperty('is_conference')) {{
+                            if (weekData.hasOwnProperty('is_conference') && weekData.is_conference !== null && weekData.is_conference !== undefined) {{
                                 include = include && weekData.is_conference === false;
                             }}
-                            // If enrichment field is missing, include it
+                            // If enrichment field is missing or null, include it
                         }} else if (filters.power4_only) {{
-                            if (weekData.hasOwnProperty('is_power4_opponent')) {{
+                            if (weekData.hasOwnProperty('is_power4_opponent') && weekData.is_power4_opponent !== null && weekData.is_power4_opponent !== undefined) {{
                                 include = include && weekData.is_power4_opponent === true;
                             }}
-                            // If enrichment field is missing, include it
+                            // If enrichment field is missing or null, include it
                         }}
                         
                         // Filter by last 3 games
@@ -4928,15 +4924,15 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         
                         // Filter by conference/non-conference/power4
                         if (filters.conference_only) {{
-                            if (gameData.hasOwnProperty('is_conference')) {{
+                            if (gameData.hasOwnProperty('is_conference') && gameData.is_conference !== null && gameData.is_conference !== undefined) {{
                                 include = include && gameData.is_conference === true;
                             }}
                         }} else if (filters.non_conference_only) {{
-                            if (gameData.hasOwnProperty('is_conference')) {{
+                            if (gameData.hasOwnProperty('is_conference') && gameData.is_conference !== null && gameData.is_conference !== undefined) {{
                                 include = include && gameData.is_conference === false;
                             }}
                         }} else if (filters.power4_only) {{
-                            if (gameData.hasOwnProperty('is_power4_opponent')) {{
+                            if (gameData.hasOwnProperty('is_power4_opponent') && gameData.is_power4_opponent !== null && gameData.is_power4_opponent !== undefined) {{
                                 include = include && gameData.is_power4_opponent === true;
                             }}
                         }}
@@ -5121,7 +5117,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team2 = allData[team2Key].situational_filtered || allData[team2Key].situational;
             
             if (!team1 || !team2) {{
-                console.warn('Situational receiving data not available');
                 return;
             }}
             
@@ -5265,11 +5260,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
-                                    const label = context.label || '';
-                                    const value = context.parsed || 0;
+                                    const index = context.dataIndex;
+                                    const player = washTopPlayers[index];
+                                    const name = player[0];
+                                    const targets = player[1];
+                                    const rank = player[2];
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((value / total) * 100).toFixed(1);
-                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                    const percentage = ((targets / total) * 100).toFixed(1);
+                                    let label = `${{name}}: ${{targets}} targets (${{percentage}}%)`;
+                                    if (rank) {{
+                                        label += ` - Big Ten Rank #${{rank}}`;
+                                    }}
+                                    return label;
                                 }}
                             }}
                         }}
@@ -5335,11 +5337,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
-                                    const label = context.label || '';
-                                    const value = context.parsed || 0;
+                                    const index = context.dataIndex;
+                                    const player = wiscTopPlayers[index];
+                                    const name = player[0];
+                                    const targets = player[1];
+                                    const rank = player[2];
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((value / total) * 100).toFixed(1);
-                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                    const percentage = ((targets / total) * 100).toFixed(1);
+                                    let label = `${{name}}: ${{targets}} targets (${{percentage}}%)`;
+                                    if (rank) {{
+                                        label += ` - Big Ten Rank #${{rank}}`;
+                                    }}
+                                    return label;
                                 }}
                             }}
                         }}
@@ -5411,7 +5420,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
                     {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
                     {{ title: 'Big Ten Rank' }}
-                ]
+                ],
+                createdRow: function(row, data) {{
+                    // Add top-25-rank class if rank is <= 25
+                    const rank = data[9]; // Big Ten Rank is the 10th column (index 9)
+                    if (rank && rank <= 25) {{
+                        $(row).addClass('top-25-rank');
+                    }}
+                }}
             }};
             safeUpdateDataTable('#thirdDownTableWash', wash3rdTableData, wash3rdDownConfig);
             
@@ -5426,17 +5442,35 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
                     {{ title: 'First Downs' }}, {{ title: 'TDs' }}, {{ title: 'Yards' }},
                     {{ title: 'Big Ten Rank' }}
-                ]
+                ],
+                createdRow: function(row, data) {{
+                    // Add top-25-rank class if rank is <= 25
+                    const rank = data[9]; // Big Ten Rank is the 10th column (index 9)
+                    if (rank && rank <= 25) {{
+                        $(row).addClass('top-25-rank');
+                    }}
+                }}
             }};
             safeUpdateDataTable('#thirdDownTableWisc', wisc3rdTableData, wisc3rdDownConfig);
             
             // Add top 25 banner for 3rd down
+            // Remove any existing banners first to avoid duplicates
+            const existing3rdBanner = document.getElementById('thirdDownTop25Banner');
+            if (existing3rdBanner) {{
+                existing3rdBanner.remove();
+            }}
+            const existing3rdInfoBanner = document.getElementById('thirdDownRankingInfoBanner');
+            if (existing3rdInfoBanner) {{
+                existing3rdInfoBanner.remove();
+            }}
+            
             if (washTop25_3rd || wiscTop25_3rd) {{
-                let bannerHTML = '<div class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
+                let bannerHTML = '<div id="thirdDownTop25Banner" class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
                 const parts = [];
-                if (washTop25_3rd) parts.push(`Washington: ${{washTop25_3rd}}`);
-                if (wiscTop25_3rd) parts.push(`Wisconsin: ${{wiscTop25_3rd}}`);
+                if (washTop25_3rd) parts.push(`${{team1Name}}: ${{washTop25_3rd}}`);
+                if (wiscTop25_3rd) parts.push(`${{team2Name}}: ${{wiscTop25_3rd}}`);
                 bannerHTML += parts.join(' | ') + '</div>';
+                bannerHTML += '<div id="thirdDownRankingInfoBanner" class="notice-banner" style="margin-bottom: 20px; font-style: italic; color: #666;"><em>Rankings are based on number of targets in conference games only.</em></div>';
                 document.getElementById('thirdDownSummary').insertAdjacentHTML('afterend', bannerHTML);
             }}
             
@@ -5572,11 +5606,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
-                                    const label = context.label || '';
-                                    const value = context.parsed || 0;
+                                    const index = context.dataIndex;
+                                    const player = washRZTopPlayers[index];
+                                    const name = player[0];
+                                    const targets = player[1];
+                                    const rank = player[2];
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((value / total) * 100).toFixed(1);
-                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                    const percentage = ((targets / total) * 100).toFixed(1);
+                                    let label = `${{name}}: ${{targets}} targets (${{percentage}}%)`;
+                                    if (rank) {{
+                                        label += ` - Big Ten Rank #${{rank}}`;
+                                    }}
+                                    return label;
                                 }}
                             }}
                         }}
@@ -5636,11 +5677,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         tooltip: {{
                             callbacks: {{
                                 label: function(context) {{
-                                    const label = context.label || '';
-                                    const value = context.parsed || 0;
+                                    const index = context.dataIndex;
+                                    const player = wiscRZTopPlayers[index];
+                                    const name = player[0];
+                                    const targets = player[1];
+                                    const rank = player[2];
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((value / total) * 100).toFixed(1);
-                                    return `${{label}}: ${{value}} targets (${{percentage}}%)`;
+                                    const percentage = ((targets / total) * 100).toFixed(1);
+                                    let label = `${{name}}: ${{targets}} targets (${{percentage}}%)`;
+                                    if (rank) {{
+                                        label += ` - Big Ten Rank #${{rank}}`;
+                                    }}
+                                    return label;
                                 }}
                             }}
                         }}
@@ -5712,7 +5760,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
                     {{ title: 'TDs' }}, {{ title: 'Yards' }},
                     {{ title: 'Big Ten Rank' }}
-                ]
+                ],
+                createdRow: function(row, data) {{
+                    // Add top-25-rank class if rank is <= 25
+                    const rank = data[8]; // Big Ten Rank is the 9th column (index 8)
+                    if (rank && rank <= 25) {{
+                        $(row).addClass('top-25-rank');
+                    }}
+                }}
             }};
             safeUpdateDataTable('#redZoneReceivingTableWash', washRZTableData, washRZConfig);
             
@@ -5727,17 +5782,35 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
                     {{ title: 'TDs' }}, {{ title: 'Yards' }},
                     {{ title: 'Big Ten Rank' }}
-                ]
+                ],
+                createdRow: function(row, data) {{
+                    // Add top-25-rank class if rank is <= 25
+                    const rank = data[8]; // Big Ten Rank is the 9th column (index 8)
+                    if (rank && rank <= 25) {{
+                        $(row).addClass('top-25-rank');
+                    }}
+                }}
             }};
             safeUpdateDataTable('#redZoneReceivingTableWisc', wiscRZTableData, wiscRZConfig);
             
             // Add top 25 banner for red zone
+            // Remove any existing banners first to avoid duplicates
+            const existingRZBanner = document.getElementById('redZoneTop25Banner');
+            if (existingRZBanner) {{
+                existingRZBanner.remove();
+            }}
+            const existingRZInfoBanner = document.getElementById('redZoneRankingInfoBanner');
+            if (existingRZInfoBanner) {{
+                existingRZInfoBanner.remove();
+            }}
+            
             if (washTop25_RZ || wiscTop25_RZ) {{
-                let bannerHTML = '<div class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
+                let bannerHTML = '<div id="redZoneTop25Banner" class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
                 const parts = [];
-                if (washTop25_RZ) parts.push(`Washington: ${{washTop25_RZ}}`);
-                if (wiscTop25_RZ) parts.push(`Wisconsin: ${{wiscTop25_RZ}}`);
+                if (washTop25_RZ) parts.push(`${{team1Name}}: ${{washTop25_RZ}}`);
+                if (wiscTop25_RZ) parts.push(`${{team2Name}}: ${{wiscTop25_RZ}}`);
                 bannerHTML += parts.join(' | ') + '</div>';
+                bannerHTML += '<div id="redZoneRankingInfoBanner" class="notice-banner" style="margin-bottom: 20px; font-style: italic; color: #666;"><em>Rankings are based on number of targets in conference games only.</em></div>';
                 document.getElementById('redZoneReceivingSummary').insertAdjacentHTML('afterend', bannerHTML);
             }}
         }}
@@ -5745,14 +5818,20 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         function filterDeepTargets(deepTargetData, filters) {{
             // Filter deep target data based on filters
             // Returns filtered copy of the data structure
-            if (!deepTargetData) return null;
+            if (!deepTargetData) {{
+                console.log('filterDeepTargets: deepTargetData is null/undefined');
+                return null;
+            }}
             
             // Check if any filters are actually applied
             const hasFilters = filters.conference_only || filters.non_conference_only || 
                               filters.power4_only || filters.last_3_games;
             
+            console.log('filterDeepTargets: hasFilters =', hasFilters, 'filters =', filters);
+            
             // If no filters, return original data
             if (!hasFilters) {{
+                console.log('filterDeepTargets: No filters, returning original data');
                 return deepTargetData;
             }}
             
@@ -5769,7 +5848,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
             
             if (!hasEnrichment) {{
-                console.warn('Deep target data does not have enrichment fields (is_conference, is_power4_opponent, game_id). Cannot apply filters. Returning unfiltered data.');
                 return deepTargetData;
             }}
             
@@ -5778,13 +5856,19 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             // Helper function to filter by_game data
             // For passing data, we need to match it to receiving data to get enrichment fields
             function filterByGame(byGame, isPassing, receivingByGame) {{
-                if (!byGame) return byGame;
+                console.log('filterByGame: isPassing =', isPassing, 'byGame keys =', Object.keys(byGame || {{}}).length);
+                if (!byGame) {{
+                    console.log('filterByGame: byGame is null/undefined');
+                    return byGame;
+                }}
                 
                 const filteredByGame = {{}};
                 let filteredTotal = isPassing ? 
                     {{ attempts: 0, completions: 0, yards: 0, touchdowns: 0, interceptions: 0 }} :
                     {{ targets: 0, receptions: 0, yards: 0, touchdowns: 0 }};
                 const filteredLast3Games = [];
+                let gamesIncluded = 0;
+                let gamesExcluded = 0;
                 
                 // Get last 3 game IDs if needed (use receiving data which has game_id)
                 let last3GameIds = [];
@@ -5812,28 +5896,84 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         enrichmentData = gameData; // Receiving data has enrichment fields
                     }}
                     
+                    // Debug: Log enrichment data status (only for first game to avoid spam)
+                    let isFirstGame = false;
+                    try {{
+                        const allKeys = Object.keys(byGame);
+                        isFirstGame = (allKeys.length > 0 && gameKey === allKeys[0]);
+                    }} catch(e) {{
+                        isFirstGame = false;
+                    }}
+                    
+                    if (filters.conference_only && isFirstGame) {{
+                        console.log('filterByGame DEBUG: First game key =', gameKey);
+                        console.log('filterByGame DEBUG: isPassing =', isPassing);
+                        console.log('filterByGame DEBUG: enrichmentData exists =', !!enrichmentData);
+                        if (enrichmentData) {{
+                            const keys = Object.keys(enrichmentData);
+                            console.log('filterByGame DEBUG: enrichmentData keys =', keys);
+                            console.log('filterByGame DEBUG: has is_conference =', enrichmentData.hasOwnProperty('is_conference'));
+                            console.log('filterByGame DEBUG: is_conference value =', enrichmentData.is_conference);
+                        }} else {{
+                            console.log('filterByGame DEBUG: receivingByGame exists =', !!receivingByGame);
+                            if (receivingByGame) {{
+                                const recKeys = Object.keys(receivingByGame);
+                                console.log('filterByGame DEBUG: receivingByGame keys (first 3) =', recKeys.slice(0, 3));
+                                console.log('filterByGame DEBUG: receivingByGame[gameKey] exists =', !!receivingByGame[gameKey]);
+                            }}
+                        }}
+                    }}
+                    
                     // Filter by conference/non-conference/power4
-                    // Only apply filters if we have enrichment data, otherwise include the game
+                    // Only apply filters if we have enrichment data WITH the required fields, otherwise include the game
+                    // (can't filter what we don't have metadata for)
                     if (enrichmentData) {{
                         if (filters.conference_only) {{
-                            include = include && enrichmentData.is_conference === true;
+                            // If is_conference field is missing or null, include the game (can't filter without metadata)
+                            if (enrichmentData.hasOwnProperty('is_conference') && enrichmentData.is_conference !== null && enrichmentData.is_conference !== undefined) {{
+                                const isConf = enrichmentData.is_conference === true;
+                                if (isFirstGame) {{
+                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference =', enrichmentData.is_conference, 'include =', isConf);
+                                }}
+                                include = include && isConf;
+                            }} else {{
+                                if (isFirstGame) {{
+                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference missing or null, including by default');
+                                }}
+                            }}
+                            // If field is missing or null, include stays true (default behavior)
                         }} else if (filters.non_conference_only) {{
-                            include = include && enrichmentData.is_conference === false;
+                            if (enrichmentData.hasOwnProperty('is_conference') && enrichmentData.is_conference !== null && enrichmentData.is_conference !== undefined) {{
+                                include = include && enrichmentData.is_conference === false;
+                            }}
                         }} else if (filters.power4_only) {{
-                            include = include && enrichmentData.is_power4_opponent === true;
+                            if (enrichmentData.hasOwnProperty('is_power4_opponent') && enrichmentData.is_power4_opponent !== null && enrichmentData.is_power4_opponent !== undefined) {{
+                                include = include && enrichmentData.is_power4_opponent === true;
+                            }}
                         }}
                         
                         // Filter by last 3 games
                         if (filters.last_3_games) {{
-                            include = include && last3GameIds.includes(enrichmentData.game_id);
+                            if (enrichmentData.hasOwnProperty('game_id') && enrichmentData.game_id) {{
+                                include = include && last3GameIds.includes(enrichmentData.game_id);
+                            }}
+                        }}
+                    }} else {{
+                        if (isFirstGame) {{
+                            console.log('filterByGame DEBUG: gameKey =', gameKey, 'enrichmentData is null, including by default');
                         }}
                     }}
+                    // If no enrichment data at all, include by default (can't filter without metadata)
                     // If no enrichment data but filters are active, we can't determine if it should be included
-                    // For now, exclude it to be safe (this shouldn't happen if data is properly enriched)
+                    // Include it by default (can't filter what we don't have metadata for)
+                    // This ensures data doesn't disappear when enrichment is incomplete
                     
                     if (include) {{
-                        filteredByGame[gameKey] = gameData;
-                        filteredLast3Games.push(gameData);
+                        gamesIncluded++;
+                        // Deep copy gameData to preserve all fields including player rankings
+                        const gameDataCopy = JSON.parse(JSON.stringify(gameData));
+                        filteredByGame[gameKey] = gameDataCopy;
+                        filteredLast3Games.push(gameDataCopy);
                         
                         // Aggregate totals
                         if (isPassing) {{
@@ -5848,8 +5988,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             filteredTotal.yards += gameData.yards || 0;
                             filteredTotal.touchdowns += gameData.touchdowns || 0;
                         }}
+                    }} else {{
+                        gamesExcluded++;
                     }}
                 }}
+                
+                console.log('filterByGame: gamesIncluded =', gamesIncluded, 'gamesExcluded =', gamesExcluded, 'filteredTotal =', filteredTotal);
                 
                 // Calculate last 3 games stats
                 filteredLast3Games.sort((a, b) => (a.week || 0) - (b.week || 0));
@@ -5876,24 +6020,44 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     by_game: filteredByGame,
                     last_3_games: last3Stats,
                     big_ten_rank: isPassing ? (deepTargetData.passing?.big_ten_rank || null) : undefined, // Preserve rank if passing
-                    players: isPassing ? undefined : aggregateReceivingPlayers(filteredByGame)
+                    players: isPassing ? undefined : aggregateReceivingPlayers(filteredByGame, deepTargetData.receiving?.players)
                 }};
             }}
             
             // Helper to aggregate receiving players across filtered games
-            function aggregateReceivingPlayers(byGame) {{
+            // originalReceivingPlayers: optional lookup from original data for rankings
+            function aggregateReceivingPlayers(byGame, originalReceivingPlayers) {{
+                // Build rankings lookup from original data if provided
+                const rankingsLookup = {{}};
+                if (originalReceivingPlayers) {{
+                    for (const player of originalReceivingPlayers) {{
+                        const name = player.player || 'Unknown';
+                        rankingsLookup[name] = {{
+                            rank: player.big_ten_rank,
+                            isTop25: player.is_top_25
+                        }};
+                    }}
+                }}
+                
                 const playerStats = {{}};
                 for (const gameData of Object.values(byGame)) {{
                     for (const player of gameData.players || []) {{
                         const name = player.player || 'Unknown';
                         if (!playerStats[name]) {{
+                            // Try to get ranking from player, or fallback to original data lookup
+                            const ranking = player.big_ten_rank != null ? 
+                                {{ rank: player.big_ten_rank, isTop25: player.is_top_25 }} :
+                                rankingsLookup[name];
+                            
                             playerStats[name] = {{
                                 player: name,
                                 targets: 0,
                                 receptions: 0,
                                 yards: 0,
                                 touchdowns: 0,
-                                air_yards: 0
+                                air_yards: 0,
+                                big_ten_rank: ranking?.rank || null,
+                                is_top_25: ranking?.isTop25 || false
                             }};
                         }}
                         playerStats[name].targets += player.targets || 0;
@@ -5901,6 +6065,17 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         playerStats[name].yards += player.yards || 0;
                         playerStats[name].touchdowns += player.touchdowns || 0;
                         playerStats[name].air_yards += player.air_yards || 0;
+                        // Preserve ranking from first occurrence (rankings are consistent across games)
+                        // If we still don't have a ranking, try to get it from the current player or lookup
+                        if (playerStats[name].big_ten_rank == null) {{
+                            if (player.big_ten_rank != null) {{
+                                playerStats[name].big_ten_rank = player.big_ten_rank;
+                                playerStats[name].is_top_25 = player.is_top_25 || false;
+                            }} else if (rankingsLookup[name]) {{
+                                playerStats[name].big_ten_rank = rankingsLookup[name].rank;
+                                playerStats[name].is_top_25 = rankingsLookup[name].isTop25 || false;
+                            }}
+                        }}
                     }}
                 }}
                 return Object.values(playerStats).sort((a, b) => b.targets - a.targets);
@@ -5908,13 +6083,19 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             // Filter passing and receiving
             // Pass receiving by_game to filterByGame so passing can use enrichment fields
+            console.log('filterDeepTargets: Before filtering, passing exists =', !!filtered.passing, 'receiving exists =', !!filtered.receiving);
             if (filtered.passing && filtered.passing.by_game && filtered.receiving && filtered.receiving.by_game) {{
+                console.log('filterDeepTargets: Filtering passing data');
                 filtered.passing = filterByGame(filtered.passing.by_game, true, filtered.receiving.by_game);
+                console.log('filterDeepTargets: After filtering passing, total =', filtered.passing?.total);
             }}
             if (filtered.receiving && filtered.receiving.by_game) {{
+                console.log('filterDeepTargets: Filtering receiving data');
                 filtered.receiving = filterByGame(filtered.receiving.by_game, false, null);
+                console.log('filterDeepTargets: After filtering receiving, total =', filtered.receiving?.total, 'players count =', filtered.receiving?.players?.length);
             }}
             
+            console.log('filterDeepTargets: Returning filtered data, passing =', !!filtered.passing, 'receiving =', !!filtered.receiving);
             return filtered;
         }}
         
@@ -5923,8 +6104,21 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1 = allData[team1Key].deep_targets_filtered || allData[team1Key].deep_targets;
             const team2 = allData[team2Key].deep_targets_filtered || allData[team2Key].deep_targets;
             
+            console.log('populateDeepTargets: team1 exists =', !!team1, 'team2 exists =', !!team2);
+            console.log('populateDeepTargets: team1 deep_targets keys =', team1 ? Object.keys(team1) : 'N/A');
+            console.log('populateDeepTargets: team1 passing =', team1?.passing);
+            console.log('populateDeepTargets: team1 receiving =', team1?.receiving);
+            console.log('populateDeepTargets: team1 passing total =', team1?.passing?.total);
+            console.log('populateDeepTargets: team1 passing by_game count =', team1?.passing?.by_game ? Object.keys(team1.passing.by_game).length : 0);
+            console.log('populateDeepTargets: team1 receiving total =', team1?.receiving?.total);
+            console.log('populateDeepTargets: team1 receiving by_game count =', team1?.receiving?.by_game ? Object.keys(team1.receiving.by_game).length : 0);
+            console.log('populateDeepTargets: team2 passing total =', team2?.passing?.total);
+            console.log('populateDeepTargets: team2 receiving total =', team2?.receiving?.total);
+            console.log('populateDeepTargets: originalAllData team1 deep_targets =', originalAllData[team1Key]?.deep_targets ? 'exists' : 'missing');
+            console.log('populateDeepTargets: originalAllData team1 deep_targets passing total =', originalAllData[team1Key]?.deep_targets?.passing?.total);
+            
             if (!team1 || !team2) {{
-                console.warn('Deep target data not available');
+                console.log('populateDeepTargets: Missing team data, returning early');
                 return;
             }}
             
@@ -6094,6 +6288,30 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             
             // Receiving Charts - Target Distribution by Player
+            // Build player lookup with rankings from ORIGINAL unfiltered data
+            // Rankings are Big Ten-wide and shouldn't change when filtering
+            const originalTeam1 = originalAllData[team1Key].deep_targets || {{}};
+            const originalTeam2 = originalAllData[team2Key].deep_targets || {{}};
+            const originalTeam1Receiving = originalTeam1.receiving || {{}};
+            const originalTeam2Receiving = originalTeam2.receiving || {{}};
+            
+            const washPlayerRankings = {{}};
+            const wiscPlayerRankings = {{}};
+            for (const player of originalTeam1Receiving.players || []) {{
+                const name = player.player || 'Unknown';
+                washPlayerRankings[name] = {{
+                    rank: player.big_ten_rank,
+                    isTop25: player.is_top_25
+                }};
+            }}
+            for (const player of originalTeam2Receiving.players || []) {{
+                const name = player.player || 'Unknown';
+                wiscPlayerRankings[name] = {{
+                    rank: player.big_ten_rank,
+                    isTop25: player.is_top_25
+                }};
+            }}
+            
             const washPlayerTargets = {{}};
             const wiscPlayerTargets = {{}};
             
@@ -6108,11 +6326,19 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
             
             const washTopPlayers = Object.entries(washPlayerTargets)
-                .map(([name, targets]) => [name, targets])
+                .map(([name, targets]) => {{
+                    const ranking = washPlayerRankings[name];
+                    const rankText = ranking && ranking.rank ? ` (Rank #${{ranking.rank}})` : '';
+                    return [name, targets, ranking?.rank || null, rankText];
+                }})
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 8);
             const wiscTopPlayers = Object.entries(wiscPlayerTargets)
-                .map(([name, targets]) => [name, targets])
+                .map(([name, targets]) => {{
+                    const ranking = wiscPlayerRankings[name];
+                    const rankText = ranking && ranking.rank ? ` (Rank #${{ranking.rank}})` : '';
+                    return [name, targets, ranking?.rank || null, rankText];
+                }})
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 8);
             
@@ -6127,7 +6353,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             charts.deepReceivingWash = new Chart(ctxRecWash, {{
                 type: 'pie',
                 data: {{
-                    labels: washTopPlayers.map(p => p[0] + ' (' + p[1] + ')'),
+                    labels: washTopPlayers.map(p => p[0] + ' (' + p[1] + ')' + p[3]),
                     datasets: [{{
                         data: washTopPlayers.map(p => p[1]),
                         backgroundColor: washColors.slice(0, washTopPlayers.length),
@@ -6140,7 +6366,25 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     maintainAspectRatio: false,
                     plugins: {{
                         title: {{ display: true, text: team1Name + ' - Deep Target Distribution', font: {{ size: 14 }} }},
-                        legend: {{ display: true, position: 'right' }}
+                        legend: {{ display: true, position: 'right' }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const index = context.dataIndex;
+                                    const player = washTopPlayers[index];
+                                    const name = player[0];
+                                    const targets = player[1];
+                                    const rank = player[2];
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((targets / total) * 100).toFixed(1);
+                                    let label = `${{name}}: ${{targets}} targets (${{percentage}}%)`;
+                                    if (rank) {{
+                                        label += ` - Big Ten Rank #${{rank}}`;
+                                    }}
+                                    return label;
+                                }}
+                            }}
+                        }}
                     }}
                 }}
             }});
@@ -6156,7 +6400,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             charts.deepReceivingWisc = new Chart(ctxRecWisc, {{
                 type: 'pie',
                 data: {{
-                    labels: wiscTopPlayers.map(p => p[0] + ' (' + p[1] + ')'),
+                    labels: wiscTopPlayers.map(p => p[0] + ' (' + p[1] + ')' + p[3]),
                     datasets: [{{
                         data: wiscTopPlayers.map(p => p[1]),
                         backgroundColor: wiscColors.slice(0, wiscTopPlayers.length),
@@ -6169,7 +6413,25 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     maintainAspectRatio: false,
                     plugins: {{
                         title: {{ display: true, text: team2Name + ' - Deep Target Distribution', font: {{ size: 14 }} }},
-                        legend: {{ display: true, position: 'right' }}
+                        legend: {{ display: true, position: 'right' }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
+                                    const index = context.dataIndex;
+                                    const player = wiscTopPlayers[index];
+                                    const name = player[0];
+                                    const targets = player[1];
+                                    const rank = player[2];
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((targets / total) * 100).toFixed(1);
+                                    let label = `${{name}}: ${{targets}} targets (${{percentage}}%)`;
+                                    if (rank) {{
+                                        label += ` - Big Ten Rank #${{rank}}`;
+                                    }}
+                                    return label;
+                                }}
+                            }}
+                        }}
                     }}
                 }}
             }});
@@ -6179,11 +6441,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             for (const [gameKey, gameData] of Object.entries(team1Receiving.by_game || {{}})) {{
                 for (const player of gameData.players || []) {{
                     const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
-                    washRecTableData.push([
-                        gameData.week || '', gameData.opponent || '', player.player || 'Unknown',
+                    // Use ranking from player, or fallback to original data lookup
+                    const playerName = player.player || 'Unknown';
+                    const rank = player.big_ten_rank || washPlayerRankings[playerName]?.rank || '';
+                    const row = [
+                        gameData.week || '', gameData.opponent || '', playerName,
                         player.targets || 0, player.receptions || 0, recPct + '%',
-                        player.yards || 0, player.air_yards || 0, player.touchdowns || 0
-                    ]);
+                        player.yards || 0, player.air_yards || 0, player.touchdowns || 0,
+                        rank
+                    ];
+                    washRecTableData.push(row);
                 }}
             }}
             washRecTableData.sort((a, b) => {{
@@ -6195,11 +6462,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             for (const [gameKey, gameData] of Object.entries(team2Receiving.by_game || {{}})) {{
                 for (const player of gameData.players || []) {{
                     const recPct = player.targets > 0 ? (player.receptions / player.targets * 100).toFixed(1) : '0.0';
-                    wiscRecTableData.push([
-                        gameData.week || '', gameData.opponent || '', player.player || 'Unknown',
+                    // Use ranking from player, or fallback to original data lookup
+                    const playerName = player.player || 'Unknown';
+                    const rank = player.big_ten_rank || wiscPlayerRankings[playerName]?.rank || '';
+                    const row = [
+                        gameData.week || '', gameData.opponent || '', playerName,
                         player.targets || 0, player.receptions || 0, recPct + '%',
-                        player.yards || 0, player.air_yards || 0, player.touchdowns || 0
-                    ]);
+                        player.yards || 0, player.air_yards || 0, player.touchdowns || 0,
+                        rank
+                    ];
+                    wiscRecTableData.push(row);
                 }}
             }}
             wiscRecTableData.sort((a, b) => {{
@@ -6216,8 +6488,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 columns: [
                     {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
                     {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
-                    {{ title: 'Yards' }}, {{ title: 'Air Yards' }}, {{ title: 'TDs' }}
-                ]
+                    {{ title: 'Yards' }}, {{ title: 'Air Yards' }}, {{ title: 'TDs' }},
+                    {{ title: 'Big Ten Rank' }}
+                ],
+                createdRow: function(row, data) {{
+                    // Add top-25-rank class if rank is <= 25
+                    const rank = data[9]; // Big Ten Rank is the 10th column (index 9)
+                    if (rank && rank <= 25) {{
+                        $(row).addClass('top-25-rank');
+                    }}
+                }}
             }};
             safeUpdateDataTable('#deepReceivingTableWash', washRecTableData, washRecConfig);
             
@@ -6230,10 +6510,47 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 columns: [
                     {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Player' }},
                     {{ title: 'Targets' }}, {{ title: 'Receptions' }}, {{ title: 'Reception %' }},
-                    {{ title: 'Yards' }}, {{ title: 'Air Yards' }}, {{ title: 'TDs' }}
-                ]
+                    {{ title: 'Yards' }}, {{ title: 'Air Yards' }}, {{ title: 'TDs' }},
+                    {{ title: 'Big Ten Rank' }}
+                ],
+                createdRow: function(row, data) {{
+                    // Add top-25-rank class if rank is <= 25
+                    const rank = data[9]; // Big Ten Rank is the 10th column (index 9)
+                    if (rank && rank <= 25) {{
+                        $(row).addClass('top-25-rank');
+                    }}
+                }}
             }};
             safeUpdateDataTable('#deepReceivingTableWisc', wiscRecTableData, wiscRecConfig);
+            
+            // Add top 25 banner for deep receiving
+            // Remove any existing banners first to avoid duplicates
+            const existingBanner = document.getElementById('deepReceivingTop25Banner');
+            if (existingBanner) {{
+                existingBanner.remove();
+            }}
+            const existingDeepInfoBanner = document.getElementById('deepReceivingRankingInfoBanner');
+            if (existingDeepInfoBanner) {{
+                existingDeepInfoBanner.remove();
+            }}
+            
+            // Use original data for top 25 banner (rankings are Big Ten-wide)
+            const washTop25_deep = originalTeam1Receiving.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
+            const wiscTop25_deep = originalTeam2Receiving.players.filter(p => p.is_top_25).map(p => p.player).join(', ');
+            
+            if (washTop25_deep || wiscTop25_deep) {{
+                let bannerHTML = '<div id="deepReceivingTop25Banner" class="notice-banner" style="margin-bottom: 20px;"><strong>Top 25 Big Ten Rankings:</strong> ';
+                const parts = [];
+                if (washTop25_deep) parts.push(`${{team1Name}}: ${{washTop25_deep}}`);
+                if (wiscTop25_deep) parts.push(`${{team2Name}}: ${{wiscTop25_deep}}`);
+                bannerHTML += parts.join(' | ') + '</div>';
+                bannerHTML += '<div id="deepReceivingRankingInfoBanner" class="notice-banner" style="margin-bottom: 20px; font-style: italic; color: #666;"><em>Rankings are based on number of targets in conference games only.</em></div>';
+                // Find the deep target summary element to insert after
+                const summaryElement = document.getElementById('deepTargetSummary');
+                if (summaryElement) {{
+                    summaryElement.insertAdjacentHTML('afterend', bannerHTML);
+                }}
+            }}
         }}
         
         function populateAllSections() {{
@@ -6703,16 +7020,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 .sort((a, b) => a.week - b.week);
             const last3GameIds = sortedGames.slice(-3).map(g => g.id);
             
-            // Debug logging for last 3 games calculation
-            if (penaltyPlays.length > 0 && last3GameIds.length === 0) {{
-                console.log('DEBUG: No last 3 games found for penalties');
-                console.log('Total penalty plays:', penaltyPlays.length);
-                console.log('Game stats:', gameStats);
-                console.log('Sorted games (before filter):', Object.entries(gameStats).map(([id, stats]) => ({{ id: parseInt(id), week: stats.week }})));
-                console.log('Sorted games (after filter):', sortedGames);
-                console.log('Sample penalty play:', penaltyPlays[0]);
-                console.log('Sample penalty play game_week:', penaltyPlays[0]?.game_week);
-            }}
             
             const last3Games = penaltyPlays.filter(p => last3GameIds.includes(p.game_id));
             const last3Yards = last3Games
@@ -7280,20 +7587,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1Filtered = filterPlays(team1Plays, filters);
             const team2Filtered = filterPlays(team2Plays, filters);
             
-            // Debug: Log filtering results
-            if (filters.conference_only || filters.power4_only) {{
-                console.log('Filter applied:', filters);
-                console.log('Team1 plays before filter:', team1Plays.length);
-                console.log('Team1 plays after filter:', team1Filtered.length);
-                console.log('Team2 plays before filter:', team2Plays.length);
-                console.log('Team2 plays after filter:', team2Filtered.length);
-                if (team1Filtered.length > 0) {{
-                    console.log('Sample Team1 play:', team1Filtered[0]);
-                }}
-                if (team2Filtered.length > 0) {{
-                    console.log('Sample Team2 play:', team2Filtered[0]);
-                }}
-            }}
             
             // Re-analyze with filtered data
             const team1FilteredData = {{
@@ -7316,13 +7609,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 redzone: analyzeRedZone(team2Filtered, team2Name)
             }};
             
-            // Debug: Log analysis results
-            if (filters.conference_only || filters.power4_only) {{
-                console.log('Team1 Middle8 result:', team1FilteredData.middle8);
-                console.log('Team1 Explosive result:', team1FilteredData.explosive);
-                console.log('Team2 Middle8 result:', team2FilteredData.middle8);
-                console.log('Team2 Explosive result:', team2FilteredData.explosive);
-            }}
             
             // Store filtered plays for trend calculations
             team1FilteredData.middle8._filtered_plays = team1Filtered;
@@ -7342,12 +7628,48 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             team2FilteredData.redzone._filtered_plays = team2Filtered;
             
             // Filter SIS situational receiving data (always use original data)
+            console.log('=== SIS SITUATIONAL RECEIVING FILTERING DEBUG ===');
+            console.log('Team1 original situational:', originalAllData[team1Key].situational ? 'exists' : 'missing');
+            console.log('Team2 original situational:', originalAllData[team2Key].situational ? 'exists' : 'missing');
             const team1SituationalFiltered = filterSituationalReceiving(originalAllData[team1Key].situational, filters);
             const team2SituationalFiltered = filterSituationalReceiving(originalAllData[team2Key].situational, filters);
+            console.log('Team1 filtered situational:', team1SituationalFiltered ? 'exists' : 'missing');
+            console.log('Team2 filtered situational:', team2SituationalFiltered ? 'exists' : 'missing');
+            if (team1SituationalFiltered) {{
+                console.log('Team1 filtered 3rd_down total:', team1SituationalFiltered['3rd_down']?.total);
+                console.log('Team1 filtered redzone total:', team1SituationalFiltered.redzone?.total);
+                console.log('Team1 filtered 3rd_down by_week count:', Object.keys(team1SituationalFiltered['3rd_down']?.by_week || {{}}).length);
+                console.log('Team1 filtered redzone by_week count:', Object.keys(team1SituationalFiltered.redzone?.by_week || {{}}).length);
+            }}
+            if (team2SituationalFiltered) {{
+                console.log('Team2 filtered 3rd_down total:', team2SituationalFiltered['3rd_down']?.total);
+                console.log('Team2 filtered redzone total:', team2SituationalFiltered.redzone?.total);
+                console.log('Team2 filtered 3rd_down by_week count:', Object.keys(team2SituationalFiltered['3rd_down']?.by_week || {{}}).length);
+                console.log('Team2 filtered redzone by_week count:', Object.keys(team2SituationalFiltered.redzone?.by_week || {{}}).length);
+            }}
+            console.log('=== END SIS SITUATIONAL RECEIVING DEBUG ===');
             
             // Filter SIS deep target data (always use original data)
+            console.log('=== SIS DEEP TARGETS FILTERING DEBUG ===');
+            console.log('Team1 original deep_targets:', originalAllData[team1Key].deep_targets ? 'exists' : 'missing');
+            console.log('Team2 original deep_targets:', originalAllData[team2Key].deep_targets ? 'exists' : 'missing');
             const team1DeepTargetsFiltered = filterDeepTargets(originalAllData[team1Key].deep_targets, filters);
             const team2DeepTargetsFiltered = filterDeepTargets(originalAllData[team2Key].deep_targets, filters);
+            console.log('Team1 filtered deep_targets:', team1DeepTargetsFiltered ? 'exists' : 'missing');
+            console.log('Team2 filtered deep_targets:', team2DeepTargetsFiltered ? 'exists' : 'missing');
+            if (team1DeepTargetsFiltered) {{
+                console.log('Team1 filtered passing total:', team1DeepTargetsFiltered.passing?.total);
+                console.log('Team1 filtered receiving total:', team1DeepTargetsFiltered.receiving?.total);
+                console.log('Team1 filtered passing by_game count:', Object.keys(team1DeepTargetsFiltered.passing?.by_game || {{}}).length);
+                console.log('Team1 filtered receiving by_game count:', Object.keys(team1DeepTargetsFiltered.receiving?.by_game || {{}}).length);
+            }}
+            if (team2DeepTargetsFiltered) {{
+                console.log('Team2 filtered passing total:', team2DeepTargetsFiltered.passing?.total);
+                console.log('Team2 filtered receiving total:', team2DeepTargetsFiltered.receiving?.total);
+                console.log('Team2 filtered passing by_game count:', Object.keys(team2DeepTargetsFiltered.passing?.by_game || {{}}).length);
+                console.log('Team2 filtered receiving by_game count:', Object.keys(team2DeepTargetsFiltered.receiving?.by_game || {{}}).length);
+            }}
+            console.log('=== END SIS DEEP TARGETS DEBUG ===');
             
             // Temporarily replace allData with filtered data
             allData[team1Key] = team1FilteredData;

@@ -170,10 +170,11 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi",
                             game_info = team1_lookup[key]
                             week_data['game_id'] = game_info['game_id']
                             week_data['is_conference'] = game_info['is_conference']
-                            week_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                            # All Big Ten conference games are Power 4
+                            week_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
                             enriched_count += 1
                             print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
-                                  f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                                  f"conference={game_info['is_conference']}, power4={week_data['is_power4_opponent']}")
                         else:
                             print(f"  Warning: Could not find game for Week {week} vs {opponent}")
                 
@@ -207,7 +208,8 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi",
                                 game_data['opponent'] = opponent  # Ensure opponent is set
                                 game_data['game_id'] = game_info['game_id']
                                 game_data['is_conference'] = game_info['is_conference']
-                                game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                                # All Big Ten conference games are Power 4
+                                game_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
                                 enriched_count += 1
                                 print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
                                       f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
@@ -246,10 +248,11 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi",
                             game_info = team2_lookup[key]
                             week_data['game_id'] = game_info['game_id']
                             week_data['is_conference'] = game_info['is_conference']
-                            week_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                            # All Big Ten conference games are Power 4
+                            week_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
                             enriched_count += 1
                             print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
-                                  f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                                  f"conference={game_info['is_conference']}, power4={week_data['is_power4_opponent']}")
                         else:
                             print(f"  Warning: Could not find game for Week {week} vs {opponent}")
                 
@@ -283,7 +286,8 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi",
                                 game_data['opponent'] = opponent  # Ensure opponent is set
                                 game_data['game_id'] = game_info['game_id']
                                 game_data['is_conference'] = game_info['is_conference']
-                                game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                                # All Big Ten conference games are Power 4
+                                game_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
                                 enriched_count += 1
                                 print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
                                       f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
@@ -332,10 +336,11 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi",
                         game_data['opponent'] = opponent  # Ensure opponent is set
                         game_data['game_id'] = game_info['game_id']
                         game_data['is_conference'] = game_info['is_conference']
-                        game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                        # All Big Ten conference games are Power 4
+                        game_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
                         enriched_count += 1
                         print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
-                              f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                              f"conference={game_info['is_conference']}, power4={game_data['is_power4_opponent']}")
                     else:
                         print(f"  Warning: Could not find game for Week {week} vs {opponent}")
                 else:
@@ -378,16 +383,109 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi",
                         game_data['opponent'] = opponent  # Ensure opponent is set
                         game_data['game_id'] = game_info['game_id']
                         game_data['is_conference'] = game_info['is_conference']
-                        game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                        # All Big Ten conference games are Power 4
+                        game_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
                         enriched_count += 1
                         print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
-                              f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                              f"conference={game_info['is_conference']}, power4={game_data['is_power4_opponent']}")
                     else:
                         print(f"  Warning: Could not find game for Week {week} vs {opponent}")
                 else:
                     print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
             
             print(f"  receiving: Enriched {enriched_count} of {len(by_game)} games")
+        
+        # Enrich team1 passing data
+        if team1_key in task_4 and 'passing' in task_4[team1_key] and 'by_game' in task_4[team1_key]['passing']:
+            print(f"\nEnriching {team1_name} task_4 passing data...")
+            by_game = task_4[team1_key]['passing']['by_game']
+            enriched_count = 0
+            
+            for game_key, game_data in by_game.items():
+                # Try to get week and opponent from game_data first
+                week = game_data.get('week')
+                opponent = game_data.get('opponent', '')
+                
+                # If not found, try to extract from game_key (format: "Week{week}_{opponent}")
+                if not week or not opponent:
+                    import re
+                    match = re.match(r'Week(\d+)_(.+)', game_key)
+                    if match:
+                        week = int(match.group(1))
+                        opponent = match.group(2)
+                
+                # If still not found, try to get from first player in players array
+                if not week or not opponent:
+                    players = game_data.get('players', [])
+                    if players and len(players) > 0:
+                        week = week or players[0].get('week')
+                        opponent = opponent or players[0].get('opp', '') or players[0].get('opponent', '')
+                
+                if week and opponent:
+                    key = (week, opponent.lower())
+                    if key in team1_lookup:
+                        game_info = team1_lookup[key]
+                        game_data['week'] = week  # Ensure week is set
+                        game_data['opponent'] = opponent  # Ensure opponent is set
+                        game_data['game_id'] = game_info['game_id']
+                        game_data['is_conference'] = game_info['is_conference']
+                        # All Big Ten conference games are Power 4
+                        game_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
+                        enriched_count += 1
+                        print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                              f"conference={game_info['is_conference']}, power4={game_data['is_power4_opponent']}")
+                    else:
+                        print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                else:
+                    print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
+            
+            print(f"  passing: Enriched {enriched_count} of {len(by_game)} games")
+        
+        # Enrich team2 passing data
+        if team2_key in task_4 and 'passing' in task_4[team2_key] and 'by_game' in task_4[team2_key]['passing']:
+            print(f"\nEnriching {team2_name} task_4 passing data...")
+            by_game = task_4[team2_key]['passing']['by_game']
+            enriched_count = 0
+            
+            for game_key, game_data in by_game.items():
+                # Try to get week and opponent from game_data first
+                week = game_data.get('week')
+                opponent = game_data.get('opponent', '')
+                
+                # If not found, try to extract from game_key (format: "Week{week}_{opponent}")
+                if not week or not opponent:
+                    import re
+                    match = re.match(r'Week(\d+)_(.+)', game_key)
+                    if match:
+                        week = int(match.group(1))
+                        opponent = match.group(2)
+                
+                # If still not found, try to get from first player in players array
+                if not week or not opponent:
+                    players = game_data.get('players', [])
+                    if players and len(players) > 0:
+                        week = week or players[0].get('week')
+                        opponent = opponent or players[0].get('opp', '') or players[0].get('opponent', '')
+                
+                if week and opponent:
+                    key = (week, opponent.lower())
+                    if key in team2_lookup:
+                        game_info = team2_lookup[key]
+                        game_data['week'] = week  # Ensure week is set
+                        game_data['opponent'] = opponent  # Ensure opponent is set
+                        game_data['game_id'] = game_info['game_id']
+                        game_data['is_conference'] = game_info['is_conference']
+                        # All Big Ten conference games are Power 4
+                        game_data['is_power4_opponent'] = True if game_info['is_conference'] else game_info['is_power4_opponent']
+                        enriched_count += 1
+                        print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                              f"conference={game_info['is_conference']}, power4={game_data['is_power4_opponent']}")
+                    else:
+                        print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                else:
+                    print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
+            
+            print(f"  passing: Enriched {enriched_count} of {len(by_game)} games")
     
     # Save enriched data
     print(f"\nSaving enriched SIS data to {sis_path}...")

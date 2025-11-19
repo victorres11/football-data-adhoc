@@ -72,13 +72,16 @@ def load_game_data(team_name: str, data_dir: str = "advanced_reports_yogi") -> L
     return games
 
 
-def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi") -> None:
+def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi", 
+                    team1_name: str = None, team2_name: str = None) -> None:
     """
     Enrich SIS data JSON with game metadata for filtering.
     
     Args:
         sis_file_path: Path to SIS data JSON file
         data_dir: Directory containing play-by-play data
+        team1_name: Name of first team (default: auto-detect from SIS data)
+        team2_name: Name of second team (default: auto-detect from SIS data)
     """
     data_dir = Path(data_dir)
     sis_path = Path(sis_file_path)
@@ -94,88 +97,297 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi")
     with open(sis_path, 'r') as f:
         sis_data = json.load(f)
     
-    # Load game data for both teams
-    print("Loading game data for Washington...")
-    wash_games = load_game_data("Washington", data_dir)
-    print(f"  Found {len(wash_games)} games")
+    # Auto-detect team names from SIS data if not provided
+    task_9 = sis_data.get('data', {}).get('task_9', {})
+    task_4 = sis_data.get('data', {}).get('task_4', {})
     
-    print("Loading game data for Wisconsin...")
-    wisc_games = load_game_data("Wisconsin", data_dir)
-    print(f"  Found {len(wisc_games)} games")
+    if not team1_name or not team2_name:
+        # Try to get from task_9
+        team_keys = list(task_9.keys()) if task_9 else []
+        if not team_keys and task_4:
+            team_keys = list(task_4.keys())
+        
+        if len(team_keys) >= 2:
+            team1_name = team1_name or team_keys[0].title()
+            team2_name = team2_name or team_keys[1].title()
+        else:
+            # Fallback to Washington/Wisconsin
+            team1_name = team1_name or "Washington"
+            team2_name = team2_name or "Wisconsin"
+    
+    print(f"Detected teams: {team1_name} and {team2_name}")
+    
+    # Load game data for both teams
+    print(f"Loading game data for {team1_name}...")
+    team1_games = load_game_data(team1_name, data_dir)
+    print(f"  Found {len(team1_games)} games")
+    
+    print(f"Loading game data for {team2_name}...")
+    team2_games = load_game_data(team2_name, data_dir)
+    print(f"  Found {len(team2_games)} games")
     
     # Create lookup dictionaries: (week, opponent_lower) -> game_info
-    wash_lookup = {}
-    for game in wash_games:
+    team1_lookup = {}
+    for game in team1_games:
         key = (game['week'], game['opponent'].lower())
-        wash_lookup[key] = game
+        team1_lookup[key] = game
     
-    wisc_lookup = {}
-    for game in wisc_games:
+    team2_lookup = {}
+    for game in team2_games:
         key = (game['week'], game['opponent'].lower())
-        wisc_lookup[key] = game
+        team2_lookup[key] = game
     
-    # Get task_9 data
-    task_9 = sis_data.get('data', {}).get('task_9', {})
+    # Normalize team names for data keys (lowercase)
+    team1_key = team1_name.lower()
+    team2_key = team2_name.lower()
     
-    # Enrich Washington data
-    if 'washington' in task_9:
-        print("\nEnriching Washington data...")
-        wash_data = task_9['washington']
-        
-        for situation in ['3rd_down', 'redzone']:
-            if situation not in wash_data:
-                continue
+    # Enrich task_9 data (situational receiving)
+    if task_9:
+        # Enrich team1 data
+        if team1_key in task_9:
+            print(f"\nEnriching {team1_name} task_9 data...")
+            team1_data = task_9[team1_key]
             
-            by_week = wash_data[situation].get('by_week', {})
+            for situation in ['3rd_down', 'redzone']:
+                if situation not in team1_data:
+                    continue
+                
+                # Check for by_week structure (old format)
+                by_week = team1_data[situation].get('by_week', {})
+                # Check for by_game structure (new format)
+                by_game = team1_data[situation].get('by_game', {})
+                
+                enriched_count = 0
+                
+                # Handle by_week structure
+                if by_week:
+                    for week_str, week_data in by_week.items():
+                        week = int(week_str)
+                        opponent = week_data.get('opponent', '')
+                        key = (week, opponent.lower())
+                        
+                        if key in team1_lookup:
+                            game_info = team1_lookup[key]
+                            week_data['game_id'] = game_info['game_id']
+                            week_data['is_conference'] = game_info['is_conference']
+                            week_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                            enriched_count += 1
+                            print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                                  f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                        else:
+                            print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                
+                # Handle by_game structure (similar to task_4)
+                if by_game:
+                    import re
+                    for game_key, game_data in by_game.items():
+                        # Try to get week and opponent from game_data first
+                        week = game_data.get('week')
+                        opponent = game_data.get('opponent', '')
+                        
+                        # If not found, try to extract from game_key (format: "Week{week}_{opponent}")
+                        if not week or not opponent:
+                            match = re.match(r'Week(\d+)_(.+)', game_key)
+                            if match:
+                                week = int(match.group(1))
+                                opponent = match.group(2)
+                        
+                        # If still not found, try to get from first player in players array
+                        if not week or not opponent:
+                            players = game_data.get('players', [])
+                            if players and len(players) > 0:
+                                week = week or players[0].get('week')
+                                opponent = opponent or players[0].get('opp', '') or players[0].get('opponent', '')
+                        
+                        if week and opponent:
+                            key = (week, opponent.lower())
+                            if key in team1_lookup:
+                                game_info = team1_lookup[key]
+                                game_data['week'] = week  # Ensure week is set
+                                game_data['opponent'] = opponent  # Ensure opponent is set
+                                game_data['game_id'] = game_info['game_id']
+                                game_data['is_conference'] = game_info['is_conference']
+                                game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                                enriched_count += 1
+                                print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                                      f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                            else:
+                                print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                        else:
+                            print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
+                
+                total_entries = len(by_week) if by_week else len(by_game) if by_game else 0
+                print(f"  {situation}: Enriched {enriched_count} of {total_entries} entries")
+        
+        # Enrich team2 data
+        if team2_key in task_9:
+            print(f"\nEnriching {team2_name} task_9 data...")
+            team2_data = task_9[team2_key]
+            
+            for situation in ['3rd_down', 'redzone']:
+                if situation not in team2_data:
+                    continue
+                
+                # Check for by_week structure (old format)
+                by_week = team2_data[situation].get('by_week', {})
+                # Check for by_game structure (new format)
+                by_game = team2_data[situation].get('by_game', {})
+                
+                enriched_count = 0
+                
+                # Handle by_week structure
+                if by_week:
+                    for week_str, week_data in by_week.items():
+                        week = int(week_str)
+                        opponent = week_data.get('opponent', '')
+                        key = (week, opponent.lower())
+                        
+                        if key in team2_lookup:
+                            game_info = team2_lookup[key]
+                            week_data['game_id'] = game_info['game_id']
+                            week_data['is_conference'] = game_info['is_conference']
+                            week_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                            enriched_count += 1
+                            print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                                  f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                        else:
+                            print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                
+                # Handle by_game structure (similar to task_4)
+                if by_game:
+                    import re
+                    for game_key, game_data in by_game.items():
+                        # Try to get week and opponent from game_data first
+                        week = game_data.get('week')
+                        opponent = game_data.get('opponent', '')
+                        
+                        # If not found, try to extract from game_key (format: "Week{week}_{opponent}")
+                        if not week or not opponent:
+                            match = re.match(r'Week(\d+)_(.+)', game_key)
+                            if match:
+                                week = int(match.group(1))
+                                opponent = match.group(2)
+                        
+                        # If still not found, try to get from first player in players array
+                        if not week or not opponent:
+                            players = game_data.get('players', [])
+                            if players and len(players) > 0:
+                                week = week or players[0].get('week')
+                                opponent = opponent or players[0].get('opp', '') or players[0].get('opponent', '')
+                        
+                        if week and opponent:
+                            key = (week, opponent.lower())
+                            if key in team2_lookup:
+                                game_info = team2_lookup[key]
+                                game_data['week'] = week  # Ensure week is set
+                                game_data['opponent'] = opponent  # Ensure opponent is set
+                                game_data['game_id'] = game_info['game_id']
+                                game_data['is_conference'] = game_info['is_conference']
+                                game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                                enriched_count += 1
+                                print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                                      f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                            else:
+                                print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                        else:
+                            print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
+                
+                total_entries = len(by_week) if by_week else len(by_game) if by_game else 0
+                print(f"  {situation}: Enriched {enriched_count} of {total_entries} entries")
+    
+    # Enrich task_4 data (deep targets) - receiving.by_game
+    if task_4:
+        # Enrich team1 receiving data
+        if team1_key in task_4 and 'receiving' in task_4[team1_key] and 'by_game' in task_4[team1_key]['receiving']:
+            print(f"\nEnriching {team1_name} task_4 receiving data...")
+            by_game = task_4[team1_key]['receiving']['by_game']
             enriched_count = 0
             
-            for week_str, week_data in by_week.items():
-                week = int(week_str)
-                opponent = week_data.get('opponent', '')
-                key = (week, opponent.lower())
+            for game_key, game_data in by_game.items():
+                # Try to get week and opponent from game_data first
+                week = game_data.get('week')
+                opponent = game_data.get('opponent', '')
                 
-                if key in wash_lookup:
-                    game_info = wash_lookup[key]
-                    week_data['game_id'] = game_info['game_id']
-                    week_data['is_conference'] = game_info['is_conference']
-                    week_data['is_power4_opponent'] = game_info['is_power4_opponent']
-                    enriched_count += 1
-                    print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
-                          f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                # If not found, try to extract from game_key (format: "Week{week}_{opponent}")
+                if not week or not opponent:
+                    # Parse game_key like "Week10_Michigan State"
+                    import re
+                    match = re.match(r'Week(\d+)_(.+)', game_key)
+                    if match:
+                        week = int(match.group(1))
+                        opponent = match.group(2)
+                
+                # If still not found, try to get from first player in players array
+                if not week or not opponent:
+                    players = game_data.get('players', [])
+                    if players and len(players) > 0:
+                        week = week or players[0].get('week')
+                        opponent = opponent or players[0].get('opp', '') or players[0].get('opponent', '')
+                
+                if week and opponent:
+                    key = (week, opponent.lower())
+                    if key in team1_lookup:
+                        game_info = team1_lookup[key]
+                        game_data['week'] = week  # Ensure week is set
+                        game_data['opponent'] = opponent  # Ensure opponent is set
+                        game_data['game_id'] = game_info['game_id']
+                        game_data['is_conference'] = game_info['is_conference']
+                        game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                        enriched_count += 1
+                        print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                              f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                    else:
+                        print(f"  Warning: Could not find game for Week {week} vs {opponent}")
                 else:
-                    print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                    print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
             
-            print(f"  {situation}: Enriched {enriched_count} of {len(by_week)} weeks")
-    
-    # Enrich Wisconsin data
-    if 'wisconsin' in task_9:
-        print("\nEnriching Wisconsin data...")
-        wisc_data = task_9['wisconsin']
+            print(f"  receiving: Enriched {enriched_count} of {len(by_game)} games")
         
-        for situation in ['3rd_down', 'redzone']:
-            if situation not in wisc_data:
-                continue
-            
-            by_week = wisc_data[situation].get('by_week', {})
+        # Enrich team2 receiving data
+        if team2_key in task_4 and 'receiving' in task_4[team2_key] and 'by_game' in task_4[team2_key]['receiving']:
+            print(f"\nEnriching {team2_name} task_4 receiving data...")
+            by_game = task_4[team2_key]['receiving']['by_game']
             enriched_count = 0
             
-            for week_str, week_data in by_week.items():
-                week = int(week_str)
-                opponent = week_data.get('opponent', '')
-                key = (week, opponent.lower())
+            for game_key, game_data in by_game.items():
+                # Try to get week and opponent from game_data first
+                week = game_data.get('week')
+                opponent = game_data.get('opponent', '')
                 
-                if key in wisc_lookup:
-                    game_info = wisc_lookup[key]
-                    week_data['game_id'] = game_info['game_id']
-                    week_data['is_conference'] = game_info['is_conference']
-                    week_data['is_power4_opponent'] = game_info['is_power4_opponent']
-                    enriched_count += 1
-                    print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
-                          f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                # If not found, try to extract from game_key (format: "Week{week}_{opponent}")
+                if not week or not opponent:
+                    # Parse game_key like "Week10_Michigan State"
+                    import re
+                    match = re.match(r'Week(\d+)_(.+)', game_key)
+                    if match:
+                        week = int(match.group(1))
+                        opponent = match.group(2)
+                
+                # If still not found, try to get from first player in players array
+                if not week or not opponent:
+                    players = game_data.get('players', [])
+                    if players and len(players) > 0:
+                        week = week or players[0].get('week')
+                        opponent = opponent or players[0].get('opp', '') or players[0].get('opponent', '')
+                
+                if week and opponent:
+                    key = (week, opponent.lower())
+                    if key in team2_lookup:
+                        game_info = team2_lookup[key]
+                        game_data['week'] = week  # Ensure week is set
+                        game_data['opponent'] = opponent  # Ensure opponent is set
+                        game_data['game_id'] = game_info['game_id']
+                        game_data['is_conference'] = game_info['is_conference']
+                        game_data['is_power4_opponent'] = game_info['is_power4_opponent']
+                        enriched_count += 1
+                        print(f"  Week {week} vs {opponent}: game_id={game_info['game_id']}, "
+                              f"conference={game_info['is_conference']}, power4={game_info['is_power4_opponent']}")
+                    else:
+                        print(f"  Warning: Could not find game for Week {week} vs {opponent}")
                 else:
-                    print(f"  Warning: Could not find game for Week {week} vs {opponent}")
+                    print(f"  Warning: Could not extract week/opponent from game_key: {game_key}")
             
-            print(f"  {situation}: Enriched {enriched_count} of {len(by_week)} weeks")
+            print(f"  receiving: Enriched {enriched_count} of {len(by_game)} games")
     
     # Save enriched data
     print(f"\nSaving enriched SIS data to {sis_path}...")
@@ -186,19 +398,26 @@ def enrich_sis_data(sis_file_path: str, data_dir: str = "advanced_reports_yogi")
 
 
 if __name__ == "__main__":
-    # Default path
-    sis_file = "advanced_reports_yogi/sis-data/washington_wisconsin_analysis_2025.json"
-    data_dir = "advanced_reports_yogi"
+    import argparse
     
-    # Allow override via command line
-    if len(sys.argv) > 1:
-        sis_file = sys.argv[1]
-    if len(sys.argv) > 2:
-        data_dir = sys.argv[2]
+    parser = argparse.ArgumentParser(description='Enrich SIS data with game metadata')
+    parser.add_argument('--sis-file', type=str, 
+                       default="advanced_reports_yogi/sis-data/washington_wisconsin_analysis_2025.json",
+                       help='Path to SIS data JSON file')
+    parser.add_argument('--data-dir', type=str, default="advanced_reports_yogi",
+                       help='Directory containing play-by-play data')
+    parser.add_argument('--team1', type=str, default=None,
+                       help='Name of first team (auto-detected if not provided)')
+    parser.add_argument('--team2', type=str, default=None,
+                       help='Name of second team (auto-detected if not provided)')
+    
+    args = parser.parse_args()
     
     try:
-        enrich_sis_data(sis_file, data_dir)
+        enrich_sis_data(args.sis_file, args.data_dir, args.team1, args.team2)
     except Exception as e:
         print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 

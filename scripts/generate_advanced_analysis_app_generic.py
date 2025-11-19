@@ -27,6 +27,61 @@ def normalize_team_name(team_name: str) -> str:
     return team_name.lower().replace(" ", "_").replace("-", "_")
 
 
+def get_team_colors(team_name: str) -> tuple:
+    """
+    Get primary and secondary colors for a team
+    
+    Args:
+        team_name: Name of the team
+        
+    Returns:
+        Tuple of (primary_color, secondary_color) as hex strings
+    """
+    team_lower = team_name.lower()
+    
+    # Washington: Purple
+    if 'washington' in team_lower or 'wash' in team_lower:
+        return ("#4B0082", "#764ba2")  # Purple
+    
+    # UCLA: Sky Blue
+    elif 'ucla' in team_lower:
+        return ("#87CEEB", "#B0E0E6")  # Sky Blue (primary) and Powder Blue (secondary)
+    
+    # Iowa: Black/Gold
+    elif 'iowa' in team_lower:
+        return ("#000000", "#FFB612")  # Black/Gold
+    
+    # USC: Cardinal/Gold
+    elif 'usc' in team_lower:
+        return ("#990000", "#FFB612")  # Cardinal/Gold
+    
+    # Wisconsin: Red
+    elif 'wisconsin' in team_lower or 'wisc' in team_lower:
+        return ("#c41e3a", "#667eea")  # Red
+    
+    # Default gradient colors
+    else:
+        return ("#667eea", "#764ba2")  # Default purple gradient
+
+
+def hex_to_rgba(hex_color: str, alpha: float = 1.0) -> str:
+    """
+    Convert hex color to rgba string for Chart.js
+    
+    Args:
+        hex_color: Hex color string (e.g., "#87CEEB")
+        alpha: Alpha value (0.0 to 1.0)
+        
+    Returns:
+        rgba string (e.g., "rgba(135, 206, 235, 0.6)")
+    """
+    hex_color = hex_color.lstrip('#')
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+    return f"rgba({r}, {g}, {b}, {alpha})"
+
+
 def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wisconsin",
                       output_file: str = None, data_dir: str = "advanced_reports_yogi",
                       sis_data_file: str = None, year: int = 2025):
@@ -41,6 +96,28 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         sis_data_file: Path to SIS data JSON file (default: auto-generated from team names)
         year: Season year for SIS data file naming (default: 2025)
     """
+    
+    # Get team colors
+    team1_primary, team1_secondary = get_team_colors(team_name1)
+    team2_primary, team2_secondary = get_team_colors(team_name2)
+    
+    # Generate rgba colors for charts
+    team1_rgba_06 = hex_to_rgba(team1_primary, 0.6)
+    team1_rgba_04 = hex_to_rgba(team1_primary, 0.4)
+    team1_rgba_10 = hex_to_rgba(team1_primary, 1.0)
+    team1_rgba_01 = hex_to_rgba(team1_primary, 0.1)
+    team1_rgba_05 = hex_to_rgba(team1_primary, 0.5)
+    team1_rgba_005 = hex_to_rgba(team1_primary, 0.05)
+    
+    team2_rgba_06 = hex_to_rgba(team2_primary, 0.6)
+    team2_rgba_04 = hex_to_rgba(team2_primary, 0.4)
+    team2_rgba_10 = hex_to_rgba(team2_primary, 1.0)
+    team2_rgba_01 = hex_to_rgba(team2_primary, 0.1)
+    team2_rgba_05 = hex_to_rgba(team2_primary, 0.5)
+    team2_rgba_005 = hex_to_rgba(team2_primary, 0.05)
+    team2_rgba_08 = hex_to_rgba(team2_primary, 0.8)
+    
+    team1_rgba_08 = hex_to_rgba(team1_primary, 0.8)
     
     # Normalize team names for file paths and keys
     team1_key = normalize_team_name(team_name1)
@@ -239,7 +316,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         header {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, {team1_primary} 0%, {team1_secondary} 100%);
             color: white;
             padding: 30px 20px;
             margin-bottom: 30px;
@@ -303,7 +380,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         .filters h2 {{
             margin-bottom: 15px;
-            color: #667eea;
+            color: {team1_primary};
         }}
         
         .filter-group {{
@@ -346,10 +423,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .section h2 {{
-            color: #667eea;
+            color: {team1_primary};
             margin-bottom: 20px;
             font-size: 1.8em;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid {team1_primary};
             padding-bottom: 10px;
         }}
         
@@ -409,7 +486,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             padding: 20px;
             background: #f9f9f9;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid {team1_primary};
         }}
         
         .team-section.{team1_key} {{
@@ -421,12 +498,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .team-section h3 {{
-            color: #667eea;
+            color: {team1_primary};
             margin-bottom: 15px;
         }}
         
         .definition-box {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, {team1_primary} 0%, {team1_secondary} 100%);
             color: white;
             padding: 20px;
             border-radius: 8px;
@@ -468,7 +545,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .team-header-browser {{
-            background: #667eea;
+            background: {team1_primary};
             color: white;
             padding: 15px 20px;
             border-radius: 6px;
@@ -498,7 +575,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             font-weight: 600;
             cursor: pointer;
             margin-bottom: 8px;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid {team1_primary};
         }}
         
         .quarter-section-browser {{
@@ -722,7 +799,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.1em;
-            color: #667eea;
+            color: {team1_primary};
             font-weight: 600;
             padding-bottom: 10px;
             border-bottom: 1px solid #e0e0e0;
@@ -756,7 +833,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         .nav-links a:hover {{
             background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
+            color: {team1_primary};
         }}
         
         .nav-links a:active {{
@@ -765,7 +842,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         .nav-links a.active {{
             background: rgba(102, 126, 234, 0.15);
-            color: #667eea;
+            color: {team1_primary};
             font-weight: 500;
         }}
         
@@ -780,7 +857,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             margin-top: 0;
             margin-bottom: 15px;
             font-size: 0.95em;
-            color: #667eea;
+            color: {team1_primary};
             font-weight: 600;
         }}
         
@@ -831,7 +908,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .nav-filter-btn.apply {{
-            background: #667eea;
+            background: {team1_primary};
             color: white;
         }}
         
@@ -898,7 +975,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         table th {{
-            background: #667eea;
+            background: {team1_primary};
             color: white;
             padding: 12px;
             text-align: left;
@@ -1015,7 +1092,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .btn {{
-            background: #667eea;
+            background: {team1_primary};
             color: white;
             border: none;
             padding: 10px 20px;
@@ -1053,7 +1130,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <li><a href="#postTurnoverSection">Post Turnover</a></li>
                 <li><a href="#specialTeamsSection">Special Teams</a></li>
                 <li><a href="#redZoneSection">Red Zone / Green Zone</a></li>
-                <li><a href="#iowaLikeOpponentsSection">🚨 USC vs Iowa-Like Opponents</a></li>
                 <li><a href="#situationalReceivingSection">Situational Receiving</a></li>
                 <li><a href="#deepTargetSection">Deep Target Analysis</a></li>
                 <li><a href="#allPlaysSection">All Plays Browser</a></li>
@@ -1241,9 +1317,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         <!-- Penalty Analysis -->
         <div class="section" id="penaltySection">
             <h2>Penalty Analysis</h2>
-            <div class="definition-box">
-                <p><strong>Definition:</strong> Penalties can significantly impact field position, drive outcomes, and game flow. This analysis tracks all penalties (both accepted and declined) to identify patterns in penalty frequency, types, and timing. High penalty counts often correlate with discipline issues and can cost teams field position and scoring opportunities.</p>
-            </div>
             <div id="penaltySummary"></div>
             <div class="chart-container">
                 <canvas id="penaltyChart"></canvas>
@@ -1534,73 +1607,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
-        
-        <!-- USC vs Iowa-Like Opponents Analysis -->
-        <div class="section" id="iowaLikeOpponentsSection">
-            <h2>🚨 USC vs Iowa-Like Opponents Analysis</h2>
-            <div class="definition-box">
-                <p><strong>Critical Analysis:</strong> USC has played 3 opponents with defensive profiles similar to Iowa: <strong>Michigan, Notre Dame, and Nebraska</strong>. This analysis reveals how USC performs against physical, turnover-forcing defenses similar to Iowa's style.</p>
-            </div>
-            <div class="insight-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
-                <h4>⚠️ Key Finding:</h4>
-                <p><strong>USC's performance DECLINES against Iowa-like defenses:</strong></p>
-                <ul>
-                    <li><strong>Turnovers:</strong> 2.3/game vs Iowa-like (vs 0.8/game vs other Power 4) - <strong>+188% increase</strong></li>
-                    <li><strong>Turnover Margin:</strong> -0.3/game vs Iowa-like (vs +1.25/game vs other Power 4) - <strong>-1.55 swing</strong></li>
-                    <li><strong>3rd Down %:</strong> 26.2% vs Iowa-like (vs 36.1% vs other Power 4) - <strong>-9.9% decline</strong></li>
-                    <li><strong>4th Down %:</strong> 16.7% vs Iowa-like (vs 64.7% vs other Power 4) - <strong>-48% decline</strong></li>
-                    <li><strong>Middle 8:</strong> 7.27 yds/play vs Iowa-like (vs 11.3 yds/play vs other Power 4) - <strong>-36% decline</strong></li>
-                </ul>
-                <p style="margin-top: 10px;"><strong>Note:</strong> Turnover statistics count only fumbles lost and interceptions thrown. Turnovers on downs and plays marked "NO PLAY" are excluded.</p>
-            </div>
-            
-            <h3 style="margin-top: 30px; color: #8B0000;">Game-by-Game Breakdown</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
-                <div class="summary-card" style="background-color: #d4edda; border-left: 4px solid #28a745;">
-                    <h4>vs Michigan ✓</h4>
-                    <p><strong>2 TOs committed, 3 forced</strong></p>
-                    <p>TO margin: <strong>+1</strong></p>
-                    <p>Result: Positive turnover margin</p>
-                </div>
-                <div class="summary-card" style="background-color: #f8d7da; border-left: 4px solid #dc3545;">
-                    <h4>vs Notre Dame 💀</h4>
-                    <p><strong>4 TOs committed, 1 forced</strong></p>
-                    <p>TO margin: <strong>-3</strong></p>
-                    <p>Result: <strong>OUTLIER GAME</strong> - worst performance</p>
-                </div>
-                <div class="summary-card" style="background-color: #d4edda; border-left: 4px solid #28a745;">
-                    <h4>vs Nebraska ✓</h4>
-                    <p><strong>1 TO committed, 2 forced</strong></p>
-                    <p>TO margin: <strong>+1</strong></p>
-                    <p>Result: Positive turnover margin</p>
-                    <p style="margin-top: 10px; font-size: 0.9em;"><strong>Notable:</strong> 6-14 on 3rd downs, 0-1 on 4th downs</p>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 40px; color: #8B0000;">Revised Prediction for USC vs Iowa</h3>
-            <div class="insight-box" style="background-color: #e7f3ff; border-left: 4px solid #0066cc;">
-                <h4>If USC plays like they did vs Iowa-like opponents:</h4>
-                <ul>
-                    <li><strong>Turnovers:</strong> 2-3 (averaging 2.3/game, with Notre Dame being the outlier at 4)</li>
-                    <li><strong>Turnover Margin:</strong> -1 to 0 (averaging -0.3/game, with Notre Dame being the outlier at -3)</li>
-                    <li><strong>3rd Down:</strong> 20-30% (not 31%)</li>
-                    <li><strong>4th Down:</strong> 0-17% success (not 53%)</li>
-                    <li><strong>Middle 8:</strong> 7-8 yds/play (not 9.5)</li>
-                </ul>
-            </div>
-            
-            <div class="insight-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107; margin-top: 20px;">
-                <h4>Revised Bottom Line:</h4>
-                <p>The explosive USC offense that dominates most opponents <strong>struggles</strong> against physical, turnover-forcing defenses like Iowa, but not as dramatically as initially thought. Historical data from Michigan/Notre Dame/Nebraska games shows:</p>
-                <ul>
-                    <li>USC commits 2.3 TOs/game (vs 1.4/game overall)</li>
-                    <li>Slightly negative turnover margin (-0.3/game)</li>
-                    <li><strong>Notre Dame game (4 TOs) is the outlier;</strong> Michigan and Nebraska combined for only 3 TOs</li>
-                </ul>
-                <p style="margin-top: 15px;"><strong>Iowa wins if they:</strong> Force USC into a Notre Dame-like performance (4+ turnovers)</p>
-                <p><strong>USC wins if they:</strong> Avoid the Notre Dame pattern and play like they did vs Michigan/Nebraska (1-2 TOs, positive margin)</p>
-            </div>
         </div>
         
         <!-- Situational Receiving Analysis (SIS Data) -->
@@ -2046,18 +2052,41 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 const playText = (p.play_text || '').toUpperCase();
                 if (playText.includes('NO PLAY')) return false;
                 
+                // Check turnover_type field first - if it's "downs", exclude it
+                // Post turnover analysis only includes fumbles lost and interceptions
+                const turnoverTypeField = (p.turnover_type || '').toLowerCase();
+                if (turnoverTypeField === 'downs') {{
+                    // This is a turnover on downs, exclude from post turnover analysis
+                    return false;
+                }}
+                
                 // Only count fumbles lost and interceptions thrown
                 // Exclude turnovers on downs
                 const playType = (p.play_type || '').toUpperCase();
                 const isInterception = playType.includes('INTERCEPTION');
                 const isFumble = playType.includes('FUMBLE');
+                
+                // For fumbles, check if the offense recovered their own fumble
+                let isFumbleLost = false;
+                if (isFumble) {{
+                    // Check play_type for "(Own)" indicator - offense recovered
+                    // If "(OWN)" is in play_type, it means the offense recovered - NOT a turnover
+                    // This should be excluded even if turnover: true is set (data inconsistency)
+                    if (playType.includes('(OWN)')) {{
+                        // Offense recovered their own fumble - NOT a turnover, exclude it
+                        return false;
+                    }} else {{
+                        // If the play is marked as a turnover and has fumble, it's a fumble lost
+                        isFumbleLost = true;
+                    }}
+                }}
+                
+                // Exclude turnovers on downs (additional check in case turnover_type wasn't set)
                 const isTurnoverOnDowns = playType.includes('TURNOVER ON DOWNS') ||
-                    (p.down === 4 && playType.includes('TURNOVER') && 
-                     !playType.includes('INTERCEPTION') && !playType.includes('FUMBLE')) ||
                     playType.includes('DOWNS');
                 
                 // Only include interceptions and fumbles lost, exclude turnovers on downs
-                return (isInterception || isFumble) && !isTurnoverOnDowns;
+                return (isInterception || isFumbleLost) && !isTurnoverOnDowns;
             }});
             
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
@@ -2074,7 +2103,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     byWeek[week] = {{ pointsScored: 0, pointsAllowed: 0 }};
                 }}
                 
-                const isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
+                // For fumble recoveries on punts, the offense field is the recovering team,
+                // but the turnover actually belongs to the punting team (defense on the play)
+                let isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
+                const playType = (turnover.play_type || '').toUpperCase();
+                if (playType.includes('PUNT') && playType.includes('FUMBLE RECOVERY')) {{
+                    // For punt fumble recoveries, the turnover belongs to the punting team (defense)
+                    // So flip the logic: if we're the defense, it's our opponent's turnover
+                    // If we're the offense (recovering team), it's our opponent's turnover
+                    isOurTurnover = turnover.defense?.toLowerCase() === teamName.toLowerCase();
+                }}
                 
                 // Check if the turnover play itself resulted in points (e.g., pick-6, fumble return TD)
                 let drivePoints = 0;
@@ -2102,9 +2140,15 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     
                     nextDrivePlays.forEach(p => {{
                         if (p.scoring === true) {{
-                            if (p.play_type?.includes('Touchdown')) {{
+                            // If scoring is True, check play_text to determine if it's a TD or FG
+                            // (play_type might be "Pass Reception" or "Rush" even for touchdowns)
+                            const playType = p.play_type || '';
+                            const playText = (p.play_text || '').toUpperCase();
+                            
+                            // Check for touchdown in play_type or play_text
+                            if (playType.includes('Touchdown') || playText.includes('TOUCHDOWN')) {{
                                 drivePoints = 7;
-                            }} else if (p.play_type?.includes('Field Goal') && drivePoints === 0) {{
+                            }} else if ((playType.includes('Field Goal') || playText.includes('FIELD GOAL')) && drivePoints === 0) {{
                                 drivePoints = 3;
                             }}
                         }}
@@ -2642,12 +2686,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team1Name,
                             data: [team1.total_points_scored, team1.total_points_allowed, team1.total_net_points],
-                            backgroundColor: 'rgba(139, 0, 0, 0.6)'
+                            backgroundColor: '{team1_rgba_06}'
                         }},
                         {{
                             label: team2Name,
                             data: [team2.total_points_scored, team2.total_points_allowed, team2.total_net_points],
-                            backgroundColor: 'rgba(40, 40, 40, 0.6)'
+                            backgroundColor: '{team2_rgba_06}'
                         }}
                     ]
                 }},
@@ -2677,8 +2721,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: allWeeks,
                     datasets: [
-                        {{ label: team1Name + ' Net Points', data: team1NetPointsAllWeeks, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }}
+                        {{ label: team1Name + ' Net Points', data: team1NetPointsAllWeeks, borderColor: '{team1_rgba_10}', backgroundColor: '{team1_rgba_01}', fill: true }},
+                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: '{team2_rgba_10}', backgroundColor: '{team2_rgba_01}', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -2961,12 +3005,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team1Name,
                             data: [team1.total_explosive_plays, team1.avg_per_game, team1.last_3_games.total],
-                            backgroundColor: 'rgba(139, 0, 0, 0.6)'
+                            backgroundColor: '{team1_rgba_06}'
                         }},
                         {{
                             label: team2Name,
                             data: [team2.total_explosive_plays, team2.avg_per_game, team2.last_3_games.total],
-                            backgroundColor: 'rgba(40, 40, 40, 0.6)'
+                            backgroundColor: '{team2_rgba_06}'
                         }}
                     ]
                 }},
@@ -2992,8 +3036,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team1Name,
                             data: team1Trends.ours,
-                            borderColor: 'rgba(139, 0, 0, 1)',
-                            backgroundColor: 'rgba(139, 0, 0, 0.1)',
+                            borderColor: '{team1_rgba_10}',
+                            backgroundColor: '{team1_rgba_01}',
                             fill: true,
                             tension: 0.1
                         }},
@@ -3043,8 +3087,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team2Name,
                             data: team2Trends.ours,
-                            borderColor: 'rgba(40, 40, 40, 1)',
-                            backgroundColor: 'rgba(40, 40, 40, 0.1)',
+                            borderColor: '{team2_rgba_10}',
+                            backgroundColor: '{team2_rgba_01}',
                             fill: true,
                             tension: 0.1
                         }},
@@ -3094,7 +3138,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team1Name,
                             data: [team1.total_runs || 0, team1.total_passes || 0],
-                            backgroundColor: ['rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)']
+                            backgroundColor: ['{team1_rgba_06}', '{team1_rgba_04}']
                         }},
                         {{
                             label: 'Allowed',
@@ -3124,7 +3168,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{
                             label: team2Name,
                             data: [team2.total_runs || 0, team2.total_passes || 0],
-                            backgroundColor: ['rgba(40, 40, 40, 0.6)', 'rgba(40, 40, 40, 0.4)']
+                            backgroundColor: ['{team2_rgba_06}', '{team2_rgba_04}']
                         }},
                         {{
                             label: 'Allowed',
@@ -3236,9 +3280,9 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const wiscYardsPerGame = team2.total_games > 0 ? (team2.total_penalty_yards || 0) / team2.total_games : 0;
             
             // Calculate last 3 yards per game
-            const washLast3Games = team1.last_3_games?.games?.length || 0;
+            const washLast3Games = (team1.last_3_games?.games?.length || 0);
             const washLast3YardsPerGame = washLast3Games > 0 ? (team1.last_3_games?.yards || 0) / washLast3Games : 0;
-            const wiscLast3Games = team2.last_3_games?.games?.length || 0;
+            const wiscLast3Games = (team2.last_3_games?.games?.length || 0);
             const wiscLast3YardsPerGame = wiscLast3Games > 0 ? (team2.last_3_games?.yards || 0) / wiscLast3Games : 0;
             
             const summaryHtml = `
@@ -3246,20 +3290,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <div class="team-section {team1_key}">
                         <h3>{team_name1}</h3>
                         <div class="summary-cards">
-                            <div class="summary-card"><h3>Total</h3><div class="value">${{team1.total_penalties}}</div></div>
                             <div class="summary-card"><h3>Accepted</h3><div class="value">${{team1.accepted}}</div></div>
                             <div class="summary-card"><h3>Penalty Yards/G</h3><div class="value">${{washYardsPerGame.toFixed(1)}}</div></div>
-                            <div class="summary-card"><h3>Per Game</h3><div class="value">${{team1.avg_per_game.toFixed(1)}}</div></div>
+                            <div class="summary-card"><h3>Accepted/G</h3><div class="value">${{team1.avg_per_game.toFixed(1)}}</div></div>
                             <div class="summary-card"><h3>Last 3 Yards/G</h3><div class="value">${{washLast3YardsPerGame.toFixed(1)}}</div></div>
                         </div>
                     </div>
                     <div class="team-section {team2_key}">
                         <h3>{team_name2}</h3>
                         <div class="summary-cards">
-                            <div class="summary-card"><h3>Total</h3><div class="value">${{team2.total_penalties}}</div></div>
                             <div class="summary-card"><h3>Accepted</h3><div class="value">${{team2.accepted}}</div></div>
                             <div class="summary-card"><h3>Penalty Yards/G</h3><div class="value">${{wiscYardsPerGame.toFixed(1)}}</div></div>
-                            <div class="summary-card"><h3>Per Game</h3><div class="value">${{team2.avg_per_game.toFixed(1)}}</div></div>
+                            <div class="summary-card"><h3>Accepted/G</h3><div class="value">${{team2.avg_per_game.toFixed(1)}}</div></div>
                             <div class="summary-card"><h3>Last 3 Yards/G</h3><div class="value">${{wiscLast3YardsPerGame.toFixed(1)}}</div></div>
                         </div>
                     </div>
@@ -3315,10 +3357,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             charts.penalties = new Chart(ctx, {{
                 type: 'bar',
                 data: {{
-                    labels: ['Total', 'Accepted', 'Penalty Yards/G'],
+                    labels: ['Accepted', 'Penalty Yards/G'],
                     datasets: [
-                        {{ label: team1Name, data: [team1.total_penalties, team1.accepted, washYardsPerGame], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.total_penalties, team2.accepted, wiscYardsPerGame], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [team1.accepted, washYardsPerGame], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [team2.accepted, wiscYardsPerGame], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
@@ -3344,8 +3386,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: allWeeks,
                     datasets: [
-                        {{ label: team1Name + ' Net Yards', data: team1NetYardsAllWeeks, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Net Yards', data: team2NetYardsAllWeeks, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }}
+                        {{ label: team1Name + ' Net Yards', data: team1NetYardsAllWeeks, borderColor: '{team1_rgba_10}', backgroundColor: '{team1_rgba_01}', fill: true }},
+                        {{ label: team2Name + ' Net Yards', data: team2NetYardsAllWeeks, borderColor: '{team2_rgba_10}', backgroundColor: '{team2_rgba_01}', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -3400,8 +3442,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['Q1', 'Q2', 'Q3', 'Q4'],
                     datasets: [
-                        {{ label: team1Name, data: [washByQuarter[1], washByQuarter[2], washByQuarter[3], washByQuarter[4]], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [wiscByQuarter[1], wiscByQuarter[2], wiscByQuarter[3], wiscByQuarter[4]], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [washByQuarter[1], washByQuarter[2], washByQuarter[3], washByQuarter[4]], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [wiscByQuarter[1], wiscByQuarter[2], wiscByQuarter[3], wiscByQuarter[4]], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ 
@@ -3491,8 +3533,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: topTypes,
                     datasets: [
-                        {{ label: team1Name, data: topTypes.map(t => washPenaltyTypes[t] || 0), backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: topTypes.map(t => wiscPenaltyTypes[t] || 0), backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: topTypes.map(t => washPenaltyTypes[t] || 0), backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: topTypes.map(t => wiscPenaltyTypes[t] || 0), backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ 
@@ -3528,8 +3570,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['1st Down', '2nd Down', '3rd Down', '4th Down'],
                     datasets: [
-                        {{ label: team1Name, data: [washByDown[1], washByDown[2], washByDown[3], washByDown[4]], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [wiscByDown[1], wiscByDown[2], wiscByDown[3], wiscByDown[4]], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [washByDown[1], washByDown[2], washByDown[3], washByDown[4]], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [wiscByDown[1], wiscByDown[2], wiscByDown[3], wiscByDown[4]], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ 
@@ -3564,8 +3606,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['First Half', 'Second Half'],
                     datasets: [
-                        {{ label: team1Name, data: [washByHalf.first, washByHalf.second], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [wiscByHalf.first, wiscByHalf.second], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [washByHalf.first, washByHalf.second], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [wiscByHalf.first, wiscByHalf.second], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ 
@@ -3686,8 +3728,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['Attempts', 'Conversions', 'Rate %'],
                     datasets: [
-                        {{ label: team1Name, data: [team1.total_attempts, team1.total_conversions, team1.conversion_rate], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.total_attempts, team2.total_conversions, team2.conversion_rate], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [team1.total_attempts, team1.total_conversions, team1.conversion_rate], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [team2.total_attempts, team2.total_conversions, team2.conversion_rate], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
@@ -3718,8 +3760,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{ 
                             label: team1Name + ' Conversions', 
                             data: team1ConversionsAllWeeks, 
-                            borderColor: 'rgba(139, 0, 0, 1)', 
-                            backgroundColor: 'rgba(139, 0, 0, 0.1)', 
+                            borderColor: '{team1_rgba_10}', 
+                            backgroundColor: '{team1_rgba_01}', 
                             fill: true,
                             borderWidth: 2
                         }},
@@ -3735,8 +3777,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         {{ 
                             label: team2Name + ' Conversions', 
                             data: team2ConversionsAllWeeks, 
-                            borderColor: 'rgba(40, 40, 40, 1)', 
-                            backgroundColor: 'rgba(40, 40, 40, 0.1)', 
+                            borderColor: '{team2_rgba_10}', 
+                            backgroundColor: '{team2_rgba_01}', 
                             fill: true,
                             borderWidth: 2
                         }},
@@ -3872,6 +3914,55 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1 = allData[team1Key].turnover;
             const team2 = allData[team2Key].turnover;
             
+            // Calculate net points from chart data (sum of weekly net points) to match the chart
+            const team1PlaysForTrend = typeof allData[team1Key].turnover._filtered_plays !== 'undefined' ? 
+                allData[team1Key].turnover._filtered_plays : team1Plays;
+            const team2PlaysForTrend = typeof allData[team2Key].turnover._filtered_plays !== 'undefined' ? 
+                allData[team2Key].turnover._filtered_plays : team2Plays;
+            const team1NetPointsByWeek = calculateNetPointsByWeek(team1PlaysForTrend, team1Name);
+            const team2NetPointsByWeek = calculateNetPointsByWeek(team2PlaysForTrend, team2Name);
+            
+            // Sum weekly net points to get total (matching the chart calculation)
+            // Sum all values exactly as shown in the chart (all weeks from 1 to maxWeek)
+            const team1TotalNetPoints = team1NetPointsByWeek.netPoints.reduce((sum, val) => sum + val, 0);
+            const team2TotalNetPoints = team2NetPointsByWeek.netPoints.reduce((sum, val) => sum + val, 0);
+            
+            // Debug logging to identify discrepancies
+            console.log('=== POST TURNOVER DEBUG ===');
+            console.log(team1Name + ' Weekly Net Points:', team1NetPointsByWeek.netPoints);
+            console.log(team1Name + ' Week Labels:', team1NetPointsByWeek.weeks);
+            console.log(team1Name + ' Total Net Points (sum):', team1TotalNetPoints);
+            console.log(team1Name + ' analyzePostTurnover net_points_after_turnovers:', team1.net_points_after_turnovers);
+            console.log(team1Name + ' Last 3 games from analyzePostTurnover:', team1.last_3_games);
+            
+            // Calculate last 3 games from weekly data (matching chart calculation)
+            // Get weeks that have games (not BYE weeks)
+            const team1WeeksWithGames = team1NetPointsByWeek.netPoints.map((val, idx) => ({{
+                week: idx + 1,
+                label: team1NetPointsByWeek.weeks[idx],
+                netPoints: val
+            }})).filter(w => team1Games.some(g => g.week === w.week));
+            const team1Last3Weeks = team1WeeksWithGames.slice(-3);
+            const team1Last3NetFromWeekly = team1Last3Weeks.reduce((sum, w) => sum + w.netPoints, 0);
+            console.log(team1Name + ' Last 3 weeks from weekly data:', team1Last3Weeks);
+            console.log(team1Name + ' Last 3 net points (from weekly):', team1Last3NetFromWeekly);
+            
+            const team2WeeksWithGames = team2NetPointsByWeek.netPoints.map((val, idx) => ({{
+                week: idx + 1,
+                label: team2NetPointsByWeek.weeks[idx],
+                netPoints: val
+            }})).filter(w => team2Games.some(g => g.week === w.week));
+            const team2Last3Weeks = team2WeeksWithGames.slice(-3);
+            const team2Last3NetFromWeekly = team2Last3Weeks.reduce((sum, w) => sum + w.netPoints, 0);
+            console.log(team2Name + ' Last 3 weeks from weekly data:', team2Last3Weeks);
+            console.log(team2Name + ' Last 3 net points (from weekly):', team2Last3NetFromWeekly);
+            
+            console.log(team2Name + ' Weekly Net Points:', team2NetPointsByWeek.netPoints);
+            console.log(team2Name + ' Week Labels:', team2NetPointsByWeek.weeks);
+            console.log(team2Name + ' Total Net Points (sum):', team2TotalNetPoints);
+            console.log(team2Name + ' analyzePostTurnover net_points_after_turnovers:', team2.net_points_after_turnovers);
+            console.log('=== END DEBUG ===');
+            
             const summaryHtml = `
                 <div class="team-comparison">
                     <div class="team-section {team1_key}">
@@ -3881,8 +3972,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{team1.points_scored_after_opponent_turnovers}}</div></div>
                             <div class="summary-card"><h3>${{team1Name}} Turnovers</h3><div class="value">${{team1.our_turnovers}}</div></div>
                             <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{team1.points_allowed_after_our_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{team1.net_points_after_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{team1.last_3_games?.net_points || 0}}</div></div>
+                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{team1TotalNetPoints}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{team1Last3NetFromWeekly}}</div></div>
                         </div>
                     </div>
                     <div class="team-section {team2_key}">
@@ -3892,8 +3983,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{team2.points_scored_after_opponent_turnovers}}</div></div>
                             <div class="summary-card"><h3>${{team2Name}} Turnovers</h3><div class="value">${{team2.our_turnovers}}</div></div>
                             <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{team2.points_allowed_after_our_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{team2.net_points_after_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{team2.last_3_games?.net_points || 0}}</div></div>
+                            <div class="summary-card"><h3>Net Points</h3><div class="value">${{team2TotalNetPoints}}</div></div>
+                            <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{team2Last3NetFromWeekly}}</div></div>
                         </div>
                     </div>
                 </div>
@@ -3907,8 +3998,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['Team TO', 'Opp TO', 'Pts Scored Off TO', 'Pts Allowed Off TO'],
                     datasets: [
-                        {{ label: team1Name, data: [team1.our_turnovers, team1.opponent_turnovers, team1.points_scored_after_opponent_turnovers, -team1.points_allowed_after_our_turnovers], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.our_turnovers, team2.opponent_turnovers, team2.points_scored_after_opponent_turnovers, -team2.points_allowed_after_our_turnovers], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [team1.our_turnovers, team1.opponent_turnovers, team1.points_scored_after_opponent_turnovers, -team1.points_allowed_after_our_turnovers], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [team2.our_turnovers, team2.opponent_turnovers, team2.points_scored_after_opponent_turnovers, -team2.points_allowed_after_our_turnovers], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ 
@@ -3941,18 +4032,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}
             }});
             
-            // Trend chart - net points by week - use filtered plays if available
-            const team1PlaysForTrend = typeof allData[team1Key].turnover._filtered_plays !== 'undefined' ? 
-                allData[team1Key].turnover._filtered_plays : team1Plays;
-            const team2PlaysForTrend = typeof allData[team2Key].turnover._filtered_plays !== 'undefined' ? 
-                allData[team2Key].turnover._filtered_plays : team2Plays;
-            const team1NetPoints = calculateNetPointsByWeek(team1PlaysForTrend, team1Name);
-            const team2NetPoints = calculateNetPointsByWeek(team2PlaysForTrend, team2Name);
-            
+            // Trend chart - net points by week - reuse already calculated values
             // Trend functions already return data for all weeks (1 to maxWeek), including BYE weeks with 0
-            const allWeeks = team1NetPoints.weeks;
-            const team1NetPointsAllWeeks = team1NetPoints.netPoints;
-            const team2NetPointsAllWeeks = team2NetPoints.netPoints;
+            const allWeeks = team1NetPointsByWeek.weeks;
+            const team1NetPointsAllWeeks = team1NetPointsByWeek.netPoints;
+            const team2NetPointsAllWeeks = team2NetPointsByWeek.netPoints;
             
             const ctxTrend = document.getElementById('postTurnoverTrendChart').getContext('2d');
             if (charts.postTurnoverTrend) charts.postTurnoverTrend.destroy();
@@ -3961,8 +4045,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: allWeeks,
                     datasets: [
-                        {{ label: team1Name + ' Net Points', data: team1NetPointsAllWeeks, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }}
+                        {{ label: team1Name + ' Net Points', data: team1NetPointsAllWeeks, borderColor: '{team1_rgba_10}', backgroundColor: '{team1_rgba_01}', fill: true }},
+                        {{ label: team2Name + ' Net Points', data: team2NetPointsAllWeeks, borderColor: '{team2_rgba_10}', backgroundColor: '{team2_rgba_01}', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -3981,14 +4065,26 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     plugins: {{ 
                         title: {{ display: true, text: 'Net Points After Turnovers by Week' }},
                         tooltip: {{
+                            mode: 'index',
+                            intersect: false,
                             callbacks: {{
                                 title: function(context) {{
                                     const week = context[0].dataIndex + 1;
-                                    const datasetIndex = context[0].datasetIndex;
-                                    const opponent = datasetIndex === 0 ? 
-                                        (masterWeekMapping.team1WeekToOpponent[week] || 'BYE') : 
-                                        (masterWeekMapping.team2WeekToOpponent[week] || 'BYE');
-                                    return 'Week ' + week + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
+                                    // Show both teams' opponents when both datasets are present
+                                    const team1Opponent = masterWeekMapping.team1WeekToOpponent[week] || 'BYE';
+                                    const team2Opponent = masterWeekMapping.team2WeekToOpponent[week] || 'BYE';
+                                    
+                                    if (context.length > 1) {{
+                                        // Both teams have data at this point
+                                        const team1Text = team1Opponent === 'BYE' ? 'BYE' : team1Opponent;
+                                        const team2Text = team2Opponent === 'BYE' ? 'BYE' : team2Opponent;
+                                        return `Week ${{week}}: ${{team1Name}} vs ${{team1Text}}, ${{team2Name}} vs ${{team2Text}}`;
+                                    }} else {{
+                                        // Only one team has data
+                                        const datasetIndex = context[0].datasetIndex;
+                                        const opponent = datasetIndex === 0 ? team1Opponent : team2Opponent;
+                                        return 'Week ' + week + (opponent === 'BYE' ? ' (BYE)' : ' vs ' + opponent);
+                                    }}
                                 }},
                                 label: function(context) {{
                                     const value = context.parsed.y;
@@ -4115,10 +4211,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: team1Trends.weeks,
                     datasets: [
-                        {{ label: team1Name + ' Explosive ST Plays', data: team1Trends.ours, borderColor: 'rgba(139, 0, 0, 1)', backgroundColor: 'rgba(139, 0, 0, 0.1)', fill: true }},
-                        {{ label: team1Name + ' Allowed', data: team1Trends.allowed.map(v => -v), borderColor: 'rgba(139, 0, 0, 0.5)', backgroundColor: 'rgba(139, 0, 0, 0.05)', fill: true }},
-                        {{ label: team2Name + ' Explosive ST Plays', data: team2Trends.ours, borderColor: 'rgba(40, 40, 40, 1)', backgroundColor: 'rgba(40, 40, 40, 0.1)', fill: true }},
-                        {{ label: team2Name + ' Allowed', data: team2Trends.allowed.map(v => -v), borderColor: 'rgba(40, 40, 40, 0.5)', backgroundColor: 'rgba(40, 40, 40, 0.05)', fill: true }}
+                        {{ label: team1Name + ' Explosive ST Plays', data: team1Trends.ours, borderColor: '{team1_rgba_10}', backgroundColor: '{team1_rgba_01}', fill: true }},
+                        {{ label: team1Name + ' Allowed', data: team1Trends.allowed.map(v => -v), borderColor: '{team1_rgba_05}', backgroundColor: '{team1_rgba_005}', fill: true }},
+                        {{ label: team2Name + ' Explosive ST Plays', data: team2Trends.ours, borderColor: '{team2_rgba_10}', backgroundColor: '{team2_rgba_01}', fill: true }},
+                        {{ label: team2Name + ' Allowed', data: team2Trends.allowed.map(v => -v), borderColor: '{team2_rgba_05}', backgroundColor: '{team2_rgba_005}', fill: true }}
                     ]
                 }},
                 options: {{ 
@@ -4321,8 +4417,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['Tight Red Zone TD %', 'Red Zone TD %', 'Green Zone TD %'],
                     datasets: [
-                        {{ label: team1Name, data: [team1.tight_red_zone.td_scoring_rate, team1.red_zone.td_scoring_rate, team1.green_zone.td_scoring_rate], backgroundColor: 'rgba(139, 0, 0, 0.6)' }},
-                        {{ label: team2Name, data: [team2.tight_red_zone.td_scoring_rate, team2.red_zone.td_scoring_rate, team2.green_zone.td_scoring_rate], backgroundColor: 'rgba(40, 40, 40, 0.6)' }}
+                        {{ label: team1Name, data: [team1.tight_red_zone.td_scoring_rate, team1.red_zone.td_scoring_rate, team1.green_zone.td_scoring_rate], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [team2.tight_red_zone.td_scoring_rate, team2.red_zone.td_scoring_rate, team2.green_zone.td_scoring_rate], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
@@ -4456,13 +4552,26 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             // Check if data has enrichment fields (is_conference, is_power4_opponent, game_id)
             // If not, we can't filter properly, so return original data with a warning
+            // Check both by_week and by_game structures
             let hasEnrichment = false;
             for (const situation of Object.values(situationalData)) {{
-                if (situation && situation.by_week) {{
-                    for (const weekData of Object.values(situation.by_week)) {{
-                        if (weekData.hasOwnProperty('is_conference') || weekData.hasOwnProperty('is_power4_opponent') || weekData.hasOwnProperty('game_id')) {{
-                            hasEnrichment = true;
-                            break;
+                if (situation) {{
+                    // Check by_week structure
+                    if (situation.by_week) {{
+                        for (const weekData of Object.values(situation.by_week)) {{
+                            if (weekData.hasOwnProperty('is_conference') || weekData.hasOwnProperty('is_power4_opponent') || weekData.hasOwnProperty('game_id')) {{
+                                hasEnrichment = true;
+                                break;
+                            }}
+                        }}
+                    }}
+                    // Check by_game structure
+                    if (!hasEnrichment && situation.by_game) {{
+                        for (const gameData of Object.values(situation.by_game)) {{
+                            if (gameData.hasOwnProperty('is_conference') || gameData.hasOwnProperty('is_power4_opponent') || gameData.hasOwnProperty('game_id')) {{
+                                hasEnrichment = true;
+                                break;
+                            }}
                         }}
                     }}
                     if (hasEnrichment) break;
@@ -4478,10 +4587,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const filtered = JSON.parse(JSON.stringify(situationalData)); // Deep copy
             
             // Helper function to filter a situation (3rd_down or redzone)
+            // Handles both by_week and by_game structures
             function filterSituation(situation) {{
-                if (!situation || !situation.by_week) return situation;
+                if (!situation) return situation;
+                
+                // Check if we have by_week or by_game structure
+                const hasByWeek = situation.by_week && Object.keys(situation.by_week).length > 0;
+                const hasByGame = situation.by_game && Object.keys(situation.by_game).length > 0;
+                
+                if (!hasByWeek && !hasByGame) return situation;
                 
                 const filteredByWeek = {{}};
+                const filteredByGame = {{}};
                 let filteredTotal = {{ targets: 0, receptions: 0, yards: 0, first_downs: 0, touchdowns: 0 }};
                 const filteredPlayers = {{}};
                 const filteredLast3Weeks = [];
@@ -4489,96 +4606,177 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 // Get last 3 game IDs if needed
                 let last3GameIds = [];
                 if (filters.last_3_games) {{
-                    // Get all unique game_ids from by_week, sorted by week
-                    const allWeeks = Object.keys(situation.by_week)
-                        .map(w => ({{
-                            week: parseInt(w),
-                            game_id: situation.by_week[w].game_id,
-                            week_str: w
-                        }}))
-                        .filter(w => w.game_id)
-                        .sort((a, b) => a.week - b.week);
-                    last3GameIds = allWeeks.slice(-3).map(w => w.game_id);
+                    if (hasByWeek) {{
+                        // Get all unique game_ids from by_week, sorted by week
+                        const allWeeks = Object.keys(situation.by_week)
+                            .map(w => ({{
+                                week: parseInt(w),
+                                game_id: situation.by_week[w].game_id,
+                                week_str: w
+                            }}))
+                            .filter(w => w.game_id)
+                            .sort((a, b) => a.week - b.week);
+                        last3GameIds = allWeeks.slice(-3).map(w => w.game_id);
+                    }} else if (hasByGame) {{
+                        // Get all unique game_ids from by_game, sorted by week
+                        const allGames = Object.entries(situation.by_game)
+                            .map(([key, data]) => ({{
+                                week: data.week || parseInt(key.replace('Week', '').split('_')[0]) || 0,
+                                game_id: data.game_id,
+                                game_key: key
+                            }}))
+                            .filter(g => g.game_id && g.week > 0)
+                            .sort((a, b) => a.week - b.week);
+                        last3GameIds = allGames.slice(-3).map(g => g.game_id);
+                    }}
                 }}
                 
-                // Filter by_week entries
-                for (const [weekStr, weekData] of Object.entries(situation.by_week)) {{
-                    let include = true;
-                    
-                    // Filter by conference/non-conference/power4
-                    // Only apply filters if enrichment fields are present
-                    if (filters.conference_only) {{
-                        if (weekData.hasOwnProperty('is_conference')) {{
-                            include = include && weekData.is_conference === true;
-                        }} else {{
-                            // If enrichment field is missing, exclude to be safe
-                            include = false;
-                        }}
-                    }} else if (filters.non_conference_only) {{
-                        if (weekData.hasOwnProperty('is_conference')) {{
-                            include = include && weekData.is_conference === false;
-                        }} else {{
-                            include = false;
-                        }}
-                    }} else if (filters.power4_only) {{
-                        if (weekData.hasOwnProperty('is_power4_opponent')) {{
-                            include = include && weekData.is_power4_opponent === true;
-                        }} else {{
-                            include = false;
-                        }}
-                    }}
-                    
-                    // Filter by last 3 games
-                    if (filters.last_3_games) {{
-                        if (weekData.game_id && last3GameIds.length > 0) {{
-                            include = include && last3GameIds.includes(weekData.game_id);
-                        }} else if (last3GameIds.length > 0) {{
-                            // If game_id is missing but we need to filter by last 3, exclude
-                            include = false;
-                        }}
-                    }}
-                    
-                    if (include) {{
-                        filteredByWeek[weekStr] = weekData;
-                        filteredLast3Weeks.push(parseInt(weekStr));
+                // Filter by_week entries (old format)
+                if (hasByWeek) {{
+                    for (const [weekStr, weekData] of Object.entries(situation.by_week)) {{
+                        let include = true;
                         
-                        // Aggregate totals
-                        const stats = weekData.stats || {{}};
-                        filteredTotal.targets += stats.targets || 0;
-                        filteredTotal.receptions += stats.receptions || 0;
-                        filteredTotal.yards += stats.yards || 0;
-                        if (situation === filtered['3rd_down']) {{
-                            filteredTotal.first_downs += stats.first_downs || 0;
-                            // Also add touchdowns from stats (may not be in player-level data)
-                            filteredTotal.touchdowns += stats.touchdowns || 0;
-                        }} else {{
-                            // For redzone, also add touchdowns from stats
-                            filteredTotal.touchdowns += stats.touchdowns || 0;
-                        }}
-                        
-                        // Aggregate player stats
-                        for (const player of weekData.players || []) {{
-                            const playerId = player.playerId;
-                            if (!filteredPlayers[playerId]) {{
-                                filteredPlayers[playerId] = {{
-                                    playerId: playerId,
-                                    player: player.player,
-                                    targets: 0,
-                                    receptions: 0,
-                                    yards: 0,
-                                    first_downs: 0,
-                                    touchdowns: 0,
-                                    big_ten_rank: player.big_ten_rank,
-                                    is_top_25: player.is_top_25
-                                }};
+                        // Filter by conference/non-conference/power4
+                        // Only apply filters if enrichment fields are present
+                        // If enrichment fields are missing, include the data (don't filter it out)
+                        if (filters.conference_only) {{
+                            if (weekData.hasOwnProperty('is_conference')) {{
+                                include = include && weekData.is_conference === true;
                             }}
-                            filteredPlayers[playerId].targets += player.targets || 0;
-                            filteredPlayers[playerId].receptions += player.receptions || 0;
-                            filteredPlayers[playerId].yards += player.yards || 0;
+                            // If enrichment field is missing, include it (can't filter without enrichment)
+                        }} else if (filters.non_conference_only) {{
+                            if (weekData.hasOwnProperty('is_conference')) {{
+                                include = include && weekData.is_conference === false;
+                            }}
+                            // If enrichment field is missing, include it
+                        }} else if (filters.power4_only) {{
+                            if (weekData.hasOwnProperty('is_power4_opponent')) {{
+                                include = include && weekData.is_power4_opponent === true;
+                            }}
+                            // If enrichment field is missing, include it
+                        }}
+                        
+                        // Filter by last 3 games
+                        if (filters.last_3_games) {{
+                            if (weekData.game_id && last3GameIds.length > 0) {{
+                                include = include && last3GameIds.includes(weekData.game_id);
+                            }}
+                            // If game_id is missing, include it (can't filter without game_id)
+                        }}
+                        
+                        if (include) {{
+                            filteredByWeek[weekStr] = weekData;
+                            filteredLast3Weeks.push(parseInt(weekStr));
+                            
+                            // Aggregate totals
+                            const stats = weekData.stats || {{}};
+                            filteredTotal.targets += stats.targets || 0;
+                            filteredTotal.receptions += stats.receptions || 0;
+                            filteredTotal.yards += stats.yards || 0;
                             if (situation === filtered['3rd_down']) {{
-                                filteredPlayers[playerId].first_downs += player.first_downs || 0;
+                                filteredTotal.first_downs += stats.first_downs || 0;
+                                // Also add touchdowns from stats (may not be in player-level data)
+                                filteredTotal.touchdowns += stats.touchdowns || 0;
+                            }} else {{
+                                // For redzone, also add touchdowns from stats
+                                filteredTotal.touchdowns += stats.touchdowns || 0;
                             }}
-                            filteredPlayers[playerId].touchdowns += player.touchdowns || 0;
+                            
+                            // Aggregate player stats
+                            for (const player of weekData.players || []) {{
+                                const playerId = player.playerId;
+                                if (!filteredPlayers[playerId]) {{
+                                    filteredPlayers[playerId] = {{
+                                        playerId: playerId,
+                                        player: player.player,
+                                        targets: 0,
+                                        receptions: 0,
+                                        yards: 0,
+                                        first_downs: 0,
+                                        touchdowns: 0,
+                                        big_ten_rank: player.big_ten_rank,
+                                        is_top_25: player.is_top_25
+                                    }};
+                                }}
+                                filteredPlayers[playerId].targets += player.targets || 0;
+                                filteredPlayers[playerId].receptions += player.receptions || 0;
+                                filteredPlayers[playerId].yards += player.yards || 0;
+                                if (situation === filtered['3rd_down']) {{
+                                    filteredPlayers[playerId].first_downs += player.first_downs || 0;
+                                }}
+                                filteredPlayers[playerId].touchdowns += player.touchdowns || 0;
+                            }}
+                        }}
+                    }}
+                }}
+                
+                // Filter by_game entries (new format)
+                if (hasByGame) {{
+                    for (const [gameKey, gameData] of Object.entries(situation.by_game)) {{
+                        let include = true;
+                        
+                        // Filter by conference/non-conference/power4
+                        if (filters.conference_only) {{
+                            if (gameData.hasOwnProperty('is_conference')) {{
+                                include = include && gameData.is_conference === true;
+                            }}
+                        }} else if (filters.non_conference_only) {{
+                            if (gameData.hasOwnProperty('is_conference')) {{
+                                include = include && gameData.is_conference === false;
+                            }}
+                        }} else if (filters.power4_only) {{
+                            if (gameData.hasOwnProperty('is_power4_opponent')) {{
+                                include = include && gameData.is_power4_opponent === true;
+                            }}
+                        }}
+                        
+                        // Filter by last 3 games
+                        if (filters.last_3_games) {{
+                            if (gameData.game_id && last3GameIds.length > 0) {{
+                                include = include && last3GameIds.includes(gameData.game_id);
+                            }}
+                        }}
+                        
+                        if (include) {{
+                            filteredByGame[gameKey] = gameData;
+                            const week = gameData.week || parseInt(gameKey.replace('Week', '').split('_')[0]) || 0;
+                            if (week > 0) filteredLast3Weeks.push(week);
+                            
+                            // Aggregate totals (by_game structure has stats directly, not in stats object)
+                            filteredTotal.targets += gameData.targets || 0;
+                            filteredTotal.receptions += gameData.receptions || 0;
+                            filteredTotal.yards += gameData.yards || 0;
+                            if (situation === filtered['3rd_down']) {{
+                                filteredTotal.first_downs += gameData.first_downs || 0;
+                                filteredTotal.touchdowns += gameData.touchdowns || 0;
+                            }} else {{
+                                filteredTotal.touchdowns += gameData.touchdowns || 0;
+                            }}
+                            
+                            // Aggregate player stats
+                            for (const player of gameData.players || []) {{
+                                const playerName = player.player || player.playerId;
+                                if (!filteredPlayers[playerName]) {{
+                                    filteredPlayers[playerName] = {{
+                                        playerId: player.playerId || playerName,
+                                        player: player.player || playerName,
+                                        targets: 0,
+                                        receptions: 0,
+                                        yards: 0,
+                                        first_downs: 0,
+                                        touchdowns: 0,
+                                        big_ten_rank: player.big_ten_rank,
+                                        is_top_25: player.is_top_25
+                                    }};
+                                }}
+                                filteredPlayers[playerName].targets += player.targets || 0;
+                                filteredPlayers[playerName].receptions += player.receptions || 0;
+                                filteredPlayers[playerName].yards += player.yards || 0;
+                                if (situation === filtered['3rd_down']) {{
+                                    filteredPlayers[playerName].first_downs += player.first_downs || 0;
+                                }}
+                                filteredPlayers[playerName].touchdowns += player.touchdowns || 0;
+                            }}
                         }}
                     }}
                 }}
@@ -4586,19 +4784,72 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 // Calculate last 3 games stats
                 filteredLast3Weeks.sort((a, b) => a - b);
                 const last3 = filteredLast3Weeks.slice(-3);
-                const last3Targets = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.targets || 0), 0);
-                const last3Receptions = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.receptions || 0), 0);
-                const last3Yards = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.yards || 0), 0);
+                const last3Targets = last3.reduce((sum, w) => {{
+                    if (hasByWeek) {{
+                        return sum + (filteredByWeek[w.toString()]?.stats?.targets || 0);
+                    }} else if (hasByGame) {{
+                        // Find games in last 3 weeks
+                        return sum + Object.values(filteredByGame)
+                            .filter(g => (g.week || parseInt(Object.keys(situation.by_game).find(k => situation.by_game[k] === g)?.replace('Week', '').split('_')[0]) || 0) === w)
+                            .reduce((s, g) => s + (g.targets || 0), 0);
+                    }}
+                    return sum;
+                }}, 0);
+                const last3Receptions = last3.reduce((sum, w) => {{
+                    if (hasByWeek) {{
+                        return sum + (filteredByWeek[w.toString()]?.stats?.receptions || 0);
+                    }} else if (hasByGame) {{
+                        return sum + Object.values(filteredByGame)
+                            .filter(g => (g.week || parseInt(Object.keys(situation.by_game).find(k => situation.by_game[k] === g)?.replace('Week', '').split('_')[0]) || 0) === w)
+                            .reduce((s, g) => s + (g.receptions || 0), 0);
+                    }}
+                    return sum;
+                }}, 0);
+                const last3Yards = last3.reduce((sum, w) => {{
+                    if (hasByWeek) {{
+                        return sum + (filteredByWeek[w.toString()]?.stats?.yards || 0);
+                    }} else if (hasByGame) {{
+                        return sum + Object.values(filteredByGame)
+                            .filter(g => (g.week || parseInt(Object.keys(situation.by_game).find(k => situation.by_game[k] === g)?.replace('Week', '').split('_')[0]) || 0) === w)
+                            .reduce((s, g) => s + (g.yards || 0), 0);
+                    }}
+                    return sum;
+                }}, 0);
                 
                 let last3Extra = {{}};
                 if (situation === filtered['3rd_down']) {{
-                    const last3FirstDowns = last3.reduce((sum, w) => sum + (filteredByWeek[w.toString()]?.stats?.first_downs || 0), 0);
-                    const last3Touchdowns = last3.reduce((sum, w) => 
-                        sum + (filteredByWeek[w.toString()]?.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0);
+                    const last3FirstDowns = last3.reduce((sum, w) => {{
+                        if (hasByWeek) {{
+                            return sum + (filteredByWeek[w.toString()]?.stats?.first_downs || 0);
+                        }} else if (hasByGame) {{
+                            return sum + Object.values(filteredByGame)
+                                .filter(g => (g.week || parseInt(Object.keys(situation.by_game).find(k => situation.by_game[k] === g)?.replace('Week', '').split('_')[0]) || 0) === w)
+                                .reduce((s, g) => s + (g.first_downs || 0), 0);
+                        }}
+                        return sum;
+                    }}, 0);
+                    const last3Touchdowns = last3.reduce((sum, w) => {{
+                        if (hasByWeek) {{
+                            return sum + (filteredByWeek[w.toString()]?.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0);
+                        }} else if (hasByGame) {{
+                            return sum + Object.values(filteredByGame)
+                                .filter(g => (g.week || parseInt(Object.keys(situation.by_game).find(k => situation.by_game[k] === g)?.replace('Week', '').split('_')[0]) || 0) === w)
+                                .reduce((s, g) => s + (g.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0);
+                        }}
+                        return sum;
+                    }}, 0);
                     last3Extra = {{ first_downs: last3FirstDowns, touchdowns: last3Touchdowns }};
                 }} else {{
-                    const last3Touchdowns = last3.reduce((sum, w) => 
-                        sum + (filteredByWeek[w.toString()]?.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0);
+                    const last3Touchdowns = last3.reduce((sum, w) => {{
+                        if (hasByWeek) {{
+                            return sum + (filteredByWeek[w.toString()]?.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0);
+                        }} else if (hasByGame) {{
+                            return sum + Object.values(filteredByGame)
+                                .filter(g => (g.week || parseInt(Object.keys(situation.by_game).find(k => situation.by_game[k] === g)?.replace('Week', '').split('_')[0]) || 0) === w)
+                                .reduce((s, g) => s + (g.players || []).reduce((pSum, p) => pSum + (p.touchdowns || 0), 0), 0);
+                        }}
+                        return sum;
+                    }}, 0);
                     last3Extra = {{ touchdowns: last3Touchdowns }};
                 }}
                 
@@ -4619,9 +4870,9 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 // Note: If both are 0, it means the filtered weeks genuinely have 0 TDs
                 // (even if the original total had TDs, those TDs were in weeks not included in the filter)
                 
-                return {{
+                // Return structure based on what we have
+                const result = {{
                     total: filteredTotal,
-                    by_week: filteredByWeek,
                     last_3_games: {{
                         targets: last3Targets,
                         receptions: last3Receptions,
@@ -4630,6 +4881,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     }},
                     players: Object.values(filteredPlayers).sort((a, b) => b.targets - a.targets)
                 }};
+                
+                // Add by_week or by_game based on what structure we filtered
+                if (hasByWeek) {{
+                    result.by_week = filteredByWeek;
+                }}
+                if (hasByGame) {{
+                    result.by_game = filteredByGame;
+                }}
+                
+                return result;
             }}
             
             // Filter both situations
@@ -4740,7 +5001,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             if (charts.thirdDownWash) charts.thirdDownWash.destroy();
             
             const washColors = [
-                'rgba(139, 0, 0, 0.8)', 'rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)',
+                '{team1_rgba_08}', '{team1_rgba_06}', '{team1_rgba_04}',
                 'rgba(34, 139, 34, 0.8)', 'rgba(34, 139, 34, 0.6)', 'rgba(34, 139, 34, 0.4)',
                 'rgba(0, 100, 0, 0.8)', 'rgba(0, 100, 0, 0.6)'
             ];
@@ -4810,8 +5071,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             if (charts.thirdDownWisc) charts.thirdDownWisc.destroy();
             
             const wiscColors = [
-                'rgba(40, 40, 40, 0.8)', 'rgba(40, 40, 40, 0.6)', 'rgba(40, 40, 40, 0.4)',
-                'rgba(139, 0, 0, 0.8)', 'rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)',
+                '{team2_rgba_08}', '{team2_rgba_06}', '{team2_rgba_04}',
+                '{team1_rgba_08}', '{team1_rgba_06}', '{team1_rgba_04}',
                 'rgba(165, 42, 42, 0.8)', 'rgba(165, 42, 42, 0.6)'
             ];
             
@@ -5534,8 +5795,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     datasets: [{{
                         label: 'Attempts',
                         data: washPassingAttempts,
-                        backgroundColor: 'rgba(139, 0, 0, 0.6)',
-                        borderColor: 'rgba(139, 0, 0, 1)',
+                        backgroundColor: '{team1_rgba_06}',
+                        borderColor: '{team1_rgba_10}',
                         borderWidth: 1
                     }}, {{
                         label: 'Completions',
@@ -5582,14 +5843,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     datasets: [{{
                         label: 'Attempts',
                         data: wiscPassingAttempts,
-                        backgroundColor: 'rgba(40, 40, 40, 0.6)',
-                        borderColor: 'rgba(40, 40, 40, 1)',
+                        backgroundColor: '{team2_rgba_06}',
+                        borderColor: '{team2_rgba_10}',
                         borderWidth: 1
                     }}, {{
                         label: 'Completions',
                         data: wiscPassingCompletions,
-                        backgroundColor: 'rgba(139, 0, 0, 0.6)',
-                        borderColor: 'rgba(139, 0, 0, 1)',
+                        backgroundColor: '{team1_rgba_06}',
+                        borderColor: '{team1_rgba_10}',
                         borderWidth: 1
                     }}]
                 }},
@@ -5648,7 +5909,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const ctxRecWash = document.getElementById('deepReceivingChartWash').getContext('2d');
             if (charts.deepReceivingWash) charts.deepReceivingWash.destroy();
             const washColors = [
-                'rgba(139, 0, 0, 0.8)', 'rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)',
+                '{team1_rgba_08}', '{team1_rgba_06}', '{team1_rgba_04}',
                 'rgba(34, 139, 34, 0.8)', 'rgba(34, 139, 34, 0.6)', 'rgba(34, 139, 34, 0.4)',
                 'rgba(0, 100, 0, 0.8)', 'rgba(0, 100, 0, 0.6)'
             ];
@@ -5677,8 +5938,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const ctxRecWisc = document.getElementById('deepReceivingChartWisc').getContext('2d');
             if (charts.deepReceivingWisc) charts.deepReceivingWisc.destroy();
             const wiscColors = [
-                'rgba(40, 40, 40, 0.8)', 'rgba(40, 40, 40, 0.6)', 'rgba(40, 40, 40, 0.4)',
-                'rgba(139, 0, 0, 0.8)', 'rgba(139, 0, 0, 0.6)', 'rgba(139, 0, 0, 0.4)',
+                '{team2_rgba_08}', '{team2_rgba_06}', '{team2_rgba_04}',
+                '{team1_rgba_08}', '{team1_rgba_06}', '{team1_rgba_04}',
                 'rgba(165, 42, 42, 0.8)', 'rgba(165, 42, 42, 0.6)'
             ];
             charts.deepReceivingWisc = new Chart(ctxRecWisc, {{
@@ -6104,11 +6365,93 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         function analyzePenalties(plays, teamName) {{
-            const penaltyPlays = plays.filter(p => 
-                p.penalty_type != null && 
-                (p.offense?.toLowerCase() === teamName.toLowerCase() || 
-                 p.defense?.toLowerCase() === teamName.toLowerCase())
-            );
+            // Team abbreviations for penalty detection
+            const teamAbbrevs = {{
+                'WASHINGTON': ['WASH', 'WAS', 'UW'],
+                'UCLA': ['UCLA'],
+                'IOWA': ['IOWA', 'IA'],
+                'USC': ['USC', 'TROJAN'],
+                'WISCONSIN': ['WIS', 'WISC', 'UW'],
+                'NORTHWESTERN': ['NU', 'NW'],
+                'MICHIGAN': ['MICH', 'UM'],
+                'MICHIGAN STATE': ['MSU', 'MICHIGAN STATE'],
+                'ILLINOIS': ['ILL', 'ILLINOIS'],
+                'PENN STATE': ['PSU', 'PENN STATE'],
+                'OHIO STATE': ['OSU', 'OHIO STATE'],
+                'INDIANA': ['IND', 'IU'],
+                'PURDUE': ['PUR', 'PURDUE'],
+                'RUTGERS': ['RUT', 'RUTGERS'],
+                'MARYLAND': ['MD', 'MARYLAND'],
+                'MINNESOTA': ['MINN', 'MINNESOTA'],
+                'NEBRASKA': ['NEB', 'NEBRASKA'],
+                'OREGON': ['ORE', 'OREGON']
+            }};
+            
+            const teamUpper = teamName.toUpperCase();
+            const penaltyPlays = plays.filter(p => {{
+                if (p.penalty_type == null) return false;
+                
+                const playTextUpper = (p.play_text || '').toUpperCase();
+                let teamCommitted = false;
+                
+                // Check for explicit team penalty markers
+                if (playTextUpper.includes(teamUpper + ' PENALTY') || 
+                    playTextUpper.includes('PENALTY ' + teamUpper)) {{
+                    teamCommitted = true;
+                }}
+                // Check for team abbreviations
+                else if (teamAbbrevs[teamUpper]) {{
+                    for (const abbrev of teamAbbrevs[teamUpper]) {{
+                        if (playTextUpper.includes('PENALTY ' + abbrev) || 
+                            playTextUpper.includes(abbrev + ' PENALTY')) {{
+                            teamCommitted = true;
+                            break;
+                        }}
+                    }}
+                }}
+                
+                // If no explicit marker, check if it's an opponent penalty
+                if (!teamCommitted) {{
+                    // Check for opponent penalty markers
+                    for (const [oppTeam, abbrevs] of Object.entries(teamAbbrevs)) {{
+                        if (oppTeam === teamUpper) continue;
+                        // Check full team name
+                        if (playTextUpper.includes(oppTeam + ' PENALTY') || 
+                            playTextUpper.includes('PENALTY ' + oppTeam)) {{
+                            return false; // This is an opponent penalty, exclude it
+                        }}
+                        // Check abbreviations
+                        for (const abbrev of abbrevs) {{
+                            if (playTextUpper.includes('PENALTY ' + abbrev) || 
+                                playTextUpper.includes(abbrev + ' PENALTY')) {{
+                                return false; // This is an opponent penalty, exclude it
+                            }}
+                        }}
+                    }}
+                    
+                    // If no explicit markers, infer from penalty type and team position
+                    // This is a simplified version - for accuracy, should use Python analysis
+                    const penaltyType = (p.penalty_type || '').toUpperCase();
+                    const offensivePenalties = ['FALSE START', 'DELAY OF GAME', 'ILLEGAL FORMATION', 'OFFENSIVE HOLDING', 'INTENTIONAL GROUNDING', 'ILLEGAL SNAP'];
+                    const defensivePenalties = ['PASS INTERFERENCE', 'DEFENSIVE HOLDING', 'OFFSIDE', 'ROUGHING', 'UNNECESSARY ROUGHNESS', 'SIDELINE'];
+                    const eitherSidePenalties = ['UNSPORTSMANLIKE', 'PERSONAL FOUL'];
+                    const specialTeamsPenalties = ['ILLEGAL BLOCK', 'ILLEGAL BLOCK IN BACK', 'ILLEGAL BLOCK ABOVE WAIST', 'KICK CATCHING INTERFERENCE', 'ROUGHING THE KICKER', 'ROUGHING THE PUNTER', 'RUNNING INTO THE KICKER'];
+                    
+                    const isOffense = p.offense?.toLowerCase() === teamName.toLowerCase();
+                    const isDefense = p.defense?.toLowerCase() === teamName.toLowerCase();
+                    
+                    if (specialTeamsPenalties.some(stp => penaltyType.includes(stp)) || 
+                        eitherSidePenalties.some(esp => penaltyType.includes(esp))) {{
+                        teamCommitted = isOffense || isDefense;
+                    }} else if (isOffense && offensivePenalties.some(op => penaltyType.includes(op))) {{
+                        teamCommitted = true;
+                    }} else if (isDefense && defensivePenalties.some(dp => penaltyType.includes(dp))) {{
+                        teamCommitted = true;
+                    }}
+                }}
+                
+                return teamCommitted;
+            }});
             const accepted = penaltyPlays.filter(p => p.penalty_decision === 'accepted').length;
             const declined = penaltyPlays.filter(p => p.penalty_decision === 'declined').length;
             
@@ -6124,12 +6467,58 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }});
             
             const uniqueGames = new Set(penaltyPlays.map(p => p.game_id)).size;
+            
+            // Calculate last 3 games stats
+            const gameStats = {{}};
+            penaltyPlays.forEach(p => {{
+                const gameId = p.game_id;
+                if (!gameStats[gameId]) {{
+                    // Get game_week directly from the play (filtered plays should preserve this field)
+                    const gameWeek = p.game_week || 0;
+                    gameStats[gameId] = {{ count: 0, yards: 0, week: gameWeek }};
+                }}
+                gameStats[gameId].count++;
+                if (p.penalty_decision === 'accepted') {{
+                    const yardsGained = p.yards_gained || 0;
+                    gameStats[gameId].yards += Math.abs(yardsGained);
+                }}
+            }});
+            
+            // Sort games by week and get last 3
+            // Only include games with valid week numbers (> 0)
+            const sortedGames = Object.entries(gameStats)
+                .map(([id, stats]) => ({{ id: parseInt(id), week: stats.week }}))
+                .filter(g => g.week > 0) // Only include games with valid week numbers
+                .sort((a, b) => a.week - b.week);
+            const last3GameIds = sortedGames.slice(-3).map(g => g.id);
+            
+            // Debug logging for last 3 games calculation
+            if (penaltyPlays.length > 0 && last3GameIds.length === 0) {{
+                console.log('DEBUG: No last 3 games found for penalties');
+                console.log('Total penalty plays:', penaltyPlays.length);
+                console.log('Game stats:', gameStats);
+                console.log('Sorted games (before filter):', Object.entries(gameStats).map(([id, stats]) => ({{ id: parseInt(id), week: stats.week }})));
+                console.log('Sorted games (after filter):', sortedGames);
+                console.log('Sample penalty play:', penaltyPlays[0]);
+                console.log('Sample penalty play game_week:', penaltyPlays[0]?.game_week);
+            }}
+            
+            const last3Games = penaltyPlays.filter(p => last3GameIds.includes(p.game_id));
+            const last3Yards = last3Games
+                .filter(p => p.penalty_decision === 'accepted')
+                .reduce((sum, p) => sum + Math.abs(p.yards_gained || 0), 0);
+            
             return {{
                 total_penalties: penaltyPlays.length,
                 accepted: accepted,
                 declined: declined,
                 total_penalty_yards: totalYards,
-                avg_per_game: uniqueGames > 0 ? penaltyPlays.length / uniqueGames : 0,
+                total_games: uniqueGames,
+                avg_per_game: uniqueGames > 0 ? accepted / uniqueGames : 0,
+                last_3_games: {{
+                    games: last3GameIds, // Return list of game IDs to match Python structure
+                    yards: last3Yards
+                }},
                 plays: penaltyPlays.map(p => {{
                     // Use penalty_category for holding penalties, otherwise use penalty_type
                     // This breaks out holding into: offensive_holding, defensive_holding, special_teams_holding
@@ -6221,7 +6610,51 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         function analyzePostTurnover(plays, teamName) {{
-            const turnovers = plays.filter(p => p.turnover === true);
+            // Filter turnovers - only fumbles lost and interceptions thrown
+            // Exclude turnovers on downs and plays with "NO PLAY" in text
+            const turnovers = plays.filter(p => {{
+                if (p.turnover !== true) return false;
+                
+                // Filter out plays with "NO PLAY" in the text
+                const playText = (p.play_text || '').toUpperCase();
+                if (playText.includes('NO PLAY')) return false;
+                
+                // Check turnover_type field first - if it's "downs", exclude it
+                // Post turnover analysis only includes fumbles lost and interceptions
+                const turnoverTypeField = (p.turnover_type || '').toLowerCase();
+                if (turnoverTypeField === 'downs') {{
+                    // This is a turnover on downs, exclude from post turnover analysis
+                    return false;
+                }}
+                
+                // Only count fumbles lost and interceptions thrown
+                // Exclude turnovers on downs
+                const playType = (p.play_type || '').toUpperCase();
+                const isInterception = playType.includes('INTERCEPTION');
+                const isFumble = playType.includes('FUMBLE');
+                
+                // For fumbles, check if the offense recovered their own fumble
+                let isFumbleLost = false;
+                if (isFumble) {{
+                    // Check play_type for "(Own)" indicator - offense recovered
+                    // If "(OWN)" is in play_type, it means the offense recovered - NOT a turnover
+                    // This should be excluded even if turnover: true is set (data inconsistency)
+                    if (playType.includes('(OWN)')) {{
+                        // Offense recovered their own fumble - NOT a turnover, exclude it
+                        return false;
+                    }} else {{
+                        // If the play is marked as a turnover and has fumble, it's a fumble lost
+                        isFumbleLost = true;
+                    }}
+                }}
+                
+                // Exclude turnovers on downs (additional check in case turnover_type wasn't set)
+                const isTurnoverOnDowns = playType.includes('TURNOVER ON DOWNS') ||
+                    playType.includes('DOWNS');
+                
+                // Only include interceptions and fumbles lost, exclude turnovers on downs
+                return (isInterception || isFumbleLost) && !isTurnoverOnDowns;
+            }});
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
             
             // Group by drive_id to get unique drives that started after turnovers
@@ -6269,20 +6702,32 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 
                 if (!matchingTurnover) return; // Skip if we can't find the matching turnover
                 
-                const isOurTurnover = matchingTurnover.offense?.toLowerCase() === teamName.toLowerCase();
+                // For fumble recoveries on punts, the offense field is the recovering team,
+                // but the turnover actually belongs to the punting team (defense on the play)
+                let isOurTurnover = matchingTurnover.offense?.toLowerCase() === teamName.toLowerCase();
+                const playTypeCheck = (matchingTurnover.play_type || '').toUpperCase();
+                if (playTypeCheck.includes('PUNT') && playTypeCheck.includes('FUMBLE RECOVERY')) {{
+                    // For punt fumble recoveries, the turnover belongs to the punting team (defense)
+                    // So flip the logic: if we're the defense, it's our opponent's turnover
+                    // If we're the offense (recovering team), it's our opponent's turnover
+                    isOurTurnover = matchingTurnover.defense?.toLowerCase() === teamName.toLowerCase();
+                }}
+                
                 if (isOurTurnover) ourTurnovers++;
                 else opponentTurnovers++;
                 
                 // Determine turnover type
-                // If it's an interception or fumble, use that; otherwise it's a turnover on downs
+                // Only interceptions and fumbles lost should be in the turnovers list
+                // (turnovers on downs are filtered out earlier)
                 const playType = matchingTurnover.play_type || 'Unknown';
                 let turnoverType;
-                if (playType.includes('Interception')) {{
+                if (playType.includes('Interception') || playType.includes('interception')) {{
                     turnoverType = 'Interception';
-                }} else if (playType.includes('Fumble')) {{
+                }} else if (playType.includes('Fumble') || playType.includes('fumble')) {{
                     turnoverType = 'Fumble';
                 }} else {{
-                    turnoverType = 'Turnover on Downs';
+                    // This shouldn't happen if filtering is correct, but handle edge case
+                    turnoverType = 'Unknown';
                 }}
                 
                 // Check if the turnover play itself resulted in points (e.g., pick-6, fumble return TD)
@@ -6306,12 +6751,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 if (drivePoints === 0) {{
                     drivePlays.forEach(p => {{
                         if (p.scoring === true) {{
-                            if (p.play_type?.includes('Touchdown')) {{
+                            // If scoring is True, check play_text to determine if it's a TD or FG
+                            // (play_type might be "Pass Reception" or "Rush" even for touchdowns)
+                            const playType = p.play_type || '';
+                            const playText = (p.play_text || '').toUpperCase();
+                            
+                            // Check for touchdown in play_type or play_text
+                            if (playType.includes('Touchdown') || playText.includes('TOUCHDOWN')) {{
                                 drivePoints = 7;
                                 driveResult = 'Touchdown';
                                 scoringPlayText = p.play_text?.substring(0, 150) || '';
                                 return; // Touchdown is highest priority
-                            }} else if (p.play_type?.includes('Field Goal') && driveResult === 'No Score') {{
+                            }} else if ((playType.includes('Field Goal') || playText.includes('FIELD GOAL')) && driveResult === 'No Score') {{
                                 drivePoints = 3;
                                 driveResult = 'Field Goal';
                                 scoringPlayText = p.play_text?.substring(0, 150) || '';

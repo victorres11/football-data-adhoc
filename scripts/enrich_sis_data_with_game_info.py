@@ -21,14 +21,20 @@ def load_game_data(team_name: str, data_dir: str = "advanced_reports_yogi") -> L
     Load game data from play-by-play JSON files to extract game metadata.
     
     Args:
-        team_name: 'Washington' or 'Wisconsin'
+        team_name: 'Washington' or 'Wisconsin' or 'William & Mary'
         data_dir: Directory containing play-by-play data
         
     Returns:
         List of game dictionaries with metadata
     """
     games = []
-    team_folder = data_dir / f"{team_name.lower()}_play_by_play"
+    # Normalize team name for folder matching (same as load_advanced_pbp_data.py)
+    normalized_name = team_name.lower().replace(" & ", "_").replace(" &", "_").replace("& ", "_").replace("&", "").replace(" ", "_").replace("-", "_")
+    # Remove any double underscores
+    while "__" in normalized_name:
+        normalized_name = normalized_name.replace("__", "_")
+    normalized_name = normalized_name.strip("_")
+    team_folder = data_dir / f"{normalized_name}_play_by_play"
     
     if not team_folder.exists():
         # Try parent directory

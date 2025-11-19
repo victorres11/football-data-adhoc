@@ -208,6 +208,130 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
     else:
         print(f"Warning: BYE weeks file not found at {bye_weeks_path}")
     
+    # Load schedule data for matchups table
+    schedule_data = {}
+    if Path(data_dir).is_absolute():
+        schedule_path = Path(data_dir) / "schedule_results" / "team_schedules_2025.json"
+    else:
+        schedule_path = Path(data_dir) / "schedule_results" / "team_schedules_2025.json"
+        if not schedule_path.exists():
+            schedule_path = Path("..") / data_dir / "schedule_results" / "team_schedules_2025.json"
+    
+    if schedule_path.exists():
+        try:
+            with open(schedule_path, 'r') as f:
+                schedule_data = json.load(f)
+            print(f"Schedule data loaded successfully")
+        except Exception as e:
+            print(f"Warning: Could not load schedule data: {e}")
+    else:
+        print(f"Warning: Schedule file not found at {schedule_path}")
+    
+    # Extract schedule data for both teams
+    team1_schedule = schedule_data.get('teams', {}).get(team_name1, {}).get('games', [])
+    team2_schedule = schedule_data.get('teams', {}).get(team_name2, {}).get('games', [])
+    
+    # Generate schedule table HTML
+    def format_date(date_str):
+        """Format date string to readable format"""
+        if not date_str:
+            return ''
+        try:
+            from datetime import datetime
+            dt = datetime.strptime(date_str.split('+')[0], '%Y-%m-%d %H:%M:%S')
+            return dt.strftime('%b %d')
+        except:
+            return date_str[:10] if date_str else ''
+    
+    def generate_schedule_table_html(team_schedule, team_name):
+        """Generate HTML for a team's schedule table"""
+        if not team_schedule:
+            return ''
+        
+        rows = []
+        for game in sorted(team_schedule, key=lambda x: x.get('week', 0)):
+            week = game.get('week', '')
+            opponent = game.get('opponent', '')
+            location = game.get('location', '')
+            team_score = game.get('team_score')
+            opp_score = game.get('opponent_score')
+            completed = game.get('completed', False)
+            
+            # Format location
+            loc_display = 'Home' if location == 'home' else 'Away'
+            
+            # Format score
+            if completed and team_score is not None and opp_score is not None:
+                score_display = f"{team_score}-{opp_score}"
+                # Highlight win/loss
+                if team_score > opp_score:
+                    score_class = 'win'
+                elif team_score < opp_score:
+                    score_class = 'loss'
+                else:
+                    score_class = 'tie'
+            else:
+                score_display = 'TBD'
+                score_class = 'tbd'
+            
+            rows.append(f"""
+                <tr>
+                    <td>{week}</td>
+                    <td>{opponent}</td>
+                    <td>{loc_display}</td>
+                    <td class="score {score_class}">{score_display}</td>
+                </tr>
+            """)
+        
+        return ''.join(rows)
+    
+    team1_schedule_html = generate_schedule_table_html(team1_schedule, team_name1)
+    team2_schedule_html = generate_schedule_table_html(team2_schedule, team_name2)
+    
+    # Build schedule tables HTML
+    if team1_schedule_html or team2_schedule_html:
+        schedule_tables_html = f"""
+                <div class="schedule-tables-container">
+                    <h2>Season Schedule</h2>
+                    <div class="schedule-tables">
+                        <div class="schedule-table-wrapper">
+                            <h3>{team_name1}</h3>
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>Week</th>
+                                        <th>Opponent</th>
+                                        <th>Location</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {team1_schedule_html}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="schedule-table-wrapper">
+                            <h3>{team_name2}</h3>
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>Week</th>
+                                        <th>Opponent</th>
+                                        <th>Location</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {team2_schedule_html}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        """
+    else:
+        schedule_tables_html = ""
+    
     # Load SIS data and analyze situational receiving stats
     print("Loading SIS data...")
     try:
@@ -527,6 +651,90 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         .notice-banner::before {{
             content: "⚠️";
             margin-right: 8px;
+            font-size: 1.2em;
+        }}
+        
+        .schedule-tables-container {{
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        
+        .schedule-tables-container h2 {{
+            color: {team1_primary};
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid {team1_primary};
+            padding-bottom: 10px;
+        }}
+        
+        .schedule-tables {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }}
+        
+        @media (max-width: 768px) {{
+            .schedule-tables {{
+                grid-template-columns: 1fr;
+            }}
+        }}
+        
+        .schedule-table-wrapper {{
+            overflow-x: auto;
+        }}
+        
+        .schedule-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }}
+        
+        .schedule-table th {{
+            background: {team1_primary};
+            color: white;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }}
+        
+        .schedule-table td {{
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }}
+        
+        .schedule-table tr:hover {{
+            background: #f5f5f5;
+        }}
+        
+        .schedule-table .score {{
+            font-weight: 600;
+            text-align: center;
+        }}
+        
+        .schedule-table .score.win {{
+            color: #28a745;
+        }}
+        
+        .schedule-table .score.loss {{
+            color: #dc3545;
+        }}
+        
+        .schedule-table .score.tie {{
+            color: #ffc107;
+        }}
+        
+        .schedule-table .score.tbd {{
+            color: #6c757d;
+            font-style: italic;
+        }}
+        
+        .schedule-table-wrapper h3 {{
+            margin-bottom: 10px;
+            color: {team1_primary};
             font-size: 1.2em;
         }}
         
@@ -1176,6 +1384,9 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <div class="notice-banner">
                     This analysis is best viewed on a computer or tablet. Mobile viewing may have limited functionality.
                 </div>
+                
+                <!-- Season Schedule -->
+                {schedule_tables_html}
         
         <!--
         <div class="filters">

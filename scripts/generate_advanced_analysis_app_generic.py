@@ -23,8 +23,13 @@ def normalize_team_name(team_name: str) -> str:
     """
     Normalize team name for use in file paths and data keys.
     Converts to lowercase and replaces spaces with underscores.
+    Handles "&" properly (e.g., "William & Mary" -> "william_mary").
     """
-    return team_name.lower().replace(" ", "_").replace("-", "_")
+    normalized = team_name.lower().replace(" & ", "_").replace(" &", "_").replace("& ", "_").replace("&", "").replace(" ", "_").replace("-", "_")
+    # Remove any double underscores
+    while "__" in normalized:
+        normalized = normalized.replace("__", "_")
+    return normalized.strip("_")
 
 
 def get_team_colors(team_name: str) -> tuple:
@@ -58,6 +63,14 @@ def get_team_colors(team_name: str) -> tuple:
     # Wisconsin: Red
     elif 'wisconsin' in team_lower or 'wisc' in team_lower:
         return ("#c41e3a", "#667eea")  # Red
+    
+    # Richmond: Blue/Red
+    elif 'richmond' in team_lower:
+        return ("#003366", "#DC143C")  # Navy Blue and Crimson
+    
+    # William & Mary: Green/Gold
+    elif ('william' in team_lower and 'mary' in team_lower) or 'w&m' in team_lower:
+        return ("#115740", "#FFC72C")  # Green and Gold
     
     # Default gradient colors
     else:
@@ -210,22 +223,56 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
     
     # Load schedule data for matchups table
     schedule_data = {}
-    if Path(data_dir).is_absolute():
-        schedule_path = Path(data_dir) / "schedule_results" / "team_schedules_2025.json"
-    else:
-        schedule_path = Path(data_dir) / "schedule_results" / "team_schedules_2025.json"
-        if not schedule_path.exists():
-            schedule_path = Path("..") / data_dir / "schedule_results" / "team_schedules_2025.json"
     
-    if schedule_path.exists():
+    # Try team-specific schedule file first (e.g., richmond_wm_schedules_2025.json)
+    team1_key_normalized = normalize_team_name(team_name1)
+    team2_key_normalized = normalize_team_name(team_name2)
+    sorted_keys = sorted([team1_key_normalized, team2_key_normalized])
+    team_specific_filename = f"{sorted_keys[0]}_{sorted_keys[1]}_schedules_{year}.json"
+    
+    # Also try with "wm" abbreviation for William & Mary
+    team_specific_filename_wm = None
+    if 'william' in team1_key_normalized and 'mary' in team1_key_normalized:
+        team1_abbrev = 'wm'
+        team_specific_filename_wm = f"{sorted_keys[0]}_{team1_abbrev}_schedules_{year}.json" if sorted_keys[0] != team1_key_normalized else f"{team1_abbrev}_{sorted_keys[1]}_schedules_{year}.json"
+    elif 'william' in team2_key_normalized and 'mary' in team2_key_normalized:
+        team2_abbrev = 'wm'
+        team_specific_filename_wm = f"{sorted_keys[0]}_{team2_abbrev}_schedules_{year}.json" if sorted_keys[0] != team2_key_normalized else f"{team2_abbrev}_{sorted_keys[1]}_schedules_{year}.json"
+    
+    schedule_paths = []
+    if Path(data_dir).is_absolute():
+        schedule_paths = [
+            Path(data_dir) / "schedule_results" / team_specific_filename,
+            Path(data_dir) / "schedule_results" / "team_schedules_2025.json"
+        ]
+        if team_specific_filename_wm:
+            schedule_paths.insert(0, Path(data_dir) / "schedule_results" / team_specific_filename_wm)
+    else:
+        schedule_paths = [
+            Path(data_dir) / "schedule_results" / team_specific_filename,
+            Path("..") / data_dir / "schedule_results" / team_specific_filename,
+            Path(data_dir) / "schedule_results" / "team_schedules_2025.json",
+            Path("..") / data_dir / "schedule_results" / "team_schedules_2025.json"
+        ]
+        if team_specific_filename_wm:
+            schedule_paths.insert(0, Path(data_dir) / "schedule_results" / team_specific_filename_wm)
+            schedule_paths.insert(1, Path("..") / data_dir / "schedule_results" / team_specific_filename_wm)
+    
+    schedule_path = None
+    for path in schedule_paths:
+        if path.exists():
+            schedule_path = path
+            break
+    
+    if schedule_path:
         try:
             with open(schedule_path, 'r') as f:
                 schedule_data = json.load(f)
-            print(f"Schedule data loaded successfully")
+            print(f"Schedule data loaded successfully from {schedule_path}")
         except Exception as e:
             print(f"Warning: Could not load schedule data: {e}")
     else:
-        print(f"Warning: Schedule file not found at {schedule_path}")
+        print(f"Warning: Schedule file not found. Tried: {[str(p) for p in schedule_paths]}")
     
     # Extract schedule data for both teams
     team1_schedule = schedule_data.get('teams', {}).get(team_name1, {}).get('games', [])

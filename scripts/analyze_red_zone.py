@@ -22,30 +22,36 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     # This ensures we only analyze the primary team's performance, not opponent plays
     offensive_plays = [
         p for p in plays
-        if p.get('offense', '').lower() == team_name.lower()
+        if (p.get('offense') or '').lower() == team_name.lower()
         and (p.get('play_classification') != 'special_teams' 
              or 'field goal' in p.get('play_type', '').lower())
     ]
     
     # Double-check: ensure no opponent plays slip through
-    offensive_plays = [p for p in offensive_plays if p.get('offense', '').lower() == team_name.lower()]
+    offensive_plays = [p for p in offensive_plays if (p.get('offense') or '').lower() == team_name.lower()]
     
     # Tight Red Zone: 10 yards to goal and in
     tight_red_zone_plays = [
         p for p in offensive_plays
-        if p.get('yards_to_goal', 100) <= 10
+        if (p.get('yards_to_goal') is not None and p.get('yards_to_goal') <= 10)
     ]
     
     # Red Zone: 20 yards to goal and in
     red_zone_plays = [
         p for p in offensive_plays
-        if p.get('yards_to_goal', 100) <= 20
+        if (p.get('yards_to_goal') is not None and p.get('yards_to_goal') <= 20)
+    ]
+    
+    # Outer Red Zone: 11-20 yards to goal (red zone but not tight red zone)
+    outer_red_zone_plays = [
+        p for p in offensive_plays
+        if (p.get('yards_to_goal') is not None and 11 <= p.get('yards_to_goal') <= 20)
     ]
     
     # Green Zone: 30 yards to goal and in
     green_zone_plays = [
         p for p in offensive_plays
-        if p.get('yards_to_goal', 100) <= 30
+        if (p.get('yards_to_goal') is not None and p.get('yards_to_goal') <= 30)
     ]
     
     def analyze_zone(zone_plays, zone_name):
@@ -53,9 +59,11 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         if not zone_plays:
             return {
                 'total_plays': 0,
+                'red_zone_attempts': 0,
                 'touchdowns': 0,
                 'td_scoring_rate': 0,
                 'turnovers': 0,
+                'turnovers_on_downs': 0,
                 'avg_ppa': 0,
                 'explosive_plays': 0,
                 'explosive_rate': 0,
@@ -64,11 +72,44 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
                 'plays': []
             }
         
-        touchdowns = sum(1 for p in zone_plays if 'touchdown' in p.get('play_type', '').lower())
-        td_scoring_rate = (touchdowns / len(zone_plays) * 100) if zone_plays else 0
+        touchdowns = sum(1 for p in zone_plays 
+                         if p.get('scoring') == True
+                         and ('touchdown' in p.get('play_type', '').lower() 
+                              or 'touchdown' in p.get('play_text', '').lower()))
+        
+        # Count red zone attempts (unique drives that entered the zone)
+        # A red zone attempt is a drive that had at least one play in the zone
+        red_zone_drives = set()
+        for p in zone_plays:
+            game_id = p.get('game_id')
+            drive_number = p.get('drive_number')
+            if game_id and drive_number is not None:
+                red_zone_drives.add((game_id, drive_number))
+        
+        red_zone_attempts = len(red_zone_drives)
+        
+        # Count how many of those drives resulted in a touchdown
+        drives_with_td = set()
+        for p in zone_plays:
+            if p.get('scoring') == True and ('touchdown' in p.get('play_type', '').lower() 
+                                             or 'touchdown' in p.get('play_text', '').lower()):
+                game_id = p.get('game_id')
+                drive_number = p.get('drive_number')
+                if game_id and drive_number is not None:
+                    drives_with_td.add((game_id, drive_number))
+        
+        td_scoring_rate = (len(drives_with_td) / red_zone_attempts * 100) if red_zone_attempts > 0 else 0
         
         # Count turnovers in the zone
-        turnovers = sum(1 for p in zone_plays if p.get('turnover') == True)
+        # Separate turnovers on downs from fumbles/interceptions
+        turnovers = sum(1 for p in zone_plays 
+                       if p.get('turnover') == True
+                       and (p.get('turnover_type') or '').lower() != 'downs')
+        
+        # Count turnovers on downs separately
+        turnovers_on_downs = sum(1 for p in zone_plays 
+                                if p.get('turnover') == True
+                                and (p.get('turnover_type') or '').lower() == 'downs')
         
         # PPA
         ppas = [float(p.get('ppa')) for p in zone_plays if p.get('ppa') is not None]
@@ -119,9 +160,11 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         
         return {
             'total_plays': len(zone_plays),
+            'red_zone_attempts': red_zone_attempts,
             'touchdowns': touchdowns,
             'td_scoring_rate': td_scoring_rate,
             'turnovers': turnovers,
+            'turnovers_on_downs': turnovers_on_downs,
             'avg_ppa': avg_ppa,
             'explosive_plays': explosive,
             'explosive_rate': explosive_rate,
@@ -140,6 +183,7 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     
     tight_red_zone_stats = analyze_zone(tight_red_zone_plays, 'Tight Red Zone')
     red_zone_stats = analyze_zone(red_zone_plays, 'Red Zone')
+    outer_red_zone_stats = analyze_zone(outer_red_zone_plays, 'Outer Red Zone')
     green_zone_stats = analyze_zone(green_zone_plays, 'Green Zone')
     
     # Group by game for trend analysis
@@ -152,7 +196,8 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         tight_red_zone_by_game[game_id]['plays'] += 1
         if play.get('scoring'):
             tight_red_zone_by_game[game_id]['scores'] += 1
-            if 'touchdown' in play.get('play_type', '').lower():
+            if ('touchdown' in play.get('play_type', '').lower() 
+                or 'touchdown' in play.get('play_text', '').lower()):
                 tight_red_zone_by_game[game_id]['touchdowns'] += 1
     
     for play in red_zone_plays:
@@ -160,7 +205,8 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         red_zone_by_game[game_id]['plays'] += 1
         if play.get('scoring'):
             red_zone_by_game[game_id]['scores'] += 1
-            if 'touchdown' in play.get('play_type', '').lower():
+            if ('touchdown' in play.get('play_type', '').lower() 
+                or 'touchdown' in play.get('play_text', '').lower()):
                 red_zone_by_game[game_id]['touchdowns'] += 1
     
     for play in green_zone_plays:
@@ -168,12 +214,14 @@ def analyze_red_zone(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         green_zone_by_game[game_id]['plays'] += 1
         if play.get('scoring'):
             green_zone_by_game[game_id]['scores'] += 1
-            if 'touchdown' in play.get('play_type', '').lower():
+            if ('touchdown' in play.get('play_type', '').lower() 
+                or 'touchdown' in play.get('play_text', '').lower()):
                 green_zone_by_game[game_id]['touchdowns'] += 1
     
     return {
         'tight_red_zone': tight_red_zone_stats,
         'red_zone': red_zone_stats,
+        'outer_red_zone': outer_red_zone_stats,
         'green_zone': green_zone_stats,
         'tight_red_zone_by_game': dict(tight_red_zone_by_game),
         'red_zone_by_game': dict(red_zone_by_game),

@@ -72,6 +72,14 @@ def get_team_colors(team_name: str) -> tuple:
     elif ('william' in team_lower and 'mary' in team_lower) or 'w&m' in team_lower:
         return ("#115740", "#FFC72C")  # Green and Gold
     
+    # Indiana: Crimson
+    elif 'indiana' in team_lower or 'ind' in team_lower:
+        return ("#a60f2d", "#d4a5a5")  # Crimson (primary) and light crimson (secondary)
+    
+    # Purdue: Old Gold
+    elif 'purdue' in team_lower or 'pur' in team_lower:
+        return ("#d0b991", "#000000")  # Old Gold (primary) and Black (secondary)
+    
     # Default gradient colors
     else:
         return ("#667eea", "#764ba2")  # Default purple gradient
@@ -1475,7 +1483,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <canvas id="middleEightTrendChart"></canvas>
             </div>
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-            <table id="middleEightTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Middle 8 Plays Table ▼
+                </summary>
+                <table id="middleEightTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1491,8 +1503,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-            <table id="middleEightTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Middle 8 Plays Table ▼
+                </summary>
+                <table id="middleEightTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1508,6 +1525,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
         </div>
         
         <!-- Explosive Plays Analysis -->
@@ -1535,7 +1553,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </div>
             </div>
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-            <table id="explosivePlaysTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Explosive Plays Table ▼
+                </summary>
+                <table id="explosivePlaysTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1552,8 +1574,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-            <table id="explosivePlaysTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Explosive Plays Table ▼
+                </summary>
+                <table id="explosivePlaysTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1603,7 +1630,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             </div>
             
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-            <table id="penaltyTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Penalties Table ▼
+                </summary>
+                <table id="penaltyTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1618,8 +1649,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-            <table id="penaltyTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Penalties Table ▼
+                </summary>
+                <table id="penaltyTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1634,6 +1670,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
         </div>
         
         <!-- 4th Down Analysis -->
@@ -1650,7 +1687,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <canvas id="fourthDownTrendChart"></canvas>
             </div>
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-            <table id="fourthDownTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    4th Down Plays Table ▼
+                </summary>
+                <table id="fourthDownTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1666,8 +1707,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-            <table id="fourthDownTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    4th Down Plays Table ▼
+                </summary>
+                <table id="fourthDownTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1683,6 +1729,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
         </div>
         
         <!-- Post Turnover Analysis -->
@@ -1696,7 +1743,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <canvas id="postTurnoverTrendChart"></canvas>
             </div>
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-            <table id="postTurnoverTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Post Turnover Analysis Table ▼
+                </summary>
+                <table id="postTurnoverTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1710,8 +1761,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-            <table id="postTurnoverTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Post Turnover Analysis Table ▼
+                </summary>
+                <table id="postTurnoverTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1725,6 +1781,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
         </div>
         
         <!-- Special Teams Analysis -->
@@ -1738,7 +1795,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <canvas id="specialTeamsTrendChart"></canvas>
             </div>
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-            <table id="specialTeamsTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Special Teams Plays Table ▼
+                </summary>
+                <table id="specialTeamsTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1752,8 +1813,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-            <table id="specialTeamsTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    Special Teams Plays Table ▼
+                </summary>
+                <table id="specialTeamsTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1767,6 +1833,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
         </div>
         
         <!-- Red Zone / Green Zone Analysis -->
@@ -1779,9 +1846,66 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             <div class="chart-container">
                 <canvas id="redZoneChart"></canvas>
             </div>
+            <h3 style="margin-top: 30px; color: #8B0000;">Red Zone Plays (20 & In)</h3>
+            <h4 style="color: #8B0000; margin-top: 20px;">{team_name1}</h4>
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    {team_name1} Red Zone Plays Table ▼
+                </summary>
+                <table id="redZoneTableTeam1" class="display" style="width:100%; margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Opponent</th>
+                        <th>Period</th>
+                        <th>Clock</th>
+                        <th>Down</th>
+                        <th>Dist</th>
+                        <th>YTG</th>
+                        <th>Play Type</th>
+                        <th>Yards</th>
+                        <th>Scoring</th>
+                        <th>Explosive</th>
+                        <th>PPA</th>
+                        <th>Play Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </details>
+            <h4 style="color: #282828; margin-top: 30px;">{team_name2}</h4>
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    {team_name2} Red Zone Plays Table ▼
+                </summary>
+                <table id="redZoneTableTeam2" class="display" style="width:100%; margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Opponent</th>
+                        <th>Period</th>
+                        <th>Clock</th>
+                        <th>Down</th>
+                        <th>Dist</th>
+                        <th>YTG</th>
+                        <th>Play Type</th>
+                        <th>Yards</th>
+                        <th>Scoring</th>
+                        <th>Explosive</th>
+                        <th>PPA</th>
+                        <th>Play Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </details>
             <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
             <h4 style="color: #b71c1c; margin-top: 20px;">Tight Red Zone Plays (10 & In)</h4>
-            <table id="tightRedZoneTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    {team_name1} Tight Red Zone Plays Table ▼
+                </summary>
+                <table id="tightRedZoneTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1801,8 +1925,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h4 style="color: #4a90e2; margin-top: 20px;">Green Zone Plays (30 & In)</h4>
-            <table id="greenZoneTableWash" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    {team_name1} Green Zone Plays Table ▼
+                </summary>
+                <table id="greenZoneTableWash" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1822,9 +1951,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
             <h4 style="color: #b71c1c; margin-top: 20px;">Tight Red Zone Plays (10 & In)</h4>
-            <table id="tightRedZoneTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    {team_name2} Tight Red Zone Plays Table ▼
+                </summary>
+                <table id="tightRedZoneTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1844,8 +1978,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
             <h4 style="color: #c41e3a; margin-top: 20px;">Green Zone Plays (30 & In)</h4>
-            <table id="greenZoneTableWisc" class="display">
+            <details style="margin-top: 10px;">
+                <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                    {team_name2} Green Zone Plays Table ▼
+                </summary>
+                <table id="greenZoneTableWisc" class="display" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th>Week</th>
@@ -1865,6 +2004,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </thead>
                 <tbody></tbody>
             </table>
+            </details>
         </div>
         
         <!-- Situational Receiving Analysis (SIS Data) -->
@@ -1900,8 +2040,9 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         </tr>
                     </thead>
                     <tbody></tbody>
-                </table>
-                <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            </table>
+            </details>
+            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
                 <table id="thirdDownTableWisc" class="display">
                     <thead>
                         <tr>
@@ -1950,8 +2091,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
+                </details>
                 <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-                <table id="redZoneReceivingTableWisc" class="display">
+                <details style="margin-top: 10px;">
+                    <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                        {team_name2} Red Zone Receiving Table ▼
+                    </summary>
+                    <table id="redZoneReceivingTableWisc" class="display" style="margin-top: 10px;">
                     <thead>
                         <tr>
                             <th>Week</th>
@@ -1967,6 +2113,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
+                </details>
             </div>
         </div>
         
@@ -2008,7 +2155,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </div>
                 </div>
                 <h3 style="margin-top: 30px; color: #8B0000;">{team_name1}</h3>
-                <table id="deepReceivingTableWash" class="display">
+                <details style="margin-top: 10px;">
+                    <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                        {team_name1} Deep Receiving Table ▼
+                    </summary>
+                    <table id="deepReceivingTableWash" class="display" style="margin-top: 10px;">
                     <thead>
                         <tr>
                             <th>Week</th>
@@ -2025,8 +2176,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
+                </details>
                 <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
-                <table id="deepReceivingTableWisc" class="display">
+                <details style="margin-top: 10px;">
+                    <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
+                        {team_name2} Deep Receiving Table ▼
+                    </summary>
+                    <table id="deepReceivingTableWisc" class="display" style="margin-top: 10px;">
                     <thead>
                         <tr>
                             <th>Week</th>
@@ -2043,6 +2199,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     </thead>
                     <tbody></tbody>
                 </table>
+                </details>
             </div>
         </div>
         
@@ -2338,19 +2495,52 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     return false;
                 }}
                 
+                // Include penalty plays if they have a valid turnover_type (interception or fumble)
+                // Penalties can mark turnovers that occurred (e.g., interception then penalty called)
+                // But only if turnover_type is explicitly set to interception or fumble
+                const playType = (p.play_type || '').toUpperCase();
+                if (playType.includes('PENALTY')) {{
+                    // Only include penalty if it has a valid turnover_type
+                    if (turnoverTypeField !== 'interception' && turnoverTypeField !== 'fumble') {{
+                        return false;
+                    }}
+                    // If it has a valid turnover_type, we'll include it below
+                }}
+                
                 // Only count fumbles lost and interceptions thrown
                 // Exclude turnovers on downs
-                const playType = (p.play_type || '').toUpperCase();
-                const isInterception = playType.includes('INTERCEPTION');
-                const isFumble = playType.includes('FUMBLE');
+                // Check both play_type and turnover_type for interceptions and fumbles
+                const isInterception = playType.includes('INTERCEPTION') || turnoverTypeField === 'interception';
+                const isFumble = playType.includes('FUMBLE') || turnoverTypeField === 'fumble';
                 
                 // For fumbles, check if the offense recovered their own fumble
                 let isFumbleLost = false;
                 if (isFumble) {{
-                    // Check play_type for "(Own)" indicator - offense recovered
-                    // If "(OWN)" is in play_type, it means the offense recovered - NOT a turnover
-                    // This should be excluded even if turnover: true is set (data inconsistency)
-                    if (playType.includes('(OWN)')) {{
+                    // Check play_type for "(Own)" indicator - but also verify in play_text
+                    // If "(OWN)" is in play_type, check play_text to see who actually recovered
+                    const playTextUpper = (p.play_text || '').toUpperCase();
+                    const offenseTeam = (p.offense || '').toUpperCase();
+                    const defenseTeam = (p.defense || '').toUpperCase();
+                    
+                    // Check if play_text indicates the defense recovered (turnover)
+                    // Look for patterns like "recovered by [defense team]" or "recovered by [defense player]"
+                    let defenseRecovered = false;
+                    if (defenseTeam && playTextUpper.includes(defenseTeam)) {{
+                        // Check if it says "recovered by [defense team]" or similar
+                        const recoveredPatterns = [
+                            `RECOVERED BY ${{defenseTeam}}`,
+                            `RECOVERED BY ${{defenseTeam.substring(0, 3)}}`,  // Abbreviation
+                        ];
+                        for (let pattern of recoveredPatterns) {{
+                            if (playTextUpper.includes(pattern)) {{
+                                defenseRecovered = true;
+                                break;
+                            }}
+                        }}
+                    }}
+                    
+                    // If play_type says "(Own)" but play_text shows defense recovered, it's a turnover
+                    if (playType.includes('(OWN)') && !defenseRecovered) {{
                         // Offense recovered their own fumble - NOT a turnover, exclude it
                         return false;
                     }} else {{
@@ -2381,15 +2571,49 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     byWeek[week] = {{ pointsScored: 0, pointsAllowed: 0 }};
                 }}
                 
-                // For fumble recoveries on punts, the offense field is the recovering team,
-                // but the turnover actually belongs to the punting team (defense on the play)
+                // For muffed punts (punts with fumbles), check who's on offense after the recovery
+                // The receiving team (defense on the punt) loses the fumble if the punting team recovers
                 let isOurTurnover = turnover.offense?.toLowerCase() === teamName.toLowerCase();
                 const playType = (turnover.play_type || '').toUpperCase();
-                if (playType.includes('PUNT') && playType.includes('FUMBLE RECOVERY')) {{
-                    // For punt fumble recoveries, the turnover belongs to the punting team (defense)
-                    // So flip the logic: if we're the defense, it's our opponent's turnover
-                    // If we're the offense (recovering team), it's our opponent's turnover
-                    isOurTurnover = turnover.defense?.toLowerCase() === teamName.toLowerCase();
+                const playTextCheck = (turnover.play_text || '').toUpperCase();
+                if (playType.includes('PUNT') && (playTextCheck.includes('FUMBLE') || playTextCheck.includes('FUMBLED'))) {{
+                    // Find the next play to see who's on offense after the recovery
+                    let nextPlay = null;
+                    const turnoverDrive = turnover.drive_number || 0;
+                    const turnoverPlayNum = turnover.play_number || 0;
+                    
+                    // Look for next play in same drive or next drive
+                    for (let play of plays) {{
+                        if (play.game_id === turnover.game_id) {{
+                            const playDrive = play.drive_number || 0;
+                            const playNum = play.play_number || 0;
+                            // Next drive, or same drive with higher play number
+                            if ((playDrive === turnoverDrive + 1) || 
+                                (playDrive === turnoverDrive && playNum > turnoverPlayNum)) {{
+                                nextPlay = play;
+                                break;
+                            }}
+                        }}
+                    }}
+                    
+                    if (nextPlay) {{
+                        // Who's on offense after the recovery?
+                        const recoveringTeam = (nextPlay.offense || '').toLowerCase();
+                        const receivingTeam = (turnover.defense || '').toLowerCase();  // Receiving team is defense on punt
+                        
+                        // If the recovering team is on offense, the receiving team lost the fumble
+                        if (recoveringTeam !== receivingTeam) {{
+                            // Recovering team got the ball - receiving team lost the fumble
+                            isOurTurnover = receivingTeam === teamName.toLowerCase();
+                        }} else {{
+                            // Receiving team recovered their own fumble - not a turnover (shouldn't happen)
+                            // But if it does, use default logic
+                            isOurTurnover = (turnover.offense || '').toLowerCase() === teamName.toLowerCase();
+                        }}
+                    }} else {{
+                        // Can't find next play, use original logic: receiving team (defense) lost the fumble
+                        isOurTurnover = (turnover.defense || '').toLowerCase() === teamName.toLowerCase();
+                    }}
                 }}
                 
                 // Check if the turnover play itself resulted in points (e.g., pick-6, fumble return TD)
@@ -2438,6 +2662,36 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }} else {{
                     byWeek[week].pointsScored += drivePoints;
                 }}
+            }});
+            
+            const netPoints = [];
+            for (let week = 1; week <= masterWeekMapping.maxWeek; week++) {{
+                const weekData = byWeek[week] || {{ pointsScored: 0, pointsAllowed: 0 }};
+                netPoints.push(weekData.pointsScored - weekData.pointsAllowed);
+            }}
+            
+            return {{
+                weeks: masterWeekMapping.weekLabels,
+                netPoints: netPoints
+            }};
+        }}
+        
+        function calculateNetPointsByWeekFromAnalysis(turnoverAnalysis, teamName) {{
+            // Calculate net points by week directly from turnover_analysis array
+            // This is more accurate than recalculating from plays
+            const byWeek = {{}};
+            
+            turnoverAnalysis.forEach(t => {{
+                const week = t.game_week || 0;
+                if (!week) return;
+                
+                if (!byWeek[week]) {{
+                    byWeek[week] = {{ pointsScored: 0, pointsAllowed: 0 }};
+                }}
+                
+                // Add points from this turnover
+                byWeek[week].pointsScored += t.points_scored || 0;
+                byWeek[week].pointsAllowed += t.points_allowed || 0;
             }});
             
             const netPoints = [];
@@ -4187,13 +4441,34 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1 = allData[team1Key].turnover;
             const team2 = allData[team2Key].turnover;
             
-            // Calculate net points from chart data (sum of weekly net points) to match the chart
-            const team1PlaysForTrend = typeof allData[team1Key].turnover._filtered_plays !== 'undefined' ? 
-                allData[team1Key].turnover._filtered_plays : team1Plays;
-            const team2PlaysForTrend = typeof allData[team2Key].turnover._filtered_plays !== 'undefined' ? 
-                allData[team2Key].turnover._filtered_plays : team2Plays;
-            const team1NetPointsByWeek = calculateNetPointsByWeek(team1PlaysForTrend, team1Name);
-            const team2NetPointsByWeek = calculateNetPointsByWeek(team2PlaysForTrend, team2Name);
+            // Recalculate totals from turnover_analysis array to ensure chart matches table
+            const team1OpponentTurnovers = team1.turnover_analysis.filter(t => !t.is_our_turnover);
+            const team1OurTurnovers = team1.turnover_analysis.filter(t => t.is_our_turnover);
+            const team1PointsScored = team1OpponentTurnovers.reduce((sum, t) => sum + (t.points_scored || 0), 0);
+            const team1PointsAllowed = team1OurTurnovers.reduce((sum, t) => sum + (t.points_allowed || 0), 0);
+            
+            const team2OpponentTurnovers = team2.turnover_analysis.filter(t => !t.is_our_turnover);
+            const team2OurTurnovers = team2.turnover_analysis.filter(t => t.is_our_turnover);
+            const team2PointsScored = team2OpponentTurnovers.reduce((sum, t) => sum + (t.points_scored || 0), 0);
+            const team2PointsAllowed = team2OurTurnovers.reduce((sum, t) => sum + (t.points_allowed || 0), 0);
+            
+            // Use recalculated values for chart and summary
+            const team1ChartData = {{
+                our_turnovers: team1OurTurnovers.length,
+                opponent_turnovers: team1OpponentTurnovers.length,
+                points_scored_after_opponent_turnovers: team1PointsScored,
+                points_allowed_after_our_turnovers: team1PointsAllowed
+            }};
+            const team2ChartData = {{
+                our_turnovers: team2OurTurnovers.length,
+                opponent_turnovers: team2OpponentTurnovers.length,
+                points_scored_after_opponent_turnovers: team2PointsScored,
+                points_allowed_after_our_turnovers: team2PointsAllowed
+            }};
+            
+            // Calculate net points by week from turnover_analysis array (more accurate than recalculating from plays)
+            const team1NetPointsByWeek = calculateNetPointsByWeekFromAnalysis(team1.turnover_analysis, team1Name);
+            const team2NetPointsByWeek = calculateNetPointsByWeekFromAnalysis(team2.turnover_analysis, team2Name);
             
             // Sum weekly net points to get total (matching the chart calculation)
             // Sum all values exactly as shown in the chart (all weeks from 1 to maxWeek)
@@ -4223,10 +4498,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <div class="team-section {team1_key}">
                         <h3>{team_name1}</h3>
                         <div class="summary-cards">
-                            <div class="summary-card"><h3>Opponent Turnovers</h3><div class="value">${{team1.opponent_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{team1.points_scored_after_opponent_turnovers}}</div></div>
-                            <div class="summary-card"><h3>${{team1Name}} Turnovers</h3><div class="value">${{team1.our_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{team1.points_allowed_after_our_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Opponent Turnovers</h3><div class="value">${{team1ChartData.opponent_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{team1ChartData.points_scored_after_opponent_turnovers}}</div></div>
+                            <div class="summary-card"><h3>${{team1Name}} Turnovers</h3><div class="value">${{team1ChartData.our_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{team1ChartData.points_allowed_after_our_turnovers}}</div></div>
                             <div class="summary-card"><h3>Net Points</h3><div class="value">${{team1TotalNetPoints}}</div></div>
                             <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{team1Last3NetFromWeekly}}</div></div>
                         </div>
@@ -4234,10 +4509,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <div class="team-section {team2_key}">
                         <h3>{team_name2}</h3>
                         <div class="summary-cards">
-                            <div class="summary-card"><h3>Opponent Turnovers</h3><div class="value">${{team2.opponent_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{team2.points_scored_after_opponent_turnovers}}</div></div>
-                            <div class="summary-card"><h3>${{team2Name}} Turnovers</h3><div class="value">${{team2.our_turnovers}}</div></div>
-                            <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{team2.points_allowed_after_our_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Opponent Turnovers</h3><div class="value">${{team2ChartData.opponent_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Points Scored After</h3><div class="value">${{team2ChartData.points_scored_after_opponent_turnovers}}</div></div>
+                            <div class="summary-card"><h3>${{team2Name}} Turnovers</h3><div class="value">${{team2ChartData.our_turnovers}}</div></div>
+                            <div class="summary-card"><h3>Points Allowed After</h3><div class="value">${{team2ChartData.points_allowed_after_our_turnovers}}</div></div>
                             <div class="summary-card"><h3>Net Points</h3><div class="value">${{team2TotalNetPoints}}</div></div>
                             <div class="summary-card"><h3>Last 3 Net Points</h3><div class="value">${{team2Last3NetFromWeekly}}</div></div>
                         </div>
@@ -4253,8 +4528,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 data: {{
                     labels: ['Team TO', 'Opp TO', 'Pts Scored Off TO', 'Pts Allowed Off TO'],
                     datasets: [
-                        {{ label: team1Name, data: [team1.our_turnovers, team1.opponent_turnovers, team1.points_scored_after_opponent_turnovers, -team1.points_allowed_after_our_turnovers], backgroundColor: '{team1_rgba_06}' }},
-                        {{ label: team2Name, data: [team2.our_turnovers, team2.opponent_turnovers, team2.points_scored_after_opponent_turnovers, -team2.points_allowed_after_our_turnovers], backgroundColor: '{team2_rgba_06}' }}
+                        {{ label: team1Name, data: [team1ChartData.our_turnovers, team1ChartData.opponent_turnovers, team1ChartData.points_scored_after_opponent_turnovers, -team1ChartData.points_allowed_after_our_turnovers], backgroundColor: '{team1_rgba_06}' }},
+                        {{ label: team2Name, data: [team2ChartData.our_turnovers, team2ChartData.opponent_turnovers, team2ChartData.points_scored_after_opponent_turnovers, -team2ChartData.points_allowed_after_our_turnovers], backgroundColor: '{team2_rgba_06}' }}
                     ]
                 }},
                 options: {{ 
@@ -4593,33 +4868,33 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         <div style="margin-bottom: 20px;">
                             <h4 style="color: #388e3c; margin-bottom: 10px;">Green Zone (30 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{team1.green_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team1.green_zone.total_plays}} - ${{team1.green_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team1.green_zone.touchdowns}}</div></div>
                                 <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team1.green_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{team1.green_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{team1.green_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team1.green_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team1.green_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team1.green_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
                             <h4 style="color: #d32f2f; margin-bottom: 10px;">Red Zone (20 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{team1.red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team1.red_zone.total_plays}} - ${{team1.red_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team1.red_zone.touchdowns}}</div></div>
                                 <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team1.red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{team1.red_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{team1.red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team1.red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team1.red_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team1.red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                         <div>
                             <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{team1.tight_red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team1.tight_red_zone.total_plays}} - ${{team1.tight_red_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team1.tight_red_zone.touchdowns}}</div></div>
                                 <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team1.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{team1.tight_red_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{team1.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team1.tight_red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team1.tight_red_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team1.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
@@ -4629,33 +4904,33 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         <div style="margin-bottom: 20px;">
                             <h4 style="color: #388e3c; margin-bottom: 10px;">Green Zone (30 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{team2.green_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team2.green_zone.total_plays}} - ${{team2.green_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team2.green_zone.touchdowns}}</div></div>
                                 <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team2.green_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{team2.green_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{team2.green_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team2.green_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team2.green_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team2.green_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
                             <h4 style="color: #d32f2f; margin-bottom: 10px;">Red Zone (20 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{team2.red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team2.red_zone.total_plays}} - ${{team2.red_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team2.red_zone.touchdowns}}</div></div>
                                 <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team2.red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{team2.red_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{team2.red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team2.red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team2.red_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team2.red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
                         <div>
                             <h4 style="color: #b71c1c; margin-bottom: 10px;">Tight Red Zone (10 & In)</h4>
                             <div class="summary-cards">
-                                <div class="summary-card"><h3>Plays</h3><div class="value">${{team2.tight_red_zone.total_plays}}</div></div>
+                                <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team2.tight_red_zone.total_plays}} - ${{team2.tight_red_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team2.tight_red_zone.touchdowns}}</div></div>
                                 <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team2.tight_red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
-                                <div class="summary-card"><h3>Turnovers</h3><div class="value">${{team2.tight_red_zone.turnovers}}</div></div>
-                                <div class="summary-card"><h3>Avg PPA</h3><div class="value">${{team2.tight_red_zone.avg_ppa.toFixed(3)}}</div></div>
+                                <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team2.tight_red_zone.turnovers}}</div></div>
+                                <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team2.tight_red_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team2.tight_red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
                             </div>
                         </div>
@@ -4678,6 +4953,55 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }},
                 options: {{ responsive: true, maintainAspectRatio: false }}
             }});
+            
+            // Red Zone Tables: All plays 20 yards and in, separate tables for each team
+            // Team 1 Red Zone Plays
+            const team1RedZoneSorted = sortPlaysChronologically(team1.red_zone.plays || []);
+            const team1RedZoneTableData = team1RedZoneSorted.map(p => [
+                p.game_week || '', p.opponent || '', p.period || '', formatClock(p.clock || ''),
+                p.down || '', p.distance || '', p.yards_to_goal || '',
+                p.play_type || '', p.yards_gained || 0, p.scoring ? 'Yes' : 'No',
+                p.explosive ? 'Yes' : 'No', p.ppa ? p.ppa.toFixed(3) : '', p.play_text || ''
+            ]);
+            
+            const team1RedZoneConfig = {{
+                data: team1RedZoneTableData,
+                scrollY: '400px',
+                scrollCollapse: true,
+                paging: false,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Period' }}, {{ title: 'Clock' }},
+                    {{ title: 'Down' }}, {{ title: 'Dist' }}, {{ title: 'YTG' }}, {{ title: 'Play Type' }},
+                    {{ title: 'Yards' }}, {{ title: 'Scoring' }}, {{ title: 'Explosive' }}, {{ title: 'PPA' }},
+                    {{ title: 'Play Description' }}
+                ],
+                order: [[0, 'asc'], [2, 'asc'], [3, 'desc']]
+            }};
+            safeUpdateDataTable('#redZoneTableTeam1', team1RedZoneTableData, team1RedZoneConfig);
+            
+            // Team 2 Red Zone Plays
+            const team2RedZoneSorted = sortPlaysChronologically(team2.red_zone.plays || []);
+            const team2RedZoneTableData = team2RedZoneSorted.map(p => [
+                p.game_week || '', p.opponent || '', p.period || '', formatClock(p.clock || ''),
+                p.down || '', p.distance || '', p.yards_to_goal || '',
+                p.play_type || '', p.yards_gained || 0, p.scoring ? 'Yes' : 'No',
+                p.explosive ? 'Yes' : 'No', p.ppa ? p.ppa.toFixed(3) : '', p.play_text || ''
+            ]);
+            
+            const team2RedZoneConfig = {{
+                data: team2RedZoneTableData,
+                scrollY: '400px',
+                scrollCollapse: true,
+                paging: false,
+                columns: [
+                    {{ title: 'Week' }}, {{ title: 'Opponent' }}, {{ title: 'Period' }}, {{ title: 'Clock' }},
+                    {{ title: 'Down' }}, {{ title: 'Dist' }}, {{ title: 'YTG' }}, {{ title: 'Play Type' }},
+                    {{ title: 'Yards' }}, {{ title: 'Scoring' }}, {{ title: 'Explosive' }}, {{ title: 'PPA' }},
+                    {{ title: 'Play Description' }}
+                ],
+                order: [[0, 'asc'], [2, 'asc'], [3, 'desc']]
+            }};
+            safeUpdateDataTable('#redZoneTableTeam2', team2RedZoneTableData, team2RedZoneConfig);
             
             // Tables - Tight Red Zone and Green Zone
             // Sort chronologically
@@ -7192,19 +7516,52 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     return false;
                 }}
                 
+                // Include penalty plays if they have a valid turnover_type (interception or fumble)
+                // Penalties can mark turnovers that occurred (e.g., interception then penalty called)
+                // But only if turnover_type is explicitly set to interception or fumble
+                const playType = (p.play_type || '').toUpperCase();
+                if (playType.includes('PENALTY')) {{
+                    // Only include penalty if it has a valid turnover_type
+                    if (turnoverTypeField !== 'interception' && turnoverTypeField !== 'fumble') {{
+                        return false;
+                    }}
+                    // If it has a valid turnover_type, we'll include it below
+                }}
+                
                 // Only count fumbles lost and interceptions thrown
                 // Exclude turnovers on downs
-                const playType = (p.play_type || '').toUpperCase();
-                const isInterception = playType.includes('INTERCEPTION');
-                const isFumble = playType.includes('FUMBLE');
+                // Check both play_type and turnover_type for interceptions and fumbles
+                const isInterception = playType.includes('INTERCEPTION') || turnoverTypeField === 'interception';
+                const isFumble = playType.includes('FUMBLE') || turnoverTypeField === 'fumble';
                 
                 // For fumbles, check if the offense recovered their own fumble
                 let isFumbleLost = false;
                 if (isFumble) {{
-                    // Check play_type for "(Own)" indicator - offense recovered
-                    // If "(OWN)" is in play_type, it means the offense recovered - NOT a turnover
-                    // This should be excluded even if turnover: true is set (data inconsistency)
-                    if (playType.includes('(OWN)')) {{
+                    // Check play_type for "(Own)" indicator - but also verify in play_text
+                    // If "(OWN)" is in play_type, check play_text to see who actually recovered
+                    const playTextUpper = (p.play_text || '').toUpperCase();
+                    const offenseTeam = (p.offense || '').toUpperCase();
+                    const defenseTeam = (p.defense || '').toUpperCase();
+                    
+                    // Check if play_text indicates the defense recovered (turnover)
+                    // Look for patterns like "recovered by [defense team]" or "recovered by [defense player]"
+                    let defenseRecovered = false;
+                    if (defenseTeam && playTextUpper.includes(defenseTeam)) {{
+                        // Check if it says "recovered by [defense team]" or similar
+                        const recoveredPatterns = [
+                            `RECOVERED BY ${{defenseTeam}}`,
+                            `RECOVERED BY ${{defenseTeam.substring(0, 3)}}`,  // Abbreviation
+                        ];
+                        for (let pattern of recoveredPatterns) {{
+                            if (playTextUpper.includes(pattern)) {{
+                                defenseRecovered = true;
+                                break;
+                            }}
+                        }}
+                    }}
+                    
+                    // If play_type says "(Own)" but play_text shows defense recovered, it's a turnover
+                    if (playType.includes('(OWN)') && !defenseRecovered) {{
                         // Offense recovered their own fumble - NOT a turnover, exclude it
                         return false;
                     }} else {{
@@ -7250,49 +7607,37 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 const drivePlays = driveInfo.plays;
                 
                 // Find the turnover in the previous drive (or same drive if turnover ended the drive)
+                // If a drive has drive_started_after_turnover == True, the turnover should be in the PREVIOUS drive
                 let matchingTurnover = null;
+                
+                // First, try to find turnover in previous drive
                 turnovers.forEach(turnover => {{
                     if (turnover.game_id === gameId && 
-                        (turnover.drive_number === driveNumber - 1 || 
-                         turnover.drive_number === driveNumber)) {{
-                        // Prefer the previous drive, but accept same drive if no previous drive turnover
-                        if (turnover.drive_number === driveNumber - 1) {{
-                            matchingTurnover = turnover;
-                            return;
-                        }} else if (!matchingTurnover) {{
-                            matchingTurnover = turnover;
-                        }}
+                        turnover.drive_number === driveNumber - 1) {{
+                        matchingTurnover = turnover;
+                        return;
                     }}
                 }});
                 
-                if (!matchingTurnover) return; // Skip if we can't find the matching turnover
-                
-                // For fumble recoveries on punts, the offense field is the recovering team,
-                // but the turnover actually belongs to the punting team (defense on the play)
-                let isOurTurnover = matchingTurnover.offense?.toLowerCase() === teamName.toLowerCase();
-                const playTypeCheck = (matchingTurnover.play_type || '').toUpperCase();
-                if (playTypeCheck.includes('PUNT') && playTypeCheck.includes('FUMBLE RECOVERY')) {{
-                    // For punt fumble recoveries, the turnover belongs to the punting team (defense)
-                    // So flip the logic: if we're the defense, it's our opponent's turnover
-                    // If we're the offense (recovering team), it's our opponent's turnover
-                    isOurTurnover = matchingTurnover.defense?.toLowerCase() === teamName.toLowerCase();
-                }}
-                
-                if (isOurTurnover) ourTurnovers++;
-                else opponentTurnovers++;
-                
-                // Determine turnover type
-                // Only interceptions and fumbles lost should be in the turnovers list
-                // (turnovers on downs are filtered out earlier)
-                const playType = matchingTurnover.play_type || 'Unknown';
-                let turnoverType;
-                if (playType.includes('Interception') || playType.includes('interception')) {{
-                    turnoverType = 'Interception';
-                }} else if (playType.includes('Fumble') || playType.includes('fumble')) {{
-                    turnoverType = 'Fumble';
-                }} else {{
-                    // This shouldn't happen if filtering is correct, but handle edge case
-                    turnoverType = 'Unknown';
+                // Only check same drive if no previous drive turnover found AND the drive doesn't have
+                // drive_started_after_turnover == True (which would indicate a data inconsistency)
+                // If drive_started_after_turnover is True, we should only match to previous drive turnovers
+                if (!matchingTurnover) {{
+                    // Check if this drive has drive_started_after_turnover flag
+                    // If it does, we should skip it if no previous drive turnover found (data inconsistency)
+                    const driveHasFlag = drivePlays.some(p => p.drive_started_after_turnover === true);
+                    
+                    if (!driveHasFlag) {{
+                        // Drive doesn't have the flag, so it's safe to check same drive
+                        // This handles cases where turnover ended the previous drive and started the next
+                        turnovers.forEach(turnover => {{
+                            if (turnover.game_id === gameId && 
+                                turnover.drive_number === driveNumber) {{
+                                matchingTurnover = turnover;
+                                return;
+                            }}
+                        }});
+                    }}
                 }}
                 
                 // Check if the turnover play itself resulted in points (e.g., pick-6, fumble return TD)
@@ -7300,19 +7645,21 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 let driveResult = 'No Score';
                 let scoringPlayText = '';
                 
-                if (matchingTurnover.scoring === true) {{
-                    if (matchingTurnover.play_type?.includes('Touchdown')) {{
+                if (matchingTurnover && matchingTurnover.scoring === true) {{
+                    const playType = matchingTurnover.play_type || '';
+                    const playText = (matchingTurnover.play_text || '').toUpperCase();
+                    if (playType.includes('Touchdown') || playText.includes('TOUCHDOWN')) {{
                         drivePoints = 7;
                         driveResult = 'Touchdown';
                         scoringPlayText = matchingTurnover.play_text?.substring(0, 150) || '';
-                    }} else if (matchingTurnover.play_type?.includes('Field Goal')) {{
+                    }} else if (playType.includes('Field Goal')) {{
                         drivePoints = 3;
                         driveResult = 'Field Goal';
                         scoringPlayText = matchingTurnover.play_text?.substring(0, 150) || '';
                     }}
                 }}
                 
-                // If turnover didn't score, check the subsequent drive for scoring plays
+                // If turnover didn't score (or no matching turnover found), check the drive for scoring plays
                 if (drivePoints === 0) {{
                     drivePlays.forEach(p => {{
                         if (p.scoring === true) {{
@@ -7336,6 +7683,91 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     }});
                 }}
                 
+                // Determine if it's our turnover or opponent's turnover
+                // If we found a matching turnover, use it to determine ownership
+                // If not, infer from the drive's offense (if our team is on offense, it was opponent's turnover)
+                let isOurTurnover;
+                if (matchingTurnover) {{
+                    isOurTurnover = matchingTurnover.offense?.toLowerCase() === teamName.toLowerCase();
+                    
+                    // For fumble recoveries on punts, the offense field is the recovering team,
+                    // but the turnover actually belongs to the punting team (defense on the play)
+                    const playTypeCheck = (matchingTurnover.play_type || '').toUpperCase();
+                    if (playTypeCheck.includes('PUNT') && playTypeCheck.includes('FUMBLE RECOVERY')) {{
+                        // For punt fumble recoveries, the turnover belongs to the punting team (defense)
+                        // So flip the logic: if we're the defense, it's our opponent's turnover
+                        // If we're the offense (recovering team), it's our opponent's turnover
+                        isOurTurnover = matchingTurnover.defense?.toLowerCase() === teamName.toLowerCase();
+                    }}
+                }} else {{
+                    // No matching turnover found - check if it's a turnover on downs
+                    // Look for turnovers in the previous drive OR same drive that are turnovers on downs
+                    const prevDriveTurnovers = plays.filter(p => 
+                        p.game_id === gameId && 
+                        (p.drive_number === driveNumber - 1 || p.drive_number === driveNumber) &&
+                        p.turnover === true
+                    );
+                    
+                    // Check if any of these are turnovers on downs
+                    let isTurnoverOnDowns = false;
+                    for (let t of prevDriveTurnovers) {{
+                        const turnoverTypeField = (t.turnover_type || '').toLowerCase();
+                        if (turnoverTypeField === 'downs') {{
+                            isTurnoverOnDowns = true;
+                            break;
+                        }}
+                    }}
+                    
+                    // If it's a turnover on downs, skip this drive (only track fumbles/interceptions)
+                    if (isTurnoverOnDowns) {{
+                        return;
+                    }}
+                    
+                    // Not a turnover on downs, but no matching turnover found
+                    // Check if there are any turnovers at all in the previous or same drive
+                    // If there are no turnovers found, this is likely a data inconsistency
+                    // (drive_started_after_turnover is True but no actual turnover exists)
+                    // Skip these drives to avoid creating "details not found" entries
+                    if (prevDriveTurnovers.length === 0) {{
+                        return;
+                    }}
+                    
+                    // There are turnovers in the previous/same drive, but none matched
+                    // This could be because they were filtered out for other reasons
+                    // For now, skip these to avoid "details not found" entries
+                    return;
+                }}
+                
+                if (isOurTurnover) ourTurnovers++;
+                else opponentTurnovers++;
+                
+                // Determine turnover type
+                let turnoverType;
+                let turnoverText;
+                if (matchingTurnover) {{
+                    // Only interceptions and fumbles lost should be in the turnovers list
+                    // (turnovers on downs are filtered out earlier)
+                    const playType = matchingTurnover.play_type || 'Unknown';
+                    const turnoverTypeField = (matchingTurnover.turnover_type || '').toLowerCase();
+                    
+                    // Check both play_type and turnover_type field
+                    if (playType.includes('Interception') || playType.includes('interception') || 
+                        turnoverTypeField === 'interception') {{
+                        turnoverType = 'Interception';
+                    }} else if (playType.includes('Fumble') || playType.includes('fumble') || 
+                               turnoverTypeField === 'fumble') {{
+                        turnoverType = 'Fumble';
+                    }} else {{
+                        // This shouldn't happen if filtering is correct, but handle edge case
+                        turnoverType = 'Unknown';
+                    }}
+                    turnoverText = matchingTurnover.play_text?.substring(0, 150) || '';
+                }} else {{
+                    // No matching turnover found - use unknown type
+                    turnoverType = 'Unknown';
+                    turnoverText = 'Turnover (details not found)';
+                }}
+                
                 if (isOurTurnover) {{
                     pointsAllowedAfterOurTO += drivePoints;
                 }} else {{
@@ -7343,14 +7775,17 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}
                 
                 // Combine turnover play and scoring play text
-                const turnoverText = matchingTurnover.play_text?.substring(0, 150) || '';
                 const playDescription = scoringPlayText 
                     ? `TO: ${{turnoverText}} | Score: ${{scoringPlayText}}`
                     : `TO: ${{turnoverText}}`;
                 
+                // Get game info from drive plays if matchingTurnover is not available
+                const gameWeek = matchingTurnover ? matchingTurnover.game_week : (drivePlays[0]?.game_week || 0);
+                const opponent = matchingTurnover ? matchingTurnover.opponent : (drivePlays[0]?.opponent || 'Unknown');
+                
                 turnoverAnalysis.push({{
-                    game_week: matchingTurnover.game_week,
-                    opponent: matchingTurnover.opponent,
+                    game_week: gameWeek,
+                    opponent: opponent,
                     turnover_type: turnoverType,
                     is_our_turnover: isOurTurnover,
                     drive_result: driveResult,
@@ -7358,6 +7793,108 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     points_allowed: isOurTurnover ? drivePoints : 0,
                     play_text: playDescription
                 }});
+            }});
+            
+            // Handle turnovers that score directly (pick-6s, fumble return TDs) 
+            // that don't have a subsequent drive
+            turnovers.forEach(turnover => {{
+                if (turnover.scoring === true) {{
+                    // Check if this turnover was already included in turnoverAnalysis
+                    // Check if this turnover was already included in turnover_analysis
+                    // A turnover is already processed if there's a drive that started after it
+                    // Check if any drive started after this turnover
+                    let alreadyProcessed = false;
+                    const turnoverGameId = turnover.game_id;
+                    const turnoverDriveNumber = turnover.drive_number || 0;
+                    
+                    // Check if there's a drive that started after this turnover
+                    plays.forEach(play => {{
+                        if (play.game_id === turnoverGameId &&
+                            play.drive_started_after_turnover === true &&
+                            play.drive_number === turnoverDriveNumber + 1) {{
+                            // There's a drive that started after this turnover, so it was already processed
+                            alreadyProcessed = true;
+                        }}
+                    }});
+                    
+                    // Also check turnover_analysis for matching entries
+                    if (!alreadyProcessed) {{
+                        const turnoverText = (turnover.play_text || '').substring(0, 150);
+                        turnoverAnalysis.forEach(ta => {{
+                            if (ta.game_id === turnoverGameId) {{
+                                const taText = ta.play_text || '';
+                                // Check if turnover text appears in the analysis entry
+                                if (taText.includes(turnoverText) || taText.startsWith(`TO: ${{turnoverText}}`)) {{
+                                    alreadyProcessed = true;
+                                }}
+                                // Also check by matching the first part of the play text
+                                // (in case formatting is slightly different)
+                                if (taText.startsWith('TO:')) {{
+                                    // Extract the turnover part from taText
+                                    const taTurnoverPart = taText.split(' | Score:')[0].replace('TO: ', '');
+                                    if (turnoverText.substring(0, 100).includes(taTurnoverPart.substring(0, 100)) ||
+                                        taTurnoverPart.substring(0, 100).includes(turnoverText.substring(0, 100))) {{
+                                        alreadyProcessed = true;
+                                    }}
+                                }}
+                            }}
+                        }});
+                    }}
+                    
+                    if (!alreadyProcessed) {{
+                        // This is a turnover that scored directly (pick-6, fumble return TD)
+                        // but doesn't have a subsequent drive
+                        const playType = turnover.play_type || '';
+                        const playText = (turnover.play_text || '').toUpperCase();
+                        
+                        // Determine points and result
+                        let drivePoints = 0;
+                        let driveResult = 'No Score';
+                        if (playType.includes('Touchdown') || playText.includes('TOUCHDOWN')) {{
+                            drivePoints = 7;
+                            driveResult = 'Touchdown';
+                        }} else if (playType.includes('Field Goal')) {{
+                            drivePoints = 3;
+                            driveResult = 'Field Goal';
+                        }}
+                        
+                        // Determine if it's our turnover or opponent's
+                        let isOurTurnover = (turnover.offense || '').toLowerCase() === teamName.toLowerCase();
+                        
+                        // For fumble recoveries on punts, the offense field is the recovering team,
+                        // but the turnover actually belongs to the punting team (defense on the play)
+                        const playTypeCheck = (turnover.play_type || '').toUpperCase();
+                        if (playTypeCheck.includes('PUNT') && playTypeCheck.includes('FUMBLE RECOVERY')) {{
+                            isOurTurnover = (turnover.defense || '').toLowerCase() === teamName.toLowerCase();
+                        }}
+                        
+                        // Determine turnover type
+                        const turnoverTypeField = (turnover.turnover_type || '').toLowerCase();
+                        const playTypeUpper = playType.toUpperCase();
+                        let turnoverType;
+                        if (playTypeUpper.includes('INTERCEPTION') || turnoverTypeField === 'interception') {{
+                            turnoverType = 'Interception';
+                        }} else if (playTypeUpper.includes('FUMBLE') || turnoverTypeField === 'fumble') {{
+                            turnoverType = 'Fumble';
+                        }} else {{
+                            turnoverType = 'Unknown';
+                        }}
+                        
+                        const turnoverText = (turnover.play_text || '').substring(0, 150);
+                        const playDescription = `TO: ${{turnoverText}}`;
+                        
+                        turnoverAnalysis.push({{
+                            game_week: turnover.game_week,
+                            opponent: turnover.opponent,
+                            turnover_type: turnoverType,
+                            is_our_turnover: isOurTurnover,
+                            drive_result: driveResult,
+                            points_scored: isOurTurnover ? 0 : drivePoints,
+                            points_allowed: isOurTurnover ? drivePoints : 0,
+                            play_text: playDescription
+                        }});
+                    }}
+                }}
             }});
             
             const netPoints = pointsScoredAfterOpponentTO - pointsAllowedAfterOurTO;
@@ -7411,20 +7948,58 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 if (zonePlays.length === 0) {{
                     return {{
                         total_plays: 0,
+                        red_zone_attempts: 0,
                         touchdowns: 0,
                         td_scoring_rate: 0,
                         turnovers: 0,
+                        turnovers_on_downs: 0,
                         avg_ppa: 0,
                         conversions_3rd: {{ attempts: 0, conversions: 0, rate: 0 }},
                         plays: []
                     }};
                 }}
                 
-                const touchdowns = zonePlays.filter(p => p.play_type?.toLowerCase().includes('touchdown')).length;
-                const tdScoringRate = zonePlays.length > 0 ? (touchdowns / zonePlays.length * 100) : 0;
+                const touchdowns = zonePlays.filter(p => 
+                    p.scoring === true &&
+                    (p.play_type?.toLowerCase().includes('touchdown') || 
+                     p.play_text?.toLowerCase().includes('touchdown'))).length;
+                
+                // Count red zone attempts (unique drives that entered the zone)
+                // A red zone attempt is a drive that had at least one play in the zone
+                const redZoneDrives = new Set();
+                zonePlays.forEach(p => {{
+                    if (p.game_id && p.drive_number !== null && p.drive_number !== undefined) {{
+                        redZoneDrives.add(`${{p.game_id}}_${{p.drive_number}}`);
+                    }}
+                }});
+                const redZoneAttempts = redZoneDrives.size;
+                
+                // Count how many of those drives resulted in a touchdown
+                const drivesWithTD = new Set();
+                zonePlays.forEach(p => {{
+                    if (p.scoring === true && 
+                        (p.play_type?.toLowerCase().includes('touchdown') || 
+                         p.play_text?.toLowerCase().includes('touchdown'))) {{
+                        if (p.game_id && p.drive_number !== null && p.drive_number !== undefined) {{
+                            drivesWithTD.add(`${{p.game_id}}_${{p.drive_number}}`);
+                        }}
+                    }}
+                }});
+                
+                const tdScoringRate = redZoneAttempts > 0 ? (drivesWithTD.size / redZoneAttempts * 100) : 0;
                 
                 // Count turnovers in the zone
-                const turnovers = zonePlays.filter(p => p.turnover === true).length;
+                // Separate turnovers on downs from fumbles/interceptions
+                const turnovers = zonePlays.filter(p => 
+                    p.turnover === true && 
+                    (p.turnover_type || '').toLowerCase() !== 'downs'
+                ).length;
+                
+                // Count turnovers on downs separately
+                const turnoversOnDowns = zonePlays.filter(p => 
+                    p.turnover === true && 
+                    (p.turnover_type || '').toLowerCase() === 'downs'
+                ).length;
                 
                 const ppas = zonePlays.filter(p => p.ppa != null).map(p => parseFloat(p.ppa));
                 const avgPpa = ppas.length > 0 ? (ppas.reduce((a, b) => a + b, 0) / ppas.length) : 0;
@@ -7437,9 +8012,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 
                 return {{
                     total_plays: zonePlays.length,
+                    red_zone_attempts: redZoneAttempts,
                     touchdowns: touchdowns,
                     td_scoring_rate: tdScoringRate,
                     turnovers: turnovers,
+                    turnovers_on_downs: turnoversOnDowns,
                     avg_ppa: avgPpa,
                     conversions_3rd: {{
                         attempts: thirdDowns.length,

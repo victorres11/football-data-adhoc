@@ -196,9 +196,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
     team1_redzone = analyze_red_zone(team1_data['all_plays'], team_name1)
     
     print(f"Running analyses for {team_name2}...")
+    print(f"  DEBUG: {team_name2} total plays loaded: {len(team2_data['all_plays'])}")
     team2_middle8 = analyze_middle_eight(team2_data['all_plays'], team_name2)
     team2_explosive = analyze_explosive_plays(team2_data['all_plays'], team_name2)
     team2_penalties = analyze_penalties(team2_data['all_plays'], team_name2)
+    print(f"  DEBUG: {team_name2} penalties - accepted: {team2_penalties.get('accepted', 0)}, total: {team2_penalties.get('total_penalties', 0)}")
+    print(f"  DEBUG: {team_name2} penalties dict keys: {list(team2_penalties.keys())}")
     team2_4th = analyze_4th_downs(team2_data['all_plays'], team_name2)
     team2_turnover = analyze_post_turnover(team2_data['all_plays'], team_name2)
     team2_st = analyze_special_teams(team2_data['all_plays'], team_name2)
@@ -420,6 +423,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
     
     # Serialize all analysis data for JavaScript
     # Use normalized team keys for JavaScript data structure
+    print(f"  DEBUG BEFORE JSON: {team_name2} penalties accepted: {team2_penalties.get('accepted', 'NOT FOUND')}")
     all_data_json = json.dumps({
         team1_key: {
             'middle8': team1_middle8,
@@ -559,7 +563,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         .filters h2 {{
             margin-bottom: 15px;
-            color: {team1_primary};
+            color: #000000;
         }}
         
         .filter-group {{
@@ -602,10 +606,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .section h2 {{
-            color: {team1_primary};
+            color: #000000;
             margin-bottom: 20px;
             font-size: 1.8em;
-            border-bottom: 2px solid {team1_primary};
+            border-bottom: 2px solid #000000;
             padding-bottom: 10px;
         }}
         
@@ -644,7 +648,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         .summary-card .value {{
             font-size: 2.2em;
             font-weight: 700;
-            color: #333;
+            color: #000000;
             margin-bottom: 0;
             line-height: 1.2;
         }}
@@ -745,10 +749,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .schedule-tables-container h2 {{
-            color: {team1_primary};
+            color: #000000;
             margin-bottom: 20px;
             font-size: 1.5em;
-            border-bottom: 2px solid {team1_primary};
+            border-bottom: 2px solid #000000;
             padding-bottom: 10px;
         }}
         
@@ -985,6 +989,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .section.sis-section h2 {{
+            color: #000000;
             position: relative;
             padding-right: 120px;
         }}
@@ -1089,7 +1094,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.1em;
-            color: {team1_primary};
+            color: #000000;
             font-weight: 600;
             padding-bottom: 10px;
             border-bottom: 1px solid #e0e0e0;
@@ -1531,7 +1536,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                     Middle 8 Plays Table ▼
@@ -1602,7 +1607,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                     Explosive Plays Table ▼
@@ -1677,7 +1682,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                     Penalties Table ▼
@@ -1735,7 +1740,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                     4th Down Plays Table ▼
@@ -1789,7 +1794,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                     Post Turnover Analysis Table ▼
@@ -1841,7 +1846,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                     Special Teams Plays Table ▼
@@ -1979,7 +1984,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
             <h4 style="color: #b71c1c; margin-top: 20px;">Tight Red Zone Plays (10 & In)</h4>
             <details style="margin-top: 10px;">
                 <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
@@ -2069,7 +2074,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <tbody></tbody>
             </table>
             </details>
-            <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+            <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
                 <table id="thirdDownTableWisc" class="display">
                     <thead>
                         <tr>
@@ -2119,7 +2124,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <tbody></tbody>
                 </table>
                 </details>
-                <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+                <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
                 <details style="margin-top: 10px;">
                     <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                         {team_name2} Red Zone Receiving Table ▼
@@ -2204,7 +2209,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <tbody></tbody>
                 </table>
                 </details>
-                <h3 style="margin-top: 30px; color: #282828;">{team_name2}</h3>
+                <h3 style="margin-top: 30px; color: {team2_primary};">{team_name2}</h3>
                 <details style="margin-top: 10px;">
                     <summary style="cursor: pointer; font-weight: bold; padding: 8px 12px; background-color: #f5f5f5; border-radius: 4px; border: 1px solid #ddd; user-select: none;">
                         {team_name2} Deep Receiving Table ▼
@@ -2248,6 +2253,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         const team2Key = '{team2_key}';
         const team1Name = '{team_name1}';
         const team2Name = '{team_name2}';
+        
+        // CRITICAL DEBUG: Check penalties immediately after parsing
+        console.log('=== PENALTIES DATA DEBUG (IMMEDIATE AFTER PARSE) ===');
+        console.log('Purdue penalties accepted:', allData[team2Key]?.penalties?.accepted);
+        console.log('Purdue penalties object:', allData[team2Key]?.penalties);
         
         // Debug: Check deep_targets data structure immediately after parsing
         console.log('=== DATA LOADING DEBUG ===');
@@ -3829,6 +3839,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1 = allData[team1Key].penalties;
             const team2 = allData[team2Key].penalties;
             
+            // Debug logging
+            console.log('populatePenalties DEBUG:', {{
+                team1Key: team1Key,
+                team2Key: team2Key,
+                team1Accepted: team1?.accepted,
+                team2Accepted: team2?.accepted,
+                team1Total: team1?.total_penalties,
+                team2Total: team2?.total_penalties
+            }});
+            
             // Calculate yards per game
             const washYardsPerGame = team1.total_games > 0 ? (team1.total_penalty_yards || 0) / team1.total_games : 0;
             const wiscYardsPerGame = team2.total_games > 0 ? (team2.total_penalty_yards || 0) / team2.total_games : 0;
@@ -5260,23 +5280,28 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         let include = true;
                         
                         // Filter by conference/non-conference/power4
-                        // Only apply filters if enrichment fields are present
-                        // If enrichment fields are missing, include the data (don't filter it out)
+                        // If enrichment fields are null or missing, exclude from the filter (can't confirm it matches)
                         if (filters.conference_only) {{
                             if (weekData.hasOwnProperty('is_conference') && weekData.is_conference !== null && weekData.is_conference !== undefined) {{
                                 include = include && weekData.is_conference === true;
+                            }} else {{
+                                // If is_conference is null or missing, exclude from conference-only filter
+                                include = false;
                             }}
-                            // If enrichment field is missing or null, include it (can't filter without enrichment)
                         }} else if (filters.non_conference_only) {{
                             if (weekData.hasOwnProperty('is_conference') && weekData.is_conference !== null && weekData.is_conference !== undefined) {{
                                 include = include && weekData.is_conference === false;
+                            }} else {{
+                                // If is_conference is null or missing, exclude from non-conference-only filter
+                                include = false;
                             }}
-                            // If enrichment field is missing or null, include it
                         }} else if (filters.power4_only) {{
                             if (weekData.hasOwnProperty('is_power4_opponent') && weekData.is_power4_opponent !== null && weekData.is_power4_opponent !== undefined) {{
                                 include = include && weekData.is_power4_opponent === true;
+                            }} else {{
+                                // If is_power4_opponent is null or missing, exclude from power4-only filter
+                                include = false;
                             }}
-                            // If enrichment field is missing or null, include it
                         }}
                         
                         // Filter by last 3 games
@@ -5339,17 +5364,27 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         let include = true;
                         
                         // Filter by conference/non-conference/power4
+                        // If enrichment fields are null or missing, exclude from the filter (can't confirm it matches)
                         if (filters.conference_only) {{
                             if (gameData.hasOwnProperty('is_conference') && gameData.is_conference !== null && gameData.is_conference !== undefined) {{
                                 include = include && gameData.is_conference === true;
+                            }} else {{
+                                // If is_conference is null or missing, exclude from conference-only filter
+                                include = false;
                             }}
                         }} else if (filters.non_conference_only) {{
                             if (gameData.hasOwnProperty('is_conference') && gameData.is_conference !== null && gameData.is_conference !== undefined) {{
                                 include = include && gameData.is_conference === false;
+                            }} else {{
+                                // If is_conference is null or missing, exclude from non-conference-only filter
+                                include = false;
                             }}
                         }} else if (filters.power4_only) {{
                             if (gameData.hasOwnProperty('is_power4_opponent') && gameData.is_power4_opponent !== null && gameData.is_power4_opponent !== undefined) {{
                                 include = include && gameData.is_power4_opponent === true;
+                            }} else {{
+                                // If is_power4_opponent is null or missing, exclude from power4-only filter
+                                include = false;
                             }}
                         }}
                         
@@ -6341,11 +6376,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     }}
                     
                     // Filter by conference/non-conference/power4
-                    // Only apply filters if we have enrichment data WITH the required fields, otherwise include the game
-                    // (can't filter what we don't have metadata for)
+                    // Only apply filters if we have enrichment data WITH the required fields
+                    // If field is null or missing, exclude from the filter (can't confirm it matches the filter)
                     if (enrichmentData) {{
                         if (filters.conference_only) {{
-                            // If is_conference field is missing or null, include the game (can't filter without metadata)
                             if (enrichmentData.hasOwnProperty('is_conference') && enrichmentData.is_conference !== null && enrichmentData.is_conference !== undefined) {{
                                 const isConf = enrichmentData.is_conference === true;
                                 if (isFirstGame) {{
@@ -6353,18 +6387,32 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                                 }}
                                 include = include && isConf;
                             }} else {{
+                                // If is_conference is null or missing, exclude from conference-only filter
+                                // (can't confirm it's a conference game)
                                 if (isFirstGame) {{
-                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference missing or null, including by default');
+                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference missing or null, excluding from conference-only filter');
                                 }}
+                                include = false;
                             }}
-                            // If field is missing or null, include stays true (default behavior)
                         }} else if (filters.non_conference_only) {{
                             if (enrichmentData.hasOwnProperty('is_conference') && enrichmentData.is_conference !== null && enrichmentData.is_conference !== undefined) {{
                                 include = include && enrichmentData.is_conference === false;
+                            }} else {{
+                                // If is_conference is null or missing, exclude from non-conference-only filter
+                                if (isFirstGame) {{
+                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference missing or null, excluding from non-conference-only filter');
+                                }}
+                                include = false;
                             }}
                         }} else if (filters.power4_only) {{
                             if (enrichmentData.hasOwnProperty('is_power4_opponent') && enrichmentData.is_power4_opponent !== null && enrichmentData.is_power4_opponent !== undefined) {{
                                 include = include && enrichmentData.is_power4_opponent === true;
+                            }} else {{
+                                // If is_power4_opponent is null or missing, exclude from power4-only filter
+                                if (isFirstGame) {{
+                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_power4_opponent missing or null, excluding from power4-only filter');
+                                }}
+                                include = false;
                             }}
                         }}
                         
@@ -7317,7 +7365,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 'USC': ['USC', 'TROJAN'],
                 'WISCONSIN': ['WIS', 'WISC', 'UW'],
                 'NORTHWESTERN': ['NU', 'NW'],
-                'MICHIGAN': ['MICH', 'UM'],
+                'MICHIGAN': ['MICH', 'UM', 'UOM'],
                 'MICHIGAN STATE': ['MSU', 'MICHIGAN STATE'],
                 'ILLINOIS': ['ILL', 'ILLINOIS'],
                 'PENN STATE': ['PSU', 'PENN STATE'],
@@ -7328,7 +7376,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 'MARYLAND': ['MD', 'MARYLAND'],
                 'MINNESOTA': ['MINN', 'MINNESOTA'],
                 'NEBRASKA': ['NEB', 'NEBRASKA'],
-                'OREGON': ['ORE', 'OREGON']
+                'OREGON': ['ORE', 'OREGON'],
+                'BALL STATE': ['BSU', 'BALL STATE']
             }};
             
             const teamUpper = teamName.toUpperCase();
@@ -7354,59 +7403,93 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     }}
                 }}
                 
+                // Exclude offsetting penalties
+                if (playTextUpper.includes('OFFSETTING') || (p.penalty_type || '').toUpperCase().includes('OFFSETTING')) {{
+                    return false;
+                }}
+                
+                // Exclude declined penalties
+                if (playTextUpper.includes('DECLINED')) {{
+                    return false;
+                }}
+                
                 // If no explicit marker, check if it's an opponent penalty
-                if (!teamCommitted) {{
-                    // Check for opponent penalty markers
-                    for (const [oppTeam, abbrevs] of Object.entries(teamAbbrevs)) {{
-                        if (oppTeam === teamUpper) continue;
-                        // Check full team name
-                        if (playTextUpper.includes(oppTeam + ' PENALTY') || 
-                            playTextUpper.includes('PENALTY ' + oppTeam)) {{
-                            return false; // This is an opponent penalty, exclude it
-                        }}
-                        // Check abbreviations
-                        for (const abbrev of abbrevs) {{
-                            if (playTextUpper.includes('PENALTY ' + abbrev) || 
-                                playTextUpper.includes(abbrev + ' PENALTY')) {{
-                                return false; // This is an opponent penalty, exclude it
-                            }}
+                // FIRST: Check for explicit opponent penalty markers in full play text
+                // This prevents false exclusions when opponent abbreviations appear in yard markers (e.g., "WASH37")
+                let hasOpponentPenalty = false;
+                for (const [oppTeam, abbrevs] of Object.entries(teamAbbrevs)) {{
+                    if (oppTeam === teamUpper) continue;
+                    // Check full team name - must be explicit penalty marker
+                    if (playTextUpper.includes(oppTeam + ' PENALTY') || 
+                        playTextUpper.includes('PENALTY ' + oppTeam)) {{
+                        hasOpponentPenalty = true;
+                        break;
+                    }}
+                    // Check abbreviations - must be explicit penalty marker
+                    for (const abbrev of abbrevs) {{
+                        if (playTextUpper.includes('PENALTY ' + abbrev) || 
+                            playTextUpper.includes(abbrev + ' PENALTY')) {{
+                            hasOpponentPenalty = true;
+                            break;
                         }}
                     }}
-                    
-                    // If no explicit markers, infer from penalty type and team position
-                    // This is a simplified version - for accuracy, should use Python analysis
-                    const penaltyType = (p.penalty_type || '').toUpperCase();
-                    const offensivePenalties = ['FALSE START', 'DELAY OF GAME', 'ILLEGAL FORMATION', 'OFFENSIVE HOLDING', 'INTENTIONAL GROUNDING', 'ILLEGAL SNAP'];
-                    const defensivePenalties = ['PASS INTERFERENCE', 'DEFENSIVE HOLDING', 'OFFSIDE', 'ROUGHING', 'UNNECESSARY ROUGHNESS', 'SIDELINE'];
-                    const eitherSidePenalties = ['UNSPORTSMANLIKE', 'PERSONAL FOUL'];
-                    const specialTeamsPenalties = ['ILLEGAL BLOCK', 'ILLEGAL BLOCK IN BACK', 'ILLEGAL BLOCK ABOVE WAIST', 'KICK CATCHING INTERFERENCE', 'ROUGHING THE KICKER', 'ROUGHING THE PUNTER', 'RUNNING INTO THE KICKER'];
-                    
-                    const isOffense = p.offense?.toLowerCase() === teamName.toLowerCase();
-                    const isDefense = p.defense?.toLowerCase() === teamName.toLowerCase();
-                    
-                    if (specialTeamsPenalties.some(stp => penaltyType.includes(stp)) || 
-                        eitherSidePenalties.some(esp => penaltyType.includes(esp))) {{
-                        teamCommitted = isOffense || isDefense;
-                    }} else if (isOffense && offensivePenalties.some(op => penaltyType.includes(op))) {{
-                        teamCommitted = true;
-                    }} else if (isDefense && defensivePenalties.some(dp => penaltyType.includes(dp))) {{
-                        teamCommitted = true;
-                    }}
+                    if (hasOpponentPenalty) break;
+                }}
+                
+                if (hasOpponentPenalty) {{
+                    return false; // This is an opponent penalty, exclude it
+                }}
+                
+                // If no explicit markers, infer from penalty type and team position
+                // This is a simplified version - for accuracy, should use Python analysis
+                const penaltyType = (p.penalty_type || '').toUpperCase();
+                const offensivePenalties = ['FALSE START', 'DELAY OF GAME', 'ILLEGAL FORMATION', 'OFFENSIVE HOLDING', 'HOLDING', 'INTENTIONAL GROUNDING', 'ILLEGAL SNAP', 'INELIGIBLE DOWNFIELD'];
+                const defensivePenalties = ['PASS INTERFERENCE', 'DEFENSIVE HOLDING', 'OFFSIDE', 'ROUGHING', 'UNNECESSARY ROUGHNESS', 'SIDELINE', 'HORSE COLLAR'];
+                const eitherSidePenalties = ['UNSPORTSMANLIKE', 'PERSONAL FOUL'];
+                const specialTeamsPenalties = ['ILLEGAL BLOCK', 'ILLEGAL BLOCK IN BACK', 'ILLEGAL BLOCK ABOVE WAIST', 'KICK CATCHING INTERFERENCE', 'ROUGHING THE KICKER', 'ROUGHING THE PUNTER', 'RUNNING INTO THE KICKER'];
+                
+                const isOffense = p.offense?.toLowerCase() === teamName.toLowerCase();
+                const isDefense = p.defense?.toLowerCase() === teamName.toLowerCase();
+                
+                if (specialTeamsPenalties.some(stp => penaltyType.includes(stp)) || 
+                    eitherSidePenalties.some(esp => penaltyType.includes(esp))) {{
+                    teamCommitted = isOffense || isDefense;
+                }} else if (isOffense && offensivePenalties.some(op => penaltyType.includes(op))) {{
+                    teamCommitted = true;
+                }} else if (isDefense && defensivePenalties.some(dp => penaltyType.includes(dp))) {{
+                    teamCommitted = true;
                 }}
                 
                 return teamCommitted;
             }});
-            const accepted = penaltyPlays.filter(p => p.penalty_decision === 'accepted').length;
-            const declined = penaltyPlays.filter(p => p.penalty_decision === 'declined').length;
+            // Filter to accepted only, excluding offsetting and declined
+            const accepted = penaltyPlays.filter(p => {{
+                const decision = p.penalty_decision || '';
+                const playTextUpper = (p.play_text || '').toUpperCase();
+                return decision === 'accepted' && 
+                       !playTextUpper.includes('DECLINED') && 
+                       !playTextUpper.includes('OFFSETTING') &&
+                       !(p.penalty_type || '').toUpperCase().includes('OFFSETTING');
+            }}).length;
+            const declined = penaltyPlays.filter(p => p.penalty_decision === 'declined' || (p.play_text || '').toUpperCase().includes('DECLINED')).length;
             
-            // Use yards_gained field directly for accepted penalties
+            // Use penalty_yards field when available, fall back to yards_gained
             let totalYards = 0;
             penaltyPlays.forEach(p => {{
-                if (p.penalty_decision === 'accepted') {{
-                    const yardsGained = p.yards_gained || 0;
-                    // Use absolute value since yards_gained might be negative
-                    // Penalties are always negative yardage, so we want the absolute value
-                    totalYards += Math.abs(yardsGained);
+                const decision = p.penalty_decision || '';
+                const playTextUpper = (p.play_text || '').toUpperCase();
+                if (decision === 'accepted' && 
+                    !playTextUpper.includes('DECLINED') && 
+                    !playTextUpper.includes('OFFSETTING') &&
+                    !(p.penalty_type || '').toUpperCase().includes('OFFSETTING')) {{
+                    // Prefer penalty_yards field, fall back to yards_gained
+                    const penaltyYards = p.penalty_yards;
+                    if (penaltyYards != null) {{
+                        totalYards += Math.abs(penaltyYards);
+                    }} else {{
+                        const yardsGained = p.yards_gained || 0;
+                        totalYards += Math.abs(yardsGained);
+                    }}
                 }}
             }});
             
@@ -7422,9 +7505,20 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     gameStats[gameId] = {{ count: 0, yards: 0, week: gameWeek }};
                 }}
                 gameStats[gameId].count++;
-                if (p.penalty_decision === 'accepted') {{
-                    const yardsGained = p.yards_gained || 0;
-                    gameStats[gameId].yards += Math.abs(yardsGained);
+                const decision = p.penalty_decision || '';
+                const playTextUpper = (p.play_text || '').toUpperCase();
+                if (decision === 'accepted' && 
+                    !playTextUpper.includes('DECLINED') && 
+                    !playTextUpper.includes('OFFSETTING') &&
+                    !(p.penalty_type || '').toUpperCase().includes('OFFSETTING')) {{
+                    // Prefer penalty_yards field, fall back to yards_gained
+                    const penaltyYards = p.penalty_yards;
+                    if (penaltyYards != null) {{
+                        gameStats[gameId].yards += Math.abs(penaltyYards);
+                    }} else {{
+                        const yardsGained = p.yards_gained || 0;
+                        gameStats[gameId].yards += Math.abs(yardsGained);
+                    }}
                 }}
             }});
             
@@ -7439,8 +7533,23 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             const last3Games = penaltyPlays.filter(p => last3GameIds.includes(p.game_id));
             const last3Yards = last3Games
-                .filter(p => p.penalty_decision === 'accepted')
-                .reduce((sum, p) => sum + Math.abs(p.yards_gained || 0), 0);
+                .filter(p => {{
+                    const decision = p.penalty_decision || '';
+                    const playTextUpper = (p.play_text || '').toUpperCase();
+                    return decision === 'accepted' && 
+                           !playTextUpper.includes('DECLINED') && 
+                           !playTextUpper.includes('OFFSETTING') &&
+                           !(p.penalty_type || '').toUpperCase().includes('OFFSETTING');
+                }})
+                .reduce((sum, p) => {{
+                    // Prefer penalty_yards field, fall back to yards_gained
+                    const penaltyYards = p.penalty_yards;
+                    if (penaltyYards != null) {{
+                        return sum + Math.abs(penaltyYards);
+                    }} else {{
+                        return sum + Math.abs(p.yards_gained || 0);
+                    }}
+                }}, 0);
             
             return {{
                 total_penalties: penaltyPlays.length,

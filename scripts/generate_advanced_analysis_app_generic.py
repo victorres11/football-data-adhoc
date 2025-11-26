@@ -700,15 +700,20 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .team-section.{team1_key} {{
-            border-left-color: #8B0000;
+            border-left-color: {team1_primary};
         }}
         
         .team-section.{team2_key} {{
-            border-left-color: #282828;
+            border-left-color: {team2_primary};
         }}
         
-        .team-section h3 {{
+        .team-section.{team1_key} h3 {{
             color: {team1_primary};
+            margin-bottom: 15px;
+        }}
+        
+        .team-section.{team2_key} h3 {{
+            color: {team2_primary};
             margin-bottom: 15px;
         }}
         
@@ -850,11 +855,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .team-header-browser.{team1_key} {{
-            background: #8B0000;
+            background: {team1_primary};
         }}
         
         .team-header-browser.{team2_key} {{
-            background: #282828;
+            background: {team2_primary};
         }}
         
         .game-section-browser {{

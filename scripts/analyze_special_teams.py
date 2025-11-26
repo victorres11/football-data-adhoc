@@ -12,20 +12,47 @@ def is_special_teams_explosive(play: Dict) -> bool:
     Determine if a special teams play is explosive based on return type:
     - Kick return: 35+ yards
     - Punt return: 20+ yards
+    
+    For returns, we parse the return yards from the play text because
+    yards_gained might include the kick/punt distance, not just the return.
     """
+    import re
+    
     play_type = play.get('play_type', '').lower()
     play_text = play.get('play_text', '').lower()
-    yards_gained = play.get('yards_gained', 0)
+    play_text_full = play.get('play_text', '')  # Keep original case for regex
+    
+    def parse_return_yards(text: str) -> int:
+        """Parse return yards from play text"""
+        if not text:
+            return 0
+        
+        # Look for patterns like "returns for X yds" or "returns for no gain"
+        # Examples:
+        # "returns for 56 yds" -> 56
+        # "returns for no gain" -> 0
+        # "return for 20 yds" -> 20
+        match = re.search(r'return[s]? for (?:no gain|(\d+) (?:yd|yard))', text, re.IGNORECASE)
+        if match:
+            if match.group(1):
+                return int(match.group(1))
+            else:
+                return 0  # "no gain"
+        
+        # Fallback: if we can't parse, return 0 to be safe
+        return 0
     
     # Kick return: 35+ yards
     if 'kickoff' in play_type or 'kickoff' in play_text:
         if 'return' in play_type or 'return' in play_text:
-            return yards_gained >= 35
+            return_yards = parse_return_yards(play_text_full)
+            return return_yards >= 35
     
     # Punt return: 20+ yards
     if 'punt' in play_type or 'punt' in play_text:
         if 'return' in play_type or 'return' in play_text:
-            return yards_gained >= 20
+            return_yards = parse_return_yards(play_text_full)
+            return return_yards >= 20
     
     return False
 
@@ -65,15 +92,35 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     ]
     
     # Separate by offense (our special teams) vs defense (opponent special teams)
-    our_st_plays = [
-        p for p in special_teams_plays
-        if p.get('offense', '').lower() == team_name.lower()
-    ]
+    # For returns, the returning team is on "defense", not "offense"
+    our_st_plays = []
+    opponent_st_plays = []
     
-    opponent_st_plays = [
-        p for p in special_teams_plays
-        if p.get('offense', '').lower() != team_name.lower()
-    ]
+    for p in special_teams_plays:
+        play_type = p.get('play_type', '').lower()
+        play_text = p.get('play_text', '').lower()
+        
+        # Check if it's a return play (kickoff return or punt return)
+        is_return = (
+            ('return' in play_type or 'return' in play_text) and
+            ('kickoff' in play_type or 'kickoff' in play_text or
+             'punt' in play_type or 'punt' in play_text)
+        )
+        
+        if is_return:
+            # For returns, check defense field (returning team)
+            defense = p.get('defense', '') or ''
+            if defense.lower() == team_name.lower():
+                our_st_plays.append(p)
+            else:
+                opponent_st_plays.append(p)
+        else:
+            # For other ST plays (kicks, punts), check offense field
+            offense = p.get('offense', '') or ''
+            if offense.lower() == team_name.lower():
+                our_st_plays.append(p)
+            else:
+                opponent_st_plays.append(p)
     
     # Find explosive plays using special teams criteria (35+ kick return, 20+ punt return)
     explosive_plays = [p for p in our_st_plays if is_special_teams_explosive(p)]
@@ -101,12 +148,14 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         if is_return_td:
             # For return TDs: if opponent is on offense (they punted/kicked),
             # then our team scored on the return
-            is_opponent_offense = p.get('offense', '').lower() != team_name.lower()
+            offense = p.get('offense', '') or ''
+            is_opponent_offense = offense.lower() != team_name.lower()
             if is_opponent_offense:
                 tds_scored.append(p)
         else:
             # For non-return TDs (like blocked punts run back), our team on offense = their TD
-            if p.get('offense', '').lower() == team_name.lower():
+            offense = p.get('offense', '') or ''
+            if offense.lower() == team_name.lower():
                 tds_scored.append(p)
     
     tds_allowed = []
@@ -128,11 +177,13 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         if is_return_td:
             # For return TDs: if our team is on offense (they punted/kicked),
             # then opponent scored on the return (our team allowed it)
-            if p.get('offense', '').lower() == team_name.lower():
+            offense = p.get('offense', '') or ''
+            if offense.lower() == team_name.lower():
                 tds_allowed.append(p)
         else:
             # For non-return TDs, opponent on offense = their TD
-            if p.get('offense', '').lower() != team_name.lower():
+            offense = p.get('offense', '') or ''
+            if offense.lower() != team_name.lower():
                 tds_allowed.append(p)
     
     # Find bad results (Turnover OR Explosive Allowed)
@@ -158,6 +209,51 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         if p.get('turnover', False) or is_special_teams_explosive(p)
     ]
     
+    # Count punt blocks
+    # Punt blocks: when opponent is punting (they're on offense) and we block it
+    punt_blocks = []
+    for play in special_teams_plays:
+        play_type = play.get('play_type', '').lower()
+        play_text = play.get('play_text', '').lower()
+        offense = play.get('offense', '') or ''
+        is_opponent_offense = offense.lower() != team_name.lower()
+        
+        # Check if it's a punt block
+        # Must have "blocked punt" or "punt blocked" in play type or text
+        # This excludes false positives like "Illegal Block in Back" penalties on punts
+        has_blocked_punt_in_type = 'blocked punt' in play_type or 'punt blocked' in play_type
+        has_blocked_punt_in_text = 'blocked punt' in play_text or 'punt blocked' in play_text
+        
+        is_punt_block = (
+            (has_blocked_punt_in_type or has_blocked_punt_in_text) and
+            is_opponent_offense  # Opponent is punting, we blocked it
+        )
+        
+        if is_punt_block:
+            punt_blocks.append(play)
+    
+    # Punt blocks allowed: when we're punting and opponent blocks it
+    punt_blocks_allowed = []
+    for play in special_teams_plays:
+        play_type = play.get('play_type', '').lower()
+        play_text = play.get('play_text', '').lower()
+        offense = play.get('offense', '') or ''
+        is_our_offense = offense.lower() == team_name.lower()
+        
+        # Check if it's a punt block allowed
+        # Must have "blocked punt" or "punt blocked" in play type or text
+        # This excludes false positives like "Illegal Block in Back" penalties on punts
+        has_blocked_punt_in_type = 'blocked punt' in play_type or 'punt blocked' in play_type
+        has_blocked_punt_in_text = 'blocked punt' in play_text or 'punt blocked' in play_text
+        
+        is_punt_block_allowed = (
+            (has_blocked_punt_in_type or has_blocked_punt_in_text) and
+            is_our_offense  # We're punting, opponent blocked it
+        )
+        
+        if is_punt_block_allowed:
+            punt_blocks_allowed.append(play)
+    
     # Group by game
     game_stats = defaultdict(lambda: {
         'total_plays': 0,
@@ -168,7 +264,8 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     
     for play in special_teams_plays:
         game_id = play.get('game_id')
-        is_our = play.get('offense', '').lower() == team_name.lower()
+        offense = play.get('offense', '') or ''
+        is_our = offense.lower() == team_name.lower()
         
         game_stats[game_id]['total_plays'] += 1
         
@@ -225,6 +322,8 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
         'bad_results_allowed': len(bad_results_allowed),
         'tds_scored': len(tds_scored),
         'tds_allowed': len(tds_allowed),
+        'punt_blocks': len(punt_blocks),
+        'punt_blocks_allowed': len(punt_blocks_allowed),
         'plays': all_plays_flat,
         'total_games': unique_games,
         'game_stats': dict(game_stats)

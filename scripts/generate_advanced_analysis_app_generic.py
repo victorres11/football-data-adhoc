@@ -624,6 +624,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             text-align: left;
             transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            position: relative;
         }}
         
         .summary-card:hover {{
@@ -652,6 +653,32 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             font-size: 0.8em;
             color: #888;
             margin-top: 4px;
+        }}
+        
+        .summary-card .benchmark-text {{
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 8px;
+            font-weight: 500;
+            line-height: 1.2;
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 1px solid #d0d0d0;
+            border-radius: 12px;
+            padding: 4px 10px;
+        }}
+        
+        .summary-card .rank-badge {{
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #667eea;
+            color: white;
+            font-size: 0.7em;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 10px;
+            line-height: 1.2;
         }}
         
         .team-comparison {{
@@ -4220,6 +4247,24 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const team1 = allData[team1Key]['4thdowns'];
             const team2 = allData[team2Key]['4thdowns'];
             
+            // Get current filters to determine rank
+            const filters = getFilters();
+            let team1Rank, team2Rank;
+            
+            if (filters.conference_only) {{
+                // Conference filter: Purdue #11, Indiana #9
+                team1Rank = '{team_name1}'.toLowerCase() === 'indiana' ? 9 : 11;
+                team2Rank = '{team_name2}'.toLowerCase() === 'indiana' ? 9 : 11;
+            }} else if (filters.power4_only) {{
+                // Power 4 filter: Purdue #11, Indiana #10
+                team1Rank = '{team_name1}'.toLowerCase() === 'indiana' ? 10 : 11;
+                team2Rank = '{team_name2}'.toLowerCase() === 'indiana' ? 10 : 11;
+            }} else {{
+                // No filter: Purdue #9, Indiana #13
+                team1Rank = '{team_name1}'.toLowerCase() === 'indiana' ? 13 : 9;
+                team2Rank = '{team_name2}'.toLowerCase() === 'indiana' ? 13 : 9;
+            }}
+            
             const summaryHtml = `
                 <div class="team-comparison">
                     <div class="team-section {team1_key}">
@@ -4227,7 +4272,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Attempts</h3><div class="value">${{team1.total_attempts}}</div></div>
                             <div class="summary-card"><h3>Conversions</h3><div class="value">${{team1.total_conversions}}</div></div>
-                            <div class="summary-card"><h3>Rate</h3><div class="value">${{team1.conversion_rate.toFixed(1)}}%</div></div>
+                            <div class="summary-card"><h3>Rate</h3><div class="rank-badge">#${{team1Rank}}</div><div class="value">${{team1.conversion_rate.toFixed(1)}}%</div><div class="benchmark-text">53.63% BIG10 avg</div></div>
                             <div class="summary-card"><h3>Last 3 Attempts</h3><div class="value">${{team1.last_3_games.attempts || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Conversions</h3><div class="value">${{team1.last_3_games.conversions || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Rate</h3><div class="value">${{team1.last_3_games.conversion_rate.toFixed(1)}}%</div></div>
@@ -4238,7 +4283,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         <div class="summary-cards">
                             <div class="summary-card"><h3>Attempts</h3><div class="value">${{team2.total_attempts}}</div></div>
                             <div class="summary-card"><h3>Conversions</h3><div class="value">${{team2.total_conversions}}</div></div>
-                            <div class="summary-card"><h3>Rate</h3><div class="value">${{team2.conversion_rate.toFixed(1)}}%</div></div>
+                            <div class="summary-card"><h3>Rate</h3><div class="rank-badge">#${{team2Rank}}</div><div class="value">${{team2.conversion_rate.toFixed(1)}}%</div><div class="benchmark-text">53.63% BIG10 avg</div></div>
                             <div class="summary-card"><h3>Last 3 Attempts</h3><div class="value">${{team2.last_3_games.attempts || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Conversions</h3><div class="value">${{team2.last_3_games.conversions || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Rate</h3><div class="value">${{team2.last_3_games.conversion_rate.toFixed(1)}}%</div></div>
@@ -4881,7 +4926,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <div class="summary-cards">
                                 <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team1.red_zone.total_plays}} - ${{team1.red_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team1.red_zone.touchdowns}}</div></div>
-                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team1.red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team1.red_zone.td_scoring_rate.toFixed(1)}}%</div><div class="benchmark-text">63.28% BIG10 avg</div></div>
                                 <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team1.red_zone.turnovers}}</div></div>
                                 <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team1.red_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team1.red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
@@ -4917,7 +4962,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <div class="summary-cards">
                                 <div class="summary-card"><h3>Plays - Drives</h3><div class="value">${{team2.red_zone.total_plays}} - ${{team2.red_zone.red_zone_attempts || 0}}</div></div>
                                 <div class="summary-card"><h3>Touchdowns</h3><div class="value">${{team2.red_zone.touchdowns}}</div></div>
-                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team2.red_zone.td_scoring_rate.toFixed(1)}}%</div></div>
+                                <div class="summary-card"><h3>TD Scoring %</h3><div class="value">${{team2.red_zone.td_scoring_rate.toFixed(1)}}%</div><div class="benchmark-text">63.28% BIG10 avg</div></div>
                                 <div class="summary-card"><h3>Giveaways</h3><div class="value">${{team2.red_zone.turnovers}}</div></div>
                                 <div class="summary-card"><h3>Turnovers on Downs</h3><div class="value">${{team2.red_zone.turnovers_on_downs || 0}}</div></div>
                                 <div class="summary-card"><h3>3rd Down Conv</h3><div class="value">${{team2.red_zone.conversions_3rd.rate.toFixed(1)}}%</div></div>
@@ -8182,11 +8227,44 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}
             }}).length;
             
+            // Count punt blocks
+            // Punt blocks: when opponent is punting (they're on offense) and we block it
+            const puntBlocks = stPlays.filter(p => {{
+                const playType = (p.play_type || '').toLowerCase();
+                const playText = (p.play_text || '').toLowerCase();
+                const offense = p.offense || '';
+                const isOpponentOffense = offense.toLowerCase() !== teamName.toLowerCase();
+                
+                // Must have "blocked punt" or "punt blocked" in play type or text
+                // This excludes false positives like "Illegal Block in Back" penalties on punts
+                const hasBlockedPuntInType = playType.includes('blocked punt') || playType.includes('punt blocked');
+                const hasBlockedPuntInText = playText.includes('blocked punt') || playText.includes('punt blocked');
+                
+                return (hasBlockedPuntInType || hasBlockedPuntInText) && isOpponentOffense;
+            }});
+            
+            // Punt blocks allowed: when we're punting and opponent blocks it
+            const puntBlocksAllowed = stPlays.filter(p => {{
+                const playType = (p.play_type || '').toLowerCase();
+                const playText = (p.play_text || '').toLowerCase();
+                const offense = p.offense || '';
+                const isOurOffense = offense.toLowerCase() === teamName.toLowerCase();
+                
+                // Must have "blocked punt" or "punt blocked" in play type or text
+                // This excludes false positives like "Illegal Block in Back" penalties on punts
+                const hasBlockedPuntInType = playType.includes('blocked punt') || playType.includes('punt blocked');
+                const hasBlockedPuntInText = playText.includes('blocked punt') || playText.includes('punt blocked');
+                
+                return (hasBlockedPuntInType || hasBlockedPuntInText) && isOurOffense;
+            }});
+            
             return {{
                 total_explosive_plays: explosivePlays.length,
                 explosive_returns_allowed: explosiveReturnsAllowed.length,
                 tds_scored: tdsScored,
                 tds_allowed: tdsAllowed,
+                punt_blocks: puntBlocks.length,
+                punt_blocks_allowed: puntBlocksAllowed.length,
                 plays: stPlays.map(p => {{
                     const explosive = isSpecialTeamsExplosive(p);
                     const isOur = p.offense?.toLowerCase() === teamName.toLowerCase();

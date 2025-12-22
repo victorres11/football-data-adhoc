@@ -79,7 +79,15 @@ def get_team_colors(team_name: str) -> tuple:
     # Purdue: Old Gold
     elif 'purdue' in team_lower or 'pur' in team_lower:
         return ("#d0b991", "#000000")  # Old Gold (primary) and Black (secondary)
-    
+
+    # Kentucky: Blue
+    elif 'kentucky' in team_lower:
+        return ("#0033A0", "#FFFFFF")  # Kentucky Blue (primary) and White (secondary)
+
+    # Louisville: Red
+    elif 'louisville' in team_lower:
+        return ("#AD0000", "#000000")  # Cardinal Red (primary) and Black (secondary)
+
     # Default gradient colors
     else:
         return ("#667eea", "#764ba2")  # Default purple gradient
@@ -352,7 +360,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <div class="schedule-tables-container">
                     <h2>Season Schedule</h2>
                     <div class="schedule-tables">
-                        <div class="schedule-table-wrapper">
+                        <div class="schedule-table-wrapper {team1_key}">
                             <h3>{team_name1}</h3>
                             <table class="schedule-table">
                                 <thead>
@@ -368,7 +376,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                                 </tbody>
                             </table>
                         </div>
-                        <div class="schedule-table-wrapper">
+                        <div class="schedule-table-wrapper {team2_key}">
                             <h3>{team_name2}</h3>
                             <table class="schedule-table">
                                 <thead>
@@ -784,49 +792,63 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         .schedule-table th {{
-            background: {team1_primary};
             color: white;
             padding: 10px 8px;
             text-align: left;
             font-weight: 600;
             font-size: 0.95em;
         }}
-        
+
+        .schedule-table-wrapper.{team1_key} .schedule-table th {{
+            background: {team1_primary};
+        }}
+
+        .schedule-table-wrapper.{team2_key} .schedule-table th {{
+            background: {team2_primary};
+        }}
+
         .schedule-table td {{
             padding: 8px;
             border-bottom: 1px solid #e0e0e0;
         }}
-        
+
         .schedule-table tr:hover {{
             background: #f5f5f5;
         }}
-        
+
         .schedule-table .score {{
             font-weight: 600;
             text-align: center;
         }}
-        
+
         .schedule-table .score.win {{
             color: #28a745;
         }}
-        
+
         .schedule-table .score.loss {{
             color: #dc3545;
         }}
-        
+
         .schedule-table .score.tie {{
             color: #ffc107;
         }}
-        
+
         .schedule-table .score.tbd {{
             color: #6c757d;
             font-style: italic;
         }}
-        
+
         .schedule-table-wrapper h3 {{
             margin-bottom: 10px;
-            color: {team1_primary};
             font-size: 1.2em;
+        }}
+
+        .schedule-table-wrapper.{team1_key} h3 {{
+            color: {team1_primary};
+        }}
+
+        .schedule-table-wrapper.{team2_key} h3 {{
+            color: {team2_primary};
         }}
         
         .definition-box p {{
@@ -2836,7 +2858,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 // because yards_gained might include the kick/punt distance
                 function parseReturnYards(playText) {{
                     if (!playText) return 0;
-                    
+
                     // Look for patterns like "returns for X yds" or "returns for no gain"
                     // Examples:
                     // "returns for 56 yds" -> 56
@@ -2850,7 +2872,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             return 0; // "no gain"
                         }}
                     }}
-                    
+
+                    // Also check for patterns without "for" (e.g., "return 40 yards to the UK40")
+                    // This handles CFBD-style play text
+                    const returnMatch2 = playText.match(/return (\d+) (?:yd|yard)/i);
+                    if (returnMatch2) {{
+                        return parseInt(returnMatch2[1], 10);
+                    }}
+
                     // Fallback: if we can't parse, return 0 to be safe
                     return 0;
                 }}
@@ -3074,7 +3103,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         function calculate4thDownTrends(plays, teamName) {{
             const byWeek = {{}};
-            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('timeout') && !(p.no_play === true) && !(p.play_type?.toLowerCase() === 'penalty' && p.play_text?.toLowerCase().includes('no play')) && !p.play_text?.toLowerCase().includes('knee')).forEach(play => {{
+            plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('kickoff') && !p.play_type?.toLowerCase().includes('timeout') && !(p.no_play === true) && !(p.play_type?.toLowerCase() === 'penalty' && p.play_text?.toLowerCase().includes('no play')) && !p.play_text?.toLowerCase().includes('knee')).forEach(play => {{
                 const gameId = play.game_id;
                 if (!gameId) return;
                 const week = getWeekForGameId(gameId);
@@ -3084,9 +3113,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     byWeek[week] = {{ attempts: 0, conversions: 0 }};
                 }}
                 byWeek[week].attempts++;
-                const playText = play.play_text?.toLowerCase() || '';
-                if (playText.includes('1st down') || playText.includes('first down') || playText.includes('touchdown') || (play.yards_gained >= play.distance)) {{
-                    byWeek[week].conversions++;
+                // Turnovers are never conversions
+                if (!play.turnover) {{
+                    const playText = play.play_text?.toLowerCase() || '';
+                    if (playText.includes('1st down') || playText.includes('first down') || playText.includes('touchdown') || (play.yards_gained >= play.distance)) {{
+                        byWeek[week].conversions++;
+                    }}
                 }}
             }});
             
@@ -7590,11 +7622,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         function analyze4thDowns(plays, teamName) {{
-            const fourthDowns = plays.filter(p => 
-                p.down === 4 && 
+            const fourthDowns = plays.filter(p =>
+                p.down === 4 &&
                 p.offense?.toLowerCase() === teamName.toLowerCase() &&
                 !p.play_type?.toLowerCase().includes('punt') &&
                 !p.play_type?.toLowerCase().includes('field goal') &&
+                !p.play_type?.toLowerCase().includes('kickoff') &&
                 !p.play_type?.toLowerCase().includes('timeout') &&
                 !(p.no_play === true) &&
                 !(p.play_type?.toLowerCase() === 'penalty' && p.play_text?.toLowerCase().includes('no play')) &&
@@ -7604,10 +7637,12 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             let conversions = 0;
             const playData = fourthDowns.map(p => {{
                 const playText = p.play_text?.toLowerCase() || '';
-                const converted = playText.includes('1st down') || 
-                                playText.includes('first down') || 
+                // Turnovers are never conversions
+                const converted = p.turnover ? false : (
+                                playText.includes('1st down') ||
+                                playText.includes('first down') ||
                                 playText.includes('touchdown') ||
-                                (p.yards_gained >= p.distance);
+                                (p.yards_gained >= p.distance));
                 if (converted) conversions++;
                 return {{
                     game_id: p.game_id,

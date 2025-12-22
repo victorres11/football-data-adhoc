@@ -752,7 +752,56 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             margin-right: 8px;
             font-size: 1.2em;
         }}
-        
+
+        .contact-banner {{
+            background: #e8f4fd;
+            border: 1px solid #0d6efd;
+            border-left: 4px solid #0d6efd;
+            color: #084298;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+        }}
+
+        .contact-banner::before {{
+            content: "📧";
+            margin-right: 8px;
+            font-size: 1.2em;
+        }}
+
+        .contact-banner a {{
+            color: #0d6efd;
+            text-decoration: underline;
+        }}
+
+        .roster-banner {{
+            background: #d4edda;
+            border: 1px solid #28a745;
+            border-left: 4px solid #28a745;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+        }}
+
+        .roster-banner::before {{
+            content: "📊";
+            margin-right: 8px;
+            font-size: 1.2em;
+        }}
+
+        .roster-banner a {{
+            color: #155724;
+            text-decoration: underline;
+            font-weight: bold;
+        }}
+
         .schedule-tables-container {{
             background: white;
             padding: 20px;
@@ -1498,7 +1547,15 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <div class="notice-banner">
                     This analysis is best viewed on a computer or tablet. Mobile viewing may have limited functionality.
                 </div>
-                
+
+                <div class="contact-banner">
+                    Interested in a custom report like this for your team? Feel free to reach out to Vic at&nbsp;<a href="mailto:victorres11@gmail.com">victorres11@gmail.com</a>
+                </div>
+
+                <div class="roster-banner">
+                    Want to see usage rates for the {team_name1} 2025 roster? <a href="https://victorres11.github.io/matchup-analytics/pages/{team1_key}.html" target="_blank">Click here</a>
+                </div>
+
                 <!-- Season Schedule -->
                 {schedule_tables_html}
         

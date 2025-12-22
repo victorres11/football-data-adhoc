@@ -26,7 +26,7 @@ def is_special_teams_explosive(play: Dict) -> bool:
         """Parse return yards from play text"""
         if not text:
             return 0
-        
+
         # Look for patterns like "returns for X yds" or "returns for no gain"
         # Examples:
         # "returns for 56 yds" -> 56
@@ -38,7 +38,13 @@ def is_special_teams_explosive(play: Dict) -> bool:
                 return int(match.group(1))
             else:
                 return 0  # "no gain"
-        
+
+        # Also check for patterns without "for" (e.g., "return 40 yards to the UK40")
+        # This handles CFBD-style play text
+        match2 = re.search(r'return (\d+) (?:yd|yard)', text, re.IGNORECASE)
+        if match2:
+            return int(match2.group(1))
+
         # Fallback: if we can't parse, return 0 to be safe
         return 0
     
@@ -264,8 +270,24 @@ def analyze_special_teams(plays: List[Dict], team_name: str) -> Dict[str, Any]:
     
     for play in special_teams_plays:
         game_id = play.get('game_id')
-        offense = play.get('offense', '') or ''
-        is_our = offense.lower() == team_name.lower()
+        play_type = play.get('play_type', '').lower()
+        play_text = play.get('play_text', '').lower()
+
+        # Check if it's a return play (kickoff return or punt return)
+        is_return = (
+            ('return' in play_type or 'return' in play_text) and
+            ('kickoff' in play_type or 'kickoff' in play_text or
+             'punt' in play_type or 'punt' in play_text)
+        )
+
+        # For returns, the returning team is in 'defense' field
+        # For other ST plays (kicks, punts), check 'offense' field
+        if is_return:
+            defense = play.get('defense', '') or ''
+            is_our = defense.lower() == team_name.lower()
+        else:
+            offense = play.get('offense', '') or ''
+            is_our = offense.lower() == team_name.lower()
         
         game_stats[game_id]['total_plays'] += 1
         

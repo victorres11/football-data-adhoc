@@ -1553,7 +1553,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </div>
 
                 <div class="roster-banner">
-                    Want to see usage rates for the {team_name1} 2025 roster? <a href="https://victorres11.github.io/matchup-analytics/pages/{team1_key}.html" target="_blank">Click here</a>
+                    Want to see usage rates for the {team_name1} 2025 roster?&nbsp;<a href="https://victorres11.github.io/matchup-analytics/pages/{team1_key}.html" target="_blank">Click here</a>
                 </div>
 
                 <!-- Season Schedule -->

@@ -88,6 +88,10 @@ def get_team_colors(team_name: str) -> tuple:
     elif 'louisville' in team_lower:
         return ("#AD0000", "#000000")  # Cardinal Red (primary) and Black (secondary)
 
+    # Oregon: Green/Yellow
+    elif 'oregon' in team_lower:
+        return ("#154733", "#FEE123")  # Oregon Green (primary) and Yellow (secondary)
+
     # Default gradient colors
     else:
         return ("#667eea", "#764ba2")  # Default purple gradient
@@ -113,10 +117,11 @@ def hex_to_rgba(hex_color: str, alpha: float = 1.0) -> str:
 
 def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wisconsin",
                       output_file: str = None, data_dir: str = "advanced_reports_yogi",
-                      sis_data_file: str = None, year: int = 2025):
+                      sis_data_file: str = None, year: int = 2025,
+                      pdf_only: bool = False):
     """
     Generate the comprehensive HTML analysis app with all analyses pre-computed
-    
+
     Args:
         team_name1: Name of first team (default: "Washington")
         team_name2: Name of second team (default: "Wisconsin")
@@ -124,6 +129,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         data_dir: Directory containing play-by-play data (default: "advanced_reports_yogi")
         sis_data_file: Path to SIS data JSON file (default: auto-generated from team names)
         year: Season year for SIS data file naming (default: 2025)
+        pdf_only: If True, only load games from PDF sources (_PDF.json files)
     """
     
     # Get team colors
@@ -191,8 +197,10 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
     
     # Load data for both teams
     print(f"Loading team data for {team_name1} and {team_name2}...")
-    team1_data = load_team_data(team_name1, data_dir)
-    team2_data = load_team_data(team_name2, data_dir)
+    if pdf_only:
+        print("  (PDF sources only)")
+    team1_data = load_team_data(team_name1, data_dir, pdf_only=pdf_only)
+    team2_data = load_team_data(team_name2, data_dir, pdf_only=pdf_only)
     
     print(f"Running analyses for {team_name1}...")
     team1_middle8 = analyze_middle_eight(team1_data['all_plays'], team_name1)
@@ -724,7 +732,36 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             color: {team2_primary};
             margin-bottom: 15px;
         }}
-        
+
+        /* Football field visualization for explosive plays */
+        .field-container {{
+            display: flex;
+            height: 80px;
+            border: 3px solid #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }}
+        .field-zone {{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            border-right: 2px dashed rgba(255,255,255,0.5);
+        }}
+        .field-zone:last-child {{ border-right: none; }}
+        .field-zone .zone-label {{ font-size: 11px; opacity: 0.9; }}
+        .field-zone .zone-value {{ font-size: 20px; }}
+        .field-zone .zone-pct {{ font-size: 12px; opacity: 0.8; }}
+        .zone-own-deep {{ background: linear-gradient(180deg, #1a472a 0%, #2d5a3f 100%); width: 24%; }}
+        .zone-own-mid {{ background: linear-gradient(180deg, #2d5a3f 0%, #3d7a5f 100%); width: 25%; }}
+        .zone-opp-mid {{ background: linear-gradient(180deg, #4a8f6f 0%, #5aa080 100%); width: 25%; }}
+        .zone-red {{ background: linear-gradient(180deg, #c0392b 0%, #e74c3c 100%); width: 25%; }}
+        .zone-endzone {{ background: linear-gradient(180deg, #8B0000 0%, #a00 100%); width: 1%; min-width: 30px; }}
+
         .definition-box {{
             background: linear-gradient(135deg, {team1_primary} 0%, {team1_secondary} 100%);
             color: white;
@@ -1651,6 +1688,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 <p><strong>Definition:</strong> Explosive plays are runs of 15+ yards or passes of 20+ yards while on offense.</p>
             </div>
             <div id="explosivePlaysSummary"></div>
+            <div id="explosiveFieldPositionSummary"></div>
             <div class="chart-container">
                 <canvas id="explosivePlaysChart"></canvas>
             </div>
@@ -2337,7 +2375,101 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         const team2Key = '{team2_key}';
         const team1Name = '{team_name1}';
         const team2Name = '{team_name2}';
-        
+
+        // Conference team lists for filtering
+        // Each team filters by their OWN conference opponents
+        const conferenceTeams = {{
+            'Big Ten': [
+                'Illinois', 'Indiana', 'Iowa', 'Maryland', 'Michigan', 'Michigan State',
+                'Minnesota', 'Nebraska', 'Northwestern', 'Ohio State', 'Oregon', 'Penn State',
+                'Purdue', 'Rutgers', 'UCLA', 'USC', 'Washington', 'Wisconsin'
+            ],
+            'SEC': [
+                'Alabama', 'Arkansas', 'Auburn', 'Florida', 'Georgia', 'Kentucky',
+                'LSU', 'Mississippi State', 'Missouri', 'Oklahoma', 'Ole Miss',
+                'South Carolina', 'Tennessee', 'Texas', 'Texas A&M', 'Vanderbilt'
+            ],
+            'Big 12': [
+                'Arizona', 'Arizona State', 'Baylor', 'BYU', 'Cincinnati', 'Colorado',
+                'Houston', 'Iowa State', 'Kansas', 'Kansas State', 'Oklahoma State',
+                'TCU', 'Texas Tech', 'UCF', 'Utah', 'West Virginia'
+            ],
+            'ACC': [
+                'Boston College', 'California', 'Clemson', 'Duke', 'Florida State',
+                'Georgia Tech', 'Louisville', 'Miami', 'NC State', 'North Carolina',
+                'Notre Dame', 'Pitt', 'SMU', 'Stanford', 'Syracuse', 'Virginia',
+                'Virginia Tech', 'Wake Forest'
+            ]
+        }};
+
+        // Determine which conference each team is in
+        function getTeamConference(teamName) {{
+            for (const [conf, teams] of Object.entries(conferenceTeams)) {{
+                if (teams.some(t => t.toLowerCase() === teamName.toLowerCase())) {{
+                    return conf;
+                }}
+            }}
+            return null;
+        }}
+
+        // Normalize team names to handle common abbreviations and naming conflicts
+        // E.g., "USC" can mean South Carolina (SEC) or USC (Big Ten) depending on context
+        function normalizeTeamName(name, conferenceContext) {{
+            if (!name) return name;
+            const lname = name.toLowerCase();
+
+            // USC disambiguation: South Carolina in SEC context, USC (SoCal) in Big Ten
+            if (lname === 'usc') {{
+                if (conferenceContext === 'SEC') return 'South Carolina';
+                if (conferenceContext === 'Big Ten') return 'USC';
+            }}
+
+            // Common alternate names
+            const aliases = {{
+                'ole miss': 'Ole Miss',
+                'mississippi': 'Ole Miss',
+                'pitt': 'Pittsburgh',
+                'pittsburgh': 'Pitt',  // ACC has 'Pitt' in list
+                'texas a&m': 'Texas A&M',
+                'tamu': 'Texas A&M'
+            }};
+
+            return aliases[lname] || name;
+        }}
+
+        // Check if opponent is in same conference as team
+        function isConferenceGame(teamName, opponentName) {{
+            const teamConf = getTeamConference(teamName);
+            if (!teamConf) return false;
+
+            // Normalize opponent name for this conference context
+            const normalizedOpponent = normalizeTeamName(opponentName, teamConf);
+
+            const confTeams = conferenceTeams[teamConf] || [];
+            return confTeams.some(t => t.toLowerCase() === normalizedOpponent.toLowerCase());
+        }}
+
+        // Check if opponent is a Power 4 team (SEC, Big Ten, Big 12, ACC)
+        function isPower4Opponent(opponentName) {{
+            if (!opponentName) return false;
+            const power4Conferences = ['SEC', 'Big Ten', 'Big 12', 'ACC'];
+
+            // Try each Power 4 conference to see if opponent is a member
+            for (const conf of power4Conferences) {{
+                // Normalize the opponent name for this conference context
+                const normalizedOpponent = normalizeTeamName(opponentName, conf);
+                const confTeams = conferenceTeams[conf] || [];
+                if (confTeams.some(t => t.toLowerCase() === normalizedOpponent.toLowerCase())) {{
+                    return true;
+                }}
+            }}
+            return false;
+        }}
+
+        const team1Conference = getTeamConference(team1Name);
+        const team2Conference = getTeamConference(team2Name);
+        console.log('Team conferences:', team1Name, '=', team1Conference, ',', team2Name, '=', team2Conference);
+
         // CRITICAL DEBUG: Check penalties immediately after parsing
         console.log('=== PENALTIES DATA DEBUG (IMMEDIATE AFTER PARSE) ===');
         console.log('Purdue penalties accepted:', allData[team2Key]?.penalties?.accepted);
@@ -2465,12 +2597,17 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const byeWeeks = allData.bye_weeks || {{}};
             const team1ByeWeeks = new Set(byeWeeks[team1Name]?.bye_weeks || []);
             const team2ByeWeeks = new Set(byeWeeks[team2Name]?.bye_weeks || []);
-            
-            // Get all unique game IDs and their week numbers
+
+            // Get all unique weeks from both teams (handles PDF data without game_id)
+            const allWeeks = new Set();
+            team1Games.forEach(g => {{ if (g.week) allWeeks.add(g.week); }});
+            team2Games.forEach(g => {{ if (g.week) allWeeks.add(g.week); }});
+
+            // Also collect game_id to week mapping for API data
             const allGameIds = new Set();
             team1Games.forEach(g => {{ if (g.game_id) allGameIds.add(g.game_id); }});
             team2Games.forEach(g => {{ if (g.game_id) allGameIds.add(g.game_id); }});
-            
+
             // Get week for each game from the game lists
             const allGames = Array.from(allGameIds).map(gameId => {{
                 const washGame = team1Games.find(g => g.game_id === gameId);
@@ -2478,9 +2615,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 const week = washGame?.week || wiscGame?.week || 0;
                 return {{ gameId, week: week }};
             }});
-            
-            // Find the maximum week number
-            const maxWeek = Math.max(...allGames.map(g => g.week).filter(w => w > 0), 0);
+
+            // Find the maximum week number from both sources
+            const maxWeekFromGames = allGames.length > 0 ? Math.max(...allGames.map(g => g.week).filter(w => w > 0), 0) : 0;
+            const maxWeekFromWeeks = allWeeks.size > 0 ? Math.max(...allWeeks) : 0;
+            const maxWeek = Math.max(maxWeekFromGames, maxWeekFromWeeks, 0);
             
             // Create mapping: gameId -> week number
             const gameIdToWeek = {{}};
@@ -2542,9 +2681,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         function calculateTrendsByWeek(plays, teamName, metricFn) {{
             const byWeek = {{}};
             plays.forEach(play => {{
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -2567,9 +2710,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const byWeek = {{}};
             plays.forEach(play => {{
                 if (play.turnover === true) {{
-                    const gameId = play.game_id;
-                    if (!gameId) return;
-                    const week = getWeekForGameId(gameId);
+                    // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                    let week = play.game_week;
+                    if (!week) {{
+                        const gameId = play.game_id;
+                        if (!gameId) return;
+                        week = getWeekForGameId(gameId);
+                    }}
                     if (!week) return;
                     
                     if (!byWeek[week]) {{
@@ -2683,9 +2830,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             const byWeek = {{}};
             
             turnovers.forEach(turnover => {{
-                const gameId = turnover.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = turnover.game_week;
+                if (!week) {{
+                    const gameId = turnover.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -2830,9 +2981,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         function calculateMiddle8Trends(plays, teamName) {{
             const byWeek = {{}};
             plays.filter(p => p.middle_eight === true).forEach(play => {{
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -2869,13 +3024,17 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         function calculateExplosiveTrends(plays, teamName) {{
             const byWeek = {{}};
-            plays.filter(p => 
-                p.explosive_play === true && 
+            plays.filter(p =>
+                p.explosive_play === true &&
                 p.play_classification !== 'special_teams'
             ).forEach(play => {{
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -2960,9 +3119,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             const byWeek = {{}};
             plays.filter(p => isSpecialTeamsExplosive(p)).forEach(play => {{
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -3008,9 +3171,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         function calculatePenaltyTrends(plays, teamName) {{
             const byWeek = {{}};
             plays.filter(p => p.penalty_type != null && (p.offense?.toLowerCase() === teamName.toLowerCase() || p.defense?.toLowerCase() === teamName.toLowerCase())).forEach(play => {{
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -3094,13 +3261,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             plays.forEach(play => {{
                 if (play.penalty_type == null) return;
-                
-                // Only count accepted penalties
-                if (play.penalty_decision !== 'accepted') return;
-                
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+
+                // Only count accepted penalties (check both penalty_decision and penalty_status for PDF data)
+                const decision = play.penalty_decision || play.penalty_status;
+                if (decision !== 'accepted') return;
+
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 const playText = (play.play_text || '').toLowerCase();
@@ -3158,12 +3330,97 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }};
         }}
         
+        // Helper function to calculate game situation (winning/tied/trailing) for each play
+        function calculateGameSituation(plays, teamName) {{
+            // Group plays by game
+            const gameKey = (p) => p.game_id != null ? p.game_id : `week_${{p.game_week || 0}}`;
+            const gameGroups = {{}};
+            plays.forEach(p => {{
+                const key = gameKey(p);
+                if (!gameGroups[key]) gameGroups[key] = [];
+                gameGroups[key].push(p);
+            }});
+
+            // For each game, calculate cumulative scores and assign to each play
+            Object.values(gameGroups).forEach(gamePlays => {{
+                // Sort plays by period (asc) and clock (desc) to get chronological order
+                gamePlays.sort((a, b) => {{
+                    if (a.period !== b.period) return a.period - b.period;
+                    // Parse clock strings like "15:00" to compare
+                    const parseClk = (c) => {{
+                        if (!c) return 0;
+                        const parts = String(c).split(':');
+                        return parseInt(parts[0] || 0) * 60 + parseInt(parts[1] || 0);
+                    }};
+                    return parseClk(b.clock) - parseClk(a.clock);  // Higher clock = earlier in period
+                }});
+
+                let teamScore = 0;
+                let oppScore = 0;
+
+                gamePlays.forEach(play => {{
+                    // Store current margin BEFORE this play
+                    const isTeamOnOffense = play.offense?.toLowerCase() === teamName.toLowerCase();
+                    play._team_margin = teamScore - oppScore;
+
+                    // If this is a scoring play, update scores
+                    if (play.scoring === true) {{
+                        const playText = (play.play_text || '').toLowerCase();
+                        const playType = (play.play_type || '').toLowerCase();
+                        let points = 0;
+
+                        // Determine points scored
+                        if (playText.includes('touchdown') || playType.includes('touchdown')) {{
+                            points = 6;
+                            // Check for PAT
+                            if (playText.includes('kick attempt good') || playText.includes('extra point good')) {{
+                                points = 7;
+                            }} else if (playText.includes('two-point') && playText.includes('good')) {{
+                                points = 8;
+                            }}
+                        }} else if (playText.includes('field goal') && playText.includes('good')) {{
+                            points = 3;
+                        }} else if (playText.includes('safety')) {{
+                            points = 2;
+                        }}
+
+                        // Determine who scored (check if offense or defense scored)
+                        // For interception/fumble return TDs, the defense scored
+                        const isDefensiveTD = playText.includes('interception') && playText.includes('touchdown') ||
+                                             playText.includes('fumble') && playText.includes('return') && playText.includes('touchdown');
+
+                        if (isDefensiveTD) {{
+                            // Defense scored
+                            if (isTeamOnOffense) {{
+                                oppScore += points;
+                            }} else {{
+                                teamScore += points;
+                            }}
+                        }} else {{
+                            // Offense scored
+                            if (isTeamOnOffense) {{
+                                teamScore += points;
+                            }} else {{
+                                oppScore += points;
+                            }}
+                        }}
+                    }}
+                }});
+            }});
+
+            return plays;
+        }}
+
         function calculate4thDownTrends(plays, teamName) {{
             const byWeek = {{}};
             plays.filter(p => p.down === 4 && p.offense?.toLowerCase() === teamName.toLowerCase() && !p.play_type?.toLowerCase().includes('punt') && !p.play_type?.toLowerCase().includes('field goal') && !p.play_type?.toLowerCase().includes('kickoff') && !p.play_type?.toLowerCase().includes('timeout') && !(p.no_play === true) && !(p.play_type?.toLowerCase() === 'penalty' && p.play_text?.toLowerCase().includes('no play')) && !p.play_text?.toLowerCase().includes('knee')).forEach(play => {{
-                const gameId = play.game_id;
-                if (!gameId) return;
-                const week = getWeekForGameId(gameId);
+                // Use game_week directly if available (PDF data), otherwise lookup from game_id
+                let week = play.game_week;
+                if (!week) {{
+                    const gameId = play.game_id;
+                    if (!gameId) return;
+                    week = getWeekForGameId(gameId);
+                }}
                 if (!week) return;
                 
                 if (!byWeek[week]) {{
@@ -3242,29 +3499,43 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }};
         }}
         
-        function filterPlays(plays, filters) {{
+        function filterPlays(plays, filters, teamName) {{
             let filtered = plays;
-            
+
+            // Helper to get game key (handles PDF data where game_id is null)
+            const getGameKey = (p) => p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+
             // Filter by conference/non-conference/power4
+            // ALWAYS use opponent name to check conference membership
+            // (source data is_conference field is often incorrect for cross-conference matchups)
             if (filters.conference_only) {{
-                filtered = filtered.filter(p => p.is_conference === true);
+                filtered = filtered.filter(p => {{
+                    const opponent = p.opponent || '';
+                    return teamName ? isConferenceGame(teamName, opponent) : false;
+                }});
             }} else if (filters.non_conference_only) {{
-                filtered = filtered.filter(p => p.is_conference === false);
+                filtered = filtered.filter(p => {{
+                    const opponent = p.opponent || '';
+                    return teamName ? !isConferenceGame(teamName, opponent) : false;
+                }});
             }} else if (filters.power4_only) {{
-                filtered = filtered.filter(p => p.is_power4_opponent === true);
+                filtered = filtered.filter(p => {{
+                    const opponent = p.opponent || '';
+                    return isPower4Opponent(opponent);
+                }});
             }}
-            
+
             // Filter by last 3 games
             if (filters.last_3_games) {{
-                const games = [...new Set(filtered.map(p => p.game_id))];
-                const gameWeeks = games.map(gid => ({{
-                    id: gid,
-                    week: filtered.find(p => p.game_id === gid)?.game_week || 0
+                const games = [...new Set(filtered.map(p => getGameKey(p)))];
+                const gameWeeks = games.map(gkey => ({{
+                    id: gkey,
+                    week: filtered.find(p => getGameKey(p) === gkey)?.game_week || 0
                 }})).sort((a, b) => a.week - b.week);
                 const last3 = gameWeeks.slice(-3).map(g => g.id);
-                filtered = filtered.filter(p => last3.includes(p.game_id));
+                filtered = filtered.filter(p => last3.includes(getGameKey(p)));
             }}
-            
+
             return filtered;
         }}
         
@@ -3551,11 +3822,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 p.play_classification !== 'special_teams'
             );
             
+            // Use game_week as fallback for PDF data (game_id is null)
+            const getGameKey = (p) => p.game_id != null ? p.game_id : `week_${{p.game_week || 0}}`;
+
             // Calculate allowed stats
             const washAllowedTotal = washAllowedPlays.length;
-            const washAllowedGames = new Set(washAllowedPlays.map(p => p.game_id)).size;
+            const washAllowedGames = new Set(washAllowedPlays.map(getGameKey)).size;
             const washAllowedPerGame = washAllowedGames > 0 ? washAllowedTotal / washAllowedGames : 0;
-            
+
             // Calculate allowed runs and passes
             const washAllowedRuns = washAllowedPlays.filter(p => {{
                 const pt = (p.play_type || '').toLowerCase();
@@ -3565,29 +3839,29 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 const pt = (p.play_type || '').toLowerCase();
                 return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
             }}).length;
-            
+
             // Last 3 games allowed
-            const washGames = [...new Set(washAllowedPlays.map(p => p.game_id))].map(gid => ({{
-                id: gid,
-                week: washAllowedPlays.find(p => p.game_id === gid)?.game_week || 0
-            }})).sort((a, b) => a.week - b.week);
-            const washLast3GameIds = washGames.slice(-3).map(g => g.id);
-            const washAllowedLast3 = washAllowedPlays.filter(p => washLast3GameIds.includes(p.game_id)).length;
+            const washGameKeys = [...new Set(washAllowedPlays.map(getGameKey))].map(gkey => ({{
+                id: gkey,
+                week: washAllowedPlays.find(p => getGameKey(p) === gkey)?.game_week || 0
+            }})).filter(g => g.week > 0).sort((a, b) => a.week - b.week);
+            const washLast3GameKeys = washGameKeys.slice(-3).map(g => g.id);
+            const washAllowedLast3 = washAllowedPlays.filter(p => washLast3GameKeys.includes(getGameKey(p))).length;
             const washAllowedLast3Runs = washAllowedPlays.filter(p => {{
-                if (!washLast3GameIds.includes(p.game_id)) return false;
+                if (!washLast3GameKeys.includes(getGameKey(p))) return false;
                 const pt = (p.play_type || '').toLowerCase();
                 return pt.includes('rush') || pt.includes('run') || pt === 'sack';
             }}).length;
             const washAllowedLast3Passes = washAllowedPlays.filter(p => {{
-                if (!washLast3GameIds.includes(p.game_id)) return false;
+                if (!washLast3GameKeys.includes(getGameKey(p))) return false;
                 const pt = (p.play_type || '').toLowerCase();
                 return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
             }}).length;
             
             const wiscAllowedTotal = wiscAllowedPlays.length;
-            const wiscAllowedGames = new Set(wiscAllowedPlays.map(p => p.game_id)).size;
+            const wiscAllowedGames = new Set(wiscAllowedPlays.map(getGameKey)).size;
             const wiscAllowedPerGame = wiscAllowedGames > 0 ? wiscAllowedTotal / wiscAllowedGames : 0;
-            
+
             // Calculate allowed runs and passes
             const wiscAllowedRuns = wiscAllowedPlays.filter(p => {{
                 const pt = (p.play_type || '').toLowerCase();
@@ -3597,24 +3871,41 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 const pt = (p.play_type || '').toLowerCase();
                 return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
             }}).length;
-            
-            const wiscGames = [...new Set(wiscAllowedPlays.map(p => p.game_id))].map(gid => ({{
-                id: gid,
-                week: wiscAllowedPlays.find(p => p.game_id === gid)?.game_week || 0
-            }})).sort((a, b) => a.week - b.week);
-            const wiscLast3GameIds = wiscGames.slice(-3).map(g => g.id);
-            const wiscAllowedLast3 = wiscAllowedPlays.filter(p => wiscLast3GameIds.includes(p.game_id)).length;
+
+            const wiscGameKeys = [...new Set(wiscAllowedPlays.map(getGameKey))].map(gkey => ({{
+                id: gkey,
+                week: wiscAllowedPlays.find(p => getGameKey(p) === gkey)?.game_week || 0
+            }})).filter(g => g.week > 0).sort((a, b) => a.week - b.week);
+            const wiscLast3GameKeys = wiscGameKeys.slice(-3).map(g => g.id);
+            const wiscAllowedLast3 = wiscAllowedPlays.filter(p => wiscLast3GameKeys.includes(getGameKey(p))).length;
             const wiscAllowedLast3Runs = wiscAllowedPlays.filter(p => {{
-                if (!wiscLast3GameIds.includes(p.game_id)) return false;
+                if (!wiscLast3GameKeys.includes(getGameKey(p))) return false;
                 const pt = (p.play_type || '').toLowerCase();
                 return pt.includes('rush') || pt.includes('run') || pt === 'sack';
             }}).length;
             const wiscAllowedLast3Passes = wiscAllowedPlays.filter(p => {{
-                if (!wiscLast3GameIds.includes(p.game_id)) return false;
+                if (!wiscLast3GameKeys.includes(getGameKey(p))) return false;
                 const pt = (p.play_type || '').toLowerCase();
                 return pt.includes('pass') || pt.includes('reception') || pt.includes('incompletion') || pt.includes('interception');
             }}).length;
-            
+
+            // Field position breakdown for team 1 (using team1.plays which are the team's offensive explosives)
+            const team1FieldPos = {{
+                ownDeep: team1.plays.filter(p => p.yards_to_goal > 75).length,
+                ownMid: team1.plays.filter(p => p.yards_to_goal > 50 && p.yards_to_goal <= 75).length,
+                oppMid: team1.plays.filter(p => p.yards_to_goal > 25 && p.yards_to_goal <= 50).length,
+                redZone: team1.plays.filter(p => p.yards_to_goal <= 25 && p.yards_to_goal > 0).length
+            }};
+            const team1FieldTotal = team1.plays.length || 1;
+
+            const team2FieldPos = {{
+                ownDeep: team2.plays.filter(p => p.yards_to_goal > 75).length,
+                ownMid: team2.plays.filter(p => p.yards_to_goal > 50 && p.yards_to_goal <= 75).length,
+                oppMid: team2.plays.filter(p => p.yards_to_goal > 25 && p.yards_to_goal <= 50).length,
+                redZone: team2.plays.filter(p => p.yards_to_goal <= 25 && p.yards_to_goal > 0).length
+            }};
+            const team2FieldTotal = team2.plays.length || 1;
+
             // Summary
             const summaryHtml = `
                 <div class="team-comparison">
@@ -3651,7 +3942,70 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 </div>
             `;
             document.getElementById('explosivePlaysSummary').innerHTML = summaryHtml;
-            
+
+            // Field position breakdown - football field visualization
+            const fieldPosHtml = `
+                <div class="team-comparison" style="margin-top: 20px;">
+                    <div class="team-section {team1_key}">
+                        <h4 style="margin-bottom: 10px;">Explosive Play Field Position</h4>
+                        <div class="field-container">
+                            <div class="field-zone zone-own-deep">
+                                <div class="zone-label">OWN 1-24</div>
+                                <div class="zone-value">${{team1FieldPos.ownDeep}}</div>
+                                <div class="zone-pct">${{(team1FieldPos.ownDeep/team1FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-own-mid">
+                                <div class="zone-label">OWN 25-49</div>
+                                <div class="zone-value">${{team1FieldPos.ownMid}}</div>
+                                <div class="zone-pct">${{(team1FieldPos.ownMid/team1FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-opp-mid">
+                                <div class="zone-label">OPP 26-50</div>
+                                <div class="zone-value">${{team1FieldPos.oppMid}}</div>
+                                <div class="zone-pct">${{(team1FieldPos.oppMid/team1FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-red">
+                                <div class="zone-label">RED ZONE</div>
+                                <div class="zone-value">${{team1FieldPos.redZone}}</div>
+                                <div class="zone-pct">${{(team1FieldPos.redZone/team1FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-endzone">
+                                <div class="zone-label" style="font-size:9px;">END</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-section {team2_key}">
+                        <h4 style="margin-bottom: 10px;">Explosive Play Field Position</h4>
+                        <div class="field-container">
+                            <div class="field-zone zone-own-deep">
+                                <div class="zone-label">OWN 1-24</div>
+                                <div class="zone-value">${{team2FieldPos.ownDeep}}</div>
+                                <div class="zone-pct">${{(team2FieldPos.ownDeep/team2FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-own-mid">
+                                <div class="zone-label">OWN 25-49</div>
+                                <div class="zone-value">${{team2FieldPos.ownMid}}</div>
+                                <div class="zone-pct">${{(team2FieldPos.ownMid/team2FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-opp-mid">
+                                <div class="zone-label">OPP 26-50</div>
+                                <div class="zone-value">${{team2FieldPos.oppMid}}</div>
+                                <div class="zone-pct">${{(team2FieldPos.oppMid/team2FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-red">
+                                <div class="zone-label">RED ZONE</div>
+                                <div class="zone-value">${{team2FieldPos.redZone}}</div>
+                                <div class="zone-pct">${{(team2FieldPos.redZone/team2FieldTotal*100).toFixed(0)}}%</div>
+                            </div>
+                            <div class="field-zone zone-endzone">
+                                <div class="zone-label" style="font-size:9px;">END</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('explosiveFieldPositionSummary').innerHTML = fieldPosHtml;
+
             // Chart
             const ctx = document.getElementById('explosivePlaysChart').getContext('2d');
             if (charts.explosive) charts.explosive.destroy();
@@ -3984,22 +4338,28 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             
             team1Plays.forEach(p => {{
                 const penaltyType = (p.penalty_type || '').toUpperCase();
-                if ((penaltyType.includes('PASS INTERFERENCE') || penaltyType.includes('PI')) && 
+                if ((penaltyType.includes('PASS INTERFERENCE') || penaltyType.includes('PI')) &&
                     (p.offense || '').toUpperCase() === team1Name.toUpperCase()) {{
-                    team1PIDrawn++;
-                    if (p.penalty_decision === 'accepted') {{
-                        team1PIDrawnYards += Math.abs(p.yards_gained || 0);
+                    // Check both penalty_decision (API data) and penalty_status (PDF data)
+                    const decision = p.penalty_decision || p.penalty_status;
+                    if (decision === 'accepted') {{
+                        team1PIDrawn++;
+                        // Use penalty_yards field, fall back to yards_gained
+                        team1PIDrawnYards += Math.abs(p.penalty_yards || p.yards_gained || 0);
                     }}
                 }}
             }});
-            
+
             team2Plays.forEach(p => {{
                 const penaltyType = (p.penalty_type || '').toUpperCase();
-                if ((penaltyType.includes('PASS INTERFERENCE') || penaltyType.includes('PI')) && 
+                if ((penaltyType.includes('PASS INTERFERENCE') || penaltyType.includes('PI')) &&
                     (p.offense || '').toUpperCase() === team2Name.toUpperCase()) {{
-                    team2PIDrawn++;
-                    if (p.penalty_decision === 'accepted') {{
-                        team2PIDrawnYards += Math.abs(p.yards_gained || 0);
+                    // Check both penalty_decision (API data) and penalty_status (PDF data)
+                    const decision = p.penalty_decision || p.penalty_status;
+                    if (decision === 'accepted') {{
+                        team2PIDrawn++;
+                        // Use penalty_yards field, fall back to yards_gained
+                        team2PIDrawnYards += Math.abs(p.penalty_yards || p.yards_gained || 0);
                     }}
                 }}
             }});
@@ -4011,10 +4371,6 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     <p><strong>${{team1Name}}:</strong> ${{team1PIDrawn}} PI penalties drawn (${{team1PIDrawnYards}} yards, ${{(team1PIDrawn / (team1.total_games || 1)).toFixed(1)}}/game)</p>
                     <p><strong>${{team2Name}}:</strong> ${{team2PIDrawn}} PI penalties drawn (${{team2PIDrawnYards}} yards, ${{(team2PIDrawn / (team2.total_games || 1)).toFixed(1)}}/game)</p>
                     <p style="margin-top: 10px; font-size: 0.9em;"><em>Note: This counts defensive pass interference penalties committed by opponents when the team was on offense.</em></p>
-                </div>
-                <div class="insight-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107; margin-top: 20px;">
-                    <h4>⚠️ Penalty Yards Note:</h4>
-                    <p style="font-size: 0.95em;">Penalty yards data is currently buggy because the yardage from the play is not separated from the penalty yardage yet. The yardage values shown may include both play yardage and penalty yardage combined.</p>
                 </div>
             `;
             
@@ -4360,25 +4716,73 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         function populate4thDowns() {{
             const team1 = allData[team1Key]['4thdowns'];
             const team2 = allData[team2Key]['4thdowns'];
-            
+
+            // Calculate game situation for 4th down plays
+            const team1PlaysWithSituation = calculateGameSituation([...team1Plays], team1Name);
+            const team2PlaysWithSituation = calculateGameSituation([...team2Plays], team2Name);
+
+            // Helper to check if a play is a "go for it" 4th down
+            const isGoForIt = (p, teamName) => {{
+                if (p.down !== 4) return false;
+                if (p.offense?.toLowerCase() !== teamName.toLowerCase()) return false;
+                const pt = (p.play_type || '').toLowerCase();
+                const playText = (p.play_text || '').toLowerCase();
+                if (pt.includes('punt') || pt.includes('field goal') || pt.includes('kickoff') || pt.includes('timeout')) return false;
+                // Exclude ALL plays with "no play" (nullified by penalty) - they never happened
+                if (playText.includes('no play')) return false;
+                return true;
+            }};
+
+            // Helper to check if converted
+            const isConverted = (p) => {{
+                if (p.turnover) return false;
+                const playText = (p.play_text || '').toLowerCase();
+                if (playText.includes('1st down') || playText.includes('first down') || playText.includes('touchdown')) return true;
+                if (p.yards_gained >= p.distance) return true;
+                return false;
+            }};
+
+            // Calculate situation-based stats for team 1
+            const team1GoForItPlays = team1PlaysWithSituation.filter(p => isGoForIt(p, team1Name));
+            const team1Winning = team1GoForItPlays.filter(p => (p._team_margin || 0) > 0);
+            const team1TiedOrTrailing = team1GoForItPlays.filter(p => (p._team_margin || 0) <= 0);
+
+            const team1WinningAttempts = team1Winning.length;
+            const team1WinningConversions = team1Winning.filter(isConverted).length;
+            const team1WinningRate = team1WinningAttempts > 0 ? (team1WinningConversions / team1WinningAttempts * 100) : 0;
+
+            const team1TrailingAttempts = team1TiedOrTrailing.length;
+            const team1TrailingConversions = team1TiedOrTrailing.filter(isConverted).length;
+            const team1TrailingRate = team1TrailingAttempts > 0 ? (team1TrailingConversions / team1TrailingAttempts * 100) : 0;
+
+            // Calculate situation-based stats for team 2
+            const team2GoForItPlays = team2PlaysWithSituation.filter(p => isGoForIt(p, team2Name));
+            const team2Winning = team2GoForItPlays.filter(p => (p._team_margin || 0) > 0);
+            const team2TiedOrTrailing = team2GoForItPlays.filter(p => (p._team_margin || 0) <= 0);
+
+            const team2WinningAttempts = team2Winning.length;
+            const team2WinningConversions = team2Winning.filter(isConverted).length;
+            const team2WinningRate = team2WinningAttempts > 0 ? (team2WinningConversions / team2WinningAttempts * 100) : 0;
+
+            const team2TrailingAttempts = team2TiedOrTrailing.length;
+            const team2TrailingConversions = team2TiedOrTrailing.filter(isConverted).length;
+            const team2TrailingRate = team2TrailingAttempts > 0 ? (team2TrailingConversions / team2TrailingAttempts * 100) : 0;
+
             // Get current filters to determine rank
             const filters = getFilters();
             let team1Rank, team2Rank;
-            
+
             if (filters.conference_only) {{
-                // Conference filter: Purdue #11, Indiana #9
                 team1Rank = '{team_name1}'.toLowerCase() === 'indiana' ? 9 : 11;
                 team2Rank = '{team_name2}'.toLowerCase() === 'indiana' ? 9 : 11;
             }} else if (filters.power4_only) {{
-                // Power 4 filter: Purdue #11, Indiana #10
                 team1Rank = '{team_name1}'.toLowerCase() === 'indiana' ? 10 : 11;
                 team2Rank = '{team_name2}'.toLowerCase() === 'indiana' ? 10 : 11;
             }} else {{
-                // No filter: Purdue #9, Indiana #13
                 team1Rank = '{team_name1}'.toLowerCase() === 'indiana' ? 13 : 9;
                 team2Rank = '{team_name2}'.toLowerCase() === 'indiana' ? 13 : 9;
             }}
-            
+
             const summaryHtml = `
                 <div class="team-comparison">
                     <div class="team-section {team1_key}">
@@ -4391,6 +4795,24 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <div class="summary-card"><h3>Last 3 Conversions</h3><div class="value">${{team1.last_3_games.conversions || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Rate</h3><div class="value">${{team1.last_3_games.conversion_rate.toFixed(1)}}%</div></div>
                         </div>
+                        <h4 style="margin-top: 15px; margin-bottom: 5px;">When Winning</h4>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Attempts</h3><div class="value">${{team1WinningAttempts}}</div></div>
+                            <div class="summary-card"><h3>Conversions</h3><div class="value">${{team1WinningConversions}}</div></div>
+                            <div class="summary-card"><h3>Rate</h3><div class="value">${{team1WinningRate.toFixed(1)}}%</div></div>
+                        </div>
+                        <h4 style="margin-top: 15px; margin-bottom: 5px;">When Tied or Trailing</h4>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Attempts</h3><div class="value">${{team1TrailingAttempts}}</div></div>
+                            <div class="summary-card"><h3>Conversions</h3><div class="value">${{team1TrailingConversions}}</div></div>
+                            <div class="summary-card"><h3>Rate</h3><div class="value">${{team1TrailingRate.toFixed(1)}}%</div></div>
+                        </div>
+                        <h4 style="margin-top: 15px; margin-bottom: 5px;">By Distance</h4>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>4th & 1</h3><div class="value">${{team1.distance_breakdown?.['4th_and_1']?.conversions || 0}}/${{team1.distance_breakdown?.['4th_and_1']?.attempts || 0}}</div><div class="label">${{team1.distance_breakdown?.['4th_and_1']?.attempts > 0 ? ((team1.distance_breakdown['4th_and_1'].conversions / team1.distance_breakdown['4th_and_1'].attempts) * 100).toFixed(0) : 0}}%</div></div>
+                            <div class="summary-card"><h3>4th & 2-3</h3><div class="value">${{team1.distance_breakdown?.['4th_and_2_3']?.conversions || 0}}/${{team1.distance_breakdown?.['4th_and_2_3']?.attempts || 0}}</div><div class="label">${{team1.distance_breakdown?.['4th_and_2_3']?.attempts > 0 ? ((team1.distance_breakdown['4th_and_2_3'].conversions / team1.distance_breakdown['4th_and_2_3'].attempts) * 100).toFixed(0) : 0}}%</div></div>
+                            <div class="summary-card"><h3>4th & 4+</h3><div class="value">${{team1.distance_breakdown?.['4th_and_4_plus']?.conversions || 0}}/${{team1.distance_breakdown?.['4th_and_4_plus']?.attempts || 0}}</div><div class="label">${{team1.distance_breakdown?.['4th_and_4_plus']?.attempts > 0 ? ((team1.distance_breakdown['4th_and_4_plus'].conversions / team1.distance_breakdown['4th_and_4_plus'].attempts) * 100).toFixed(0) : 0}}%</div></div>
+                        </div>
                     </div>
                     <div class="team-section {team2_key}">
                         <h3>{team_name2}</h3>
@@ -4401,6 +4823,24 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             <div class="summary-card"><h3>Last 3 Attempts</h3><div class="value">${{team2.last_3_games.attempts || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Conversions</h3><div class="value">${{team2.last_3_games.conversions || 0}}</div></div>
                             <div class="summary-card"><h3>Last 3 Rate</h3><div class="value">${{team2.last_3_games.conversion_rate.toFixed(1)}}%</div></div>
+                        </div>
+                        <h4 style="margin-top: 15px; margin-bottom: 5px;">When Winning</h4>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Attempts</h3><div class="value">${{team2WinningAttempts}}</div></div>
+                            <div class="summary-card"><h3>Conversions</h3><div class="value">${{team2WinningConversions}}</div></div>
+                            <div class="summary-card"><h3>Rate</h3><div class="value">${{team2WinningRate.toFixed(1)}}%</div></div>
+                        </div>
+                        <h4 style="margin-top: 15px; margin-bottom: 5px;">When Tied or Trailing</h4>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>Attempts</h3><div class="value">${{team2TrailingAttempts}}</div></div>
+                            <div class="summary-card"><h3>Conversions</h3><div class="value">${{team2TrailingConversions}}</div></div>
+                            <div class="summary-card"><h3>Rate</h3><div class="value">${{team2TrailingRate.toFixed(1)}}%</div></div>
+                        </div>
+                        <h4 style="margin-top: 15px; margin-bottom: 5px;">By Distance</h4>
+                        <div class="summary-cards">
+                            <div class="summary-card"><h3>4th & 1</h3><div class="value">${{team2.distance_breakdown?.['4th_and_1']?.conversions || 0}}/${{team2.distance_breakdown?.['4th_and_1']?.attempts || 0}}</div><div class="label">${{team2.distance_breakdown?.['4th_and_1']?.attempts > 0 ? ((team2.distance_breakdown['4th_and_1'].conversions / team2.distance_breakdown['4th_and_1'].attempts) * 100).toFixed(0) : 0}}%</div></div>
+                            <div class="summary-card"><h3>4th & 2-3</h3><div class="value">${{team2.distance_breakdown?.['4th_and_2_3']?.conversions || 0}}/${{team2.distance_breakdown?.['4th_and_2_3']?.attempts || 0}}</div><div class="label">${{team2.distance_breakdown?.['4th_and_2_3']?.attempts > 0 ? ((team2.distance_breakdown['4th_and_2_3'].conversions / team2.distance_breakdown['4th_and_2_3'].attempts) * 100).toFixed(0) : 0}}%</div></div>
+                            <div class="summary-card"><h3>4th & 4+</h3><div class="value">${{team2.distance_breakdown?.['4th_and_4_plus']?.conversions || 0}}/${{team2.distance_breakdown?.['4th_and_4_plus']?.attempts || 0}}</div><div class="label">${{team2.distance_breakdown?.['4th_and_4_plus']?.attempts > 0 ? ((team2.distance_breakdown['4th_and_4_plus'].conversions / team2.distance_breakdown['4th_and_4_plus'].attempts) * 100).toFixed(0) : 0}}%</div></div>
                         </div>
                     </div>
                 </div>
@@ -5274,52 +5714,22 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             safeUpdateDataTable('#greenZoneTableWisc', wiscGreenTableData, wiscGreenZoneConfig);
         }}
         
-        function filterSituationalReceiving(situationalData, filters) {{
+        function filterSituationalReceiving(situationalData, filters, teamName) {{
             // Filter SIS situational receiving data based on filters
             // Returns filtered copy of the data structure
             if (!situationalData) return null;
-            
+
             // Check if any filters are actually applied
-            const hasFilters = filters.conference_only || filters.non_conference_only || 
+            const hasFilters = filters.conference_only || filters.non_conference_only ||
                               filters.power4_only || filters.last_3_games;
-            
+
             // If no filters, return original data (no need to recalculate)
             if (!hasFilters) {{
                 return situationalData;
             }}
-            
-            // Check if data has enrichment fields (is_conference, is_power4_opponent, game_id)
-            // If not, we can't filter properly, so return original data with a warning
-            // Check both by_week and by_game structures
-            let hasEnrichment = false;
-            for (const situation of Object.values(situationalData)) {{
-                if (situation) {{
-                    // Check by_week structure
-                    if (situation.by_week) {{
-                        for (const weekData of Object.values(situation.by_week)) {{
-                            if (weekData.hasOwnProperty('is_conference') || weekData.hasOwnProperty('is_power4_opponent') || weekData.hasOwnProperty('game_id')) {{
-                                hasEnrichment = true;
-                                break;
-                            }}
-                        }}
-                    }}
-                    // Check by_game structure
-                    if (!hasEnrichment && situation.by_game) {{
-                        for (const gameData of Object.values(situation.by_game)) {{
-                            if (gameData.hasOwnProperty('is_conference') || gameData.hasOwnProperty('is_power4_opponent') || gameData.hasOwnProperty('game_id')) {{
-                                hasEnrichment = true;
-                                break;
-                            }}
-                        }}
-                    }}
-                    if (hasEnrichment) break;
-                }}
-            }}
-            
-            if (!hasEnrichment) {{
-                // Return original data structure, not null
-                return situationalData;
-            }}
+
+            // We can now filter using opponent names against conference team lists
+            // even without explicit is_conference enrichment
             
             const filtered = JSON.parse(JSON.stringify(situationalData)); // Deep copy
             
@@ -5372,32 +5782,18 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 if (hasByWeek) {{
                     for (const [weekStr, weekData] of Object.entries(situation.by_week)) {{
                         let include = true;
-                        
+
                         // Filter by conference/non-conference/power4
-                        // If enrichment fields are null or missing, exclude from the filter (can't confirm it matches)
+                        // ALWAYS use opponent name to check conference membership
+                        const opponent = weekData.opponent || '';
                         if (filters.conference_only) {{
-                            if (weekData.hasOwnProperty('is_conference') && weekData.is_conference !== null && weekData.is_conference !== undefined) {{
-                                include = include && weekData.is_conference === true;
-                            }} else {{
-                                // If is_conference is null or missing, exclude from conference-only filter
-                                include = false;
-                            }}
+                            include = include && (teamName ? isConferenceGame(teamName, opponent) : false);
                         }} else if (filters.non_conference_only) {{
-                            if (weekData.hasOwnProperty('is_conference') && weekData.is_conference !== null && weekData.is_conference !== undefined) {{
-                                include = include && weekData.is_conference === false;
-                            }} else {{
-                                // If is_conference is null or missing, exclude from non-conference-only filter
-                                include = false;
-                            }}
+                            include = include && (teamName ? !isConferenceGame(teamName, opponent) : false);
                         }} else if (filters.power4_only) {{
-                            if (weekData.hasOwnProperty('is_power4_opponent') && weekData.is_power4_opponent !== null && weekData.is_power4_opponent !== undefined) {{
-                                include = include && weekData.is_power4_opponent === true;
-                            }} else {{
-                                // If is_power4_opponent is null or missing, exclude from power4-only filter
-                                include = false;
-                            }}
+                            include = include && isPower4Opponent(opponent);
                         }}
-                        
+
                         // Filter by last 3 games
                         if (filters.last_3_games) {{
                             if (weekData.game_id && last3GameIds.length > 0) {{
@@ -5405,7 +5801,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                             }}
                             // If game_id is missing, include it (can't filter without game_id)
                         }}
-                        
+
                         if (include) {{
                             filteredByWeek[weekStr] = weekData;
                             filteredLast3Weeks.push(parseInt(weekStr));
@@ -5456,39 +5852,28 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 if (hasByGame) {{
                     for (const [gameKey, gameData] of Object.entries(situation.by_game)) {{
                         let include = true;
-                        
+
+                        // Extract opponent from gameKey (format: "Week17_James Madison" or similar)
+                        // or from gameData.opponent field
+                        const opponent = gameData.opponent || gameKey.replace(/^Week\d+_/, '') || '';
+
                         // Filter by conference/non-conference/power4
-                        // If enrichment fields are null or missing, exclude from the filter (can't confirm it matches)
+                        // ALWAYS use opponent name to check conference membership
                         if (filters.conference_only) {{
-                            if (gameData.hasOwnProperty('is_conference') && gameData.is_conference !== null && gameData.is_conference !== undefined) {{
-                                include = include && gameData.is_conference === true;
-                            }} else {{
-                                // If is_conference is null or missing, exclude from conference-only filter
-                                include = false;
-                            }}
+                            include = include && (teamName ? isConferenceGame(teamName, opponent) : false);
                         }} else if (filters.non_conference_only) {{
-                            if (gameData.hasOwnProperty('is_conference') && gameData.is_conference !== null && gameData.is_conference !== undefined) {{
-                                include = include && gameData.is_conference === false;
-                            }} else {{
-                                // If is_conference is null or missing, exclude from non-conference-only filter
-                                include = false;
-                            }}
+                            include = include && (teamName ? !isConferenceGame(teamName, opponent) : false);
                         }} else if (filters.power4_only) {{
-                            if (gameData.hasOwnProperty('is_power4_opponent') && gameData.is_power4_opponent !== null && gameData.is_power4_opponent !== undefined) {{
-                                include = include && gameData.is_power4_opponent === true;
-                            }} else {{
-                                // If is_power4_opponent is null or missing, exclude from power4-only filter
-                                include = false;
-                            }}
+                            include = include && isPower4Opponent(opponent);
                         }}
-                        
+
                         // Filter by last 3 games
                         if (filters.last_3_games) {{
                             if (gameData.game_id && last3GameIds.length > 0) {{
                                 include = include && last3GameIds.includes(gameData.game_id);
                             }}
                         }}
-                        
+
                         if (include) {{
                             filteredByGame[gameKey] = gameData;
                             const week = gameData.week || parseInt(gameKey.replace('Week', '').split('_')[0]) || 0;
@@ -6360,28 +6745,28 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             }}
         }}
         
-        function filterDeepTargets(deepTargetData, filters) {{
+        function filterDeepTargets(deepTargetData, filters, teamName) {{
             // Filter deep target data based on filters
             // Returns filtered copy of the data structure
             if (!deepTargetData) {{
                 console.log('filterDeepTargets: deepTargetData is null/undefined');
                 return null;
             }}
-            
+
             // Check if any filters are actually applied
-            const hasFilters = filters.conference_only || filters.non_conference_only || 
+            const hasFilters = filters.conference_only || filters.non_conference_only ||
                               filters.power4_only || filters.last_3_games;
-            
+
             console.log('filterDeepTargets: hasFilters =', hasFilters, 'filters =', filters);
-            
+
             // If no filters, return original data
             if (!hasFilters) {{
                 console.log('filterDeepTargets: No filters, returning original data');
                 return deepTargetData;
             }}
-            
-            // Check if receiving data has enrichment fields
-            // If not, we can't filter properly, so return original data with a warning
+
+            // We can now filter using opponent names against conference team lists
+            // Check if receiving data has enrichment fields (for backwards compatibility)
             let hasEnrichment = false;
             if (deepTargetData.receiving && deepTargetData.receiving.by_game) {{
                 for (const gameData of Object.values(deepTargetData.receiving.by_game)) {{
@@ -6392,10 +6777,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}
             }}
             
-            if (!hasEnrichment) {{
-                return deepTargetData;
-            }}
-            
+            // Note: Even without enrichment, we can filter by opponent name using conference team lists
             const filtered = JSON.parse(JSON.stringify(deepTargetData)); // Deep copy
             
             // Helper function to filter by_game data
@@ -6469,62 +6851,30 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                         }}
                     }}
                     
+                    // Extract opponent from gameKey (format: "Week17_James Madison" or similar)
+                    const opponent = gameData.opponent || enrichmentData?.opponent || gameKey.replace(/^Week\d+_/, '') || '';
+
                     // Filter by conference/non-conference/power4
-                    // Only apply filters if we have enrichment data WITH the required fields
-                    // If field is null or missing, exclude from the filter (can't confirm it matches the filter)
-                    if (enrichmentData) {{
-                        if (filters.conference_only) {{
-                            if (enrichmentData.hasOwnProperty('is_conference') && enrichmentData.is_conference !== null && enrichmentData.is_conference !== undefined) {{
-                                const isConf = enrichmentData.is_conference === true;
-                                if (isFirstGame) {{
-                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference =', enrichmentData.is_conference, 'include =', isConf);
-                                }}
-                                include = include && isConf;
-                            }} else {{
-                                // If is_conference is null or missing, exclude from conference-only filter
-                                // (can't confirm it's a conference game)
-                                if (isFirstGame) {{
-                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference missing or null, excluding from conference-only filter');
-                                }}
-                                include = false;
-                            }}
-                        }} else if (filters.non_conference_only) {{
-                            if (enrichmentData.hasOwnProperty('is_conference') && enrichmentData.is_conference !== null && enrichmentData.is_conference !== undefined) {{
-                                include = include && enrichmentData.is_conference === false;
-                            }} else {{
-                                // If is_conference is null or missing, exclude from non-conference-only filter
-                                if (isFirstGame) {{
-                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_conference missing or null, excluding from non-conference-only filter');
-                                }}
-                                include = false;
-                            }}
-                        }} else if (filters.power4_only) {{
-                            if (enrichmentData.hasOwnProperty('is_power4_opponent') && enrichmentData.is_power4_opponent !== null && enrichmentData.is_power4_opponent !== undefined) {{
-                                include = include && enrichmentData.is_power4_opponent === true;
-                            }} else {{
-                                // If is_power4_opponent is null or missing, exclude from power4-only filter
-                                if (isFirstGame) {{
-                                    console.log('filterByGame DEBUG: gameKey =', gameKey, 'is_power4_opponent missing or null, excluding from power4-only filter');
-                                }}
-                                include = false;
-                            }}
-                        }}
-                        
-                        // Filter by last 3 games
-                        if (filters.last_3_games) {{
-                            if (enrichmentData.hasOwnProperty('game_id') && enrichmentData.game_id) {{
-                                include = include && last3GameIds.includes(enrichmentData.game_id);
-                            }}
-                        }}
-                    }} else {{
+                    // ALWAYS use opponent name to check conference membership
+                    if (filters.conference_only) {{
+                        const isConf = teamName ? isConferenceGame(teamName, opponent) : false;
                         if (isFirstGame) {{
-                            console.log('filterByGame DEBUG: gameKey =', gameKey, 'enrichmentData is null, including by default');
+                            console.log('filterByGame DEBUG: gameKey =', gameKey, 'opponent =', opponent, 'isConf =', isConf);
+                        }}
+                        include = include && isConf;
+                    }} else if (filters.non_conference_only) {{
+                        const isConf = teamName ? isConferenceGame(teamName, opponent) : false;
+                        include = include && !isConf;
+                    }} else if (filters.power4_only) {{
+                        include = include && isPower4Opponent(opponent);
+                    }}
+
+                    // Filter by last 3 games
+                    if (filters.last_3_games) {{
+                        if (enrichmentData && enrichmentData.hasOwnProperty('game_id') && enrichmentData.game_id) {{
+                            include = include && last3GameIds.includes(enrichmentData.game_id);
                         }}
                     }}
-                    // If no enrichment data at all, include by default (can't filter without metadata)
-                    // If no enrichment data but filters are active, we can't determine if it should be included
-                    // Include it by default (can't filter what we don't have metadata for)
-                    // This ensures data doesn't disappear when enrichment is incomplete
                     
                     if (include) {{
                         gamesIncluded++;
@@ -7139,19 +7489,20 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             teams.forEach((team, teamIdx) => {{
                 // Group plays by game, then quarter, then drive
                 const gameMap = new Map();
-                
+
                 team.plays.forEach(play => {{
-                    const gameId = play.game_id;
-                    if (!gameMap.has(gameId)) {{
-                        gameMap.set(gameId, {{
-                            game_id: gameId,
+                    // Use game_id if available, fall back to week-based key for PDF data
+                    const gameKey = play.game_id != null ? String(play.game_id) : `week_${{play.game_week || 0}}`;
+                    if (!gameMap.has(gameKey)) {{
+                        gameMap.set(gameKey, {{
+                            game_id: gameKey,
                             week: play.game_week || 0,
                             opponent: play.opponent || 'Unknown',
                             quarters: new Map()
                         }});
                     }}
                     
-                    const game = gameMap.get(gameId);
+                    const game = gameMap.get(gameKey);
                     const period = play.period || 1;
                     const driveId = play.drive_id || 'unknown';
                     
@@ -7285,6 +7636,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             return div.innerHTML;
         }}
         
+        // Helper to get game key (handles PDF data where game_id is null)
+        function getGameKey(p) {{
+            return p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+        }}
+
         // Analysis functions in JavaScript (simplified versions)
         function analyzeMiddleEight(plays, teamName) {{
             const middle8Plays = plays.filter(p => p.middle_eight === true);
@@ -7292,11 +7648,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             let pointsAllowed = 0;
             const scoringDrives = [];
             const gameStats = {{}};
-            
+
             middle8Plays.forEach(play => {{
-                const gameId = play.game_id;
+                const gameId = getGameKey(play);
                 if (!gameStats[gameId]) {{
-                    gameStats[gameId] = {{ pointsScored: 0, pointsAllowed: 0 }};
+                    gameStats[gameId] = {{ pointsScored: 0, pointsAllowed: 0, week: play.game_week || 0 }};
                 }}
                 
                 const isOffense = play.offense?.toLowerCase() === teamName.toLowerCase();
@@ -7337,15 +7693,14 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}
             }});
             
-            const uniqueGames = new Set(middle8Plays.map(p => p.game_id)).size;
-            
+            const uniqueGames = new Set(middle8Plays.map(p => getGameKey(p))).size;
+
             // Calculate last 3 games
-            const sortedGames = Object.keys(gameStats).sort((a, b) => {{
-                const weekA = middle8Plays.find(p => p.game_id == a)?.game_week || 0;
-                const weekB = middle8Plays.find(p => p.game_id == b)?.game_week || 0;
-                return weekA - weekB;
-            }});
-            const last3Games = sortedGames.slice(-3);
+            const sortedGames = Object.entries(gameStats)
+                .map(([id, stats]) => ({{ id, week: stats.week }}))
+                .filter(g => g.week > 0)
+                .sort((a, b) => a.week - b.week);
+            const last3Games = sortedGames.slice(-3).map(g => g.id);
             
             const last3PointsScored = last3Games.reduce((sum, gid) => sum + (gameStats[gid]?.pointsScored || 0), 0);
             const last3PointsAllowed = last3Games.reduce((sum, gid) => sum + (gameStats[gid]?.pointsAllowed || 0), 0);
@@ -7378,26 +7733,26 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         }}
         
         function analyzeExplosivePlays(plays, teamName) {{
-            const explosivePlays = plays.filter(p => 
-                p.explosive_play === true && 
+            const explosivePlays = plays.filter(p =>
+                p.explosive_play === true &&
                 p.offense?.toLowerCase() === teamName.toLowerCase() &&
                 p.play_classification !== 'special_teams'
             );
-            const uniqueGames = new Set(explosivePlays.map(p => p.game_id)).size;
-            
+            const uniqueGames = new Set(explosivePlays.map(p => getGameKey(p))).size;
+
             // Categorize runs vs passes
             const runs = explosivePlays.filter(p => isRunPlay(p.play_type));
             const passes = explosivePlays.filter(p => isPassPlay(p.play_type));
-            
+
             // Calculate last 3 games stats
             const gameStats = {{}};
             const gameStatsRuns = {{}};
             const gameStatsPasses = {{}};
             explosivePlays.forEach(p => {{
-                const gameId = p.game_id;
+                const gameId = getGameKey(p);
                 if (!gameStats[gameId]) {{
                     gameStats[gameId] = {{
-                        game_id: gameId,
+                        game_key: gameId,
                         game_week: p.game_week || 0,
                         count: 0
                     }};
@@ -7411,16 +7766,16 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     gameStatsPasses[gameId].count++;
                 }}
             }});
-            
+
             // Sort games by week and get last 3
             const sortedGames = Object.values(gameStats).sort((a, b) => a.game_week - b.game_week);
             const last3Games = sortedGames.slice(-3);
-            const last3GameIds = new Set(last3Games.map(g => g.game_id));
+            const last3GameKeys = last3Games.map(g => g.game_key);
             const last3Count = last3Games.reduce((sum, g) => sum + g.count, 0);
-            const last3Runs = last3Games.reduce((sum, g) => sum + (gameStatsRuns[g.game_id]?.count || 0), 0);
-            const last3Passes = last3Games.reduce((sum, g) => sum + (gameStatsPasses[g.game_id]?.count || 0), 0);
+            const last3Runs = last3Games.reduce((sum, g) => sum + (gameStatsRuns[g.game_key]?.count || 0), 0);
+            const last3Passes = last3Games.reduce((sum, g) => sum + (gameStatsPasses[g.game_key]?.count || 0), 0);
             const last3Avg = last3Games.length > 0 ? last3Count / last3Games.length : 0;
-            
+
             return {{
                 total_explosive_plays: explosivePlays.length,
                 total_runs: runs.length,
@@ -7433,7 +7788,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     runs: last3Runs,
                     passes: last3Passes,
                     avg_per_game: last3Avg,
-                    games: last3Games.map(g => g.game_id)
+                    games: last3GameKeys
                 }},
                 plays: explosivePlays.map(p => ({{
                     game_week: p.game_week,
@@ -7442,6 +7797,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     clock: p.clock,
                     down: p.down,
                     distance: p.distance,
+                    yards_to_goal: p.yards_to_goal,
                     play_type: p.play_type,
                     yards_gained: p.yards_gained,
                     ppa: p.ppa,
@@ -7449,7 +7805,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}))
             }};
         }}
-        
+
         function analyzePenalties(plays, teamName) {{
             // Team abbreviations for penalty detection
             const teamAbbrevs = {{
@@ -7557,23 +7913,27 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 return teamCommitted;
             }});
             // Filter to accepted only, excluding offsetting and declined
+            // Check both penalty_decision and penalty_status (for PDF data)
             const accepted = penaltyPlays.filter(p => {{
-                const decision = p.penalty_decision || '';
+                const decision = p.penalty_decision || p.penalty_status || '';
                 const playTextUpper = (p.play_text || '').toUpperCase();
-                return decision === 'accepted' && 
-                       !playTextUpper.includes('DECLINED') && 
+                return decision === 'accepted' &&
+                       !playTextUpper.includes('DECLINED') &&
                        !playTextUpper.includes('OFFSETTING') &&
                        !(p.penalty_type || '').toUpperCase().includes('OFFSETTING');
             }}).length;
-            const declined = penaltyPlays.filter(p => p.penalty_decision === 'declined' || (p.play_text || '').toUpperCase().includes('DECLINED')).length;
-            
+            const declined = penaltyPlays.filter(p => {{
+                const decision = p.penalty_decision || p.penalty_status || '';
+                return decision === 'declined' || (p.play_text || '').toUpperCase().includes('DECLINED');
+            }}).length;
+
             // Use penalty_yards field when available, fall back to yards_gained
             let totalYards = 0;
             penaltyPlays.forEach(p => {{
-                const decision = p.penalty_decision || '';
+                const decision = p.penalty_decision || p.penalty_status || '';
                 const playTextUpper = (p.play_text || '').toUpperCase();
-                if (decision === 'accepted' && 
-                    !playTextUpper.includes('DECLINED') && 
+                if (decision === 'accepted' &&
+                    !playTextUpper.includes('DECLINED') &&
                     !playTextUpper.includes('OFFSETTING') &&
                     !(p.penalty_type || '').toUpperCase().includes('OFFSETTING')) {{
                     // Prefer penalty_yards field, fall back to yards_gained
@@ -7587,22 +7947,26 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }}
             }});
             
-            const uniqueGames = new Set(penaltyPlays.map(p => p.game_id)).size;
+            // Use game_id if available, otherwise use game_week (for PDF data)
+            const uniqueGames = new Set(penaltyPlays.map(p =>
+                p.game_id != null ? p.game_id : `week_${{p.game_week || 0}}`
+            )).size;
             
             // Calculate last 3 games stats
+            // Use game_id if available, otherwise use game_week as key (for PDF data)
             const gameStats = {{}};
             penaltyPlays.forEach(p => {{
-                const gameId = p.game_id;
+                const gameId = p.game_id != null ? p.game_id : `week_${{p.game_week || 0}}`;
                 if (!gameStats[gameId]) {{
                     // Get game_week directly from the play (filtered plays should preserve this field)
                     const gameWeek = p.game_week || 0;
                     gameStats[gameId] = {{ count: 0, yards: 0, week: gameWeek }};
                 }}
                 gameStats[gameId].count++;
-                const decision = p.penalty_decision || '';
+                const decision = p.penalty_decision || p.penalty_status || '';
                 const playTextUpper = (p.play_text || '').toUpperCase();
-                if (decision === 'accepted' && 
-                    !playTextUpper.includes('DECLINED') && 
+                if (decision === 'accepted' &&
+                    !playTextUpper.includes('DECLINED') &&
                     !playTextUpper.includes('OFFSETTING') &&
                     !(p.penalty_type || '').toUpperCase().includes('OFFSETTING')) {{
                     // Prefer penalty_yards field, fall back to yards_gained
@@ -7615,20 +7979,23 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     }}
                 }}
             }});
-            
+
             // Sort games by week and get last 3
             // Only include games with valid week numbers (> 0)
             const sortedGames = Object.entries(gameStats)
-                .map(([id, stats]) => ({{ id: parseInt(id), week: stats.week }}))
+                .map(([id, stats]) => ({{ id, week: stats.week }}))
                 .filter(g => g.week > 0) // Only include games with valid week numbers
                 .sort((a, b) => a.week - b.week);
-            const last3GameIds = sortedGames.slice(-3).map(g => g.id);
-            
-            
-            const last3Games = penaltyPlays.filter(p => last3GameIds.includes(p.game_id));
+            const last3GameKeys = sortedGames.slice(-3).map(g => g.id);
+
+
+            const last3Games = penaltyPlays.filter(p => {{
+                const gameKey = p.game_id != null ? p.game_id : `week_${{p.game_week || 0}}`;
+                return last3GameKeys.includes(gameKey) || last3GameKeys.includes(String(gameKey));
+            }});
             const last3Yards = last3Games
                 .filter(p => {{
-                    const decision = p.penalty_decision || '';
+                    const decision = p.penalty_decision || p.penalty_status || '';
                     const playTextUpper = (p.play_text || '').toUpperCase();
                     return decision === 'accepted' && 
                            !playTextUpper.includes('DECLINED') && 
@@ -7653,7 +8020,7 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 total_games: uniqueGames,
                 avg_per_game: uniqueGames > 0 ? accepted / uniqueGames : 0,
                 last_3_games: {{
-                    games: last3GameIds, // Return list of game IDs to match Python structure
+                    games: last3GameKeys, // Return list of game IDs to match Python structure
                     yards: last3Yards
                 }},
                 plays: penaltyPlays.map(p => {{
@@ -7718,22 +8085,29 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             // Calculate last 3 games stats
             const gameStats = {{}};
             playData.forEach(p => {{
-                const gameId = p.game_id;
-                if (!gameStats[gameId]) {{
-                    gameStats[gameId] = {{ attempts: 0, conversions: 0, week: p.game_week }};
+                const gameKey = p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+                if (!gameStats[gameKey]) {{
+                    gameStats[gameKey] = {{ attempts: 0, conversions: 0, week: p.game_week }};
                 }}
-                gameStats[gameId].attempts++;
-                if (p.converted) gameStats[gameId].conversions++;
+                gameStats[gameKey].attempts++;
+                if (p.converted) gameStats[gameKey].conversions++;
             }});
-            
+
             // Sort games by week and get last 3
             const sortedGames = Object.entries(gameStats)
-                .map(([id, stats]) => ({{ id: parseInt(id), week: stats.week }}))
+                .map(([id, stats]) => ({{ id, week: stats.week }}))
+                .filter(g => g.week > 0)
                 .sort((a, b) => a.week - b.week);
-            const last3GameIds = sortedGames.slice(-3).map(g => g.id);
-            
-            const last3Attempts = playData.filter(p => last3GameIds.includes(p.game_id)).length;
-            const last3Conversions = playData.filter(p => last3GameIds.includes(p.game_id) && p.converted).length;
+            const last3GameKeys = sortedGames.slice(-3).map(g => g.id);
+
+            const last3Attempts = playData.filter(p => {{
+                const gameKey = p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+                return last3GameKeys.includes(gameKey);
+            }}).length;
+            const last3Conversions = playData.filter(p => {{
+                const gameKey = p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+                return last3GameKeys.includes(gameKey) && p.converted;
+            }}).length;
             const last3Rate = last3Attempts > 0 ? (last3Conversions / last3Attempts * 100) : 0;
             
             return {{
@@ -7829,47 +8203,50 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 return (isInterception || isFumbleLost) && !isTurnoverOnDowns;
             }});
             const postTurnoverPlays = plays.filter(p => p.drive_started_after_turnover === true);
-            
+
             // Group by drive_id to get unique drives that started after turnovers
+            // Use getGameKey for PDF data compatibility
             const postTurnoverDrives = {{}};
             postTurnoverPlays.forEach(play => {{
-                const driveId = play.drive_id;
+                const gameKey = getGameKey(play);
+                const driveId = play.drive_id || `${{gameKey}}_drive_${{play.drive_number || 0}}`;
                 if (!postTurnoverDrives[driveId]) {{
                     postTurnoverDrives[driveId] = {{
-                        game_id: play.game_id,
+                        game_key: gameKey,
                         drive_number: play.drive_number || 0,
                         plays: []
                     }};
                 }}
                 postTurnoverDrives[driveId].plays.push(play);
             }});
-            
+
             let ourTurnovers = 0;
             let opponentTurnovers = 0;
             let pointsScoredAfterOpponentTO = 0;
             let pointsAllowedAfterOurTO = 0;
             const turnoverAnalysis = [];
-            
+
             // For each drive that started after a turnover, find the turnover that caused it
             Object.keys(postTurnoverDrives).forEach(driveId => {{
                 const driveInfo = postTurnoverDrives[driveId];
-                const gameId = driveInfo.game_id;
+                const gameKey = driveInfo.game_key;
                 const driveNumber = driveInfo.drive_number;
                 const drivePlays = driveInfo.plays;
                 
                 // Find the turnover in the previous drive (or same drive if turnover ended the drive)
                 // If a drive has drive_started_after_turnover == True, the turnover should be in the PREVIOUS drive
                 let matchingTurnover = null;
-                
+
                 // First, try to find turnover in previous drive
                 turnovers.forEach(turnover => {{
-                    if (turnover.game_id === gameId && 
+                    const turnoverGameKey = getGameKey(turnover);
+                    if (turnoverGameKey === gameKey &&
                         turnover.drive_number === driveNumber - 1) {{
                         matchingTurnover = turnover;
                         return;
                     }}
                 }});
-                
+
                 // Only check same drive if no previous drive turnover found AND the drive doesn't have
                 // drive_started_after_turnover == True (which would indicate a data inconsistency)
                 // If drive_started_after_turnover is True, we should only match to previous drive turnovers
@@ -7877,12 +8254,13 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                     // Check if this drive has drive_started_after_turnover flag
                     // If it does, we should skip it if no previous drive turnover found (data inconsistency)
                     const driveHasFlag = drivePlays.some(p => p.drive_started_after_turnover === true);
-                    
+
                     if (!driveHasFlag) {{
                         // Drive doesn't have the flag, so it's safe to check same drive
                         // This handles cases where turnover ended the previous drive and started the next
                         turnovers.forEach(turnover => {{
-                            if (turnover.game_id === gameId && 
+                            const turnoverGameKey = getGameKey(turnover);
+                            if (turnoverGameKey === gameKey &&
                                 turnover.drive_number === driveNumber) {{
                                 matchingTurnover = turnover;
                                 return;
@@ -8046,33 +8424,32 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 }});
             }});
             
-            // Handle turnovers that score directly (pick-6s, fumble return TDs) 
+            // Handle turnovers that score directly (pick-6s, fumble return TDs)
             // that don't have a subsequent drive
             turnovers.forEach(turnover => {{
                 if (turnover.scoring === true) {{
                     // Check if this turnover was already included in turnoverAnalysis
-                    // Check if this turnover was already included in turnover_analysis
                     // A turnover is already processed if there's a drive that started after it
                     // Check if any drive started after this turnover
                     let alreadyProcessed = false;
-                    const turnoverGameId = turnover.game_id;
+                    const turnoverGameKey = getGameKey(turnover);
                     const turnoverDriveNumber = turnover.drive_number || 0;
-                    
+
                     // Check if there's a drive that started after this turnover
                     plays.forEach(play => {{
-                        if (play.game_id === turnoverGameId &&
+                        if (getGameKey(play) === turnoverGameKey &&
                             play.drive_started_after_turnover === true &&
                             play.drive_number === turnoverDriveNumber + 1) {{
                             // There's a drive that started after this turnover, so it was already processed
                             alreadyProcessed = true;
                         }}
                     }});
-                    
+
                     // Also check turnover_analysis for matching entries
                     if (!alreadyProcessed) {{
                         const turnoverText = (turnover.play_text || '').substring(0, 150);
                         turnoverAnalysis.forEach(ta => {{
-                            if (ta.game_id === turnoverGameId) {{
+                            if (ta.game_week === turnover.game_week) {{
                                 const taText = ta.play_text || '';
                                 // Check if turnover text appears in the analysis entry
                                 if (taText.includes(turnoverText) || taText.startsWith(`TO: ${{turnoverText}}`)) {{
@@ -8219,20 +8596,22 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
                 // A red zone attempt is a drive that had at least one play in the zone
                 const redZoneDrives = new Set();
                 zonePlays.forEach(p => {{
-                    if (p.game_id && p.drive_number !== null && p.drive_number !== undefined) {{
-                        redZoneDrives.add(`${{p.game_id}}_${{p.drive_number}}`);
+                    const gameKey = p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+                    if (p.drive_number !== null && p.drive_number !== undefined) {{
+                        redZoneDrives.add(`${{gameKey}}_${{p.drive_number}}`);
                     }}
                 }});
                 const redZoneAttempts = redZoneDrives.size;
-                
+
                 // Count how many of those drives resulted in a touchdown
                 const drivesWithTD = new Set();
                 zonePlays.forEach(p => {{
-                    if (p.scoring === true && 
-                        (p.play_type?.toLowerCase().includes('touchdown') || 
+                    if (p.scoring === true &&
+                        (p.play_type?.toLowerCase().includes('touchdown') ||
                          p.play_text?.toLowerCase().includes('touchdown'))) {{
-                        if (p.game_id && p.drive_number !== null && p.drive_number !== undefined) {{
-                            drivesWithTD.add(`${{p.game_id}}_${{p.drive_number}}`);
+                        const gameKey = p.game_id != null ? String(p.game_id) : `week_${{p.game_week || 0}}`;
+                        if (p.drive_number !== null && p.drive_number !== undefined) {{
+                            drivesWithTD.add(`${{gameKey}}_${{p.drive_number}}`);
                         }}
                     }}
                 }});
@@ -8490,12 +8869,11 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
         
         function applyFilters() {{
             const filters = getFilters();
-            
-            // Filter raw plays for both teams
-            const team1Filtered = filterPlays(team1Plays, filters);
-            const team2Filtered = filterPlays(team2Plays, filters);
-            
-            
+
+            // Filter raw plays for both teams (pass team name for conference filtering)
+            const team1Filtered = filterPlays(team1Plays, filters, team1Name);
+            const team2Filtered = filterPlays(team2Plays, filters, team2Name);
+
             // Re-analyze with filtered data
             const team1FilteredData = {{
                 middle8: analyzeMiddleEight(team1Filtered, team1Name),
@@ -8539,8 +8917,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             console.log('=== SIS SITUATIONAL RECEIVING FILTERING DEBUG ===');
             console.log('Team1 original situational:', originalAllData[team1Key].situational ? 'exists' : 'missing');
             console.log('Team2 original situational:', originalAllData[team2Key].situational ? 'exists' : 'missing');
-            const team1SituationalFiltered = filterSituationalReceiving(originalAllData[team1Key].situational, filters);
-            const team2SituationalFiltered = filterSituationalReceiving(originalAllData[team2Key].situational, filters);
+            const team1SituationalFiltered = filterSituationalReceiving(originalAllData[team1Key].situational, filters, team1Name);
+            const team2SituationalFiltered = filterSituationalReceiving(originalAllData[team2Key].situational, filters, team2Name);
             console.log('Team1 filtered situational:', team1SituationalFiltered ? 'exists' : 'missing');
             console.log('Team2 filtered situational:', team2SituationalFiltered ? 'exists' : 'missing');
             if (team1SituationalFiltered) {{
@@ -8561,8 +8939,8 @@ def generate_html_app(team_name1: str = "Washington", team_name2: str = "Wiscons
             console.log('=== SIS DEEP TARGETS FILTERING DEBUG ===');
             console.log('Team1 original deep_targets:', originalAllData[team1Key].deep_targets ? 'exists' : 'missing');
             console.log('Team2 original deep_targets:', originalAllData[team2Key].deep_targets ? 'exists' : 'missing');
-            const team1DeepTargetsFiltered = filterDeepTargets(originalAllData[team1Key].deep_targets, filters);
-            const team2DeepTargetsFiltered = filterDeepTargets(originalAllData[team2Key].deep_targets, filters);
+            const team1DeepTargetsFiltered = filterDeepTargets(originalAllData[team1Key].deep_targets, filters, team1Name);
+            const team2DeepTargetsFiltered = filterDeepTargets(originalAllData[team2Key].deep_targets, filters, team2Name);
             console.log('Team1 filtered deep_targets:', team1DeepTargetsFiltered ? 'exists' : 'missing');
             console.log('Team2 filtered deep_targets:', team2DeepTargetsFiltered ? 'exists' : 'missing');
             if (team1DeepTargetsFiltered) {{
@@ -8708,7 +9086,9 @@ if __name__ == "__main__":
                        help='Path to SIS data JSON file (default: auto-generated from team names)')
     parser.add_argument('--year', type=int, default=2025,
                        help='Season year for SIS data file naming (default: 2025)')
-    
+    parser.add_argument('--pdf-only', action='store_true',
+                       help='Only load games from PDF sources (_PDF.json files)')
+
     args = parser.parse_args()
     
     generate_html_app(
@@ -8717,6 +9097,7 @@ if __name__ == "__main__":
         output_file=args.output,
         data_dir=args.data_dir,
         sis_data_file=args.sis_file,
-        year=args.year
+        year=args.year,
+        pdf_only=args.pdf_only
     )
 
